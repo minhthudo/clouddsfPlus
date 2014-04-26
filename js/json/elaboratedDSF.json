@@ -1,0 +1,347 @@
+{
+  "decisionTreeWithoutOutcomes": {
+   "id": -3,
+   "type": "rootTestDec",
+   "label": "",
+   "children": [
+   	{"id": 1, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Application Distribution", "children": [
+   		{"id": 101, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Layer"},
+   		{"id": 102, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Tier"},
+   		{"id": 103, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Components"},
+   		{"id": 104, "type": "decision", "parent": 1, "classification" : "Cloud Migration specific", "label": "Select Migration Type"}
+   	]},
+   	{"id": 2, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Elasticity Strategy", "children": [
+   		{"id": 201, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Scalability Level"},
+   		{"id": 202, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Scaling Type"}, 	
+   		{"id": 203, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Elasticity Automation Degree"},
+   		{"id": 204, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Scaling Trigger"} 
+   	]},
+   	{"id": 3, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific", "label": "Define Multi-Tenancy Requirements", "children": [
+   		{"id": 301, "type": "decision", "parent": 3, "classification" : "Cloud Migration specific", "label": "Select Kind of Multi-Tenancy"},
+        {"id": 302, "type": "decision", "parent": 3, "classification" : "Cloud Migration specific", "label": "Select Multi-Tenancy Architecture"} 
+   	]},
+   	{"id": 4, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Service Provider / Offering", "children": [
+   		{"id": 401, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Cloud Deployment Model"},
+        {"id": 402, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Cloud Service Model"},
+        {"id": 403, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Cloud Hosting"}, 
+   		{"id": 404, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Roles of Responsibility"},
+        {"id": 405, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Cloud Vendor"},
+        {"id": 406, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Pricing Model"},
+        {"id": 407, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Resource Location"}
+   	]}
+   ]
+  
+  
+  },
+  "decisionTree": {
+    "id": -1,
+    "type": "root",
+    "label": "Decision Points",
+    "children": [
+      {"id": 1, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Application Distribution", "children": [
+          {"id": 101, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Layer", "children": [
+              {"id": 10101, "type": "outcome", "parent": 101, "weight": 0.25, "label": "Presentation Layer"},
+              {"id": 10102, "type": "outcome", "parent": 101, "weight": 0.25, "label": "Business Layer"},
+              {"id": 10103, "type": "outcome", "parent": 101, "weight": 0.25, "label": "Data Layer"},
+              {"id": 10104, "type": "outcome", "parent": 101, "weight": 0.25, "label": "Multiple Layers"}
+            ]},
+          {"id": 102, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Tier", "children": [
+              {"id": 10201, "type": "outcome", "parent": 102, "weight": 0.25, "label": "Client Tier"},
+              {"id": 10202, "type": "outcome", "parent": 102, "weight": 0.25, "label": "Application Tier"},
+              {"id": 10203, "type": "outcome", "parent": 102, "weight": 0.25, "label": "Data Tier"},
+              {"id": 10204, "type": "outcome", "parent": 102, "weight": 0.25, "label": "Multiple Tiers"}
+            ]},
+          {"id": 103, "type": "decision", "parent": 1, "classification" : "Application Migration in General", "label": "Select Application Components", "children": [
+              {"id": 10301, "type": "outcome", "parent": 103, "weight": 0.5, "label": "Single component"},
+              {"id": 10302, "type": "outcome", "parent": 103, "weight": 0.5, "label": "Multiple components"}
+            ]},
+          {"id": 104, "type": "decision", "parent": 1, "classification" : "Cloud Migration specific", "label": "Select Migration Type", "children": [
+              {"id": 10401, "type": "outcome", "parent": 104, "weight": 0.25, "label": "Type I"},
+              {"id": 10402, "type": "outcome", "parent": 104, "weight": 0.25, "label": "Type II"},
+              {"id": 10403, "type": "outcome", "parent": 104, "weight": 0.25, "label": "Type III"},
+              {"id": 10404, "type": "outcome", "parent": 104, "weight": 0.25, "label": "Type IV"}
+            ]}
+        ]},
+      {"id": 2, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Elasticity Strategy", "children": [
+          {"id": 201, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Scalability Level", "children": [
+              {"id": 20101, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Application Instance Level"},
+              {"id": 20102, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Application Server Level"},
+              {"id": 20103, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Virtual Machine Level"},
+              {"id": 20104, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Virtual Resource Level"},
+              {"id": 20105, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Physical Hardware Level"},
+              {"id": 20106, "type": "outcome", "parent": 201, "weight": 0.166, "label": "Multiple Levels"}
+            ]},
+          {"id": 202, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Scaling Type", "children": [
+              {"id": 20201, "type": "outcome", "parent": 202, "weight": 0.333, "label": "Vertical scaling"},
+              {"id": 20202, "type": "outcome", "parent": 202, "weight": 0.333, "label": "Horizontal scaling"},
+              {"id": 20203, "type": "outcome", "parent": 202, "weight": 0.333, "label": "Hybrid scaling"}
+            ]},
+          {"id": 203, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Elasticity Automation Degree", "children": [
+              {"id": 20301, "type": "outcome", "parent": 203, "weight": 0.333, "label": "Manual scaling"},
+              {"id": 20302, "type": "outcome", "parent": 203, "weight": 0.333, "label": "Semi-automatic scaling"},
+              {"id": 20303, "type": "outcome", "parent": 203, "weight": 0.333, "label": "Automatic scaling"}
+            ]},
+          {"id": 204, "type": "decision", "parent": 2, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Scaling Trigger", "children": [
+              {"id": 20401, "type": "outcome", "parent": 204, "weight": 0.5, "label": "Event-driven"},
+              {"id": 20402, "type": "outcome", "parent": 204, "weight": 0.5, "label": "Proactive"}
+            ]}
+        ]},
+      {"id": 3, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific", "label": "Define Multi-Tenancy Requirements", "children": [
+          {"id": 301, "type": "decision", "parent": 3, "classification" : "Cloud Migration specific", "label": "Select Kind of Multi-Tenancy", "children": [
+              {"id": 30101, "type": "outcome", "parent": 301, "weight": 0.5, "label": "Multiple instances multi-tenancy"},
+              {"id": 30102, "type": "outcome", "parent": 301, "weight": 0.5, "label": "Native multi-tenancy"}
+            ]},
+          {"id": 302, "type": "decision", "parent": 3, "classification" : "Cloud Migration specific", "label": "Select Multi-Tenancy Architecture", "children": [
+              {"id": 30201, "type": "outcome", "parent": 302, "weight": 1, "label": "One of the 29 MTAs"}
+            ]}
+        ]},
+      {"id": 4, "type": "decisionPoint", "parent": null, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Service Provider / Offering", "children": [
+          {"id": 401, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Cloud Deployment Model", "children": [
+              {"id": 40101, "type": "outcome", "parent": 401, "weight": 0.25, "label": "Private Cloud"},
+              {"id": 40102, "type": "outcome", "parent": 401, "weight": 0.25,"label": "Community Cloud"},
+              {"id": 40103, "type": "outcome", "parent": 401, "weight": 0.25,"label": "Public Cloud"},
+              {"id": 40104, "type": "outcome", "parent": 401, "weight": 0.25,"label": "Hybrid Cloud"}
+            ]},
+          {"id": 402, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Cloud Service Model", "children": [
+              {"id": 40201, "type": "outcome", "parent": 402, "weight": 0.333, "label": "Software as a Service"},
+              {"id": 40202, "type": "outcome", "parent": 402, "weight": 0.333, "label": "Platform as a Service"},
+              {"id": 40203, "type": "outcome", "parent": 402, "weight": 0.333, "label": "Infrastructure as a Service"}
+            ]},
+          {"id": 403, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Cloud Hosting", "children": [
+              {"id": 40301, "type": "outcome", "parent": 403, "weight": 0.333, "label": "On Premise Cloud Hosting"},
+              {"id": 40302, "type": "outcome", "parent": 403, "weight": 0.333, "label": "Off Premise Cloud Hosting"},
+              {"id": 40303, "type": "outcome", "parent": 403, "weight": 0.333, "label": "Hybrid Cloud Hosting"}
+            ]},
+          {"id": 404, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Roles of Responsibility", "children": [
+              {"id": 40401, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 1"},
+              {"id": 40402, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 2"},
+              {"id": 40403, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 3"},
+              {"id": 40404, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 4"},
+              {"id": 40405, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 5"},
+              {"id": 40406, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 6"},
+              {"id": 40407, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 7"},
+              {"id": 40408, "type": "outcome", "parent": 404, "weight": 0.125, "label": "Role Set 8"}
+            ]},
+          {"id": 405, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Select Cloud Vendor", "children": [
+              {"id": 40501, "type": "outcome", "parent": 405, "weight": 1, "label": "Evaluate Cloud Vendor"}
+            ]},
+          {"id": 406, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific", "label": "Select Pricing Model", "children": [
+              {"id": 40601, "type": "outcome", "parent": 406, "weight": 0.2, "label": "Free"},
+              {"id": 40602, "type": "outcome", "parent": 406, "weight": 0.2, "label": "Pay-Per-Use"},
+              {"id": 40603, "type": "outcome", "parent": 406, "weight": 0.2, "label": "Pay-Per-Unit"},
+              {"id": 40604, "type": "outcome", "parent": 406, "weight": 0.2, "label": "Charge-Per-Use (Subscription)"},
+              {"id": 40605, "type": "outcome", "parent": 406, "weight": 0.2, "label": "Combined Pricing Model"}
+            ]},
+          {"id": 407, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Resource Location", "children": [
+              {"id": 40701, "type": "outcome", "parent": 407, "weight": 1, "label": "Evaluated Physical Cloud Resource Location"}
+            ]}
+        ]}
+    ]
+  },
+  "taskTree": {"id": 9, "type": "root", "label": "Tasks", "children": [
+      {"id": 901, "type": "task", "label": "Workload profiling"},
+      {"id": 902, "type": "task", "label": "Performance prediction"},
+      {"id": 903, "type": "task", "label": "Effort estimation"},
+      {"id": 904, "type": "task", "label": "Cost analysis"},
+      {"id": 905, "type": "task", "label": "Identification of acceptable QoS levels"},
+      {"id": 906, "type": "task", "label": "Compliance assurance"},
+      {"id": 907, "type": "task", "label": "Identification of security concerns"},
+      {"id": 908, "type": "task", "label": "Workforce capabilities identification"},
+      {"id": 909, "type": "task", "label": "Vendor benchmark"},
+      {"id": 910, "type": "task", "label": "Application analysis"}
+    ]},
+  "linksArray": [
+    
+    {"source": 906, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 907, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 101, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 101, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 101, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 910, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 906, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 907, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 102, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 102, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 102, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 910, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},  
+    
+    {"source": 906, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 907, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 103, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 103, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 103, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 910, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 906, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 907, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 104, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 104, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 104, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 910, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    
+    {"source": 905, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 201, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 201, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 905, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 202, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 202, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 905, "target": 203, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 901, "target": 203, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 203, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 203, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 908, "target": 203, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 902, "target": 204, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 204, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    
+    {"source": 907, "target": 301, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 301, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 301, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 301, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 907, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 302, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 302, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 910, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    
+    {"source": 907, "target": 401, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 401, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 906, "target": 401, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 401, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 401, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 907, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 402, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 402, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 906, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 402, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 907, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 903, "target": 403, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 403, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 906, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 403, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 907, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 908, "target": 404, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 906, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 909, "target": 405, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 406, "target": 904, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    {"source": 907, "target": 407, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 902, "target": 407, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 906, "target": 407, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 904, "target": 407, "dir": "both", "weight": 1, "label": "", "type" : "taskRel"},
+    {"source": 905, "target": 407, "dir": "auto", "weight": 1, "label": "", "type" : "taskRel"},
+    
+    
+    
+  	{"source": 101, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 101, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 102, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 102, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 103, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 103, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 104, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 301, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 104, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	
+  	{"source": 201, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 201, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 201, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 201, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 201, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 201, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 202, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 202, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 202, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 202, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 202, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 202, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 203, "target": 204, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 204, "target": 203, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	
+  	{"source": 301, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 302, "target": 101, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 102, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 103, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 202, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 301, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 302, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	
+  	{"source": 401, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 401, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 402, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 402, "target": 201, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 402, "target": 302, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 402, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 402, "target": 406, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 403, "target": 104, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 403, "target": 401, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 403, "target": 404, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 404, "target": 401, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 404, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 405, "target": 402, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	{"source": 405, "target": 407, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"},
+  	
+  	{"source": 407, "target": 403, "dir": "auto", "weight": 1, "label": "", "type" : "DecRel"}
+  
+  ]
+
+
+}

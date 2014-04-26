@@ -1,0 +1,521 @@
+/* ========================================================================
+ * Cloud Decision Support Framework - CloudDSF
+ * dsamc-layout.css - v1.0 - 2014/03/22
+ * http://www.clouddsf.com
+ * ========================================================================
+ * Copyright 2014 Alexander Darsow
+ * ========================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ======================================================================== */
+
+
+@CHARSET "UTF-8";
+
+/* General Element Styles */
+/* ======================================================================== */
+* {
+	font-family:  Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+html {}
+
+body {
+	background-image: url("../img/layout/crossing-bg-white-transparent.png");
+	background-repeat: repeat;
+	background-position: left top;
+	background-size: auto;
+	background-color: #FFFFFF; /*#F2F2F2;*/
+	color: #333333;
+	min-width: 1200px;
+	letter-spacing: 0.05em;
+}
+
+.container {
+	width: 1100px !important;
+}
+
+
+/* Layout Styles */
+/* ======================================================================== */
+#pageWrapper {
+	width: 100%;
+}
+#headerWrapper {
+	width: 100%;
+}
+#mainWrapper {
+	width: 100%;
+	border-top: solid 5px #00AAF2;
+}
+#footerWrapper {
+	width: 100%;
+	margin: 15px 0 0 0;
+}
+
+#headerBox {
+	padding: 15px 0;
+}
+
+#mainBox {}
+
+#footerBox {
+	border-top: solid 1px #DDDDDD;
+	padding: 20px 0;
+}
+
+.sizeMarginBox {
+	width: 100%;
+	margin: 0 auto;
+}
+
+
+
+/* Style Classes */ 
+/* ======================================================================== */
+.bgPattern {
+	background-image: url("../img/layout/crossing-bg-white-transparent.png");
+	background-repeat: repeat;
+	background-position: left top;
+	background-size: auto;
+}
+
+.centered {
+	text-align: center;
+}
+
+
+
+/* Detailed Styles */
+/* ======================================================================== */
+
+/* Header */
+/* ========================================== */
+#headerNav {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+#headerNav li {
+	display: inline-block;
+}
+
+#headerNav li a {
+	text-decoration: none;
+	color: #666666;
+	display: inline-block;
+	width: 100%;
+	padding: 5px 10px;
+}
+
+#headerNav li a.active {
+	/*color: #FFFFFF;
+	background-color: #666666;*/
+	border-bottom: solid 2px #666666;
+}
+
+#headerNav li a.brandName {
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0 20px 0 0;
+}
+
+#headerContent {
+	margin-left: 50px;	
+}
+#headerContent * {
+	margin: 0;
+}
+#headerContent h1 {
+	font-size: 1.6em;
+	margin: 5px 0;
+}
+#headerContent h1 i {
+	font-size: 0.8em;
+}
+.headerHighlight {
+	color: #00AAF2;
+}
+.lightHightlight {
+	color: #8A8A8A;
+}
+
+
+/* Header - visType - visLabel  */
+/* ========================================== */
+#visHeaderDIV {
+	background-color: #FFFFFF;
+	border-bottom: solid 1px #DDDDDD;
+}
+
+#visTypeDIV {
+	width: 40%;
+	float: left;
+	text-align: right;
+}
+
+#visType {}
+
+
+
+#visTypeSelectedBTN {}
+
+#visTypeBTNGroup {
+	margin: 0.4em 2em;
+}
+
+#visTypeUL li{}
+
+#visLabelDIV {
+	width: 60%;
+	float: left;
+}
+
+#visLabel h2 {
+	font-size: 1.4em;
+	margin: 0;
+	padding: 0.6em 0.6em 0.6em 1.2em;
+	display: inline-block;
+}
+#visLabel a {
+	font-size: 1.2em;
+	text-decoration: none;
+}
+
+/* General Panel */
+/* ========================================== */
+.visPanelContent {
+	padding: 10px 8% 10px 8%;
+}
+
+.visPanelHeader {
+	background-color: #A7A7A7;
+	font-size: 1.1em;
+	margin: 0 0 5px 0;
+}
+.visPanelHeader a {
+	text-decoration: none;
+	color: #F7F7F7;
+}
+.visPanelHeaderIconLeft {	
+	float: left;
+	border-right: 1px solid #DDDDDD;
+}
+.visPanelHeaderIconLeft span {
+	padding: 6px;
+	font-size: 1.2em;
+}
+.visPanelHeaderLabel {
+	float: left;
+}
+
+.visPanelHeaderLabel span {
+	font-size: 1.1em;
+	padding: 4px 10px;
+	display: inline-block;
+}
+
+
+.visInfoBOX {
+	margin: 20px 0 0 0;
+}
+
+
+.visInfoBOX:first-child {
+	margin: 0;
+}
+.visInfoHeaderBOX {
+	border-bottom: solid 2px #A7A7A7;
+}
+
+.visInfoHeaderBOX h4 {
+	font-size: 1.25em;
+	margin: 0;
+	padding: 0.1em 0.25em;
+	float: left;
+}
+.visInfoHeaderToogle {
+	float: right;
+}
+.visInfoHeaderToogle a {
+	padding: 0 0.5em;
+	display: inline-block;
+	color: #333333;
+	text-decoration: none;
+}
+.visInfoHeaderToogle a span {
+	font-size: 0.9em;
+}
+.visInfoContentBOX {
+	padding: 0 0.5em;
+}
+
+.visInputBox {
+	margin: 10px 0;
+}
+
+.visInputBoxDisabled span {
+	border-color: #E6E6E6;
+	color: #D9D9D9;
+}
+
+/* Left Panel */
+/* ========================================== */
+#visLeftDIV {
+	width: 20%;
+	min-width: 220px;
+	position: absolute;
+	top: auto;
+	left: 0;
+	border-right: solid 1px #DDDDDD;
+	border-bottom: solid 1px #DDDDDD;
+	background-color: #FFFFFF;
+}
+
+#visLeftContent {
+	
+}
+.visPanelControl {
+	background-color: #A7A7A7;
+	border-bottom: solid 1px #DDDDDD;
+}
+
+.visPanelControlIconRight {
+	border-left: solid 1px #DDDDDD;
+	float: right;
+}
+.visPanelControlIconRight a > span {
+	padding: 0.6em;
+	font-size: 1.45em;
+	color: #F7F7F7;
+}
+
+#visLeftContent {}
+
+/* visContent */
+/* ========================================== */
+#visContentDIV {
+	width: 80%;
+	float: left;
+
+	background-color: #FFFFFF;
+	border-right: solid 1px #DDDDDD;
+}
+
+#visContent {
+	height: 900px;
+	width: 900px;
+	margin: 20px auto;
+	/*border: solid 1px #DDDDDD;*/
+	background: none;
+	background-color: #FFFFFF;
+}
+
+#layoutLegend {
+	text-align: center;
+	margin: 1em 0;
+}
+
+#layoutLegend .legendItem {
+	display: inline-block;
+	width: 100px;
+	margin: 0.5em 15px;
+	vertical-align: top;
+}
+#layoutLegend .legendItem img {
+	
+}
+#layoutLegend .legendItem span {
+	display: inline-block;
+	width: 100%;
+	font-size: 0.8em;
+}
+
+.jumbotron {
+	margin: 15px 0;
+}
+
+.defaultInformation {
+	text-align: center;
+}
+
+
+
+/* Right Panel */
+/* ========================================== */
+#visRightDIV {
+	width: 20%;
+	float: right;
+	background-color: #FFFFFF;
+	border-bottom: solid 1px #DDDDDD;
+}
+
+
+#visRightContent {}
+
+#visInfoLabelBOX {
+	display: none;
+	border: solid 1px #DDDDDD;
+}
+
+#visInfoLabelTypeBOX {
+	border-top: solid 1px #DDDDDD;
+}
+
+#visInfoLabelTypeBOX span {
+	font-size: 0.9em;
+	letter-spacing: 0.1em;
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+	padding: 0.05em 0.5em;
+}
+
+#visInfoLabelTextBOX {}
+
+#visInfoLabelTextBOX h3 {
+	margin: 0;
+	padding: 0.5em;
+	text-align: center;
+	font-size: 1.4em;
+}
+
+
+
+.visInfoRelatedNodesUL {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.visInfoRelatedNodesUL li {
+	padding: 0.3em;
+	border-bottom: solid 1px #DDDDDD;
+}
+
+.visInfoRelatedNodesUL li span {
+	width: 100%;
+	padding: 0.25em 0.5em;
+	border-left: solid 2px #FFFFFF;
+	display: inline-block;
+	font-size: 0.95em;
+}
+
+.visInfoRelatedNodesUL li span.affectDirection {
+	padding: 0.25em 0 0 0;
+	border-top: solid 1px #E6E6E6;
+	display: block;
+	font-size: 0.85em;
+	color: #6B6B6B;
+}
+
+
+/* General Layout Defs */
+/* ========================================== */
+.textcolorDecisionPoint1 {
+	color: #006738 !important;
+}
+.textcolorDecisionPoint2 {
+	color: #952800 !important;
+}
+.textcolorDecisionPoint3 {
+	color: #006E93 !important;
+}
+.textcolorDecisionPoint4 {
+	color: #A65500 !important;
+}
+.textcolorDecision1 {
+	color: #009E56 !important;
+}
+.textcolorDecision2 {
+	color: #E53E00 !important;
+}
+.textcolorDecision3 {
+	color: #00A9E1 !important;
+}
+.textcolorDecision4 {
+	color: #A65500 !important;
+}
+.textcolorOutcome1 {
+	color: #5DCF9B !important;
+}
+.textcolorOutcome2 {
+	color: #F2916D !important;
+}
+.textcolorOutcome3 {
+	color: #6CCFF0 !important;
+}
+.textcolorOutcome4 {
+	color: #FFBB73 !important;
+}
+
+.bordercolorDecisionPoint1 {
+	border-color: #006738 !important;
+}
+.bordercolorDecisionPoint2 {
+	border-color: #952800 !important;
+}
+.bordercolorDecisionPoint3 {
+	border-color: #006E93 !important;
+}
+.bordercolorDecisionPoint4 {
+	border-color: #A65500 !important;
+}
+.bordercolorDecision1 {
+	border-color: #009E56 !important;
+}
+.bordercolorDecision2 {
+	border-color: #E53E00 !important;
+}
+.bordercolorDecision3 {
+	border-color: #00A9E1 !important;
+}
+.bordercolorDecision4 {
+	border-color: #FF8300 !important;
+}
+.bordercolorOutcome1 {
+	border-color: #5DCF9B !important;
+}
+.bordercolorOutcome2 {
+	border-color: #F2916D !important;
+}
+.bordercolorOutcome3 {
+	border-color: #6CCFF0 !important;
+}
+.bordercolorOutcome4 {
+	border-color: #FFBB73 !important;
+}
+.bordercolorTask {
+	border-color: #FFD937 !important;
+}
+
+.visInfoNodeInformationUL {
+		margin: 0;
+	padding: 0;
+	list-style-type: none;	
+}
+.visInfoNodeInformationUL li {
+	padding: 0.3em;
+	border-bottom: solid 1px #DDDDDD;
+}
+.visInfoNodeInformationUL li span {
+	display: inline-block;
+	width: 100%;
+}
