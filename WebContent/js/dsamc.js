@@ -520,10 +520,11 @@ function drawPartitionLayout(){
                 ? function(t) { return arc(d); }
                 : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
         };
-    }
-    
-        
+    }       
 }
+
+
+
 function updatePartitionLayout() {}
 function clearPartitionLayout() {
     // Clear variables used by the partition layout
@@ -1287,7 +1288,6 @@ function drawClusterLayout() {
             .append($('<span>').text("Highlighted Influence Link"))
             );
         $('#visContentDIV').append(legendItems);
-    
     }
 
 
