@@ -17,13 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ======================================================================== */
-
-
 @CHARSET "UTF-8";
 
 /* General Element Styles */
 /* ======================================================================== */
-* {
+/* * {
 	font-family:  Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	margin: 0;
@@ -40,20 +38,18 @@ body {
 	background-repeat: repeat;
 	background-position: left top;
 	background-size: auto;
-	background-color: #FFFFFF; /*#F2F2F2;*/
+	background-color: #FFFFFF; #F2F2F2;
 	color: #333333;
 	min-width: 1200px;
 	letter-spacing: 0.05em;
-}
-
+} */
 .container {
 	width: 1100px !important;
 }
 
-
 /* Layout Styles */
 /* ======================================================================== */
-#pageWrapper {
+/* #pageWrapper {
 	width: 100%;
 }
 #headerWrapper {
@@ -83,12 +79,11 @@ body {
 	width: 100%;
 	margin: 0 auto;
 }
+ */
 
-
-
-/* Style Classes */ 
+/* Style Classes */
 /* ======================================================================== */
-.bgPattern {
+/* .bgPattern {
 	background-image: url("../img/layout/crossing-bg-white-transparent.png");
 	background-repeat: repeat;
 	background-position: left top;
@@ -97,16 +92,14 @@ body {
 
 .centered {
 	text-align: center;
-}
-
-
+} */
 
 /* Detailed Styles */
 /* ======================================================================== */
 
 /* Header */
 /* ========================================== */
-#headerNav {
+/* #headerNav {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -124,8 +117,8 @@ body {
 }
 
 #headerNav li a.active {
-	/*color: #FFFFFF;
-	background-color: #666666;*/
+	color: #FFFFFF;
+	background-color: #666666;
 	border-bottom: solid 2px #666666;
 }
 
@@ -155,18 +148,17 @@ body {
 }
 .lightHightlight {
 	color: #8A8A8A;
-}
-
+} */
 
 /* Header - visType - visLabel  */
 /* ========================================== */
-#visHeaderDIV {
+/* #visHeaderDIV {
 	background-color: #FFFFFF;
 	border-bottom: solid 1px #DDDDDD;
 }
 
 #visTypeDIV {
-	width: 40%;
+ 	width: 40%;
 	float: left;
 	text-align: right;
 }
@@ -177,23 +169,24 @@ body {
 
 #visTypeSelectedBTN {}
 
-#visTypeBTNGroup {
+ #visTypeBTNGroup {
 	margin: 0.4em 2em;
 }
 
 #visTypeUL li{}
 
 #visLabelDIV {
-	width: 60%;
+ 	width: 60%;
 	float: left;
+} */
+#visLabel h3 {
+	/* font-size: 1.4em; */
+	/*not a perfect solution*/
+	padding-top: 6px;
+	display: inline-block;
+	margin: 0;
 }
 
-#visLabel h2 {
-	font-size: 1.4em;
-	margin: 0;
-	padding: 0.6em 0.6em 0.6em 1.2em;
-	display: inline-block;
-}
 #visLabel a {
 	font-size: 1.2em;
 	text-decoration: none;
@@ -210,18 +203,22 @@ body {
 	font-size: 1.1em;
 	margin: 0 0 5px 0;
 }
+
 .visPanelHeader a {
 	text-decoration: none;
 	color: #F7F7F7;
 }
-.visPanelHeaderIconLeft {	
+
+.visPanelHeaderIconLeft {
 	float: left;
 	border-right: 1px solid #DDDDDD;
 }
+
 .visPanelHeaderIconLeft span {
 	padding: 6px;
 	font-size: 1.2em;
 }
+
 .visPanelHeaderLabel {
 	float: left;
 }
@@ -232,15 +229,14 @@ body {
 	display: inline-block;
 }
 
-
 .visInfoBOX {
 	margin: 20px 0 0 0;
 }
 
-
 .visInfoBOX:first-child {
 	margin: 0;
 }
+
 .visInfoHeaderBOX {
 	border-bottom: solid 2px #A7A7A7;
 }
@@ -251,18 +247,22 @@ body {
 	padding: 0.1em 0.25em;
 	float: left;
 }
+
 .visInfoHeaderToogle {
 	float: right;
 }
+
 .visInfoHeaderToogle a {
 	padding: 0 0.5em;
 	display: inline-block;
 	color: #333333;
 	text-decoration: none;
 }
+
 .visInfoHeaderToogle a span {
 	font-size: 0.9em;
 }
+
 .visInfoContentBOX {
 	padding: 0 0.5em;
 }
@@ -278,7 +278,7 @@ body {
 
 /* Left Panel */
 /* ========================================== */
-#visLeftDIV {
+/* #visLeftDIV {
 	width: 20%;
 	min-width: 220px;
 	position: absolute;
@@ -291,30 +291,30 @@ body {
 
 #visLeftContent {
 	
-}
-.visPanelControl {
+} */
+/* .visPanelControl {
 	background-color: #A7A7A7;
 	border-bottom: solid 1px #DDDDDD;
-}
+} */
 
-.visPanelControlIconRight {
+/* .visPanelControlIconRight {
 	border-left: solid 1px #DDDDDD;
 	float: right;
 }
-.visPanelControlIconRight a > span {
+
+.visPanelControlIconRight a>span {
 	padding: 0.6em;
 	font-size: 1.45em;
 	color: #F7F7F7;
 }
-
-#visLeftContent {}
+ */
+/* #visLeftContent {} */
 
 /* visContent */
 /* ========================================== */
 #visContentDIV {
 	width: 80%;
 	float: left;
-
 	background-color: #FFFFFF;
 	border-right: solid 1px #DDDDDD;
 }
@@ -339,24 +339,24 @@ body {
 	margin: 0.5em 15px;
 	vertical-align: top;
 }
-#layoutLegend .legendItem img {
+
+/* #layoutLegend .legendItem img {
 	
-}
+} */
+
 #layoutLegend .legendItem span {
 	display: inline-block;
 	width: 100%;
 	font-size: 0.8em;
 }
 
-.jumbotron {
+/* .jumbotron {
 	margin: 15px 0;
-}
+} */
 
 .defaultInformation {
 	text-align: center;
 }
-
-
 
 /* Right Panel */
 /* ========================================== */
@@ -367,8 +367,9 @@ body {
 	border-bottom: solid 1px #DDDDDD;
 }
 
-
-#visRightContent {}
+/* #visRightContent {
+	
+} */
 
 #visInfoLabelBOX {
 	display: none;
@@ -388,7 +389,9 @@ body {
 	padding: 0.05em 0.5em;
 }
 
-#visInfoLabelTextBOX {}
+/* #visInfoLabelTextBOX {
+	
+} */
 
 #visInfoLabelTextBOX h3 {
 	margin: 0;
@@ -396,8 +399,6 @@ body {
 	text-align: center;
 	font-size: 1.4em;
 }
-
-
 
 .visInfoRelatedNodesUL {
 	margin: 0;
@@ -426,42 +427,52 @@ body {
 	color: #6B6B6B;
 }
 
-
 /* General Layout Defs */
 /* ========================================== */
 .textcolorDecisionPoint1 {
 	color: #006738 !important;
 }
+
 .textcolorDecisionPoint2 {
 	color: #952800 !important;
 }
+
 .textcolorDecisionPoint3 {
 	color: #006E93 !important;
 }
+
 .textcolorDecisionPoint4 {
 	color: #A65500 !important;
 }
+
 .textcolorDecision1 {
 	color: #009E56 !important;
 }
+
 .textcolorDecision2 {
 	color: #E53E00 !important;
 }
+
 .textcolorDecision3 {
 	color: #00A9E1 !important;
 }
+
 .textcolorDecision4 {
 	color: #A65500 !important;
 }
+
 .textcolorOutcome1 {
 	color: #5DCF9B !important;
 }
+
 .textcolorOutcome2 {
 	color: #F2916D !important;
 }
+
 .textcolorOutcome3 {
 	color: #6CCFF0 !important;
 }
+
 .textcolorOutcome4 {
 	color: #FFBB73 !important;
 }
@@ -469,52 +480,66 @@ body {
 .bordercolorDecisionPoint1 {
 	border-color: #006738 !important;
 }
+
 .bordercolorDecisionPoint2 {
 	border-color: #952800 !important;
 }
+
 .bordercolorDecisionPoint3 {
 	border-color: #006E93 !important;
 }
+
 .bordercolorDecisionPoint4 {
 	border-color: #A65500 !important;
 }
+
 .bordercolorDecision1 {
 	border-color: #009E56 !important;
 }
+
 .bordercolorDecision2 {
 	border-color: #E53E00 !important;
 }
+
 .bordercolorDecision3 {
 	border-color: #00A9E1 !important;
 }
+
 .bordercolorDecision4 {
 	border-color: #FF8300 !important;
 }
+
 .bordercolorOutcome1 {
 	border-color: #5DCF9B !important;
 }
+
 .bordercolorOutcome2 {
 	border-color: #F2916D !important;
 }
+
 .bordercolorOutcome3 {
 	border-color: #6CCFF0 !important;
 }
+
 .bordercolorOutcome4 {
 	border-color: #FFBB73 !important;
 }
+
 .bordercolorTask {
 	border-color: #FFD937 !important;
 }
 
 .visInfoNodeInformationUL {
-		margin: 0;
+	margin: 0;
 	padding: 0;
-	list-style-type: none;	
+	list-style-type: none;
 }
+
 .visInfoNodeInformationUL li {
 	padding: 0.3em;
 	border-bottom: solid 1px #DDDDDD;
 }
+
 .visInfoNodeInformationUL li span {
 	display: inline-block;
 	width: 100%;

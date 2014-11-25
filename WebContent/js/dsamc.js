@@ -2770,7 +2770,7 @@ function removeLegend() {
 
 /* Function setVisLabel  */
 function setVisLabel(visLabelText, visLabelInfoText) {
-    $('#visLabel h2').text(visLabelText);
+	$('#visLabel h3').text(visLabelText);
     
     $('#vislabelInfo').popover('destroy');
     

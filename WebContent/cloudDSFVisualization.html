@@ -17,7 +17,7 @@ limitations under the License.
 <html>
 <head>
 <meta charset="UTF-8">
-<title>The CloudDSF : : Prototypical Implementation</title>
+<title>The CloudDSF - Prototypical Implementation</title>
 
 <!-- Style Sheets - Bootstrap -->
 <link href="./css/bootstrap.min.css" rel="stylesheet" />
@@ -25,6 +25,7 @@ limitations under the License.
 <!-- Style Sheets - DSAMC -->
 <link href="./css/dsamc-layout.css" rel="stylesheet" />
 <link href="./css/dsamc-svg.css" rel="stylesheet" />
+<link href="./css/cdsfPlus.css" rel="stylesheet" />
 
 <!-- JavaScript - jQuery -->
 <script src="./js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
@@ -42,137 +43,128 @@ limitations under the License.
 
 </head>
 <body>
-	<div id="pageWrapper">
 
-		<div id="headerWrapper">
-			<div id="headerBox">
-				<div class="container">
-					<ul id="headerNav">
-						<li><a class="brandName" href="./">The CloudDSF</a></li>
-						<li><a href="./"> <span class="glyphicon glyphicon-home"></span>
-								<span>Home</span>
-						</a></li>
-						<li><a class="active" href="./cloudDSFVisualization.html">
-								<span class="glyphicon glyphicon-picture"></span> <span>Prototypical
-									Implementation</span>
-						</a></li>
-						<li><a href="./about.html"> <span
-								class="glyphicon glyphicon-flag"></span> <span>About</span>
-						</a></li>
+	<header class="navbar navbar-default navbar-static-top"
+		role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="./index.html"><strong>The
+						CloudDSF</strong></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<nav id="navbar" class="collapse navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav">
+					<li><a href="./index.html"><span
+							class="glyphicon glyphicon-home"></span> <span>Home</span><span
+							class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="./cloudDSFVisualization.html">
+							<span class="glyphicon glyphicon-picture"></span> <span>Prototypical
+								Implementation</span>
+					</a></li>
+					<li><a href="./about.html"> <span
+							class="glyphicon glyphicon-flag"></span> <span>About</span>
+					</a></li>
+
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="row">
+			<div id="visTypeDIV" class="col-md-3 text-right">
+				<div id="visTypeBTNGroup" class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle"
+						data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<button id="visTypeSelectedBTN" type="button"
+						class="btn btn-default" data-toggle="dropdown"></button>
+
+					<ul id="visTypeUL" class="dropdown-menu">
+						<li role="presentation" class="dropdown-header">Network
+							Layouts</li>
+						<li><a href="#" id="forceLayout">Force Layout</a></li>
+						<li><a href="#" id="clusterLayout">Cluster Layout</a></li>
+						<li role="presentation" class="divider"></li>
+						<li role="presentation" class="dropdown-header">Hierarchy
+							Layouts</li>
+						<li><a href="#" id="treeLayout">Tree Layout</a></li>
+						<li><a href="#" id="treemapLayout">Treemap Layout</a></li>
+						<li><a href="#" id="partitionLayout">Partition Layout</a></li>
 					</ul>
-					<div class="clearfix"></div>
 				</div>
+			</div>
+			<div id="visLabel" class="col-md-9">
+				<h3></h3>
+				<a id="vislabelInfo" class="glyphicon glyphicon-question-sign"></a>
 			</div>
 		</div>
-		<div id="mainWrapper">
-			<div id="mainBox" class="sizeMarginBox">
-
-				<div id="visHeaderDIV">
-
-
-					<div id="visTypeDIV">
-						<div id="visTypeBTNGroup" class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle"
-								data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<button id="visTypeSelectedBTN" type="button"
-								class="btn btn-default" data-toggle="dropdown"></button>
-
-							<ul id="visTypeUL" class="dropdown-menu">
-								<li role="presentation" class="dropdown-header">Network
-									Layouts</li>
-								<li><a href="#" id="forceLayout">Force Layout</a></li>
-								<li><a href="#" id="clusterLayout">Cluster Layout</a></li>
-								<li role="presentation" class="divider"></li>
-								<li role="presentation" class="dropdown-header">Hierarchy
-									Layouts</li>
-								<li><a href="#" id="treeLayout">Tree Layout</a></li>
-								<li><a href="#" id="treemapLayout">Treemap Layout</a></li>
-								<li><a href="#" id="partitionLayout">Partition Layout</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div id="visLabelDIV">
-						<div id="visLabel">
-							<h2></h2>
-							<a id="vislabelInfo" class="glyphicon glyphicon-question-sign"></a>
-						</div>
-					</div>
-
-					<div class="clearfix"></div>
-				</div>
-
-
-				<div id="visContentDIV">
-					<div id="visContent"></div>
-				</div>
-
-
-				<div id="visRightDIV">
-
-					<div class="visPanel">
-
-						<div class="visPanelHeader">
-							<div class="visPanelHeaderIconLeft">
-								<a id="visPanelSettingsIconToogle" href="#"> <span
-									class="glyphicon glyphicon-cog"></span>
-								</a>
-							</div>
-							<div class="visPanelHeaderLabel">
-								<a id="visPanelSettingsLabelToogle" href="#"> <span>Settings</span>
-								</a>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-
-						<div id="visPanelSettingsContent" class="visPanelContent"></div>
-
-					</div>
-
-					<div class="visPanel">
-
-						<div class="visPanelHeader">
-							<div class="visPanelHeaderIconLeft">
-								<a id="visPanelInfoIconToogle" href="#"> <span
-									class="glyphicon glyphicon-info-sign"></span>
-								</a>
-							</div>
-							<div class="visPanelHeaderLabel">
-								<a id="visPanelInfoLabelToogle" href="#"> <span>Information</span>
-								</a>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-
-						<div id="visRightContent" class="visPanelContent">
-
-
-							<div id="visInfoLabelBOX">
-								<div id="visInfoLabelTextBOX">
-									<h3>Select Service Provider / Offering</h3>
-								</div>
-								<div id="visInfoLabelTypeBOX" class="">
-									<span>Decision</span>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="clearfix"></div>
-
-			</div>
-		</div>
-		<hr>
-		<footer class="footer">
-			<div class="container">
-				<p>Copyright 2014 Alexander Darsow</p>
-			</div>
-		</footer>
 	</div>
+	<hr style="margin-bottom: 0px;">
+
+	<div id="visContentDIV">
+		<div id="visContent"></div>
+	</div>
+	<div id="visRightDIV">
+		<div class="visPanel">
+			<div class="visPanelHeader">
+				<div class="visPanelHeaderIconLeft">
+					<a id="visPanelSettingsIconToogle" href="#"> <span
+						class="glyphicon glyphicon-cog"></span>
+					</a>
+				</div>
+				<div class="visPanelHeaderLabel">
+					<a id="visPanelSettingsLabelToogle" href="#"> <span>Settings</span>
+					</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div id="visPanelSettingsContent" class="visPanelContent"></div>
+		</div>
+
+		<div class="visPanel">
+			<div class="visPanelHeader">
+				<div class="visPanelHeaderIconLeft">
+					<a id="visPanelInfoIconToogle" href="#"> <span
+						class="glyphicon glyphicon-info-sign"></span>
+					</a>
+				</div>
+				<div class="visPanelHeaderLabel">
+					<a id="visPanelInfoLabelToogle" href="#"> <span>Information</span>
+					</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div id="visRightContent" class="visPanelContent">
+				<div id="visInfoLabelBOX">
+					<div id="visInfoLabelTextBOX">
+						<h3>Select Service Provider / Offering</h3>
+					</div>
+					<div id="visInfoLabelTypeBOX" class="">
+						<span>Decision</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<hr style="margin-top: 0px">
+	<footer class="footer">
+		<div class="container">
+			<p>Copyright 2014 Alexander Darsow</p>
+		</div>
+	</footer>
 
 	<!-- JavaScript - DSAMC -->
 	<script src="./js/dsamc.js" type="text/javascript"></script>
