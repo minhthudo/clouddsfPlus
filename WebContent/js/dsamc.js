@@ -23,8 +23,8 @@
 /* ======================================================================== */
 
 /* Page Layout Variables ==================== */
-var showVisLeftDIV = false;
-var visLeftDIVStatus = false;
+var showVisLeftDIV = true;
+var visLeftDIVStatus = true;
 var allowResizeVisContent = true;
 var showVislabelInfo = true;
 
