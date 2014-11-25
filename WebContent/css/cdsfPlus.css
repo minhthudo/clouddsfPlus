@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+html, body {
+	overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+.jumbotron {
+	margin-bottom: 10px;
+}
+
+.navbar {
+	border-bottom: solid 5px #00AAF2;
+	background-color: #FFFFFF;
+	padding: 0 30px;
+}
+
+.navbar-brand {
+	font-size: 16px;
+	/* 	font-weight: bold; */
+}
+
+.navbar-nav>li.active>a {
+	border-bottom: solid 2px #666666;
+	background-color: #FFF !important;
+}
+
+.navbar-nav>li>a {
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+
+}
