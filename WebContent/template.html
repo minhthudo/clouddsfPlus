@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The CloudDSF: ToDo</title>
+
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!-- <link href="./css/dsamc-layout.css" rel="stylesheet" /> -->
+<link href="./css/cdsfPlus.css" rel="stylesheet" />
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+	<header class="navbar navbar-default navbar-static-top"
+		role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="./index.html"><strong>The
+						CloudDSF</strong></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<nav id="navbar" class="collapse navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav">
+					<li class="ToDo"><a href="./index.html"><span
+							class="glyphicon glyphicon-home"></span> <span>Home</span><span
+							class="sr-only">(current)</span></a></li>
+					<li><a href="./cloudDSFVisualization.html"> <span
+							class="glyphicon glyphicon-picture"></span> <span>Prototypical
+								Implementation</span></a></li>
+					<li><a href="./about.html"> <span
+							class="glyphicon glyphicon-flag"></span> <span>About</span>
+					</a></li>
+					<!-- 					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
+							<span class="caret"></span>
+					</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Something else here</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+							<li class="divider"></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul></li> -->
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container-fluid">
+		<div class="row row-offcanvas row-offcanvas-left">
+			<div class="col-md-2 sidebar-offcanvas" id="sidebar"
+				role="navigation">
+				<div class="list-group">
+					<a href="#" class="list-group-item active">Link</a> <a href="#"
+						class="list-group-item">Link</a> <a href="#"
+						class="list-group-item">Link</a>
+				</div>
+				<button id="toggleButton" type="button"
+					class="btn btn-primary btn-xs" data-toggle="offcanvas">
+
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</button>
+			</div>
+			<!--/.sidebar-offcanvas-->
+			<div class="col-md-10">
+				<div class="jumbotron">
+					<h1>Hello, world!</h1>
+					<p>This is an example to show the potential of an offcanvas
+						layout pattern in Bootstrap. Try some responsive-range viewport
+						sizes to see it in action.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<footer class="footer">
+		<div class="container">
+			<p>Copyright 2014 Alexander Darsow</p>
+		</div>
+	</footer>
+
+	<!-- Include for Visualization -->
+	<!-- 	<script src="js.cdsfPlus.js" type="text/javascript"></script> -->
+	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script>
+
+</body>
+</html>
