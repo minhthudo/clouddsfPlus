@@ -23,9 +23,9 @@
 /* ======================================================================== */
 
 /* Page Layout Variables ==================== */
-var showVisLeftDIV = true;
-var visLeftDIVStatus = true;
-var allowResizeVisContent = true;
+//var showVisLeftDIV = true;
+//var visLeftDIVStatus = true;
+//var allowResizeVisContent = true;
 var showVislabelInfo = true;
 
 var showTooltips;
@@ -76,20 +76,19 @@ var layoutTreemapDefaultSettings = {"showLabels" : true, "showTooltips" : false}
 /* Initialization of Page */
 /* ======================================================================== */
 function initializationOfPage() {
-    
 
-    /* visLeftDiv */
-    if(!showVisLeftDIV) {
-        $("#visLeftContent").css("display", "none");
-        $("#visLeftDIV").css({"width": "4em", "min-width": "0px"});
-    }
-    
-    /* init SVG dimensions */
-    SVGWidth = $("#"+visContentID).width();
-    SVGHeight = $("#"+visContentID).height();
-    
-    /* init visType Layout */
-    doVisType();
+	/* visLeftDiv */
+	// if(!showVisLeftDIV) {
+	// $("#visLeftContent").css("display", "none");
+	// $("#visLeftDIV").css({"width": "4em", "min-width": "0px"});
+	// }
+	//    
+	/* init SVG dimensions */
+	SVGWidth = $("#" + visContentID).width();
+	SVGHeight = $("#" + visContentID).height();
+
+	/* init visType Layout */
+	doVisType();
 
 }
 
@@ -97,23 +96,23 @@ function initializationOfPage() {
 /* Layout Functions */
 /* ======================================================================== */
 
-function toogleVisLeftDiv(duration) {
-    if(!duration) {duration=500;}
-    
-    if(visLeftDIVStatus) {
-        $("#visLeftContent").slideToggle(duration, function(){
-            $("#visLeftDIV").css("min-width", "0px");
-            $("#visLeftDIV").animate({ width: "4em" }, duration);
-        });
-        visLeftDIVStatus = false;
-    } else {
-        $("#visLeftDIV").animate({ width: "20%" }, duration, function(){
-            $("#visLeftDIV").css("min-width", "220px");
-            $("#visLeftContent").slideToggle(duration);
-        });
-        visLeftDIVStatus = true;
-    }
-}
+//function toogleVisLeftDiv(duration) {
+//    if(!duration) {duration=500;}
+//    
+//    if(visLeftDIVStatus) {
+//        $("#visLeftContent").slideToggle(duration, function(){
+//            $("#visLeftDIV").css("min-width", "0px");
+//            $("#visLeftDIV").animate({ width: "4em" }, duration);
+//        });
+//        visLeftDIVStatus = false;
+//    } else {
+//        $("#visLeftDIV").animate({ width: "20%" }, duration, function(){
+//            $("#visLeftDIV").css("min-width", "220px");
+//            $("#visLeftContent").slideToggle(duration);
+//        });
+//        visLeftDIVStatus = true;
+//    }
+//}
 
 function updateVisTypeSelection() {
     // Update the visTypeSelection 
@@ -122,61 +121,60 @@ function updateVisTypeSelection() {
     $("#"+visType).parent().addClass("active");   
 }
 
+//function disableVisInputBox(inputElement){
+//    inputElement.prop("disabled", true);
+//    inputElement.parent().parent().addClass("visInputBoxDisabled");
+//}
 
-function disableVisInputBox(inputElement){
-    inputElement.prop("disabled", true);
-    inputElement.parent().parent().addClass("visInputBoxDisabled");
-}
+//function enableVisInputBox(inputElement){
+//    inputElement.prop("disabled", false);
+//    inputElement.parent().parent().removeClass("visInputBoxDisabled");
+//}
 
-function enableVisInputBox(inputElement){
-    inputElement.prop("disabled", false);
-    inputElement.parent().parent().removeClass("visInputBoxDisabled");
-}
-
-function resizeVisContent(){
-    if(allowResizeVisContent){
-        // Get visContent
-        var visContent = $('#visContent');
-        var newWidth = visContent.parent().width() - 2*Math.max(parseInt(visContent.css("margin-top"),10),parseInt(visContent.css("margin-bottom"),10));
-        
-        // Handel what to set depending on Layout
-        if("partitionLayout" == visType) {
-            visContent.css('width', newWidth);
-            visContent.css('height', newWidth);
-            SVGWidth = newWidth;
-            SVGHeight = newWidth;
-        } else if("treeLayout" == visType) {
-            visContent.css('width', newWidth);
-            visContent.css('height', newWidth);
-            SVGWidth = newWidth;
-            SVGHeight = newWidth;
-        } else if("clusterLayout" == visType) {
-            visContent.css('width', newWidth);
-            visContent.css('height', newWidth);
-            SVGWidth = newWidth;
-            SVGHeight = newWidth;
-        } else if("forceLayout" == visType) {
-            visContent.css('width', newWidth);
-            visContent.css('height', newWidth); 
-            SVGWidth = newWidth;
-            SVGHeight = newWidth;
-        } else if("chordLayout" == visType) {
-            alert("chordLayout");
-        } else if("bundleLayout" == visType) {
-            alert("bundleLayout");
-        } else if("treemapLayout" == visType) {
-            visContent.css('width', newWidth);
-            visContent.css('height', newWidth);
-            SVGWidth = newWidth;
-            SVGHeight = newWidth;
-        } else if("networkLayout" == visType) {
-            alert("networkLayout");
-        }   
-              
-    } else {
-        alert("Resizing prohibited!");
-    }
-}
+//function resizeVisContent(){
+//    if(allowResizeVisContent){
+//        // Get visContent
+//        var visContent = $('#visContent');
+//        var newWidth = visContent.parent().width() - 2*Math.max(parseInt(visContent.css("margin-top"),10),parseInt(visContent.css("margin-bottom"),10));
+//        
+//        // Handel what to set depending on Layout
+//        if("partitionLayout" == visType) {
+//            visContent.css('width', newWidth);
+//            visContent.css('height', newWidth);
+//            SVGWidth = newWidth;
+//            SVGHeight = newWidth;
+//        } else if("treeLayout" == visType) {
+//            visContent.css('width', newWidth);
+//            visContent.css('height', newWidth);
+//            SVGWidth = newWidth;
+//            SVGHeight = newWidth;
+//        } else if("clusterLayout" == visType) {
+//            visContent.css('width', newWidth);
+//            visContent.css('height', newWidth);
+//            SVGWidth = newWidth;
+//            SVGHeight = newWidth;
+//        } else if("forceLayout" == visType) {
+//            visContent.css('width', newWidth);
+//            visContent.css('height', newWidth); 
+//            SVGWidth = newWidth;
+//            SVGHeight = newWidth;
+//        } else if("chordLayout" == visType) {
+//            alert("chordLayout");
+//        } else if("bundleLayout" == visType) {
+//            alert("bundleLayout");
+//        } else if("treemapLayout" == visType) {
+//            visContent.css('width', newWidth);
+//            visContent.css('height', newWidth);
+//            SVGWidth = newWidth;
+//            SVGHeight = newWidth;
+//        } else if("networkLayout" == visType) {
+//            alert("networkLayout");
+//        }   
+//              
+//    } else {
+//        alert("Resizing prohibited!");
+//    }
+//}
 
 function toogleSettingsBox(endState, duration) {
     if("collapsed" == endState) {
@@ -188,19 +186,19 @@ function toogleSettingsBox(endState, duration) {
     }  
 }
 
-function vCenterTextForce() {
-    $(".forceTextCenter").not('.forceTextDP').each(function(i){
-        var tSpaceH = $(this).parent().parent()[0].getBBox().height - $(this).parent().height();
-        $(this).css( { "margin-top" : tSpaceH/2+"px" , "margin-bottom" : tSpaceH/2+"px" } );
-    });
-}
+//function vCenterTextForce() {
+//    $(".forceTextCenter").not('.forceTextDP').each(function(i){
+//        var tSpaceH = $(this).parent().parent()[0].getBBox().height - $(this).parent().height();
+//        $(this).css( { "margin-top" : tSpaceH/2+"px" , "margin-bottom" : tSpaceH/2+"px" } );
+//    });
+//}
 
 /* onClick Events */
 /* ======================================================================== */
 
-$("#visPanelToogle").click(function() {
-    toogleVisLeftDiv();
-});
+//$("#visPanelToogle").click(function() {
+//    toogleVisLeftDiv();
+//});
 
 $('#visPanelSettingsIconToogle').click(function() {
     toogleSettingsBox();
@@ -217,9 +215,9 @@ $("#visTypeBTNGroup a").click(function(){
     doVisType($(this).attr("id"));
 });
 
-$('#resizeVisContent').click(function(){
-    resizeVisContent();
-});
+//$('#resizeVisContent').click(function(){
+//    resizeVisContent();
+//});
 
 
 
@@ -264,7 +262,7 @@ function drawLayout() {
         setForceSettings();
         // Draw Layout
         drawForceLayout();
-        vCenterTextForce();
+      //  vCenterTextForce();
     } else if("chordLayout" == visType) {
         alert("chordLayout draw");
     } else if("bundleLayout" == visType) {
@@ -525,7 +523,7 @@ function drawPartitionLayout(){
 
 
 
-function updatePartitionLayout() {}
+//function updatePartitionLayout() {}
 function clearPartitionLayout() {
     // Clear variables used by the partition layout
     $("svg").remove();
@@ -939,7 +937,7 @@ function drawTreeLayout() {
       }
 
 }
-function updateTreeLayout() {}
+//function updateTreeLayout() {}
 function clearTreeLayout() {
     // Clear variables used by the partition layout
     $("svg").remove();
@@ -1289,10 +1287,9 @@ function drawClusterLayout() {
             );
         $('#visContentDIV').append(legendItems);
     }
-
-
 }
-function updateClusterLayout() {}
+
+//function updateClusterLayout() {}
 function clearClusterLayout() {
     // Clear variables used by the partition layout
     $("svg").remove();
@@ -1304,6 +1301,7 @@ function clearClusterLayout() {
     hideInfoLabel();
     removeLegend();
 }
+
 function setClusterDefaultInformation() {
 
     var defaultInformation = $('<div>').attr("class", "visInfoBOX")
@@ -1315,6 +1313,7 @@ function setClusterDefaultInformation() {
         $('#visRightContent').append(defaultInformation);
 
 }
+
 function setClusterSettings() {
 
     var clearHighlight = $('<div>').attr("class", "visInfoBOX")
@@ -1343,6 +1342,7 @@ function setClusterSettings() {
     });
      
 }
+
 function clearClusterHighligths() {
     // Clear all highlights in force layout
     layoutSVG.selectAll('.noteHighlighted, .clusterHighlightedTextNode, .clusterAffectationLinkClick, .clusterInfluenceLinkClick')
@@ -1354,6 +1354,7 @@ function clearClusterHighligths() {
     clearVisRightContent(); 
     hideInfoLabel();   
 }
+
 function mouseNodeClickCluster(n) {
 
     // Set Info Label
@@ -1544,8 +1545,6 @@ function mouseNodeClickCluster(n) {
     // Highlight Text
     layoutSVG.select("#n-"+n.id).select("text")
         .classed("clusterHighlightedTextNode", function(d){ return layoutSVG.select("#n-"+n.id).classed("noteHighlighted") ? true : false;});
-   
-
 }
 
 
@@ -1974,7 +1973,7 @@ function drawForceLayout() {
     
 
 }
-function updateForceLayout() {}
+//function updateForceLayout() {}
 function clearForceLayout() {
      $("svg").remove();
     layoutSVG = null;
@@ -2481,10 +2480,9 @@ d3.json("./js/json/elaboratedDSF.json", function(root) {
         : d.label;
   }
 });
-
-
 }
-function updateTreemapLayout() {}
+
+//function updateTreemapLayout() {}
 function clearTreemapLayout() {
     $("svg").remove();
     layoutTreemap = null;
@@ -2492,10 +2490,9 @@ function clearTreemapLayout() {
     
     clearVisRightContent(); 
     hideInfoLabel();
-    
 }
-function setTreemapDefaultInformation() {
 
+function setTreemapDefaultInformation() {
     var defaultInformation = $('<div>').attr("class", "visInfoBOX")
             .append($('<p>').attr("class", "defaultInformation")
             .text("Hover and click on the treemap visualization to zoom in on this element. Click on the top gray bar to zoom out."))
@@ -2505,8 +2502,8 @@ function setTreemapDefaultInformation() {
         $('#visRightContent').append(defaultInformation);
 
 }
-function setTreemapSettings() {
 
+function setTreemapSettings() {
     var information = $('<div>').attr("class", "visInfoBOX")
         .append($('<div>').attr("class", "visInfoHeaderBOX")
             .append($('<h4>').text("Information"))
@@ -2536,8 +2533,8 @@ function setTreemapSettings() {
             $('.treemapNodeText').css("display", "none");
         }
     });
-
 }
+
 function mouseNodeClickTreemap(n) {
 
     // Exiting node Catch
@@ -2653,8 +2650,6 @@ function mouseNodeClickTreemap(n) {
     $('.visInfoHeaderToogleLink').click(function(){
         visInfoHeaderToogle($(this));
     }); 
-    
-
 }
 
 
@@ -2664,151 +2659,162 @@ function mouseNodeClickTreemap(n) {
 
 /* Function nodedLinksArray */
 function nodedLinksArray(inputLinksArray, inputNodesArray) {
-    inputLinksArray.forEach(function(d){
-        var sourceNode = inputNodesArray.filter(function(j){ return j.id == d.source; });
-        var targetNode = inputNodesArray.filter(function(j){ return j.id == d.target; });
-        d.source = sourceNode[0];
-        d.target = targetNode[0];
-    });
-    return inputLinksArray;
+	inputLinksArray.forEach(function(d) {
+		var sourceNode = inputNodesArray.filter(function(j) {
+			return j.id == d.source;
+		});
+		var targetNode = inputNodesArray.filter(function(j) {
+			return j.id == d.target;
+		});
+		d.source = sourceNode[0];
+		d.target = targetNode[0];
+	});
+	return inputLinksArray;
 }
 
 
 /* Function getArrayFromNodesTree */
-function getArrayFromNodesTree(inputTree, deleteChildren) {
-    var nodesArray = [];
-    
-    processNode(inputTree);
-    
-    function processNode(node) {
-        if(node.children) {
-            $.each(node.children, function(i,v){ processNode(v); });
-        } 
-        nodesArray.push(node);
-    }
-    
-    if(deleteChildren) {
-        $.each(nodesArray, function(i,v){
-            if(v.children) delete v.children;
-        });
-    }
-    
-    return nodesArray; 
-}
+//function getArrayFromNodesTree(inputTree, deleteChildren) {
+//    var nodesArray = [];
+//    
+//    processNode(inputTree);
+//    
+//    function processNode(node) {
+//        if(node.children) {
+//            $.each(node.children, function(i,v){ processNode(v); });
+//        } 
+//        nodesArray.push(node);
+//    }
+//    
+//    if(deleteChildren) {
+//        $.each(nodesArray, function(i,v){
+//            if(v.children) delete v.children;
+//        });
+//    }
+//    
+//    return nodesArray; 
+//}
 
 /* Function filterTree */
-function filterTree(inputTree, filterType) {
-
-    check(inputTree);
-    
-    function check(inTree) {
-        if(inTree.children) {
-        
-            inTree.children = $.grep(inTree.children, function(e,i){
-                return e.type != filterType;
-            });
-            
-            if(inTree.children) {
-                $.each(inTree.children, function(i,v){
-                    check(v);
-                });
-            }
-        
-        } 
-    
-    }
-    
-}
+//function filterTree(inputTree, filterType) {
+//    check(inputTree); 
+//    function check(inTree) {
+//        if(inTree.children) {
+//            inTree.children = $.grep(inTree.children, function(e,i){
+//                return e.type != filterType;
+//            });
+//            if(inTree.children) {
+//                $.each(inTree.children, function(i,v){
+//                    check(v);
+//                });
+//            }
+//        } 
+//    }
+//}
 
 
 /* Function setInfoLabel */
 function setInfoLabel(d) {
-    var visInfoLabelBOX = $('#visInfoLabelBOX');
-    visInfoLabelBOX.find('#visInfoLabelTextBOX h3').text(d.label).addClass(function(){
-        $(this).removeClass();
-        if("decisionPoint" == d.type) {
-            return "textcolorDecisionPoint" + d.id.toString()[0];
-        } else if("decision" == d.type) {
-            return "textcolorDecision" + d.id.toString()[0];
-        } else if("outcome" == d.type) {
-            return "textcolorOutcome" + d.id.toString()[0];
-        }    
-    });
-    visInfoLabelBOX.find('#visInfoLabelTypeBOX span').text(function(){
-                if("decisionPoint" == d.type) {
-                    return "Decision Point";
-                } else if("decision" == d.type) {
-                    return "Decision";
-                } else if("task" == d.type) {
-                    return "Task";
-                } else if("outcome" == d.type) {
-                    return "Outcome";
-                } else {
-                    return "";
-                }
-            });
-    visInfoLabelBOX.css("display", "block");
+	var visInfoLabelBOX = $('#visInfoLabelBOX');
+	visInfoLabelBOX.find('#visInfoLabelTextBOX h3').text(d.label).addClass(
+			function() {
+				$(this).removeClass();
+				if ("decisionPoint" == d.type) {
+					return "textcolorDecisionPoint" + d.id.toString()[0];
+				} else if ("decision" == d.type) {
+					return "textcolorDecision" + d.id.toString()[0];
+				} else if ("outcome" == d.type) {
+					return "textcolorOutcome" + d.id.toString()[0];
+				}
+			});
+	visInfoLabelBOX.find('#visInfoLabelTypeBOX span').text(function() {
+		if ("decisionPoint" == d.type) {
+			return "Decision Point";
+		} else if ("decision" == d.type) {
+			return "Decision";
+		} else if ("task" == d.type) {
+			return "Task";
+		} else if ("outcome" == d.type) {
+			return "Outcome";
+		} else {
+			return "";
+		}
+	});
+	visInfoLabelBOX.css("display", "block");
 }
+
 /* Function hideInfoLabel */
 function hideInfoLabel() {
-    $('#visInfoLabelBOX').css("display", "none");
+	$('#visInfoLabelBOX').css("display", "none");
 }
 
-/* Function clearVisRightContent  */
+/* Function clearVisRightContent */
 function clearVisRightContent() {
-    $('#visRightContent').children().not('#visInfoLabelBOX').remove();
+	$('#visRightContent').children().not('#visInfoLabelBOX').remove();
 }
 
-/* Function clearVisPanelSettingsContent  */
+/* Function clearVisPanelSettingsContent */
 function clearVisPanelSettingsContent() {
-    $('#visPanelSettingsContent').children().remove();
+	$('#visPanelSettingsContent').children().remove();
 }
 
 function removeLegend() {
-    $('#layoutLegend').remove();
+	$('#layoutLegend').remove();
 }
 
-/* Function setVisLabel  */
+/* Function setVisLabel */
 function setVisLabel(visLabelText, visLabelInfoText) {
 	$('#visLabel h3').text(visLabelText);
-    
-    $('#vislabelInfo').popover('destroy');
-    
-    $('#vislabelInfo').popover({
-        placement : "bottom",
-        title: "Visualization Information",
-        content: visLabelInfoText
-    });
-    
-    if(showVislabelInfo) {
-        $('#vislabelInfo').popover('show');
-        setTimeout(function(){$('#vislabelInfo').popover('hide'); }, 3000);
-        showVislabelInfo = false;
-    } 
-    
+
+	$('#vislabelInfo').popover('destroy');
+
+	$('#vislabelInfo').popover({
+		placement : "bottom",
+		title : "Visualization Information",
+		content : visLabelInfoText
+	});
+	if (showVislabelInfo) {
+		$('#vislabelInfo').popover('show');
+		setTimeout(function() {
+			$('#vislabelInfo').popover('hide');
+		}, 3000);
+		showVislabelInfo = false;
+	}
 }
 
-/* Function visInfoHeaderToogle  */
-function visInfoHeaderToogle(input){
-    input.closest('.visInfoBOX').children('.visInfoContentBOX').slideToggle('fast', function(){
-        if($(this).is(":hidden")) {
-            input.children('.glyphicon').removeClass("glyphicon-minus").addClass("glyphicon-plus");
-        } else {
-            input.children('.glyphicon').removeClass("glyphicon-plus").addClass("glyphicon-minus");
-        }
-    });
+/* Function visInfoHeaderToogle */
+function visInfoHeaderToogle(input) {
+	input.closest('.visInfoBOX').children('.visInfoContentBOX').slideToggle(
+			'fast',
+			function() {
+				if ($(this).is(":hidden")) {
+					input.children('.glyphicon').removeClass("glyphicon-minus")
+							.addClass("glyphicon-plus");
+				} else {
+					input.children('.glyphicon').removeClass("glyphicon-plus")
+							.addClass("glyphicon-minus");
+				}
+			});
 }
 
 /* Function getAllSettings  */
 function getAllSettings() {
-    var settings = {};
-    
-    $('#visPanelSettingsContent input[type=checkbox]').each(function(){
-        settings[$(this).attr("id")] = $(this).prop("checked");
-    });
-    
-    if(settings["showLabels"] != null) {showLabels = settings["showLabels"];} else {showLabels = false;}
-    if(settings["showTooltips"] != null) {showTooltips = settings["showTooltips"];} else {showTooltips = false;}
+	var settings = {};
 
-    return settings;
+	$('#visPanelSettingsContent input[type=checkbox]').each(function() {
+		settings[$(this).attr("id")] = $(this).prop("checked");
+	});
+
+	if (settings["showLabels"] != null) {
+		showLabels = settings["showLabels"];
+	} else {
+		showLabels = false;
+	}
+	if (settings["showTooltips"] != null) {
+		showTooltips = settings["showTooltips"];
+	} else {
+		showTooltips = false;
+	}
+
+	return settings;
 }
