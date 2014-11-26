@@ -86,7 +86,6 @@ function initializationOfPage() {
 	/* init SVG dimensions */
 	SVGWidth = $("#" + visContentID).width();
 	SVGHeight = $("#" + visContentID).height();
-
 	/* init visType Layout */
 	doVisType();
 
