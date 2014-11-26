@@ -32,17 +32,19 @@
 }
 
 html {}
-
+*/
 body {
-	background-image: url("../img/layout/crossing-bg-white-transparent.png");
+	/* 	background-image: url("../img/layout/crossing-bg-white-transparent.png");
 	background-repeat: repeat;
 	background-position: left top;
 	background-size: auto;
 	background-color: #FFFFFF; #F2F2F2;
 	color: #333333;
+	
+	letter-spacing: 0.05em; */
 	min-width: 1200px;
-	letter-spacing: 0.05em;
-} */
+}
+/*
 .container {
 	width: 1100px !important;
 }
@@ -74,12 +76,11 @@ body {
 	border-top: solid 1px #DDDDDD;
 	padding: 20px 0;
 }
-
+*/
 .sizeMarginBox {
 	width: 100%;
 	margin: 0 auto;
 }
- */
 
 /* Style Classes */
 /* ======================================================================== */
@@ -315,8 +316,9 @@ body {
 #visContentDIV {
 	width: 80%;
 	float: left;
-	background-color: #FFFFFF;
+	/* 	background-color: #FFFFFF; */
 	border-right: solid 1px #DDDDDD;
+	padding-right: 0px;
 }
 
 #visContent {
@@ -343,7 +345,6 @@ body {
 /* #layoutLegend .legendItem img {
 	
 } */
-
 #layoutLegend .legendItem span {
 	display: inline-block;
 	width: 100%;
@@ -353,7 +354,6 @@ body {
 /* .jumbotron {
 	margin: 15px 0;
 } */
-
 .defaultInformation {
 	text-align: center;
 }
@@ -363,14 +363,14 @@ body {
 #visRightDIV {
 	width: 20%;
 	float: right;
-	background-color: #FFFFFF;
+	/* 	background-color: #FFFFFF; */
+	padding-left: 0px;
 	border-bottom: solid 1px #DDDDDD;
 }
 
 /* #visRightContent {
 	
 } */
-
 #visInfoLabelBOX {
 	display: none;
 	border: solid 1px #DDDDDD;
@@ -392,7 +392,6 @@ body {
 /* #visInfoLabelTextBOX {
 	
 } */
-
 #visInfoLabelTextBOX h3 {
 	margin: 0;
 	padding: 0.5em;
