@@ -42,7 +42,8 @@ body {
 	color: #333333;
 	
 	letter-spacing: 0.05em; */
-	min-width: 1200px;
+	/* min-width: 1200px; */
+	
 }
 /*
 .container {
@@ -77,11 +78,11 @@ body {
 	padding: 20px 0;
 }
 */
-.sizeMarginBox {
+/* .sizeMarginBox {
 	width: 100%;
 	margin: 0 auto;
 }
-
+ */
 /* Style Classes */
 /* ======================================================================== */
 /* .bgPattern {
@@ -313,21 +314,23 @@ body {
 
 /* visContent */
 /* ========================================== */
-#visContentDIV {
+/* #visContentDIV {
 	width: 80%;
 	float: left;
-	/* 	background-color: #FFFFFF; */
+		background-color: #FFFFFF;
 	border-right: solid 1px #DDDDDD;
 	padding-right: 0px;
-}
-
+} */
 #visContent {
-	height: 900px;
+	/* 	height: 900px;
 	width: 900px;
-	margin: 20px auto;
-	/*border: solid 1px #DDDDDD;*/
+	margin: 20px auto; 
+	border: solid 1px #DDDDDD;
 	background: none;
-	background-color: #FFFFFF;
+	background-color: #FFFFFF; */
+	/* Width for the svg was always fixed. Now javascript has fixed width*/
+	border-right: solid 1px #DDDDDD;
+	text-align: center !important;
 }
 
 #layoutLegend {
@@ -361,11 +364,12 @@ body {
 /* Right Panel */
 /* ========================================== */
 #visRightDIV {
-	width: 20%;
-	float: right;
-	/* 	background-color: #FFFFFF; */
+	/* 	width: 20%;
+	float: right;  */
+	/*Unnecessary through bootstrap columns.  */
+	/* 	background-color: #FFFFFF;
+	border-bottom: solid 1px #DDDDDD;  */
 	padding-left: 0px;
-	border-bottom: solid 1px #DDDDDD;
 }
 
 /* #visRightContent {

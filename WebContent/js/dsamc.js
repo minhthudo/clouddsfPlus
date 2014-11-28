@@ -34,8 +34,8 @@ var showLabels;
 /* Visualization Layout Variables ============ */
 // General
 var visContentID = "visContent";
-var SVGWidth = 0;
-var SVGHeight = 0;
+var SVGWidth = 900;
+var SVGHeight = 900;
 
 var visType = "clusterLayout";
 var visTypeName = {
@@ -84,8 +84,9 @@ function initializationOfPage() {
 	// }
 	//    
 	/* init SVG dimensions */
-	SVGWidth = $("#" + visContentID).width();
-	SVGHeight = $("#" + visContentID).height();
+//	SVGWidth = $("#" + visContentID).width();
+//	SVGHeight = $("#" + visContentID).height();
+	
 	/* init visType Layout */
 	doVisType();
 
@@ -1284,7 +1285,8 @@ function drawClusterLayout() {
             .append($('<img>').attr("src", "./img/legends/cluster-lineInfluenceHighlight.png"))
             .append($('<span>').text("Highlighted Influence Link"))
             );
-        $('#visContentDIV').append(legendItems);
+        //$('#visContentDIV').append(legendItems);
+        $('#visContent').append(legendItems);
     }
 }
 
@@ -1966,7 +1968,8 @@ function drawForceLayout() {
             .append($('<img>').attr("src", "./img/legends/force-affectationLinkHighlight.png"))
             .append($('<span>').text("Highlighted Affectation Link"))
             );
-        $('#visContentDIV').append(legendItems);
+        //$('#visContentDIV').append(legendItems);
+        $('#visContent').append(legendItems);
     
     }
     
