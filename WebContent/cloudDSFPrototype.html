@@ -6,21 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The CloudDSF - Prototype</title>
 
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<!-- Style Sheets - Bootstrap -->
+
+<!-- Stylesheets -->
 <link href="./css/bootstrap.min.css" rel="stylesheet" />
 
-<!-- Style Sheets - DSAMC -->
 <link href="./css/cdsfPlus.css" rel="stylesheet" />
 <link href="./css/prototypeLayout.css" rel="stylesheet" />
+
+<link href="./css/decisionRelations.css" rel="stylesheet" />
+
 
 <!-- JavaScript - jQuery -->
 <script src="./js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
@@ -85,32 +85,70 @@
 	</header>
 
 	<div class="container-fluid">
-		<div class="row row-offcanvas row-offcanvas-left">
+		<div class="row row-offcanvas row-offcanvas-left active">
 			<div class="col-md-2 sidebar-offcanvas" id="sidebar"
 				role="navigation">
 				<div class="list-group">
-					<a href="#" class="list-group-item active">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a>
+					<a id="buttonDecisionRelations" href="#"
+						class="list-group-item active">Decision Relations</a> <a
+						id="buttonOutcomeRelations" href="#" class="list-group-item">Outcome
+						Relations</a> <a href="#" class="list-group-item">Link</a>
 				</div>
 				<button id="toggleButton" type="button"
 					class="btn btn-primary btn-xs" data-toggle="offcanvas">
-
-					<span class="glyphicon glyphicon-chevron-right"></span>
+					<span class="glyphicon glyphicon-chevron-left"></span>
 				</button>
 			</div>
 			<!--/.sidebar-offcanvas-->
-			<div class="col-md-11">
-				<div class="jumbotron">
-					<h1>Hello, world!</h1>
-					<p>This is an example to show the potential of an offcanvas
-						layout pattern in Bootstrap. Try some responsive-range viewport
-						sizes to see it in action.</p>
+			<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-12 text-left">
+
+
+
+						<!-- 						<div id="toolbarDecisions" class="btn-group">
+							<button type="button" class="btn btn-primary">Influencing</button>
+							<button  type="button" class="btn btn-primary">Requiring</button>
+							<button type="button" class="btn btn-primary">Affecting</button>
+							<button type="button" class="btn btn-primary">Binding</button>
+						</div> -->
+
+
+
+
+
+
+						<div id="toolbarDecisions" class="hidden">
+							<div id="buttonGroupRelations" class="btn-group"
+								data-toggle="buttons">
+								<button type="button" value="Influencing"
+									class="btn btn-primary">Influencing</button>
+								<button type="button" value="Requiring" class="btn btn-primary">Requiring</button>
+								<button type="button" value="Affecting" class="btn btn-primary">Affecting</button>
+								<button type="button" value="'Binding" class="btn btn-primary">Binding</button>
+								<!-- 								<label class="btn btn-primary"> <input
+									type="checkbox" value="Influencing"
+									autocomplete="off">Influencing
+								</label> <label class="btn btn-primary" value="Requiring"> <input type="checkbox"
+									 autocomplete="off">Requiring
+								</label> <label class="btn btn-primary"> <input type="checkbox"
+									value="Affecting" autocomplete="off">Affecting
+								</label> <label class="btn btn-primary"> <input type="checkbox"
+									value="Binding" autocomplete="off">Binding
+								</label> -->
+							</div>
+							<button id="updateDecisionRelations" type="button"
+								class="btn btn-primary">Update Relations</button>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="row">
+					<div id="visContent" class="col-md-10"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<hr>
 
 	<footer class="footer">
@@ -121,7 +159,7 @@
 
 	<!-- Include for Visualization -->
 	<!-- 	<script src="js.cdsfPlus.js" type="text/javascript"></script> -->
- 	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script> 
-
+	<script src="js/decisionRelations.js" type="text/javascript"></script>
+	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script>
 </body>
 </html>

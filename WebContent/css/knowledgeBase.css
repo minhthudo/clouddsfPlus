@@ -1,0 +1,98 @@
+@CHARSET "UTF-8";
+
+/* Decision 1 */
+.decisionPoint1 {
+	fill: #006738;
+	stroke: #006738;
+	stroke-width: 2px;
+}
+
+.decision1 {
+	fill: #009E56;
+	stroke: #009E56;
+	stroke-width: 2px;
+}
+
+.outcome1 {
+	fill: #5DCF9B;
+	stroke: #5DCF9B;
+	stroke-width: 1px;
+}
+
+/* Decision 2 */
+.decisionPoint2 {
+	fill: #952800;
+	stroke: #952800;
+	stroke-width: 2px;
+}
+
+.decision2 {
+	fill: #E53E00;
+	stroke: #E53E00;
+	stroke-width: 2px;
+}
+
+.outcome2 {
+	fill: #F2916D;
+	stroke: #F2916D;
+	stroke-width: 1px;
+}
+
+/* Decision 3 */
+.decisionPoint3 {
+	fill: #006E93;
+	stroke: #006E93;
+	stroke-width: 2px;
+}
+
+.decision3 {
+	fill: #00A9E1;
+	stroke: #00A9E1;
+	stroke-width: 2px;
+}
+
+.outcome3 {
+	fill: #6CCFF0;
+	stroke: #6CCFF0;
+	stroke-width: 1px;
+}
+
+/* Decision 4 */
+.decisionPoint4 {
+	fill: #A65500;
+	stroke: #A65500;
+	stroke-width: 2px;
+}
+
+.decision4 {
+	fill: #FF8300;
+	stroke: #FF8300;
+	stroke-width: 2px;
+}
+
+.outcome4 {
+	fill: #FFBB73;
+	stroke: #FFBB73;
+	stroke-width: 1px;
+}
+
+/* === Tree Layout == */
+.treeRoot {
+	fill: #DDDDDD;
+	stroke: #DDDDDD;
+	stroke-width: 2px;
+}
+
+.treeLink {
+	fill: none;
+	stroke: #CCCCCC;
+	stroke-width: 1.5px;
+}
+
+.treeCollapsed {
+	stroke: #DDDDDD;
+}
+
+.treeExpanded {
+	fill: #FFFFFF;
+}

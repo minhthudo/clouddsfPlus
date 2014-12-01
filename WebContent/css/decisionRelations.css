@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+.link.influencing {
+  stroke: green;
+}
+
+
+
+.link.affecting {
+  stroke-dasharray: 5,5;
+  stroke: black;
+}
+
+.link.binding{
+	stroke-dasharray: 5,10;
+	stroke: blue;
+}
+
+.link.requiring{
+	stroke:red;
+}
+
+
+circle {
+/*   fill: #ccc; */
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+/*   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff; */
+}

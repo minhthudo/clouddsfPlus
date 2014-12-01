@@ -1,6 +1,6 @@
 $(document).ready(
 		function() {
-			$('[data-toggle="offcanvas"]').click(
+			$('[data-toggle="offcanvas"]').on('click',
 					function() {
 						$('.row-offcanvas').toggleClass('active');
 						$('#toggleButton > span').toggleClass(
@@ -10,12 +10,26 @@ $(document).ready(
 					});
 
 			$('#buttonTree').on('click', function(event) {
-				createTree();
+				drawTreeLayout();
 			});
-			$('#buttonTreeMap').on('click', function(event) {
-				createTreeMap();
+			$('#buttonDecisionRelations').on('click', function(event) {
+				var toolbar = $('#toolbarDecisions');
+				toolbar.removeClass("hidden");
+				forceGraph.update();
 			});
-			$('#buttonPartition').on('click', function(event) {
-				createPartition();
+			// $('#buttonTreeMap').on('click', function(event) {
+			// createTreeMap();
+			// });
+			// $('#buttonPartition').on('click', function(event) {
+			// createPartition();
+			// });
+			// drawTreeLayout();
+
+			$("#updateDecisionRelations").on('click', function() {
+				var data = [];
+				$('#buttonGroupRelations .btn.active').each(function(index) {
+					data.push(this.value);
+				});
+				forceGraph.setLinks(data);
 			});
 		});
