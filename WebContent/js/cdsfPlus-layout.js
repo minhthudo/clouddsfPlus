@@ -35,8 +35,7 @@ var f1, o1;
 $(document).ready(function() {
 	setSidebar();
 	setSidebarButtons();
-	f1 = new forceGraph();
-	f1.initialize();
+	
 	// todo move to own file
 	$('#buttonTree').on('click', function(event) {
 		drawTreeLayout();
