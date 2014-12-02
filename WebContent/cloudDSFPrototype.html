@@ -20,7 +20,7 @@
 <link href="./css/prototypeLayout.css" rel="stylesheet" />
 
 <link href="./css/decisionRelations.css" rel="stylesheet" />
-
+<link href="./css/outcomeRelations.css" rel="stylesheet" />
 
 <!-- JavaScript - jQuery -->
 <script src="./js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
@@ -89,9 +89,8 @@
 			<div class="col-md-2 sidebar-offcanvas" id="sidebar"
 				role="navigation">
 				<div class="list-group">
-					<a id="buttonDecisionRelations" href="#"
-						class="list-group-item active">Decision Relations</a> <a
-						id="buttonOutcomeRelations" href="#" class="list-group-item">Outcome
+					<a id="btnList_DecRel" href="#" class="list-group-item active">Decision
+						Relations</a> <a id="btnList_OutRel" href="#" class="list-group-item">Outcome
 						Relations</a> <a href="#" class="list-group-item">Link</a>
 				</div>
 				<button id="toggleButton" type="button"
@@ -103,42 +102,22 @@
 			<div class="col-md-10">
 				<div class="row">
 					<div class="col-md-12 text-left">
-
-
-
-						<!-- 						<div id="toolbarDecisions" class="btn-group">
-							<button type="button" class="btn btn-primary">Influencing</button>
-							<button  type="button" class="btn btn-primary">Requiring</button>
-							<button type="button" class="btn btn-primary">Affecting</button>
-							<button type="button" class="btn btn-primary">Binding</button>
-						</div> -->
-
-
-
-
-
-
-						<div id="toolbarDecisions" class="hidden">
-							<div id="buttonGroupRelations" class="btn-group"
-								data-toggle="buttons">
-								<button type="button" value="Influencing"
-									class="btn btn-primary">Influencing</button>
-								<button type="button" value="Requiring" class="btn btn-primary">Requiring</button>
-								<button type="button" value="Affecting" class="btn btn-primary">Affecting</button>
-								<button type="button" value="'Binding" class="btn btn-primary">Binding</button>
-								<!-- 								<label class="btn btn-primary"> <input
-									type="checkbox" value="Influencing"
-									autocomplete="off">Influencing
-								</label> <label class="btn btn-primary" value="Requiring"> <input type="checkbox"
-									 autocomplete="off">Requiring
-								</label> <label class="btn btn-primary"> <input type="checkbox"
+						<div id="toolbarDecisions">
+							<div id="buttonGroupRelations" class="btn-group">
+								<!-- data-toggle="buttons"> -->
+								
+								<label class="btn btn-success"> <input
+									type="checkbox" value="Influencing" autocomplete="off">Influencing
+								</label> <label class="btn btn-danger"> <input value="Requiring"
+									type="checkbox" autocomplete="off">Requiring
+								</label> <label class="btn btn-warning"> <input type="checkbox"
 									value="Affecting" autocomplete="off">Affecting
 								</label> <label class="btn btn-primary"> <input type="checkbox"
 									value="Binding" autocomplete="off">Binding
-								</label> -->
+								</label>
 							</div>
-							<button id="updateDecisionRelations" type="button"
-								class="btn btn-primary">Update Relations</button>
+							<!-- 							<button id="updateDecisionRelations" type="button"
+								class="btn btn-primary">Update Relations</button> -->
 						</div>
 					</div>
 				</div>
@@ -159,7 +138,8 @@
 
 	<!-- Include for Visualization -->
 	<!-- 	<script src="js.cdsfPlus.js" type="text/javascript"></script> -->
-	<script src="js/decisionRelations.js" type="text/javascript"></script>
 	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script>
+	<script src="js/decisionRelations.js" type="text/javascript"></script>
+	<script src="js/outcomeRelations.js" type="text/javascript"></script>
 </body>
 </html>

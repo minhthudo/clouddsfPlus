@@ -1,727 +1,679 @@
-var data = {
-	"nodes" : [
-			{
-				"size" : 30,
-				"id" : 101,
-				"type" : "decision",
-				"parent" : 1,
-				"classification" : "Application Migration in General",
-				"label" : "Select Application Layer",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 102,
-				"type" : "decision",
-				"parent" : 1,
-				"classification" : "Application Migration in General",
-				"label" : "Select Application Tier",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 103,
-				"type" : "decision",
-				"parent" : 1,
-				"classification" : "Application Migration in General",
-				"label" : "Select Application Components",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 104,
-				"type" : "decision",
-				"parent" : 1,
-				"classification" : "Cloud Migration specific",
-				"label" : "Select Migration Type",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 201,
-				"type" : "decision",
-				"parent" : 2,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Define Scalability Level",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 202,
-				"type" : "decision",
-				"parent" : 2,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Select Scaling Type",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 203,
-				"type" : "decision",
-				"parent" : 2,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Select Elasticity Automation Degree",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 204,
-				"type" : "decision",
-				"parent" : 2,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Select Scaling Trigger",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 301,
-				"type" : "decision",
-				"parent" : 3,
-				"classification" : "Cloud Migration specific",
-				"label" : "Select Multi-Tenancy Architecture",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 401,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific",
-				"label" : "Select Cloud Deployment Model",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 402,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific",
-				"label" : "Select Cloud Service Model",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 403,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Define Cloud Hosting",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 404,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Define Roles of Responsibility",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 405,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Select Cloud Vendor",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 406,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific",
-				"label" : "Select Pricing Model",
-				"children" : null
-			},
-			{
-				"size" : 30,
-				"id" : 407,
-				"type" : "decision",
-				"parent" : 4,
-				"classification" : "Cloud Migration specific / Application Migration in General",
-				"label" : "Define Resource Location",
-				"children" : null
-			} ],
-	"links" : [
-	// {
-	// "source" : 1,
-	// "target" : 101,
-	// "dir" : "auto",
-	// "label" : "Layout",
-	// "type" : "HierarchyRelation"
-	// }, {
-	// "source" : 1,
-	// "target" : 102,
-	// "dir" : "auto",
-	// "label" : "Layout",
-	// "type" : "HierarchyRelation"
-	// }, {
-	// "source" : 1,
-	// "target" : 103,
-	// "dir" : "auto",
-	// "label" : "Layout",
-	// "type" : "HierarchyRelation"
-	// }, {
-	// "source" : 1,
-	// "target" : 104,
-	// "dir" : "auto",
-	// "label" : "Layout",
-	// "type" : "HierarchyRelation"
-	// },
-	{
-		"source" : 101,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 101,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 101,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 101,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 102,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 101,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 103,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 101,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 104,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 202,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 203,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 204,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 201,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 202,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 202,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 202,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 202,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 204,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 202,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 203,
-		"target" : 204,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 204,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 204,
-		"target" : 203,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 204,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 204,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 204,
-		"target" : 203,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 101,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 301,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 401,
-		"target" : 403,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 401,
-		"target" : 404,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 401,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 401,
-		"target" : 403,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 401,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 103,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 104,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 202,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 203,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 204,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 402,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 403,
-		"target" : 401,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 403,
-		"target" : 404,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 403,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 403,
-		"target" : 407,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 403,
-		"target" : 407,
-		"dir" : "auto",
-		"label" : "Requiring",
-		"type" : "DecRel"
-	}, {
-		"source" : 404,
-		"target" : 401,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 404,
-		"target" : 403,
-		"dir" : "auto",
-		"label" : "Influencing",
-		"type" : "DecRel"
-	}, {
-		"source" : 404,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 201,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 202,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 203,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 204,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 301,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 401,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 402,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 403,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 404,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 406,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 405,
-		"target" : 407,
-		"dir" : "auto",
-		"label" : "Binding",
-		"type" : "DecRel"
-	}, {
-		"source" : 406,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	}, {
-		"source" : 407,
-		"target" : 405,
-		"dir" : "auto",
-		"label" : "Affecting",
-		"type" : "DecRel"
-	} ],
-	"cluster" : [ {
-		"id" : 1,
-		"type" : "decisionPoint",
-		"radius" : 40,
-		"cluster" : 1,
-		"label" : "Distribute Application"
-	}, {
-		"id" : 2,
-		"type" : "decisionPoint",
-		"radius" : 40,
-		"cluster" : 2,
-		"label" : "Define Elasticity Strategy"
-
-	}, {
-		"id" : 3,
-		"cluster" : 3,
-		"type" : "decisionPoint",
-		"radius" : 40,
-		"label" : "Define Multi-Tenancy Requirements"
-
-	}, {
-
-		"id" : 4,
-		"type" : "decisionPoint",
-		"radius" : 40,
-		"cluster" : 4,
-		"label" : "Select Service Provider / Offering"
-	}, ]
-};
-
-var margin = {
-	top : 5,
-	right : 10,
-	bottom : 10,
-	left : 5
-};
-
-var oWidth = parseInt($('#visContent').width());
-var oHeight = parseInt($('#visContent').height());
-
-var iWidth, iHeight, panelWidth, panelHeight;
-
-function marginConvention(padding) {
-	iWidth = oWidth - margin.left - margin.right;
-	iHeight = oHeight - margin.top - margin.bottom;
-	panelWidth = iWidth - padding.left - padding.right;
-	panelHeight = iHeight - padding.top - padding.bottom;
-}
-
-// oWidth = 1000;
-oHeight = 900;
-
 var forceGraph = (function() {
+	var data = {
+		"nodes" : [
+				{
+					"size" : 30,
+					"id" : 101,
+					"type" : "decision",
+					"parent" : 1,
+					"classification" : "Application Migration in General",
+					"label" : "Select Application Layer",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 102,
+					"type" : "decision",
+					"parent" : 1,
+					"classification" : "Application Migration in General",
+					"label" : "Select Application Tier",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 103,
+					"type" : "decision",
+					"parent" : 1,
+					"classification" : "Application Migration in General",
+					"label" : "Select Application Components",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 104,
+					"type" : "decision",
+					"parent" : 1,
+					"classification" : "Cloud Migration specific",
+					"label" : "Select Migration Type",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 201,
+					"type" : "decision",
+					"parent" : 2,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Define Scalability Level",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 202,
+					"type" : "decision",
+					"parent" : 2,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Select Scaling Type",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 203,
+					"type" : "decision",
+					"parent" : 2,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Select Elasticity Automation Degree",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 204,
+					"type" : "decision",
+					"parent" : 2,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Select Scaling Trigger",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 301,
+					"type" : "decision",
+					"parent" : 3,
+					"classification" : "Cloud Migration specific",
+					"label" : "Select Multi-Tenancy Architecture",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 401,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific",
+					"label" : "Select Cloud Deployment Model",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 402,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific",
+					"label" : "Select Cloud Service Model",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 403,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Define Cloud Hosting",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 404,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Define Roles of Responsibility",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 405,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Select Cloud Vendor",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 406,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific",
+					"label" : "Select Pricing Model",
+					"children" : null
+				},
+				{
+					"size" : 30,
+					"id" : 407,
+					"type" : "decision",
+					"parent" : 4,
+					"classification" : "Cloud Migration specific / Application Migration in General",
+					"label" : "Define Resource Location",
+					"children" : null
+				} ],
+		"links" : [ {
+			"source" : 101,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 101,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 101,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 101,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 102,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 101,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 103,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 101,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 104,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 202,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 203,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 204,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 201,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 202,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 202,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 202,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 202,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 204,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 202,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 203,
+			"target" : 204,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 204,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 204,
+			"target" : 203,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 204,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 204,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 204,
+			"target" : 203,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 101,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 301,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 401,
+			"target" : 403,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 401,
+			"target" : 404,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 401,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 401,
+			"target" : 403,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 401,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 103,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 104,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 202,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 203,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 204,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 402,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 403,
+			"target" : 401,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 403,
+			"target" : 404,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 403,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 403,
+			"target" : 407,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 403,
+			"target" : 407,
+			"dir" : "auto",
+			"label" : "Requiring",
+			"type" : "DecRel"
+		}, {
+			"source" : 404,
+			"target" : 401,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 404,
+			"target" : 403,
+			"dir" : "auto",
+			"label" : "Influencing",
+			"type" : "DecRel"
+		}, {
+			"source" : 404,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 201,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 202,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 203,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 204,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 301,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 401,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 402,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 403,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 404,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 406,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 405,
+			"target" : 407,
+			"dir" : "auto",
+			"label" : "Binding",
+			"type" : "DecRel"
+		}, {
+			"source" : 406,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		}, {
+			"source" : 407,
+			"target" : 405,
+			"dir" : "auto",
+			"label" : "Affecting",
+			"type" : "DecRel"
+		} ],
+		"cluster" : [ {
+			"id" : 1,
+			"type" : "decisionPoint",
+			"radius" : 40,
+			"cluster" : 1,
+			"label" : "Distribute Application"
+		}, {
+			"id" : 2,
+			"type" : "decisionPoint",
+			"radius" : 40,
+			"cluster" : 2,
+			"label" : "Define Elasticity Strategy"
+
+		}, {
+			"id" : 3,
+			"cluster" : 3,
+			"type" : "decisionPoint",
+			"radius" : 40,
+			"label" : "Define Multi-Tenancy Requirements"
+
+		}, {
+
+			"id" : 4,
+			"type" : "decisionPoint",
+			"radius" : 40,
+			"cluster" : 4,
+			"label" : "Select Service Provider / Offering"
+		} ]
+	};
+
 	var padding = {
 		top : 5,
 		right : 5,
@@ -729,15 +681,15 @@ var forceGraph = (function() {
 		left : 5
 	};
 
-	marginConvention(padding);
-	// todo linkstrength padding etc as variables and set them accordingly to
-	// the links (all, inf, req, affe.... ) and set force layout accordingly.
+	var mC = marginConvention(padding, 900);
+
 	d3.select("#svgContainer").remove();
 
-	var svg = d3.select("#visContent").append("svg").attr("width", oWidth)
-			.attr("height", oHeight).attr("id", "svgContainer").append("g")
+	var svg = d3.select("#visContent").append("svg").attr("width", mC.oWidth)
+			.attr("height", mC.oHeight).attr("id", "svgContainer").append("g")
 			.attr("transform",
-					"translate(" + margin.left + "," + margin.top + ")");
+					"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
+			.attr("class", "outcomeContainer");
 
 	svg.append("defs").selectAll("marker").data(
 			[ "requiring", "influencing", "affecting", "binding" ]).enter()
@@ -764,7 +716,7 @@ var forceGraph = (function() {
 
 	var hash_lookup = [];
 
-	var force = d3.layout.force().size([ panelWidth, panelHeight ]);
+	var force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
 
 	force.linkDistance(function(d) {
 		if (d.source.cluster == d.target.cluster)
@@ -787,20 +739,29 @@ var forceGraph = (function() {
 	var links = force.links();
 	var circle, text, path;
 	var n, m, clusters, color;
-	n = data.nodes.length + data.cluster.length; // total number of circles
-	m = data.cluster.length; // number of distinct clusters
-
 	var padding = 80, clusterPadding = 100, maxRadius = 12;
+	var data;
 
-	color = d3.scale.category10().domain(d3.range(m));
-	clusters = new Array(m);
+	function initialize(linkTypes) {
+//		d3.json("./js/json/decisionRelations.json", function(error, json) {
+//			data = json;
+			n = data.nodes.length + data.cluster.length; // total number of
+			// circles
+			m = data.cluster.length; // number of distinct clusters
 
-	setClusters();
-	data.nodes.forEach(function(d) {
-		addNode(d);
-	});
+			color = d3.scale.category10().domain(d3.range(m));
+			clusters = new Array(m);
 
-	// setLinks(["Influencing"]);
+			setClusters();
+			data.nodes.forEach(function(d) {
+				addNode(d);
+			});
+			var relations = linkTypes || [ "" ];
+			setLinks(relations);
+			// update();
+	//	});
+
+	}
 
 	function setClusters() {
 		data.cluster.map(function(node) {
@@ -820,14 +781,14 @@ var forceGraph = (function() {
 			clusters[i] = d;
 			nodes.push(d);
 		});
-		clusters[1].x = panelWidth / 4;
-		clusters[1].y = panelHeight / 5;
-		clusters[2].x = panelWidth / 4 * 3;
-		clusters[2].y = panelHeight / 5;
-		clusters[3].x = panelWidth / 4;
-		clusters[3].y = panelHeight / 4 * 3;
-		clusters[4].x = panelWidth / 4 * 3;
-		clusters[4].y = panelHeight / 4 * 3;
+		clusters[1].x = mC.panelWidth / 4;
+		clusters[1].y = mC.panelHeight / 5;
+		clusters[2].x = mC.panelWidth / 4 * 3;
+		clusters[2].y = mC.panelHeight / 5;
+		clusters[3].x = mC.panelWidth / 4;
+		clusters[3].y = mC.panelHeight / 4 * 3;
+		clusters[4].x = mC.panelWidth / 4 * 3;
+		clusters[4].y = mC.panelHeight / 4 * 3;
 	}
 
 	function addLink(link) {
@@ -1032,7 +993,8 @@ var forceGraph = (function() {
 	return {
 		getForce : force,
 		update : update,
-		setLinks : setLinks
+		setLinks : setLinks,
+		initialize : initialize
 	};
 
-})();
+});
