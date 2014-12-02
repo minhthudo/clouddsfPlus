@@ -1,45 +1,29 @@
-// Global variables for all layouts
-// Margin and Size of SVG
-var margin = {
-	top : 5,
-	right : 10,
-	bottom : 10,
-	left : 5
-}
-
-var oWidth = parseInt($('#visContent').width());
-var oHeight = parseInt($('#visContent').height());
-var iWidth, iHeight, panelWidth, panelHeight;
-
-function marginConvention(padding) {
-	iWidth = oWidth - margin.left - margin.right;
-	iHeight = oHeight - margin.top - margin.bottom;
-	panelWidth = iWidth - padding.left - padding.right;
-	panelHeight = iHeight - padding.top - padding.bottom;
-}
-//todo write as revealing module
+// todo write as revealing module
 function drawTreeLayout() {
-//	oWidth = 1100;
-	oHeight = 1000;
+	// Padding for svg container
 	var padding = {
-		top : 5,
-		right : 5,
-		bottom : 5,
-		left : 45
-	};
-	marginConvention(padding);
+			top : 5,
+			right : 5,
+			bottom : 5,
+			left : 45
+		};
+	// compute panel size and margins after margin convention
+	var mC = marginConvention(padding, 1000);
+
+	// oWidth = 1100;
+
 	var circleRadius = 10;
 
 	d3.select("#svgContainer").remove();
-	
-	var svg = d3.select("#visContent").append("svg").attr("width", oWidth)
-			.attr("height", oHeight).attr("id", "svgContainer").append("g")
+
+	var svg = d3.select("#visContent").append("svg").attr("width", mC.oWidth)
+			.attr("height", mC.oHeight).attr("id", "svgContainer").append("g")
 			.attr("transform",
-					"translate(" + margin.left + "," + margin.top + ")");
+					"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
 
 	var root;
 	// Create new TreeLayout with svg size
-	var tree = d3.layout.tree().size([ panelHeight, panelWidth ]);
+	var tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
 
 	var diagonal = d3.svg.diagonal().projection(function(d) {
 		return [ d.y, d.x ];
@@ -48,7 +32,7 @@ function drawTreeLayout() {
 	d3.json("./js/json/elaboratedDSF.json", function(json) {
 		root = json.decisionTree;
 		// start in the left-middle of the svg
-		root.x0 = panelWidth / 2;
+		root.x0 = mC.panelWidth / 2;
 		root.y0 = 0;
 		// collapse all datapoints
 		function toggleAll(d) {
@@ -69,7 +53,7 @@ function drawTreeLayout() {
 		var nodes = tree.nodes(root).reverse();
 
 		// Normalize for fixed-depth.
-		var distance = panelWidth / 16;
+		var distance = mC.panelWidth / 16;
 		// set y for every node according to type and hence level to enable
 		// better labeling
 		nodes.forEach(function(d) {
@@ -124,13 +108,13 @@ function drawTreeLayout() {
 		textWrapper.filter(function(d) {
 			if (d.type != "outcome")
 				return d;
-		}).call(wrap, panelWidth / 6);
-		
+		}).call(wrap, mC.panelWidth / 6);
+
 		textWrapper.filter(function(d) {
 			if (d.type == "outcome")
 				return d;
-		}).call(wrap, panelWidth / 3);
-		
+		}).call(wrap, mC.panelWidth / 3);
+
 		// append different css classes through method
 		nodeEnter.append("svg:circle").attr("r", circleRadius).attr("class",
 				function(d) {

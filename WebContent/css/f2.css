@@ -1,0 +1,147 @@
+@CHARSET "UTF-8";
+
+.test {
+	/* rot */
+	color: #D91E18;
+	color: #c0392b;
+	/*orange  */
+	color: #d35400;
+	color: #F9690E;
+	color: #F39C12;
+	color: #E67E22;
+	color: #F4B350;
+	/*blau  */
+	color: #3A539B;
+	color: #3498DB;
+	color: #14548C;
+	color: #6A7FC9;
+	color: #243A90;
+	color: #446CB3;
+	/* yellow */
+	color: #EFC94C;
+	color: #f1c40f;
+	color: #FFA400;
+	/* purple */
+	color: #3B0085;
+	/* green */
+	color: #26A65B;
+	color: #2ECC71;
+	color: #9467BD; color : #D62728; color : #FF7F0E; color : #1F77B4;
+	color: #BCBD22;
+	/* path links */ color : #2c3e50;
+	color: #05102F;
+	color: #334D5C;
+	color: #600000;
+	color: #22313F;
+	color: #6C7A89;
+	color: #FF7F0E;
+	color: #1F77B4;
+	color: #D62728; color : #FF7F0E; color : #1F77B4; color : #BCBD22;
+	/* path links */
+	color: #2c3e50
+}
+
+/* Decision 1 */
+.decisionPoint1 {
+	fill: #1F77B4;
+	stroke: #1F77B4;
+	stroke-width: 2px;
+}
+
+.decision1 {
+	fill: #2980b9;
+	/*128BF3  */
+	stroke: #2980b9;
+	stroke-width: 2px;
+}
+
+.outcome1 {
+	fill: #3498db;
+	stroke: #3498db;
+	stroke-width: 1px;
+}
+
+/* Decision 2 */
+.decisionPoint2 {
+	fill: #F9690E;
+	stroke: #F9690E;
+	stroke-width: 2px;
+	
+/* 	color: #d35400;
+	color: #F9690E;
+	color: #F39C12;
+	color: #E67E22;
+	color: #F4B350; */
+}
+
+.decision2 {
+	fill: #FF7F0E;
+	stroke: #FF7F0E;
+	stroke-width: 2px;
+}
+
+.outcome2 {
+	fill: #F4B350;
+	stroke: #F4B350;
+	stroke-width: 1px;
+}
+
+/* Decision 3 */
+.decisionPoint3 {
+	fill: #6923BF;
+	stroke: #6923BF;
+	stroke-width: 2px;
+}
+
+.decision3 {
+	fill: #8C2FFF;
+	stroke: #8C2FFF;
+	stroke-width: 2px;
+}
+
+.outcome3 {
+	fill: #9B4BFF;
+	stroke: #9B4BFF;
+	stroke-width: 1px;
+}
+
+/* Decision 4 */
+.decisionPoint4 {
+	fill: #BCBD22;
+	stroke: #BCBD22;
+	stroke-width: 2px;
+}
+
+.decision4 {
+	fill: #d9d92d;
+	stroke: #d9d92d;
+	stroke-width: 2px;
+}
+
+.outcome4 {
+	fill: #e3e366;
+	stroke: #e3e366;
+	stroke-width: 1px;
+}
+
+/* === Tree Layout == */
+.treeRoot {
+	fill: #34495e;
+	stroke: #34495e;
+	stroke-width: 2px;
+}
+
+.treeLink {
+	fill: none;
+	stroke: #7f8c8d;
+	stroke-width: 1.5px;
+}
+
+.treeCollapsed {
+	stroke: #DDDDDD;
+}
+
+.treeExpanded {
+	fill: #FFFFFF;
+}
+}
