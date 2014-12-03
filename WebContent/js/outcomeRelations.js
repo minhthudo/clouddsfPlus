@@ -9869,13 +9869,13 @@ var outcomeGraph = (function() {
 		return d._children ? -80 : -400;
 	}).linkDistance(function(d) {
 		switch (d.type) {
-		case "root": 
+		case "root":
 			return 50;
 			break;
-		case "decisionPoint": 
+		case "decisionPoint":
 			return 80;
 			break;
-		case "outcome" : 
+		case "outcome":
 			return 20;
 			break;
 		default:
@@ -9930,6 +9930,25 @@ var outcomeGraph = (function() {
 	function update() {
 		// stop force not necessary
 		force.stop();
+		force.charge(function(d) {
+			return d._children ? -80 : -400;
+		}).linkDistance(function(d) {
+			switch (d.type) {
+			case "root":
+				return 50;
+				break;
+			case "decisionPoint":
+				return 80;
+				break;
+			case "outcome":
+				return 20;
+				break;
+			default:
+				return 20;
+				break;
+			}
+			//	return d.target._children ? 80 : 20; 
+		}).linkStrength(1).gravity(0.1).friction(0.7).on("tick", tick);
 		// get group with all line (layoutLinks)
 		link = linkGroup.selectAll("line").data(links, function(d) {
 			return d.source.id + "-" + d.target.id + "-layoutLink";
@@ -9969,12 +9988,23 @@ var outcomeGraph = (function() {
 
 		// append circle
 		nodeEnter.append("svg:circle").attr("r", function(d) {
-			return d.children ? decisionWidth : outcomeWidth;//d.size : outcomeWidth;
+			return d.children ? decisionWidth : outcomeWidth;// d.size :
+			// outcomeWidth;
 		}).attr("cx", function(d) {
 			return d.x;
 		}).attr("cy", function(d) {
 			return d.y;
 		}).style("fill", color).on("click", click).call(force.drag);
+
+		nodeEnter.filter(function(d) {
+			if (d.type != "outcome")
+				return d;
+		}).append("text").attr("x", 0).attr("y", "1em").attr("dy", function(d) {
+			var i = d.children ? decisionWidth : outcomeWidth;
+			return "" + i + "px";
+		}).attr("text-anchor", "middle").text(function(d) {
+			return d.label;
+		});
 
 		// remove nodes
 		node.exit().remove();
@@ -9983,8 +10013,11 @@ var outcomeGraph = (function() {
 		circle = node.selectAll("g.node circle");
 
 		circle.transition().attr("r", function(d) {
-			return d.children ? decisionWidth : outcomeWidth;// d.size : outcomeWidth;
+			return d.children ? decisionWidth : outcomeWidth;// d.size :
+			// outcomeWidth;
 		});
+
+		text = node.selectAll("g.node text");
 
 		// start force layout
 		force.start();
@@ -9999,6 +10032,10 @@ var outcomeGraph = (function() {
 			return d.target.x;
 		}).attr("y2", function(d) {
 			return d.target.y;
+		});
+
+		text.attr("transform", function(d) {
+			return "translate(" + d.x + "," + d.y + ")";
 		});
 
 		path.attr("d", linkArc);
@@ -10019,7 +10056,23 @@ var outcomeGraph = (function() {
 
 	// Intermediary coloring ersetzen durch css zuweisung
 	function color(d) {
-		return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
+		var color = d3.scale.category10().domain(d3.range(4));
+		var i;
+		switch (d.type) {
+		case "decisionPoint":
+			return color(d.id);
+		case "decision":
+			i = Math.floor(d.id / 100);
+			return color(i);
+			break;
+		case "outcome":
+			i = Math.floor(d.id / 10000)
+			return color(i);
+			break;
+		default:
+			return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
+			break;
+		}
 	}
 
 	// Toggle children on click.
@@ -10071,6 +10124,7 @@ var outcomeGraph = (function() {
 		root.y = mC.panelHeight / 2;
 
 		nodes.splice(0, nodes.length);
+		node_lookup.splice(0, node_lookup.length);
 		var initialNodes = flatten(root);
 		initialNodes.forEach(function(d) {
 			addNode(d);
@@ -10081,7 +10135,7 @@ var outcomeGraph = (function() {
 		layoutLinks.forEach(function(d) {
 			addLayoutLink(d);
 		});
-
+		outcomePaths.splice(0, outcomePaths.length);
 		outcomeLinks = data.linksArrayOutcomes.filter(function(d) {
 			if (d.target != d.source && (d.label == "ex" || d.label == "in"))
 				return d;
@@ -10089,6 +10143,7 @@ var outcomeGraph = (function() {
 		outcomeLinks.forEach(function(d) {
 			addLink(d);
 		});
+		
 		update();
 	}
 	initialize();
