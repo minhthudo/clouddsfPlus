@@ -24,77 +24,77 @@
 
 /* Decision 1 */
 .decisionPoint1 {
-	fill: #3182bd;
-	stroke: #3182bd;
+	fill: #393b79;
+	stroke: #393b79;
 	stroke-width: 2px;
 }
 
 .decision1 {
-	fill: #6baed6;
-	stroke: #6baed6;
+	fill: #5254a3;
+	stroke: #5254a3;
 	stroke-width: 2px;
 }
 
 .outcome1 {
-	fill:  #9ecae1;
-	stroke:  #9ecae1;
+	fill:  #6b6ecf;
+	stroke:  #6b6ecf;
 	stroke-width: 1px;
 }
 
 /* Decision 2 */
 .decisionPoint2 {
-	fill: #e6550d;
-	stroke: #e6550d;
+	fill: #8c6d31;
+	stroke: #8c6d31;
 	stroke-width: 2px;
 }
 
 .decision2 {
-	fill: #fd8d3c;
-	stroke: #fd8d3c;
+	fill: #bd9e39;
+	stroke: #bd9e39;
 	stroke-width: 2px;
 }
 
 .outcome2 {
-	fill: #fdae6b;
-	stroke: #fdae6b;
+	fill: #e7ba52;
+	stroke: #e7ba52;
 	stroke-width: 1px;
 }
 
 /* Decision 3 */
 .decisionPoint3 {
-	fill: #31a354;
-	stroke: #31a354;
+	fill: #637939;
+	stroke: #637939;
 	stroke-width: 2px;
 }
 
 .decision3 {
-	fill: #74c476;
-	stroke: #74c476;
+	fill:  #8ca252;
+	stroke:  #8ca252;
 	stroke-width: 2px;
 }
 
 .outcome3 {
-	fill: #a1d99b;
-	stroke: #a1d99b;
+	fill: #b5cf6b;
+	stroke: #b5cf6b;
 	stroke-width: 1px;
 }
 
 /* Decision 4 */
 .decisionPoint4 {
-	fill: #756bb1;
-	stroke: #756bb1;
+	fill: #7b4173;
+	stroke: #7b4173;
 	stroke-width: 2px;
 }
 
 .decision4 {
-	fill: #9e9ac8;
-	stroke: #9e9ac8;
+	fill: #a55194;
+	stroke: #a55194;
 	stroke-width: 2px;
 }
 
 .outcome4 {
-	fill: #bcbddc;
-	stroke: #bcbddc;
+	fill:  #ce6dbd;
+	stroke:  #ce6dbd;
 	stroke-width: 1px;
 }
 
@@ -107,12 +107,12 @@
 
 .treeLink {
 	fill: none;
-	stroke: #969696;
+	stroke: #bdbdbd;
 	stroke-width: 1.5px;
 }
 
 .treeCollapsed {
-	stroke: #969696;
+	stroke: #bdbdbd;
 }
 
 .treeExpanded {

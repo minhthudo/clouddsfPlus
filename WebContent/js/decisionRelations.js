@@ -743,23 +743,23 @@ var forceGraph = (function() {
 	var data;
 
 	function initialize(linkTypes) {
-//		d3.json("./js/json/decisionRelations.json", function(error, json) {
-//			data = json;
-			n = data.nodes.length + data.cluster.length; // total number of
-			// circles
-			m = data.cluster.length; // number of distinct clusters
+		// d3.json("./js/json/decisionRelations.json", function(error, json) {
+		// data = json;
+		n = data.nodes.length + data.cluster.length; // total number of
+		// circles
+		m = data.cluster.length; // number of distinct clusters
 
-			color = d3.scale.category10().domain(d3.range(m));
-			clusters = new Array(m);
+		// color = d3.scale.category10().domain(d3.range(m));
+		clusters = new Array(m);
 
-			setClusters();
-			data.nodes.forEach(function(d) {
-				addNode(d);
-			});
-			var relations = linkTypes || [ "" ];
-			setLinks(relations);
-			// update();
-	//	});
+		setClusters();
+		data.nodes.forEach(function(d) {
+			addNode(d);
+		});
+		var relations = linkTypes || [ "" ];
+		setLinks(relations);
+		// update();
+		// });
 
 	}
 
@@ -889,7 +889,8 @@ var forceGraph = (function() {
 		nodeEnter.append("circle").attr("r", function(d) {
 			return d.radius;
 		}).style("fill", function(d) {
-			return color(d.cluster);
+			// return color(d.cluster);
+			return color(d);
 		}).call(force.drag);
 
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
@@ -986,6 +987,107 @@ var forceGraph = (function() {
 				cluster.y += y;
 			}
 		};
+	}
+	function color(d) {
+//		var color = d3.scale.ordinal().domain(
+//				[ 0, 1, 11, 111, 2, 22, 222, 3, 33, 333, 4, 44, 444 ]).range(
+//				[ "#636363",
+//
+//				"#3182bd", "#6baed6", "#9ecae1",
+//
+//				"#e6550d", "#fd8d3c", "#fdae6b",
+//
+//				"#31a354", "#74c476", "#a1d99b",
+//
+//				"#756bb1", "#9e9ac8", "#bcbddc" ]);
+//		var color = d3.scale.ordinal().domain(
+//				[ 0, 1, 11, 111, 2, 22, 222, 3, 33, 333, 4, 44, 444 ]).range(
+//				[ "#636363",
+//
+//				"#393b79", "#5254a3", "#6b6ecf",
+//
+//				"#637939", "#8ca252", "#b5cf6b",
+//
+//				"#8c6d31", "#bd9e39", "e7ba52",
+//
+//				"#7b4173", "#a55194", "#ce6dbd" ]);
+		
+//		var color = d3.scale.ordinal().domain(
+//				[ 0, 1, 11, 111, 2, 22, 222, 3, 33, 333, 4, 44, 444 ]).range(
+//				[ "#636363",
+//
+//				"#393b79", "#5254a3", "#6b6ecf",
+//
+//				"#637939", "#8ca252", "#b5cf6b",
+//
+//				"#8c6d31", "#bd9e39", "e7ba52",
+//
+//				"#843c39", "#ad494a", "#d6616b" ]);
+//
+		var color = d3.scale.ordinal().domain(
+				[ 0, 1, 11, 111, 2, 22, 222, 3, 33, 333, 4, 44, 444 ]).range(
+				[ "#636363",
+
+				"#5254a3", "#6b6ecf", "#9c9ede",
+
+				"#8ca252", "#b5cf6b", "#cedb9c",
+
+				"#bd9e39", "#e7ba52", "#e7cb94",
+
+				"#a55194", "#ce6dbd", "#de9ed6" ]);
+//		
+	
+
+
+		var i;
+		switch (d.type) {
+		case "decision":
+			i = Math.floor(d.id / 100);
+			break;
+		case "outcome":
+			i = Math.floor(d.id / 10000);
+			break;
+		default:
+			i = d.id;
+			break;
+		}
+		switch (i) {
+		case 1:
+			if (d.type == "decisionPoint")
+				return color(1);
+			if (d.type == "decision")
+				return color(11);
+			if (d.type == "outcome")
+				return color(111);
+			break;
+		case 2:
+			if (d.type == "decisionPoint")
+				return color(2);
+			if (d.type == "decision")
+				return color(22);
+			if (d.type == "outcome")
+				return color(222);
+			break;
+		case 3:
+			if (d.type == "decisionPoint")
+				return color(3);
+			if (d.type == "decision")
+				return color(33);
+			if (d.type == "outcome")
+				return color(333);
+			break;
+		case 4:
+			if (d.type == "decisionPoint")
+				return color(4);
+			if (d.type == "decision")
+				return color(44);
+			if (d.type == "outcome")
+				return color(444);
+			break;
+		default:
+			return color(0);
+			break;
+		}
 	}
 	// update();
 
