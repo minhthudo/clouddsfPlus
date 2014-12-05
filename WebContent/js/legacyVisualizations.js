@@ -335,7 +335,7 @@ function drawPartitionLayout() {
 
 	/* === Call Data - JSON === */
 	$.ajax({
-		url : "./js/json/elaboratedDSF.json",
+		url : "./data/elaboratedDSF.json",
 		dataType : 'json',
 		async : false,
 		success : function(json) {
@@ -917,7 +917,7 @@ function drawTreeLayout() {
 
 	/* === Call Data - JSON === */
 	$.ajax({
-		url : "./js/json/elaboratedDSF.json",
+		url : "./data/elaboratedDSF.json",
 		dataType : 'json',
 		async : false,
 		success : function(json) {
@@ -1421,7 +1421,7 @@ function drawClusterLayout() {
 
 	/* === Call Data - JSON === */
 	$.ajax({
-		url : "./js/json/elaboratedDSF.json",
+		url : "./data/elaboratedDSF.json",
 		dataType : 'json',
 		async : false,
 		success : function(json) {
@@ -2031,7 +2031,7 @@ function drawForceLayout() {
 
 	/* === Call Data - JSON === */
 	$.ajax({
-		url : "./js/json/elaboratedDSF.json",
+		url : "./data/elaboratedDSF.json",
 		dataType : 'json',
 		async : false,
 		success : function(json) {
@@ -3168,7 +3168,7 @@ function drawTreemapLayout() {
 
 	d3
 			.json(
-					"./js/json/elaboratedDSF.json",
+					"./data/elaboratedDSF.json",
 					function(root) {
 						initialize(root.decisionTree);
 						accumulate(root.decisionTree);

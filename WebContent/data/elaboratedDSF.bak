@@ -30,9 +30,7 @@
         {"id": 407, "type": "decision", "parent": 4, "classification" : "Cloud Migration specific / Application Migration in General", "label": "Define Resource Location"}
    	]}
    ]
-  
-  
-  },
+    },
   "decisionTree": {
     "id": -1,
     "type": "root",

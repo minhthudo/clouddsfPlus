@@ -4,10 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The CloudDSF: ToDo</title>
-
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<title>CloudDSF+</title>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -15,18 +12,22 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<!-- <link href="./css/dsamc-layout.css" rel="stylesheet" /> -->
-<link href="./css/cdsfPlus.css" rel="stylesheet" />
-<!-- Include all compiled plugins (below), or include individual files as needed -->
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="./lib/jquery-1.11.1.min.js" type="text/javascript"></script>
-<script src="lib/bootstrap.min.js"></script>
+<!-- Global Style Sheets  -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/defaultNavBar.css" rel="stylesheet" />
+
+<!-- Custom Style Sheets -->
+
+
+<!-- JavaScript Libraries -->
+<script src="./js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="./js/lib/bootstrap.min.js" type="text/javascript"></script>
+<script src="./js/lib/d3.4.13.min.js" type="text/javascript"></script>
 
 </head>
 <body>
-
-	<header class="navbar navbar-default navbar-static-top"
+	<header class="navbar navbar-default navbar-static-top "
 		role="navigation">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -37,76 +38,101 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="./index.html"><strong>The
-						CloudDSF</strong></a>
+				<a class="navbar-brand visible-xs" href="./index.html">CloudDSF+</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<nav id="navbar" class="collapse navbar-collapse" role="navigation">
 				<ul class="nav navbar-nav">
-					<li class="ToDo"><a href="./index.html"><span
-							class="glyphicon glyphicon-home"></span> <span>Home</span><span
-							class="sr-only">(current)</span></a></li>
-					<li><a href="./cloudDSFVisualization.html"> <span
-							class="glyphicon glyphicon-picture"></span> <span>Prototypical
-								Implementation</span></a></li>
-					<li><a href="./about.html"> <span
-							class="glyphicon glyphicon-flag"></span> <span>About</span>
+					<li class="active"><a href="./index.html"> <span
+							class="glyphicon glyphicon-home"></span> <span><strong>
+									CloudDSF+</strong></span></a></li>
+					<li><a href="./cloudDSFPrototype.html"> <!-- <span
+							class="glyphicon glyphicon-globe"></span> --> <span>Prototype</span>
 					</a></li>
-					<!-- 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
-							<span class="caret"></span>
-					</a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Something else here</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
-						</ul></li> -->
+					<li><a href="./knowledgeBase.html"> <!--  <span
+							class="glyphicon glyphicon-book"> </span>  --> <span>Knowledge
+								Base</span>
+					</a></li>
+					<li><a href="./cloudDSFVisualization.html"> <!--  <span
+							class="glyphicon glyphicon-picture"></span> --> <span>CloudDSF
+								Visualizations</span>
+					</a></li>
+					<li><a href="./about.html"> <!-- <span
+							class="glyphicon glyphicon-flag"></span> --> <span>About</span>
+					</a></li>
 				</ul>
 			</nav>
+			<!-- /.navbar-collapse -->
 		</div>
+		<!-- /.container-fluid -->
 	</header>
-
-	<div class="container-fluid">
-		<div class="row row-offcanvas row-offcanvas-left">
-			<div class="col-md-2 sidebar-offcanvas" id="sidebar"
-				role="navigation">
-				<div class="list-group">
-					<a href="#" class="list-group-item active">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a>
-				</div>
-				<button id="toggleButton" type="button"
-					class="btn btn-primary btn-xs" data-toggle="offcanvas">
-
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</button>
-			</div>
-			<!--/.sidebar-offcanvas-->
-			<div class="col-md-10">
+	
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
 				<div class="jumbotron">
-					<h1>Hello, world!</h1>
-					<p>This is an example to show the potential of an offcanvas
-						layout pattern in Bootstrap. Try some responsive-range viewport
-						sizes to see it in action.</p>
+					<h1>The Cloud Decision Support Framework</h1>
+					<p>The Cloud Decision Support Framework (CloudDSF) helps
+						decision makers, who consider the migration of an existing
+						application to the Cloud.</p>
+					<p>
+						<a href="./cloudDSFVisualization.html"
+							class="btn btn-primary btn-lg" role="button">Prototypical
+							Implementation</a>
+					</p>
 				</div>
+				<div class="col-md-12 text-center">
+					<img src="./img/layout/titleImage.png" alt="CloudDSF Title Image" />
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-5">
+				<h3>Main Approach</h3>
+				<p>
+					The CloudDSF is based on <a
+						href="http://www.iaas.uni-stuttgart.de/RUS-data/INPROC-2013-18%20-%20Decision%20Support%20for%20Application%20Migration%20to%20the%20Cloud%20Challenges%20and%20Vision.pdf">an
+						approach of Andrikopoulos et al.</a> considering a vision of a
+					decision support system for Cloud migration. By this, decision
+					makers are supported through focusing on <i>decisions</i> and
+					supporting <i>tasks</i> that are important to be addressed when
+					intending an application migration to the Cloud.
+				</p>
+				<p>The CloudDSF comprises 17 decisions grouped in four main
+					decision points and a total of 10 supporting tasks. The elements
+					constitute a network where decisions are influencing each other and
+					decisions and tasks can affect each other.</p>
+			</div>
+			<div class="col-md-2"></div>
+			<div class="col-md-5">
+				<h3>About</h3>
+				<p>
+					This website is part of the Master's Thesis <i>Decision Support
+						for Application Migration to the Cloud</i> at <a
+						href="http://www.iaas.uni-stuttgart.de" target="_blank">IAAS
+						(University Stuttgart)</a> by Alexander Darsow.
+				</p>
+				<p>The main objective of the Master’s Thesis was the elaboration
+					and refinement of a conceptual view of a decision support system
+					for Cloud migration.</p>
+				<p>As part of this work a prototypical implementation of the
+					visualization was required that is published under the name
+					CloudDSF by this website.</p>
 			</div>
 		</div>
 	</div>
-
 	<hr>
-
 	<footer class="footer">
 		<div class="container">
-			<p>Copyright 2014 Alexander Darsow</p>
+			<p>University of Sutttgart - Institute of Architecture of
+				Application Systems</p>
 		</div>
 	</footer>
-
-	<!-- Include for Visualization -->
-	<!-- 	<script src="js.cdsfPlus.js" type="text/javascript"></script> -->
-	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script>
-
 </body>
 </html>
+
+
+
+
