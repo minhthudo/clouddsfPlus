@@ -367,7 +367,8 @@ function drawPartitionLayout() {
 	layoutPartition = d3.layout.partition().sort(null)
 	// .size([2 * Math.PI, partRadius ])
 	.value(function(d) {
-		return 1;//d.weight ? d.weight : 1;
+		//@Metz set value to one to use the treemap for its purpose showing the different amount / size of outcomes / decisions within decisions / decisionPoints.
+		return 1;// d.weight ? d.weight : 1;
 	});
 	layoutNodes = layoutPartition.nodes(partitionNodesTree);
 
@@ -1434,7 +1435,8 @@ function drawClusterLayout() {
 
 			json.taskTree.type = "taskRoot";
 			clusterNodesTree.children.push(json.taskTree);
-			// @Metz Node tree with normal decision Tree to avoid duplicate in json file. child accessor function has been adapted (see below).
+			// @Metz Node tree with normal decision Tree to avoid duplicate in
+			// json file. child accessor function has been adapted (see below).
 			clusterNodesTree.children = clusterNodesTree.children
 					.concat(json.decisionTree.children);
 			clusterLinks = json.linksArray;
@@ -1450,7 +1452,7 @@ function drawClusterLayout() {
 	var clusterRotate = 0;
 
 	/* === Init Cluster / Bundle === */
-	//Accessor function only return children down to decisions (no outcomes)
+	// Accessor function only return children down to decisions (no outcomes)
 	layoutCluster = d3.layout.cluster().size([ 360, clusterRY * 0.85 - 150 ])
 			.children(function(d) {
 				if (d.type == "decisionPoint")
@@ -3138,7 +3140,9 @@ function drawTreemapLayout() {
 	var treemap = d3.layout.treemap().children(function(d, depth) {
 		return depth ? null : d._children;
 	}).sort(function(a, b) {
-		return a.value - b.value;
+		//@Metz Sort entries after id to keep order as in knowledge base dp1 > dp2 ...
+		return b.id - a.id;
+		//return a.value - b.value;
 	}).ratio(height / width * 0.5 * (1 + Math.sqrt(5))).round(false);
 
 	/* === Nodes / Links === */
@@ -3183,7 +3187,7 @@ function drawTreemapLayout() {
 									.reduce(function(p, v) {
 										return p + accumulate(v);
 									}, 0)
-									: d.value = d.weight;
+									: d.value = 1; // d.weight;
 						}
 
 						function layout(d) {
@@ -3676,7 +3680,6 @@ function nodedLinksArray(inputLinksArray, inputNodesArray) {
 // }
 // }
 // }
-
 /* Function setInfoLabel */
 function setInfoLabel(d) {
 	var visInfoLabelBOX = $('#visInfoLabelBOX');
