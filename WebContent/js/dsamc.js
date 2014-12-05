@@ -367,7 +367,7 @@ function drawPartitionLayout() {
 	layoutPartition = d3.layout.partition().sort(null)
 	// .size([2 * Math.PI, partRadius ])
 	.value(function(d) {
-		return d.weight ? d.weight : 1;
+		return 1;//d.weight ? d.weight : 1;
 	});
 	layoutNodes = layoutPartition.nodes(partitionNodesTree);
 
