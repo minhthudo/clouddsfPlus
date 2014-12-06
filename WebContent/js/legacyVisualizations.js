@@ -88,6 +88,25 @@ var layoutTreemapDefaultSettings = {
 	"showTooltips" : false
 };
 
+// var clusterLayoutData;
+// var treeLayoutData;
+// var treeMapLayoutData;
+// var forceLayoutData;
+// var partitionLayoutData;
+var visualizationData;
+
+var jsonRetrieval = function() {
+	$.ajax({
+		url : "./data/elaboratedDSF.json",
+		dataType : 'json',
+		async : false,
+		success : function(json) {
+			// New Root
+			visualizationData = json;
+		}
+	});
+}();
+
 /* Initialization of Page */
 /* ======================================================================== */
 function initializationOfPage() {
@@ -334,20 +353,22 @@ function drawPartitionLayout() {
 	setPartitionDefaultInformation();
 
 	/* === Call Data - JSON === */
-	$.ajax({
-		url : "./data/elaboratedDSF.json",
-		dataType : 'json',
-		async : false,
-		success : function(json) {
-			// New Root
-			// partitionNodesTree = {id: -2, type: "root", parent: null,
-			// children: []};
+	// $.ajax({
+	// url : "./data/elaboratedDSF.json",
+	// dataType : 'json',
+	// async : false,
+	// success : function(json) {
+	// New Root
+	// partitionNodesTree = {id: -2, type: "root", parent: null,
+	// children: []};
 
-			json.decisionTree.type = "decRoot";
-			// partitionNodesTree.children.push(json.decisionTree);
-			partitionNodesTree = json.decisionTree;
-		}
-	});
+	var partitionLayoutData = JSON.parse(JSON.stringify(visualizationData));
+
+	partitionLayoutData.decisionTree.type = "decRoot";
+	// partitionNodesTree.children.push(json.decisionTree);
+	partitionNodesTree = partitionLayoutData.decisionTree;
+	// }
+	// });
 
 	/* === Partition Vars === */
 	var partSVGWidth = SVGWidth;
@@ -367,7 +388,9 @@ function drawPartitionLayout() {
 	layoutPartition = d3.layout.partition().sort(null)
 	// .size([2 * Math.PI, partRadius ])
 	.value(function(d) {
-		//@Metz set value to one to use the treemap for its purpose showing the different amount / size of outcomes / decisions within decisions / decisionPoints.
+		// @Metz set value to one to use the treemap for its purpose showing the
+		// different amount / size of outcomes / decisions within decisions /
+		// decisionPoints.
 		return 1;// d.weight ? d.weight : 1;
 	});
 	layoutNodes = layoutPartition.nodes(partitionNodesTree);
@@ -538,28 +561,30 @@ function drawPartitionLayout() {
 									var arcText = d3.select(this.parentNode)
 											.select(".pathTextDec");
 									if ("decisionPoint" == e.type)
-										console.log("DP");
-									// fade in the text element and recalculate
-									// positions
-									arcText
-											.transition()
-											.duration(250)
-											.attr(
-													"opacity",
-													function(od) {
-														return ("outcome" == od.type && "decision" != d.type)
-																|| "decRoot" == d.type ? 0
-																: 1;
-													})
-											.attr(
-													"transform",
-													function() {
-														return "rotate("
-																+ computeTextRotation(e)
-																+ ")";
-													}).attr("x", function(d) {
-												return y(d.y);
-											});
+										// console.log("DP");
+										// fade in the text element and
+										// recalculate
+										// positions
+										arcText
+												.transition()
+												.duration(250)
+												.attr(
+														"opacity",
+														function(od) {
+															return ("outcome" == od.type && "decision" != d.type)
+																	|| "decRoot" == d.type ? 0
+																	: 1;
+														})
+												.attr(
+														"transform",
+														function() {
+															return "rotate("
+																	+ computeTextRotation(e)
+																	+ ")";
+														}).attr("x",
+														function(d) {
+															return y(d.y);
+														});
 								}
 
 								if ("decRoot" == d.type
@@ -610,13 +635,13 @@ function setPartitionDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"Click on an arcs to zoom in the specific element. Click on the center circle to zoom out."))
 
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -916,14 +941,16 @@ function drawTreeLayout() {
 			treeSVGWidth).attr("height", treeSVGHeight);
 
 	/* === Call Data - JSON === */
-	$.ajax({
-		url : "./data/elaboratedDSF.json",
-		dataType : 'json',
-		async : false,
-		success : function(json) {
-			treeNodesTree = json.decisionTree;
-		}
-	});
+	// $.ajax({
+	// url : "./data/elaboratedDSF.json",
+	// dataType : 'json',
+	// async : false,
+	// success : function(json) {
+	var treeLayoutData = JSON.parse(JSON.stringify(visualizationData));
+
+	treeNodesTree = treeLayoutData.decisionTree;
+	// }
+	// });
 
 	/* === Adjust positioning === */
 	treeNodesTree.x0 = treeSVGWidth / 2;
@@ -1137,13 +1164,13 @@ function setTreeDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"Click on a node to either expand or collapse its sub-nodes."))
 
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -1420,28 +1447,28 @@ function drawClusterLayout() {
 	setClusterDefaultInformation();
 
 	/* === Call Data - JSON === */
-	$.ajax({
-		url : "./data/elaboratedDSF.json",
-		dataType : 'json',
-		async : false,
-		success : function(json) {
-			// New Root
-			clusterNodesTree = {
-				id : -2,
-				type : "root",
-				parent : null,
-				children : []
-			};
-
-			json.taskTree.type = "taskRoot";
-			clusterNodesTree.children.push(json.taskTree);
-			// @Metz Node tree with normal decision Tree to avoid duplicate in
-			// json file. child accessor function has been adapted (see below).
-			clusterNodesTree.children = clusterNodesTree.children
-					.concat(json.decisionTree.children);
-			clusterLinks = json.linksArray;
-		}
-	});
+	// $.ajax({
+	// url : "./data/elaboratedDSF.json",
+	// dataType : 'json',
+	// async : false,
+	// success : function(json) {
+	// New Root
+	clusterNodesTree = {
+		id : -2,
+		type : "root",
+		parent : null,
+		children : []
+	};
+	var clusterLayoutData = JSON.parse(JSON.stringify(visualizationData));
+	clusterLayoutData.taskTree.type = "taskRoot";
+	clusterNodesTree.children.push(clusterLayoutData.taskTree);
+	// @Metz Node tree with normal decision Tree to avoid duplicate in
+	// json file. child accessor function has been adapted (see below).
+	clusterNodesTree.children = clusterNodesTree.children
+			.concat(clusterLayoutData.decisionTree.children);
+	clusterLinks = clusterLayoutData.linksArray;
+	// }
+	// });
 
 	/* === Cluster Vars === */
 	var clusterSVGWidth = SVGWidth;
@@ -1606,17 +1633,27 @@ function drawClusterLayout() {
 
 		var legendItems = $('<div>').attr("id", "layoutLegend");
 
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src", "./img/legends/cluster-line.png"))
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append(
+						$('<img>')
+								.attr("src", "./img/legends/cluster-line.png"))
 				.append($('<span>').text("Influence / Affects Link")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src",
-						"./img/legends/cluster-lineAffectHighlight.png"))
-				.append($('<span>').text("Highlighted Affects Link")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src",
-						"./img/legends/cluster-lineInfluenceHighlight.png"))
-				.append($('<span>').text("Highlighted Influence Link")));
+		legendItems
+				.append($('<span>')
+						.attr("class", "legendItem small")
+						.append(
+								$('<img>')
+										.attr("src",
+												"./img/legends/cluster-lineAffectHighlight.png"))
+						.append($('<span>').text("Highlighted Affects Link")));
+		legendItems
+				.append($('<span>')
+						.attr("class", "legendItem small")
+						.append(
+								$('<img>')
+										.attr("src",
+												"./img/legends/cluster-lineInfluenceHighlight.png"))
+						.append($('<span>').text("Highlighted Influence Link")));
 		// $('#visContentDIV').append(legendItems);
 		$('#visContent').append(legendItems);
 	}
@@ -1641,13 +1678,13 @@ function setClusterDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"Hover over a text label to highlight the elements relationships. Click on one or more text labels to either select or deselect it and its relationships."))
 
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -1806,8 +1843,8 @@ function mouseNodeClickCluster(n) {
 							return d.source.id != n.id ? d.source.label
 									: d.target.label;
 						}).append(
-						$('<span>').attr("class", "affectDirection small").text(
-								function() {
+						$('<span>').attr("class", "affectDirection small")
+								.text(function() {
 									if ("auto" == d.dir) {
 										if (d.source.id != n.id) {
 											return "is affecting";
@@ -2030,39 +2067,38 @@ function drawForceLayout() {
 	setForceDefaultInformation();
 
 	/* === Call Data - JSON === */
-	$.ajax({
-		url : "./data/elaboratedDSF.json",
-		dataType : 'json',
-		async : false,
-		success : function(json) {
-			// New Root
-			forceNodesTree = {
-				id : -2,
-				type : "root",
-				parent : null,
-				children : []
-			};
+	// $.ajax({
+	// url : "./data/elaboratedDSF.json",
+	// dataType : 'json',
+	// async : false,
+	// success : function(json) {
+	// New Root
+	forceNodesTree = {
+		id : -2,
+		type : "root",
+		parent : null,
+		children : []
+	};
 
-			json.decisionTree.type = "decRoot";
-			forceNodesTree.children = forceNodesTree.children
-					.concat(json.decisionTree.children);
-			forceNodesTree.children = forceNodesTree.children
-					.concat(json.taskTree.children);
-			var helperC = d3.layout.cluster();
-			forceNodesArray = helperC.nodes(forceNodesTree);
+	var forceLayoutData = JSON.parse(JSON.stringify(visualizationData));
+	forceLayoutData.decisionTree.type = "decRoot";
+	forceNodesTree.children = forceNodesTree.children
+			.concat(forceLayoutData.decisionTree.children);
+	forceNodesTree.children = forceNodesTree.children
+			.concat(forceLayoutData.taskTree.children);
+	var helperC = d3.layout.cluster();
+	forceNodesArray = helperC.nodes(forceNodesTree);
 
-			forceNodesArray = forceNodesArray
-					.filter(function(d) {
-						return ("decisionPoint" == d.type
-								|| "decision" == d.type || "task" == d.type);
-					});
-			forceLinksArray = helperC.links(forceNodesArray);
-			forceRelatedLinks = json.linksArray;
-			forceRelatedLinks = nodedLinksArray(forceRelatedLinks,
-					forceNodesArray);
-			forceLinksArray = forceLinksArray.concat(forceRelatedLinks);
-		}
-	});
+	forceNodesArray = forceNodesArray
+			.filter(function(d) {
+				return ("decisionPoint" == d.type || "decision" == d.type || "task" == d.type);
+			});
+	forceLinksArray = helperC.links(forceNodesArray);
+	forceRelatedLinks = forceLayoutData.linksArray;
+	forceRelatedLinks = nodedLinksArray(forceRelatedLinks, forceNodesArray);
+	forceLinksArray = forceLinksArray.concat(forceRelatedLinks);
+	// }
+	// });
 
 	/* === Force Vars === */
 	var forceSVGWidth = SVGWidth;
@@ -2484,26 +2520,35 @@ function drawForceLayout() {
 
 		var legendItems = $('<div>').attr("id", "layoutLegend");
 
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src", "./img/legends/force-dp.png")).append(
-				$('<span>').text("Decision Point Node")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src", "./img/legends/force-dec.png")).append(
-				$('<span>').text("Decision Node")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src", "./img/legends/force-task.png")).append(
-				$('<span>').text("Task Node")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src", "./img/legends/force-dpDecLink.png"))
-				.append($('<span>').text("Decision Point - Decision Link")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src",
-						"./img/legends/force-affectationLink.png")).append(
-				$('<span>').text("Affectation Link")));
-		legendItems.append($('<span>').attr("class", "legendItem small").append(
-				$('<img>').attr("src",
-						"./img/legends/force-affectationLinkHighlight.png"))
-				.append($('<span>').text("Highlighted Affectation Link")));
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append($('<img>').attr("src", "./img/legends/force-dp.png"))
+				.append($('<span>').text("Decision Point Node")));
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append($('<img>').attr("src", "./img/legends/force-dec.png"))
+				.append($('<span>').text("Decision Node")));
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append($('<img>').attr("src", "./img/legends/force-task.png"))
+				.append($('<span>').text("Task Node")));
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append(
+						$('<img>').attr("src",
+								"./img/legends/force-dpDecLink.png")).append(
+						$('<span>').text("Decision Point - Decision Link")));
+		legendItems.append($('<span>').attr("class", "legendItem small")
+				.append(
+						$('<img>').attr("src",
+								"./img/legends/force-affectationLink.png"))
+				.append($('<span>').text("Affectation Link")));
+		legendItems
+				.append($('<span>')
+						.attr("class", "legendItem small")
+						.append(
+								$('<img>')
+										.attr("src",
+												"./img/legends/force-affectationLinkHighlight.png"))
+						.append(
+								$('<span>')
+										.text("Highlighted Affectation Link")));
 		// $('#visContentDIV').append(legendItems);
 		$('#visContent').append(legendItems);
 
@@ -2526,13 +2571,13 @@ function setForceDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"Hover over an element to highlight their relationships and related elements. Click on one or more elements to either select or deselect it and its relationships."))
 
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -2540,7 +2585,7 @@ function setForceDefaultInformation() {
 }
 function setForceSettings() {
 
-	var displayedNodes = $('<div>')	
+	var displayedNodes = $('<div>')
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<div>')
@@ -2989,8 +3034,8 @@ function mouseNodeClickForce(n) {
 												+ v.target.id.toString()[0];
 								}
 							}).append(
-							$('<span>').attr("class", "affectDirection small").text(
-									function() {
+							$('<span>').attr("class", "affectDirection small")
+									.text(function() {
 										if ("auto" == v.dir) {
 											if (v.source.id != n.id) {
 												return "is affecting";
@@ -3140,9 +3185,10 @@ function drawTreemapLayout() {
 	var treemap = d3.layout.treemap().children(function(d, depth) {
 		return depth ? null : d._children;
 	}).sort(function(a, b) {
-		//@Metz Sort entries after id to keep order as in knowledge base dp1 > dp2 ...
+		// @Metz Sort entries after id to keep order as in knowledge base dp1 >
+		// dp2 ...
 		return b.id - a.id;
-		//return a.value - b.value;
+		// return a.value - b.value;
 	}).ratio(height / width * 0.5 * (1 + Math.sqrt(5))).round(false);
 
 	/* === Nodes / Links === */
@@ -3166,177 +3212,160 @@ function drawTreemapLayout() {
 	grandparent.append("text").attr("x", 6).attr("y", 6 - margin.top).attr(
 			"dy", ".9em");
 
-	d3
-			.json(
-					"./data/elaboratedDSF.json",
-					function(root) {
-						initialize(root.decisionTree);
-						accumulate(root.decisionTree);
-						layout(root.decisionTree);
-						display(root.decisionTree);
+	// d3
+	// .json(
+	// "./data/elaboratedDSF.json",
+	// function(root) {
+	var treeMapLayoutData = JSON.parse(JSON.stringify(visualizationData));
+	initialize(treeMapLayoutData.decisionTree);
+	accumulate(treeMapLayoutData.decisionTree);
+	layout(treeMapLayoutData.decisionTree);
+	display(treeMapLayoutData.decisionTree);
 
-						function initialize(root) {
-							root.x = root.y = 0;
-							root.dx = width;
-							root.dy = height;
-							root.depth = 0;
-						}
+	function initialize(root) {
+		root.x = root.y = 0;
+		root.dx = width;
+		root.dy = height;
+		root.depth = 0;
+	}
 
-						function accumulate(d) {
-							return (d._children = d.children) ? d.value = d.children
-									.reduce(function(p, v) {
-										return p + accumulate(v);
-									}, 0)
-									: d.value = 1; // d.weight;
-						}
+	function accumulate(d) {
+		return (d._children = d.children) ? d.value = d.children.reduce(
+				function(p, v) {
+					return p + accumulate(v);
+				}, 0) : d.value = 1; // d.weight;
+	}
 
-						function layout(d) {
-							if (d._children) {
-								treemap.nodes({
-									_children : d._children
-								});
+	function layout(d) {
+		if (d._children) {
+			treemap.nodes({
+				_children : d._children
+			});
 
-								d._children.forEach(function(c) {
-									c.x = d.x + c.x * d.dx;
-									c.y = d.y + c.y * d.dy;
-									c.dx *= d.dx;
-									c.dy *= d.dy;
-									c.parent = d;
-									layout(c);
-								});
-							}
-						}
+			d._children.forEach(function(c) {
+				c.x = d.x + c.x * d.dx;
+				c.y = d.y + c.y * d.dy;
+				c.dx *= d.dx;
+				c.dy *= d.dy;
+				c.parent = d;
+				layout(c);
+			});
+		}
+	}
 
-						function display(d) {
-							grandparent.datum(d.parent).on("click",
-									function(d) {
-										transition(d);
-										mouseNodeClickTreemap(d);
-									}).select("text").text(name(d));
+	function display(d) {
+		grandparent.datum(d.parent).on("click", function(d) {
+			transition(d);
+			mouseNodeClickTreemap(d);
+		}).select("text").text(name(d));
 
-							var g1 = svg.insert("g", ".grandparent").datum(d)
-									.attr("class", "depth");
+		var g1 = svg.insert("g", ".grandparent").datum(d)
+				.attr("class", "depth");
 
-							var g = g1.selectAll("g").data(d._children).enter()
-									.append("g");
+		var g = g1.selectAll("g").data(d._children).enter().append("g");
 
-							g.filter(function(d) {
-								return d._children;
-							}).classed("children", true).on("click",
-									function(d) {
-										transition(d);
-										mouseNodeClickTreemap(d);
-									});
+		g.filter(function(d) {
+			return d._children;
+		}).classed("children", true).on("click", function(d) {
+			transition(d);
+			mouseNodeClickTreemap(d);
+		});
 
-							g.append("rect").attr(
-									"class",
-									function(d) {
-										if ("decisionPoint" == d.type) {
-											return "parent decisionPoint"
-													+ d.id.toString()[0];
-										} else if ("decision" == d.type) {
-											return "parent decision"
-													+ d.id.toString()[0];
-										} else if ("outcome" == d.type) {
-											return "parent outcome"
-													+ d.id.toString()[0];
-										} else if ("task" == d.type) {
-											return "parent task";
-										} else if ("decRoot" == d.type
-												|| "taskRoot" == d.type) {
-											return "parent subRoot";
-										} else {
-											return "parent";
-										}
-									}).call(rect);
+		g.append("rect").attr("class", function(d) {
+			if ("decisionPoint" == d.type) {
+				return "parent decisionPoint" + d.id.toString()[0];
+			} else if ("decision" == d.type) {
+				return "parent decision" + d.id.toString()[0];
+			} else if ("outcome" == d.type) {
+				return "parent outcome" + d.id.toString()[0];
+			} else if ("task" == d.type) {
+				return "parent task";
+			} else if ("decRoot" == d.type || "taskRoot" == d.type) {
+				return "parent subRoot";
+			} else {
+				return "parent";
+			}
+		}).call(rect);
 
-							g.selectAll(".child").data(function(d) {
-								return d._children || [ d ];
-							}).enter().append("rect").attr("class", "child")
-									.call(rect);
+		g.selectAll(".child").data(function(d) {
+			return d._children || [ d ];
+		}).enter().append("rect").attr("class", "child").call(rect);
 
-							g
-									.append("text")
-									.attr("dy", ".75em")
-									.attr(
-											"class",
-											function(d) {
-												return "decisionPoint" == d.type ? "treemapDPNodeText"
-														: "treemapNodeText";
-											}).text(function(d) {
-										return d.label;
-									}).call(text);
+		g.append("text").attr("dy", ".75em").attr(
+				"class",
+				function(d) {
+					return "decisionPoint" == d.type ? "treemapDPNodeText"
+							: "treemapNodeText";
+				}).text(function(d) {
+			return d.label;
+		}).call(text);
 
-							function transition(d) {
-								if (transitioning || !d)
-									return;
-								transitioning = true;
+		function transition(d) {
+			if (transitioning || !d)
+				return;
+			transitioning = true;
 
-								var g2 = display(d), t1 = g1.transition()
-										.duration(750), t2 = g2.transition()
-										.duration(750);
+			var g2 = display(d), t1 = g1.transition().duration(750), t2 = g2
+					.transition().duration(750);
 
-								// Update the domain only after entering new
-								// elements.
-								x.domain([ d.x, d.x + d.dx ]);
-								y.domain([ d.y, d.y + d.dy ]);
+			// Update the domain only after entering new
+			// elements.
+			x.domain([ d.x, d.x + d.dx ]);
+			y.domain([ d.y, d.y + d.dy ]);
 
-								// Enable anti-aliasing during the transition.
-								svg.style("shape-rendering", null);
+			// Enable anti-aliasing during the transition.
+			svg.style("shape-rendering", null);
 
-								// Draw child nodes on top of parent nodes.
-								svg.selectAll(".depth").sort(function(a, b) {
-									return a.depth - b.depth;
-								});
+			// Draw child nodes on top of parent nodes.
+			svg.selectAll(".depth").sort(function(a, b) {
+				return a.depth - b.depth;
+			});
 
-								// Fade-in entering text.
-								g2.selectAll("text").style("fill-opacity", 0);
+			// Fade-in entering text.
+			g2.selectAll("text").style("fill-opacity", 0);
 
-								// Transition to the new view.
-								t1.selectAll("text").call(text).style(
-										"fill-opacity", 0);
-								t2.selectAll("text").call(text).style(
-										"fill-opacity", 1);
-								t1.selectAll("rect").call(rect);
-								t2.selectAll("rect").call(rect);
+			// Transition to the new view.
+			t1.selectAll("text").call(text).style("fill-opacity", 0);
+			t2.selectAll("text").call(text).style("fill-opacity", 1);
+			t1.selectAll("rect").call(rect);
+			t2.selectAll("rect").call(rect);
 
-								// Remove the old node when the transition is
-								// finished.
-								t1.remove().each("end", function() {
-									svg.style("shape-rendering", "crispEdges");
-									transitioning = false;
-								});
-							}
+			// Remove the old node when the transition is
+			// finished.
+			t1.remove().each("end", function() {
+				svg.style("shape-rendering", "crispEdges");
+				transitioning = false;
+			});
+		}
 
-							return g;
-						}
+		return g;
+	}
 
-						function text(text) {
-							text.attr("x", function(d) {
-								return x(d.x) + 6;
-							}).attr("y", function(d) {
-								return y(d.y) + 6;
-							});
-						}
+	function text(text) {
+		text.attr("x", function(d) {
+			return x(d.x) + 6;
+		}).attr("y", function(d) {
+			return y(d.y) + 6;
+		});
+	}
 
-						function rect(rect) {
+	function rect(rect) {
 
-							rect.attr("x", function(d) {
-								return x(d.x);
-							}).attr("y", function(d) {
-								return y(d.y);
-							}).attr("width", function(d) {
-								return x(d.x + d.dx) - x(d.x);
-							}).attr("height", function(d) {
-								return y(d.y + d.dy) - y(d.y);
-							});
-						}
+		rect.attr("x", function(d) {
+			return x(d.x);
+		}).attr("y", function(d) {
+			return y(d.y);
+		}).attr("width", function(d) {
+			return x(d.x + d.dx) - x(d.x);
+		}).attr("height", function(d) {
+			return y(d.y + d.dy) - y(d.y);
+		});
+	}
 
-						function name(d) {
-							return d.parent ? name(d.parent) + " > " + d.label
-									: d.label;
-						}
-					});
+	function name(d) {
+		return d.parent ? name(d.parent) + " > " + d.label : d.label;
+	}
+	// });
 }
 
 // function updateTreemapLayout() {}
@@ -3354,13 +3383,13 @@ function setTreemapDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"Hover and click on the treemap visualization to zoom in on this element. Click on the top gray bar to zoom out."))
 
 			.append(
 					$('<p>')
-//							.attr("class", "defaultInformation")
+							// .attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
