@@ -29,7 +29,7 @@ function drawTreeLayout() {
 		return [ d.y, d.x ];
 	});
 
-	d3.json("./js/json/elaboratedDSF.json", function(json) {
+	d3.json("./data/elaboratedDSF.json", function(json) {
 		root = json.decisionTree;
 		// start in the left-middle of the svg
 		root.x0 = mC.panelWidth / 2;
