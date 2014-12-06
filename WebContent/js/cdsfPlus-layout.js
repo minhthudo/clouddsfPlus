@@ -37,7 +37,7 @@ $(document).ready(function() {
 	setSidebarButtons();
 	
 	// todo move to own file
-	$('#buttonTree').on('click', function(event) {
+	$('#bt_treeLayout').on('click', function(event) {
 		drawTreeLayout();
 	});
 	$('#buttonGroupRelations .btn.active input').each(function(index) {
