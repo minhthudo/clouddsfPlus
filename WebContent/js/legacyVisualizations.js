@@ -610,13 +610,13 @@ function setPartitionDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"Click on an arcs to zoom in the specific element. Click on the center circle to zoom out."))
 
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -1137,13 +1137,13 @@ function setTreeDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"Click on a node to either expand or collapse its sub-nodes."))
 
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -1606,14 +1606,14 @@ function drawClusterLayout() {
 
 		var legendItems = $('<div>').attr("id", "layoutLegend");
 
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src", "./img/legends/cluster-line.png"))
 				.append($('<span>').text("Influence / Affects Link")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src",
 						"./img/legends/cluster-lineAffectHighlight.png"))
 				.append($('<span>').text("Highlighted Affects Link")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src",
 						"./img/legends/cluster-lineInfluenceHighlight.png"))
 				.append($('<span>').text("Highlighted Influence Link")));
@@ -1641,13 +1641,13 @@ function setClusterDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"Hover over a text label to highlight the elements relationships. Click on one or more text labels to either select or deselect it and its relationships."))
 
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -1806,7 +1806,7 @@ function mouseNodeClickCluster(n) {
 							return d.source.id != n.id ? d.source.label
 									: d.target.label;
 						}).append(
-						$('<span>').attr("class", "affectDirection").text(
+						$('<span>').attr("class", "affectDirection small").text(
 								function() {
 									if ("auto" == d.dir) {
 										if (d.source.id != n.id) {
@@ -2484,23 +2484,23 @@ function drawForceLayout() {
 
 		var legendItems = $('<div>').attr("id", "layoutLegend");
 
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src", "./img/legends/force-dp.png")).append(
 				$('<span>').text("Decision Point Node")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src", "./img/legends/force-dec.png")).append(
 				$('<span>').text("Decision Node")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src", "./img/legends/force-task.png")).append(
 				$('<span>').text("Task Node")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src", "./img/legends/force-dpDecLink.png"))
 				.append($('<span>').text("Decision Point - Decision Link")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src",
 						"./img/legends/force-affectationLink.png")).append(
 				$('<span>').text("Affectation Link")));
-		legendItems.append($('<span>').attr("class", "legendItem").append(
+		legendItems.append($('<span>').attr("class", "legendItem small").append(
 				$('<img>').attr("src",
 						"./img/legends/force-affectationLinkHighlight.png"))
 				.append($('<span>').text("Highlighted Affectation Link")));
@@ -2526,13 +2526,13 @@ function setForceDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"Hover over an element to highlight their relationships and related elements. Click on one or more elements to either select or deselect it and its relationships."))
 
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -2540,7 +2540,7 @@ function setForceDefaultInformation() {
 }
 function setForceSettings() {
 
-	var displayedNodes = $('<div>')
+	var displayedNodes = $('<div>')	
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<div>')
@@ -2989,7 +2989,7 @@ function mouseNodeClickForce(n) {
 												+ v.target.id.toString()[0];
 								}
 							}).append(
-							$('<span>').attr("class", "affectDirection").text(
+							$('<span>').attr("class", "affectDirection small").text(
 									function() {
 										if ("auto" == v.dir) {
 											if (v.source.id != n.id) {
@@ -3354,13 +3354,13 @@ function setTreemapDefaultInformation() {
 			.attr("class", "visInfoBOX")
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"Hover and click on the treemap visualization to zoom in on this element. Click on the top gray bar to zoom out."))
 
 			.append(
 					$('<p>')
-							.attr("class", "defaultInformation")
+//							.attr("class", "defaultInformation")
 							.text(
 									"This panel then shows detailed information about the selected element."));
 	$('#visRightContent').append(defaultInformation);
@@ -3683,7 +3683,7 @@ function nodedLinksArray(inputLinksArray, inputNodesArray) {
 /* Function setInfoLabel */
 function setInfoLabel(d) {
 	var visInfoLabelBOX = $('#visInfoLabelBOX');
-	visInfoLabelBOX.find('#visInfoLabelTextBOX h3').text(d.label).addClass(
+	visInfoLabelBOX.find('#visInfoLabelTextBOX h4').text(d.label).addClass(
 			function() {
 				$(this).removeClass();
 				if ("decisionPoint" == d.type) {

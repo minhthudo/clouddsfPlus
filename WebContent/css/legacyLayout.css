@@ -33,18 +33,18 @@
 
 html {}
 */
-body {
-	/* 	background-image: url("../img/layout/crossing-bg-white-transparent.png");
+/* body {
+		background-image: url("../img/layout/crossing-bg-white-transparent.png");
 	background-repeat: repeat;
 	background-position: left top;
 	background-size: auto;
 	background-color: #FFFFFF; #F2F2F2;
 	color: #333333;
 	
-	letter-spacing: 0.05em; */
-	/* min-width: 1200px; */
+	letter-spacing: 0.05em;
+	min-width: 1200px;
 	
-}
+} */
 /*
 .container {
 	width: 1100px !important;
@@ -196,45 +196,50 @@ body {
 
 /* General Panel */
 /* ========================================== */
+.container-fluid {
+	padding-right: 0px;
+}
+
 .visPanelContent {
 	padding: 10px 8% 10px 8%;
 }
 
 .visPanelHeader {
-/* 	background-color: #A7A7A7; */
+	/* 	background-color: #A7A7A7; */
 	background-color: #222;
-	font-size: 1.1em;
+	font-size: 1.2em;
 	margin: 0 0 5px 0;
 }
 
 .visPanelHeader a {
-	text-decoration: none;
-	/* color: #F7F7F7; */
+	/* 	text-decoration: none; */
+	/* 	 color: #F7F7F7;  */
 	color: #bdbdbd;
 }
 
-.visPanelHeaderIconLeft {
-	float: left;
+/* .visPanelHeaderIconLeft {
+		float: left;
 	border-right: 1px solid #DDDDDD;
-}
-
+	border-right: 2px solid #3182BD;
+} */
 .visPanelHeaderIconLeft span {
 	padding: 6px;
-	font-size: 1.2em;
+	/* 	font-size: 1.2em; */
 }
 
-.visPanelHeaderLabel {
+/* .visPanelHeaderLabel {
 	float: left;
-}
-
+} */
 .visPanelHeaderLabel span {
-	font-size: 1.1em;
+	/* 	font-size: 1.2em; */
 	padding: 4px 10px;
 	display: inline-block;
+	border-left: 2px solid #3182BD;
 }
 
 .visInfoBOX {
 	margin: 20px 0 0 0;
+	/* text-align: center; */
 }
 
 .visInfoBOX:first-child {
@@ -242,11 +247,12 @@ body {
 }
 
 .visInfoHeaderBOX {
-	border-bottom: solid 2px #A7A7A7;
+	/* 	border-bottom: solid 2px #A7A7A7; */
+	border-bottom: solid 2px #222;
 }
 
 .visInfoHeaderBOX h4 {
-	font-size: 1.25em;
+	/* 	font-size: 1.25em; */
 	margin: 0;
 	padding: 0.1em 0.25em;
 	float: left;
@@ -263,10 +269,9 @@ body {
 	text-decoration: none;
 }
 
-.visInfoHeaderToogle a span {
+/* .visInfoHeaderToogle a span {
 	font-size: 0.9em;
-}
-
+} */
 .visInfoContentBOX {
 	padding: 0 0.5em;
 }
@@ -276,8 +281,10 @@ body {
 }
 
 .visInputBoxDisabled span {
-	border-color: #E6E6E6;
-	color: #D9D9D9;
+	/* border-color: #E6E6E6; */
+	border-color: #BDBDBD;
+	/* color: #D9D9D9; */
+	color: #BDBDBD;
 }
 
 /* Left Panel */
@@ -330,16 +337,17 @@ body {
 	border: solid 1px #DDDDDD;
 	background: none;
 	background-color: #FFFFFF; */
-	/* Width for the svg was always fixed. Now javascript has fixed width*/
-	border-right: solid 1px #DDDDDD;
+	/* Width for the svg was fixed. Now javascript has fixed width*/
+	/*todo change border layout*/
+	/* border-right: solid 1px #DDDDDD; */
+	border-right: solid 1px #BDBDBD;
 	text-align: center !important;
 }
 
-#layoutLegend {
+/* #layoutLegend {
 	text-align: center;
 	margin: 1em 0;
-}
-
+} */
 #layoutLegend .legendItem {
 	display: inline-block;
 	width: 100px;
@@ -353,15 +361,17 @@ body {
 #layoutLegend .legendItem span {
 	display: inline-block;
 	width: 100%;
-	font-size: 0.8em;
+	/* 	font-size: 0.8em; */
+	padding-bottom: 10px;
+	/* padding instead of margin at #layout legend  */
 }
 
 /* .jumbotron {
 	margin: 15px 0;
 } */
-.defaultInformation {
+/* .defaultInformation {
 	text-align: center;
-}
+} */
 
 /* Right Panel */
 /* ========================================== */
@@ -379,41 +389,45 @@ body {
 } */
 #visInfoLabelBOX {
 	display: none;
-	border: solid 1px #DDDDDD;
+	/* 	border: solid 1px #DDDDDD; */
+	border: solid 1px #BDBDBD;
+	text-align: center;
 }
 
 #visInfoLabelTypeBOX {
-	border-top: solid 1px #DDDDDD;
+	/* 	border-top: solid 1px #DDDDDD; */
+	border-top: solid 1px #BDBDBD;
 }
 
 #visInfoLabelTypeBOX span {
-	font-size: 0.9em;
-	letter-spacing: 0.1em;
-	text-align: center;
-	width: 100%;
-	display: inline-block;
-	padding: 0.05em 0.5em;
+	/* 	font-size: 0.9em;
+	letter-spacing: 0.1em; */
+	/* 	text-align: center; */
+	/* width: 100%; */
+	/* display: inline-block; */
+	/* padding: 0.05em 0.5em; */
+	
 }
 
 /* #visInfoLabelTextBOX {
 	
 } */
-#visInfoLabelTextBOX h3 {
+/* #visInfoLabelTextBOX h3 {
 	margin: 0;
 	padding: 0.5em;
-	text-align: center;
+ 	text-align: center; 
 	font-size: 1.4em;
-}
-
+} */
 .visInfoRelatedNodesUL {
-	margin: 0;
+	/* 	margin: 0; */
 	padding: 0;
 	list-style-type: none;
+	/* 	text-align: left; */
 }
 
 .visInfoRelatedNodesUL li {
 	padding: 0.3em;
-	border-bottom: solid 1px #DDDDDD;
+	/* 	border-bottom: solid 1px #DDDDDD; */
 }
 
 .visInfoRelatedNodesUL li span {
@@ -421,15 +435,17 @@ body {
 	padding: 0.25em 0.5em;
 	border-left: solid 2px #FFFFFF;
 	display: inline-block;
-	font-size: 0.95em;
+	/* 	font-size: 0.95em; */
 }
 
 .visInfoRelatedNodesUL li span.affectDirection {
 	padding: 0.25em 0 0 0;
-	border-top: solid 1px #E6E6E6;
+	/* border-top: solid 1px #E6E6E6; */
+	border-top: solid 1px #BDBDBD;
 	display: block;
-	font-size: 0.85em;
-	color: #6B6B6B;
+	/* 	font-size: 0.85em; */
+	/* 	color: #6B6B6B; */
+	color: #636363; /* d3 */
 }
 
 /* General Layout Defs */
@@ -550,25 +566,18 @@ body {
 	width: 100%;
 }
 
-
-
-
-
-
 svg {
 	margin: auto;
 	overflow: visible !important;
 }
+
 svg.overflowHidden {
 	overflow: hidden !important;
 }
 
-svg p {
+/* svg p {
 	margin: 0;	
-}
-
-
-
+} */
 
 /* ***** Layout Styles ***** */
 
@@ -577,66 +586,69 @@ svg p {
 	stroke: #FFFFFF;
 	fill-rule: evenodd;
 }
+
 .partitionTask {
 	fill: #FFD937;
 }
+
 .partitionDecRoot {
 	fill: #DBDBDB;
 }
-.partitionTaskRoot{
+
+.partitionTaskRoot {
 	fill: #FFEA91;
 }
 
 .pathTextDP {
-	font-size: 1.5em ;
-	fill: #FFFFFF;	
+	font-size: 1.5em;
+	fill: #FFFFFF;
 }
 
 .pathTextDec {
 	font-size: 1em;
 	font-weight: bold;
 }
+
 .pathTextDecTurn {
 	font-size: 1em;
 	font-weight: bold;
 	text-align: right;
 }
 
-
 /* SVG Styles Treemap Layout */
-.grandparent rect {fill: #666666;}
+.grandparent rect {
+	fill: #666666;
+}
+
 .grandparent text {
 	font-size: 1.1em;
 	fill: #FFFFFF
 }
 
-.children:hover rect.child,
- rect {
-fill: #CCCCCC;
+.children:hover rect.child, rect {
+	fill: #CCCCCC;
 }
 
 .textdiv { /* text in the boxes */
-font-size: 1em;
-padding: 5px;
+	font-size: 1em;
+	padding: 5px;
 }
 
 rect {
-fill: none;
-stroke: #fff;
+	fill: none;
+	stroke: #fff;
 }
 
-rect.parent,
-.grandparent rect {
-stroke-width: 2px;
+rect.parent, .grandparent rect {
+	stroke-width: 2px;
 }
 
-.children rect.parent,
-.grandparent rect {
-cursor: pointer;
+.children rect.parent, .grandparent rect {
+	cursor: pointer;
 }
 
 rect.parent {
-pointer-events: all; 
+	pointer-events: all;
 }
 
 .treemapNodeText {
@@ -655,41 +667,44 @@ pointer-events: all;
 .forceDecisionPoint {
 	
 }
+
 .forceDecision {
 	stroke: #333333;
 	stroke-width: 0.5px;
 }
+
 .forceTask {
 	stroke: #333333;
-	stroke-width: 0.5px;	
+	stroke-width: 0.5px;
 }
 
-.forceLink{
+.forceLink {
 	fill: none;
 	stroke: #C6C6C6;
 	stroke-width: 1px;
 }
+
 .forceLineLink {
 	fill: none;
 	stroke: #666666;
 	stroke-width: 2px;
 }
 
-
-
 /* Text */
 .forceTextCenter {
 	text-align: center;
 }
+
 .forceTextDP {
 	color: #FFFFFF;
 	font-size: 1.2em;
 }
+
 .forceTextDec {
 	font-size: 0.9em;
-		margin: 5px;
-
+	margin: 5px;
 }
+
 .forceTextTask {
 	font-size: 0.8em;
 	margin: 5px;
@@ -699,6 +714,7 @@ pointer-events: all;
 	fill: blue;
 	stroke-width: 1px !important;
 }
+
 .affectMarker {
 	fill: #ADADAD;
 	stroke-width: 1px !important;
@@ -713,6 +729,7 @@ pointer-events: all;
 	stroke: #0052CC;
 	stroke-width: 1.25px;
 }
+
 .forceHighlightNode {
 	stroke: #0052CC;
 	stroke-width: 2.5px;
@@ -722,26 +739,29 @@ pointer-events: all;
 	fill: #efefef;
 }
 
-
 /* Selected */
 .selectedNode {
 	stroke-width: 1.5px;
 	stroke: green;
 }
-.selectedLink {}
 
-
+.selectedLink {
+	
+}
 
 /* === Cluster Layout == */
 .clusterNode {
 	
 }
+
 .clusterNode text {
-	font-size: 0.95em;	
+	font-size: 0.95em;
 }
+
 .clusterGroupDPText {
 	fill: #FFFFFF;
 }
+
 .clusterTaskText {
 	fill: #D7AD00;
 }
@@ -756,49 +776,57 @@ pointer-events: all;
 	stroke: #DB49AF;
 	stroke-width: 1.15px;
 }
+
 .clusterAffectationLink {
 	stroke: #0052CC;
 	stroke-width: 1.15px;
 }
+
 .clusterInfluenceLinkClick {
 	stroke: #DB49AF;
 	stroke-width: 1.15px;
 }
+
 .clusterAffectationLinkClick {
 	stroke: #0052CC;
 	stroke-width: 1.15px;
 }
+
 .clusterHighlightedTextNode {
 	font-weight: 900;
 }
 
-.clusterGroup {} 
-
-
-
-
+.clusterGroup {
+	
+}
 
 /* === Tree Layout == */
-.treeNode {}
+.treeNode {
+	
+}
+
 .treeLink {
 	fill: none;
 	stroke: #CCCCCC;
-    stroke-width: 1.5px;
+	stroke-width: 1.5px;
 }
 
 /* Text */
 .treeTextDIV {
 	background: none;
 }
+
 .treeTextDIV p {
 	text-align: right;
 	/*font-size: 0.9em;*/
 	font-size: 1.0em;
 	font-weight: bold;
 }
+
 .treeOutTextDIV {
 	background: none;
 }
+
 .treeOutTextDIV p {
 	text-align: left;
 	/*font-size: 0.9em;*/
@@ -812,121 +840,132 @@ pointer-events: all;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeRootExpanded {
 	fill: #FFFFFF;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
 
-
 .treeDP1Collapsed {
 	fill: #006738;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDP1Expanded {
 	fill: #FFFFFF;
 	stroke: #006738;
 	stroke-width: 2px;
 }
+
 .treeDec1Collapsed {
 	fill: #009E56;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDec1Expanded {
 	fill: #FFFFFF;
 	stroke: #009E56;
 	stroke-width: 2px;
 }
+
 .treeOut1 {
 	fill: #5DCF9B;
 	stroke: #DDDDDD;
 	stroke-width: 1px;
 }
 
-
 .treeDP2Collapsed {
 	fill: #952800;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDP2Expanded {
 	fill: #FFFFFF;
 	stroke: #952800;
 	stroke-width: 2px;
 }
+
 .treeDec2Collapsed {
 	fill: #E53E00;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDec2Expanded {
 	fill: #FFFFFF;
 	stroke: #E53E00;
 	stroke-width: 2px;
 }
+
 .treeOut2 {
 	fill: #F2916D;
 	stroke: #DDDDDD;
 	stroke-width: 1px;
 }
 
-
 .treeDP3Collapsed {
 	fill: #006E93;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDP3Expanded {
 	fill: #FFFFFF;
 	stroke: #006E93;
 	stroke-width: 2px;
 }
+
 .treeDec3Collapsed {
 	fill: #00A9E1;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDec3Expanded {
 	fill: #FFFFFF;
 	stroke: #00A9E1;
 	stroke-width: 2px;
 }
+
 .treeOut3 {
 	fill: #6CCFF0;
 	stroke: #DDDDDD;
 	stroke-width: 1px;
 }
 
-
 .treeDP4Collapsed {
 	fill: #A65500;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDP4Expanded {
 	fill: #FFFFFF;
 	stroke: #A65500;
 	stroke-width: 2px;
 }
+
 .treeDec4Collapsed {
 	fill: #FF8300;
 	stroke: #DDDDDD;
 	stroke-width: 2px;
 }
+
 .treeDec4Expanded {
 	fill: #FFFFFF;
 	stroke: #FF8300;
 	stroke-width: 2px;
 }
+
 .treeOut4 {
 	fill: #FFBB73;
 	stroke: #DDDDDD;
 	stroke-width: 1px;
 }
-
-
 
 /* === General Styles / Fills == */
 
@@ -934,9 +973,11 @@ pointer-events: all;
 .decisionPoint1 {
 	fill: #006738;
 }
+
 .decision1 {
 	fill: #009E56;
 }
+
 .outcome1 {
 	fill: #5DCF9B;
 }
@@ -945,9 +986,11 @@ pointer-events: all;
 .decisionPoint2 {
 	fill: #952800;
 }
+
 .decision2 {
 	fill: #E53E00;
 }
+
 .outcome2 {
 	fill: #F2916D;
 }
@@ -956,9 +999,11 @@ pointer-events: all;
 .decisionPoint3 {
 	fill: #006E93;
 }
+
 .decision3 {
 	fill: #00A9E1;
 }
+
 .outcome3 {
 	fill: #6CCFF0;
 }
@@ -967,16 +1012,18 @@ pointer-events: all;
 .decisionPoint4 {
 	fill: #A65500;
 }
+
 .decision4 {
 	fill: #FF8300;
 }
+
 .outcome4 {
 	fill: #FFBB73;
 }
 
 /* Task */
 .task {
-  fill: #FFD937;
+	fill: #FFD937;
 }
 
 /* Links */
@@ -992,19 +1039,23 @@ pointer-events: all;
 	fill: none;
 	stroke-width: 1.5px;
 }
+
 .lineLink {
 	stroke-width: 1.5px;
 }
+
 .linkMainDec-Dec {
 	stroke: #FF0000;
 }
+
 .linkDec-Dec {
 	stroke: green;
 }
+
 .linkTask-Dec {
 	stroke: yellow;
 }
+
 .linkDec-Out {
 	stroke: blue;
 }
-
