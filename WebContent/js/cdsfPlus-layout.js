@@ -37,10 +37,7 @@ $(document).ready(function() {
 	setSidebarButtons();
 
 	// todo move to own file
-	$('#bt_treeLayout').on('click', function(event) {
-		hierRelGraph = null;
-		hierRelGraph = new treeLayout();
-	});
+
 	$('#buttonGroupRelations .btn.active input').each(function(index) {
 		$(this).prop("checked", true);
 	});
@@ -77,9 +74,19 @@ function setSidebarButtons() {
 	var btnList_DecRel = $('#btnList_DecRel');
 	var btnList_OutRel = $('#btnList_OutRel');
 	var toolbar = $('#toolbarDecisions');
+	var btnList_treeLayout = $('#btnList_treeLayout');
+	btnList_treeLayout.on('click', function(event) {
+		btnList_treeLayout.addClass("active");
+		btnList_DecRel.removeClass("active");
+		btnList_OutRel.removeClass("active");
+		hierRelGraph = null;
+		hierRelGraph = new treeLayout();
+	});
+
 	btnList_DecRel.on('click', function(event) {
 		btnList_DecRel.addClass("active");
 		btnList_OutRel.removeClass("active");
+		btnList_treeLayout.removeClass("active");
 		toolbar.removeClass("hidden");
 		// eventuell neues objekt und nicht gleich instanzieren
 		outRelGraph = null;
@@ -100,6 +107,7 @@ function setSidebarButtons() {
 	btnList_OutRel.on('click', function(event) {
 		btnList_OutRel.addClass("active");
 		btnList_DecRel.removeClass("active");
+		btnList_treeLayout.removeClass("active");
 		toolbar.addClass("hidden");
 		// eventuell neues objekt und nicht gleich instanizieren lassen
 		decRelGraph = null;

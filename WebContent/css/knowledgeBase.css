@@ -4,13 +4,11 @@
 .decisionPoint1 {
 	fill: #006738;
 	stroke: #006738;
-	stroke-width: 2px;
 }
 
 .decision1 {
 	fill: #009E56;
 	stroke: #009E56;
-	stroke-width: 2px;
 }
 
 .outcome1 {
@@ -23,13 +21,11 @@
 .decisionPoint2 {
 	fill: #952800;
 	stroke: #952800;
-	stroke-width: 2px;
 }
 
 .decision2 {
 	fill: #E53E00;
 	stroke: #E53E00;
-	stroke-width: 2px;
 }
 
 .outcome2 {
@@ -42,13 +38,11 @@
 .decisionPoint3 {
 	fill: #006E93;
 	stroke: #006E93;
-	stroke-width: 2px;
 }
 
 .decision3 {
 	fill: #00A9E1;
 	stroke: #00A9E1;
-	stroke-width: 2px;
 }
 
 .outcome3 {
@@ -61,38 +55,46 @@
 .decisionPoint4 {
 	fill: #A65500;
 	stroke: #A65500;
-	stroke-width: 2px;
 }
 
 .decision4 {
 	fill: #FF8300;
 	stroke: #FF8300;
-	stroke-width: 2px;
 }
 
 .outcome4 {
 	fill: #FFBB73;
 	stroke: #FFBB73;
 	stroke-width: 1px;
+	font-weight: 700;
 }
 
 /* === Tree Layout == */
 .treeRoot {
-	fill: #DDDDDD;
-	stroke: #DDDDDD;
-	stroke-width: 2px;
+	fill: #969696;
+	stroke: #969696;
 }
 
 .treeLink {
 	fill: none;
-	stroke: #CCCCCC;
-	stroke-width: 1.5px;
+	stroke: #D9D9D9;
+	stroke-width: 2px;
 }
 
 .treeCollapsed {
-	stroke: #DDDDDD;
+	stroke: #969696;
 }
 
 .treeExpanded {
 	fill: #FFFFFF;
+	stroke-width: 3px;
+}
+
+.treeNode {
+	stroke-width: 2px;
+	font-weight: bold;
+}
+
+.outcomeNode{
+	font-weight:normal;
 }

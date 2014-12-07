@@ -3,18 +3,20 @@ var treeLayout = function() {
 	// Padding for svg container
 	var padding = {
 		top : 5,
-		right : 5,
+		right : 10,
 		bottom : 5,
-		left : 45
+		left : 50
 	};
-	var circleRadius = 10;
+	var decisionRadius = 10;
+	var outcomeRadius = 10;
 	var tree, nodes, root, mC, svg, diagonal;
+	var resizeId;
 
 	function initialize() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
-		mC = marginConvention(padding, 1000);
-
+		mC = marginConvention(padding, 1300);
+		
 		// delete old svg content
 		d3.select("#svgContainer").remove();
 
@@ -80,7 +82,7 @@ var treeLayout = function() {
 		});
 
 		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("svg:g").attr("class", "treeNode")
+		var nodeEnter = node.enter().append("svg:g").attr("class", function(d) {if (d.type =="outcome") return "treeNode outcomeNode"; return "treeNode";})
 				.attr("transform", function(d) {
 					return "translate(" + source.y0 + "," + source.x0 + ")";
 				});
@@ -91,12 +93,14 @@ var treeLayout = function() {
 				function(d) {
 					if (d.type == "root")
 						return 0;
-					return d.children || d._children ? -circleRadius - 5
-							: circleRadius + 5;
+					return d.children || d._children ? -decisionRadius - 5
+							: outcomeRadius + 5;
 				}).attr("y", function(d) {
 			if (d.type == "root")
-				return -circleRadius - 5;
-			return circleRadius / 2;
+				return -decisionRadius - 5;
+			if(d.type =="outcome")
+				return outcomeRadius *1/2;
+			return decisionRadius * 1/3;
 		}).attr("dy", 0).attr("text-anchor", function(d) {
 			if (d.type == "root")
 				return "middle";
@@ -115,7 +119,8 @@ var treeLayout = function() {
 		}).call(wrap, mC.panelWidth / 3);
 
 		// append different css classes through method
-		nodeEnter.append("svg:circle").attr("r", circleRadius).attr("class",
+		nodeEnter.append("svg:circle").attr("r", function(d){
+			if(d.type=="outcome") return outcomeRadius; return decisionRadius;}).attr("class",
 				function(d) {
 					return setClass(d);
 				}).on("click", function(d) {
@@ -130,7 +135,8 @@ var treeLayout = function() {
 					return "translate(" + d.y + "," + d.x + ")";
 				});
 
-		nodeUpdate.select("circle").attr("r", circleRadius).attr("class",
+		nodeUpdate.select("circle").attr("r", function(d){
+			if(d.type=="outcome") return outcomeRadius; return decisionRadius;}).attr("class",
 				function(d) {
 					return setClass(d);
 				});
@@ -231,7 +237,7 @@ var treeLayout = function() {
 			}
 		}
 	}
-	
+
 	// wrap text items in multiple tspans to avoid foreignobject which is not
 	// rendered by ie
 	function wrap(text, width) {
@@ -255,7 +261,7 @@ var treeLayout = function() {
 					// than two rows.
 					amountSpans++;
 					tspan = text.append("tspan").attr("x", x).attr("y", y)
-					// y - (circleRadius / 2))
+					// y - (decisionRadius / 2))
 					.attr("dy", ++lineNumber * lineHeight + dy + "em").text(
 							word);
 				}
@@ -279,12 +285,39 @@ var treeLayout = function() {
 		initialize();
 	});
 
-	// d3.select(window).on('resize', resize);
-	//
-	// function resize() {
-	// // update width
-	// initialize();
-	// }
+	d3.select(window).on('resize', function() {
+		clearTimeout(resizeId);
+		resizeId = setTimeout(resizeLayout, 800);
+	});
+
+	function resizeLayout() {
+		// compute panel size and margins after margin convention
+		// set height to 1000
+		mC = marginConvention(padding, 1000);
+
+		// delete old svg content
+		d3.select("#svgContainer").remove();
+
+		svg = d3
+				.select("#visContent")
+				.append("svg")
+				.attr("width", mC.oWidth)
+				.attr("height", mC.oHeight)
+				.attr("id", "svgContainer")
+				.append("g")
+				.attr("transform",
+						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
+
+		// Create new TreeLayout with svg size
+		tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
+		diagonal = d3.svg.diagonal().projection(function(d) {
+			return [ d.y, d.x ];
+		});
+
+		// start in the left-middle of the svg
+		root.x0 = mC.panelWidth / 2;
+		update(root, svg);
+	}
 
 	// show all decision points
 	function showDPs() {
