@@ -1,50 +1,49 @@
-// todo write as revealing module
-function drawTreeLayout() {
+//TreeLayout Module
+var treeLayout = function() {
 	// Padding for svg container
 	var padding = {
-			top : 5,
-			right : 5,
-			bottom : 5,
-			left : 45
-		};
-	// compute panel size and margins after margin convention
-	var mC = marginConvention(padding, 1000);
-
-	// oWidth = 1100;
-
+		top : 5,
+		right : 5,
+		bottom : 5,
+		left : 45
+	};
 	var circleRadius = 10;
+	var tree, nodes, root, mC, svg, diagonal;
 
-	d3.select("#svgContainer").remove();
+	function initialize() {
+		// compute panel size and margins after margin convention
+		// set height to 1000
+		mC = marginConvention(padding, 1000);
 
-	var svg = d3.select("#visContent").append("svg").attr("width", mC.oWidth)
-			.attr("height", mC.oHeight).attr("id", "svgContainer").append("g")
-			.attr("transform",
-					"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
+		// delete old svg content
+		d3.select("#svgContainer").remove();
 
-	var root;
-	// Create new TreeLayout with svg size
-	var tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
+		svg = d3
+				.select("#visContent")
+				.append("svg")
+				.attr("width", mC.oWidth)
+				.attr("height", mC.oHeight)
+				.attr("id", "svgContainer")
+				.append("g")
+				.attr("transform",
+						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
 
-	var diagonal = d3.svg.diagonal().projection(function(d) {
-		return [ d.y, d.x ];
-	});
+		// Create new TreeLayout with svg size
+		tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
+		diagonal = d3.svg.diagonal().projection(function(d) {
+			return [ d.y, d.x ];
+		});
 
-	d3.json("./data/elaboratedDSF.json", function(json) {
-		root = json.decisionTree;
 		// start in the left-middle of the svg
 		root.x0 = mC.panelWidth / 2;
 		root.y0 = 0;
-		// collapse all datapoints
-		function toggleAll(d) {
-			if (d.children) {
-				d.children.forEach(toggleAll);
-				toggle(d);
-			}
-		}
+
 		// collapse all children
 		root.children.forEach(toggleAll);
+		// update tree depending on node
+
 		update(root, svg);
-	});
+	}
 
 	function update(source, svg) {
 		var duration = d3.event && d3.event.altKey ? 5000 : 500;
@@ -189,6 +188,14 @@ function drawTreeLayout() {
 		});
 	}
 
+	// collapse all datapoints
+	function toggleAll(d) {
+		if (d.children) {
+			d.children.forEach(toggleAll);
+			toggle(d);
+		}
+	}
+
 	// Toggle children.
 	function toggle(d) {
 		if (d.children) {
@@ -224,6 +231,7 @@ function drawTreeLayout() {
 			}
 		}
 	}
+	
 	// wrap text items in multiple tspans to avoid foreignobject which is not
 	// rendered by ie
 	function wrap(text, width) {
@@ -264,4 +272,79 @@ function drawTreeLayout() {
 			}
 		});
 	}
-}
+
+	// get data
+	d3.json("./data/elaboratedDSF.json", function(json) {
+		root = json.decisionTree;
+		initialize();
+	});
+
+	// d3.select(window).on('resize', resize);
+	//
+	// function resize() {
+	// // update width
+	// initialize();
+	// }
+
+	// show all decision points
+	function showDPs() {
+		root.children.forEach(toggleNeg);
+		update(root, svg);
+	}
+
+	// show all decisions
+	function showDecisions() {
+		root.children.forEach(function(d) {
+			if (d.children) {
+				d.children.forEach(toggleNeg);
+			}
+			if (d._children) {
+				d.children = d._children;
+				d._children = null;
+				d.children.forEach(toggleNeg);
+			}
+		});
+		update(root, svg);
+	}
+
+	// show all outcomes
+	function showOutcomes() {
+		root.children.forEach(function(d) {
+			if (d.children) {
+				d.children.forEach(togglePos);
+			}
+			if (d._children) {
+				d.children = d._children;
+				d._children = null;
+				d.children.forEach(togglePos);
+			}
+		});
+		update(root, svg);
+	}
+
+	// Show all children
+	function togglePos(d) {
+		if (d.children) {
+		} else {
+			d.children = d._children;
+			d._children = null;
+		}
+	}
+
+	// Don't show children
+	function toggleNeg(d) {
+		if (d.children) {
+			d._children = d.children;
+			d.children = null;
+		}
+	}
+
+	return {
+		update : update,
+		initialize : initialize,
+		showDPs : showDPs,
+		showDecisions : showDecisions,
+		showOutcomes : showOutcomes,
+	};
+
+};

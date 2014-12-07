@@ -30,15 +30,16 @@ var marginConvention = (function marginConvention(padding, height) {
 	return marginConvention;
 });
 
-var f1, o1;
+var decRelGraph, outRelGraph, hierRelGraph;
 
 $(document).ready(function() {
 	setSidebar();
 	setSidebarButtons();
-	
+
 	// todo move to own file
 	$('#bt_treeLayout').on('click', function(event) {
-		drawTreeLayout();
+		hierRelGraph = null;
+		hierRelGraph = new treeLayout();
 	});
 	$('#buttonGroupRelations .btn.active input').each(function(index) {
 		$(this).prop("checked", true);
@@ -55,7 +56,7 @@ $(document).ready(function() {
 				data.push(this.value);
 			}
 		});
-		f1.setLinks(data);
+		decRelGraph.setLinks(data);
 
 	});
 });
@@ -81,18 +82,18 @@ function setSidebarButtons() {
 		btnList_OutRel.removeClass("active");
 		toolbar.removeClass("hidden");
 		// eventuell neues objekt und nicht gleich instanzieren
-		o1 = null;
-		f1 = null;
-		f1 =  new forceGraph();
-		f1.initialize();
+		outRelGraph = null;
+		decRelGraph = null;
+		decRelGraph = new forceGraph();
+		decRelGraph.initialize();
 		var data = [];
 		$('#buttonGroupRelations .btn input').each(function(index) {
 			if ($(this).prop("checked") == true) {
 				data.push(this.value);
 			}
-		});	
-		if(f1!=null){
-			f1.setLinks(data);	
+		});
+		if (decRelGraph != null) {
+			decRelGraph.setLinks(data);
 		}
 	});
 
@@ -101,8 +102,8 @@ function setSidebarButtons() {
 		btnList_DecRel.removeClass("active");
 		toolbar.addClass("hidden");
 		// eventuell neues objekt und nicht gleich instanizieren lassen
-		f1 = null;
-		o1 = null;
-		o1 = new outcomeGraph();
+		decRelGraph = null;
+		outRelGraph = null;
+		outRelGraph = new outcomeGraph();
 	});
 }
