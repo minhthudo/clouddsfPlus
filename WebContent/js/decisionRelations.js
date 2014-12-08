@@ -162,7 +162,7 @@ var decisionGraph = (function() {
 		function recurse(node) {
 			if (node.children)
 				node.children.forEach(recurse);
-			if (node.type =="dec")
+			if (node.type == "dec")
 				nodes.push(node);
 		}
 		recurse(root);
@@ -295,7 +295,7 @@ var decisionGraph = (function() {
 					});
 		};
 	}
-
+	// todo can be made much easier now without distinct clusters
 	function cluster(alpha) {
 		return function(d) {
 			var cluster = clusters[d.cluster], k = 1;
@@ -328,12 +328,11 @@ var decisionGraph = (function() {
 
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json;
-	//	initialize();
+		// initialize();
 	});
 
 	// Reveal module pattern, offer functions to the outside
 	return {
-		getForce : force,
 		update : update,
 		initialize : initialize,
 		setLinks : setLinks,
