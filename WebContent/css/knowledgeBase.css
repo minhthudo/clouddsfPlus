@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 /* Decision 1 */
-.decisionPoint1 {
+/* .decisionPoint1 {
 	fill: #006738;
 	stroke: #006738;
 }
@@ -17,7 +17,7 @@
 	stroke-width: 1px;
 }
 
-/* Decision 2 */
+Decision 2
 .decisionPoint2 {
 	fill: #952800;
 	stroke: #952800;
@@ -34,7 +34,7 @@
 	stroke-width: 1px;
 }
 
-/* Decision 3 */
+Decision 3
 .decisionPoint3 {
 	fill: #006E93;
 	stroke: #006E93;
@@ -51,7 +51,7 @@
 	stroke-width: 1px;
 }
 
-/* Decision 4 */
+Decision 4
 .decisionPoint4 {
 	fill: #A65500;
 	stroke: #A65500;
@@ -67,14 +67,13 @@
 	stroke: #FFBB73;
 	stroke-width: 1px;
 	font-weight: 700;
-}
+} */
 
 /* === Tree Layout == */
-.treeRoot {
+/* .treeRoot {
 	fill: #969696;
 	stroke: #969696;
-}
-
+} */
 .treeLink {
 	fill: none;
 	stroke: #D9D9D9;
@@ -82,7 +81,8 @@
 }
 
 .treeCollapsed {
-	stroke: #969696;
+	/* stroke: #969696; */
+	stroke: #636363
 }
 
 .treeExpanded {
@@ -95,6 +95,7 @@
 	font-weight: bold;
 }
 
-.outcomeNode{
-	font-weight:normal;
+.outNode {
+	stroke-width:4px;
+	font-weight: normal;
 }

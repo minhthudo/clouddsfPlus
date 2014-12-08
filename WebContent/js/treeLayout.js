@@ -1,5 +1,5 @@
 //TreeLayout Module
-var treeLayout = function() {
+var treeGraph = function() {
 	// Padding for svg container
 	var padding = {
 		top : 5,
@@ -7,8 +7,13 @@ var treeLayout = function() {
 		bottom : 5,
 		left : 50
 	};
-	var decisionRadius = 10;
-	var outcomeRadius = 10;
+	
+	var config = {
+			decRadius : 10,
+			outRadius : 10,
+		};
+	
+	
 	var tree, nodes, root, mC, svg, diagonal;
 	var resizeId;
 
@@ -16,7 +21,7 @@ var treeLayout = function() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
 		mC = marginConvention(padding, 1300);
-		
+
 		// delete old svg content
 		d3.select("#svgContainer").remove();
 
@@ -43,7 +48,6 @@ var treeLayout = function() {
 		// collapse all children
 		root.children.forEach(toggleAll);
 		// update tree depending on node
-
 		update(root, svg);
 	}
 
@@ -63,13 +67,13 @@ var treeLayout = function() {
 			case "root":
 				x = 0;
 				break;
-			case "decisionPoint":
+			case "dp":
 				x = 4.5;
 				break;
-			case "decision":
+			case "dec":
 				x = 8;
 				break;
-			case "outcome":
+			case "out":
 				x = 9.5;
 				break;
 			}
@@ -82,7 +86,7 @@ var treeLayout = function() {
 		});
 
 		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("svg:g").attr("class", function(d) {if (d.type =="outcome") return "treeNode outcomeNode"; return "treeNode";})
+		var nodeEnter = node.enter().append("svg:g").attr("class", "treeNode")
 				.attr("transform", function(d) {
 					return "translate(" + source.y0 + "," + source.x0 + ")";
 				});
@@ -93,14 +97,14 @@ var treeLayout = function() {
 				function(d) {
 					if (d.type == "root")
 						return 0;
-					return d.children || d._children ? -decisionRadius - 5
-							: outcomeRadius + 5;
+					return d.children || d._children ? -config.decRadius - 5
+							: config.outRadius + 5;
 				}).attr("y", function(d) {
 			if (d.type == "root")
-				return -decisionRadius - 5;
-			if(d.type =="outcome")
-				return outcomeRadius *1/2;
-			return decisionRadius * 1/3;
+				return -config.decRadius - 5;
+			if (d.type == "out")
+				return config.outRadius * 1 / 2;
+			return config.decRadius * 1 / 3;
 		}).attr("dy", 0).attr("text-anchor", function(d) {
 			if (d.type == "root")
 				return "middle";
@@ -109,21 +113,27 @@ var treeLayout = function() {
 			return d.label;
 		});
 		textWrapper.filter(function(d) {
-			if (d.type != "outcome")
+			if (d.type != "out")
 				return d;
 		}).call(wrap, mC.panelWidth / 6);
 
 		textWrapper.filter(function(d) {
-			if (d.type == "outcome")
+			if (d.type == "out")
 				return d;
 		}).call(wrap, mC.panelWidth / 3);
 
 		// append different css classes through method
-		nodeEnter.append("svg:circle").attr("r", function(d){
-			if(d.type=="outcome") return outcomeRadius; return decisionRadius;}).attr("class",
-				function(d) {
-					return setClass(d);
-				}).on("click", function(d) {
+		nodeEnter.append("svg:circle").attr("r", function(d) {
+			if (d.type == "out")
+				return config.outRadius;
+			return config.decRadius;
+		}).attr("class", function(d) {
+			return setClass(d);
+		}).attr("fill", function(d) {
+			return setCircleFill(d);
+		}).attr("stroke", function(d) {
+			return setCircleStroke(d);
+		}).on("click", function(d) {
 			toggle(d);
 			update(d, svg);
 			// ToDo
@@ -135,11 +145,13 @@ var treeLayout = function() {
 					return "translate(" + d.y + "," + d.x + ")";
 				});
 
-		nodeUpdate.select("circle").attr("r", function(d){
-			if(d.type=="outcome") return outcomeRadius; return decisionRadius;}).attr("class",
-				function(d) {
-					return setClass(d);
-				});
+		nodeUpdate.select("circle").attr("r", function(d) {
+			if (d.type == "out")
+				return config.outRadius;
+			return config.decRadius;
+		}).attr("class", function(d) {
+			return setClass(d);
+		});
 
 		nodeUpdate.select("text").style("fill-opacity", 1);
 
@@ -216,26 +228,21 @@ var treeLayout = function() {
 	// Set classes for entities
 	function setClass(d) {
 		if (d._children) {
-			if ("decisionPoint" == d.type) {
-				return "decisionPoint" + d.id.toString()[0] + " treeCollapsed";
-			} else if ("decision" == d.type) {
-				return "decision" + d.id.toString()[0] + " treeCollapsed";
-			} else if ("outcome" == d.type) {
-				return "outcome" + d.id.toString()[0] + " treeCollapsed";
-			} else {
-				return "treeRoot treeCollapsed";
-			}
+			return d.group + " treeCollapsed";
 		} else {
-			if ("decisionPoint" == d.type) {
-				return "decisionPoint" + d.id.toString()[0] + " treeExpanded";
-			} else if ("decision" == d.type) {
-				return "decision" + d.id.toString()[0] + " treeExpanded";
-			} else if ("outcome" == d.type) {
-				return "outcome" + d.id.toString()[0] + " treeCollapsed";
-			} else {
-				return "treeRoot treeExpanded";
+			if(d.children){
+			return d.group + " treeExpanded";
 			}
+			return d.group + " treeExpanded outNode";
 		}
+	}
+
+	function setCircleStroke(d) {
+		return getColor(d.group);
+	}
+
+	function setCircleFill(d) {
+		return getColor(d.group);
 	}
 
 	// wrap text items in multiple tspans to avoid foreignobject which is not
@@ -282,12 +289,7 @@ var treeLayout = function() {
 	// get data
 	d3.json("./data/cloudDSFPlus.json", function(json) {
 		root = json.cdsfPlus;
-		initialize();
-	});
-
-	d3.select(window).on('resize', function() {
-		clearTimeout(resizeId);
-		resizeId = setTimeout(resizeLayout, 800);
+		//initialize();
 	});
 
 	function resizeLayout() {
@@ -375,9 +377,9 @@ var treeLayout = function() {
 	return {
 		update : update,
 		initialize : initialize,
+		resizeLayout : resizeLayout,
 		showDPs : showDPs,
 		showDecisions : showDecisions,
 		showOutcomes : showOutcomes,
 	};
-
-};
+}();
