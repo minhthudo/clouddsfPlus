@@ -280,8 +280,8 @@ var treeLayout = function() {
 	}
 
 	// get data
-	d3.json("./data/elaboratedDSF.json", function(json) {
-		root = json.decisionTree;
+	d3.json("./data/cloudDSFPlus.json", function(json) {
+		root = json.cdsfPlus;
 		initialize();
 	});
 

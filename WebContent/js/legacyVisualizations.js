@@ -97,7 +97,7 @@ var visualizationData;
 
 var jsonRetrieval = function() {
 	$.ajax({
-		url : "./data/elaboratedDSF.json",
+		url : "./data/legacyCloudDSF.json",
 		dataType : 'json',
 		async : false,
 		success : function(json) {
