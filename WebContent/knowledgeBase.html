@@ -15,7 +15,6 @@
 
 <!-- Global Style Sheets  -->
 <link href="./css/bootstrap.min.css" rel="stylesheet" />
-<link href="./css/jasny-bootstrap.min.css" rel="stylesheet" />
 <link href="./css/cdsfPlus.css" rel="stylesheet" />
 
 <!-- Custom Style Sheets -->
@@ -91,6 +90,33 @@
 			<div class="col-sm-12 col-md-10">
 				<div class="row">
 					<div class="col-md-12"></div>
+					<!-- Toolbar for decision Graph -->
+					<div id="toolbarDecisions" class="hidden">
+						<div id="buttonGroupRelations" class="btn-toolbar">
+							<label class="btn btn-success"> <input type="checkbox"
+								value="Influencing" autocomplete="off">Influencing
+							</label> <label class="btn btn-danger"> <input value="Requiring"
+								type="checkbox" autocomplete="off">Requiring
+							</label> <label class="btn btn-warning"> <input type="checkbox"
+								value="Affecting" autocomplete="off">Affecting
+							</label> <label class="btn btn-primary"> <input type="checkbox"
+								value="Binding" autocomplete="off">Binding
+							</label>
+						</div>
+					</div>
+					<div id="toolbarTree" class="hidden">
+						<div id="buttonGroupTree" class="btn-toolbar">
+							<label class="btn btn-success"> <input type="checkbox"
+								value="" autocomplete="off">Influencing
+							</label> <label class="btn btn-danger"> <input value="Requiring"
+								type="checkbox" autocomplete="off">Requiring
+							</label> <label class="btn btn-warning"> <input type="checkbox"
+								value="Affecting" autocomplete="off">Affecting
+							</label> 
+						</div>
+					</div>
+
+
 				</div>
 				<div class="row">
 					<div id="visContent" class="col-md-12"></div>

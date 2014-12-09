@@ -7,16 +7,15 @@ var treeGraph = function() {
 		bottom : 5,
 		left : 50
 	};
-	
+
 	var config = {
-			decRadius : 10,
-			outRadius : 10,
-		};
-	
-	
+		decRadius : 10,
+		outRadius : 10,
+	};
+
 	var tree, nodes, root, mC, svg, diagonal;
 	var resizeId;
-
+	var tooltip;
 	function initialize() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
@@ -41,6 +40,9 @@ var treeGraph = function() {
 			return [ d.y, d.x ];
 		});
 
+		tooltip = d3.select("body").append("div").attr("id", "tooltip").style(
+				"position", "absolute").style("z-index", "10").style("opacity",
+				0);
 		// start in the left-middle of the svg
 		root.x0 = mC.panelWidth / 2;
 		root.y0 = 0;
@@ -134,10 +136,13 @@ var treeGraph = function() {
 		}).attr("stroke", function(d) {
 			return setCircleStroke(d);
 		}).on("click", function(d) {
+
 			toggle(d);
 			update(d, svg);
 			// ToDo
-		});
+		}).on("mouseover", mouseOverArc).on("mousemove", mouseMoveArc).on(
+				"mouseout", mouseOutArc);
+		;
 
 		// Transition nodes to their new position.
 		var nodeUpdate = node.transition().duration(duration).attr("transform",
@@ -230,8 +235,8 @@ var treeGraph = function() {
 		if (d._children) {
 			return d.group + " treeCollapsed";
 		} else {
-			if(d.children){
-			return d.group + " treeExpanded";
+			if (d.children) {
+				return d.group + " treeExpanded";
 			}
 			return d.group + " treeExpanded outNode";
 		}
@@ -289,7 +294,7 @@ var treeGraph = function() {
 	// get data
 	d3.json("./data/cloudDSFPlus.json", function(json) {
 		root = json.cdsfPlus;
-		//initialize();
+		// initialize();
 	});
 
 	function resizeLayout() {
@@ -372,6 +377,25 @@ var treeGraph = function() {
 			d._children = d.children;
 			d.children = null;
 		}
+	}
+
+	// tooltip
+	function format_description(d) {
+		return '<strong>' + d.label + '</strong> <p> ' + d.description + '</p>';
+	}
+
+	function mouseOverArc(d) {
+		tooltip.html(format_description(d));
+		return tooltip.transition().duration(50).style("opacity", 0.9);
+	}
+
+	function mouseOutArc() {
+		return tooltip.style("opacity", 0);
+	}
+
+	function mouseMoveArc(d) {
+		return tooltip.style("top", (d3.event.pageY + 10) + "px").style("left",
+				(d3.event.pageX + 10) + "px");
 	}
 
 	return {

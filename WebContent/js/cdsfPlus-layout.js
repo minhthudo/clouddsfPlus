@@ -1,4 +1,4 @@
-var colorPalette = d3.scale.ordinal().domain(
+var colorPalette1 = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
 				"out3", "dp4", "dec4", "out4" ]).range([
 // cat20b light (blue, green, brown, pink)
@@ -26,21 +26,52 @@ var colorPalette2 = d3.scale.ordinal().domain(
 
 "#ad494a", "#d6616b", "#e7969c" ]);
 
-var colorPalette3 = d3.scale.ordinal().domain(
+var colorPalette3a = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
 				"out3", "dp4", "dec4", "out4" ]).range([
-// cat20c dark (blue, green, brown, red)
+// cat20c dark (blue, orange, green, purple)
 "#636363",
 
 "#3182bd", "#6baed6", "#9ecae1",
 
 "#e6550d", "#fd8d3c", "#fdae6b",
 
-"31a354", "#74c476", "#a1d99b",
+"#31a354", "#74c476", "#a1d99b",
 
 "#756bb1", "#9e9ac8", "#bcbddc" ]);
 
-var colorPalette3 = d3.scale.ordinal().domain(
+var colorPalette3b = d3.scale.ordinal().domain(
+		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
+				"out3", "dp4", "dec4", "out4" ]).range([
+// cat20c dark (green, orange, purple, blue)
+"#636363",
+
+"#31a354", "#74c476", "#a1d99b",
+
+"#e6550d", "#fd8d3c", "#fdae6b",
+
+"#756bb1", "#9e9ac8", "#bcbddc",
+
+"#3182bd", "#6baed6", "#9ecae1",
+]);
+
+var colorPalette3c = d3.scale.ordinal().domain(
+		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
+				"out3", "dp4", "dec4", "out4" ]).range([
+// cat20c dark (purple, green, orange, blue)
+"#636363",
+
+"#756bb1", "#9e9ac8", "#bcbddc",
+
+"#31a354", "#74c476", "#a1d99b",
+
+"#e6550d", "#fd8d3c", "#fdae6b",
+
+"#3182bd", "#6baed6", "#9ecae1",
+]);
+
+
+var colorPalette4 = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
 				"out3", "dp4", "dec4", "out4" ]).range([
 // cat20c light (blue, green, brown, red)
@@ -50,12 +81,12 @@ var colorPalette3 = d3.scale.ordinal().domain(
 
 "#fd8d3c", "#fdae6b", "#fdd0a2",
 
-"74c476", "#a1d99b", "#c7e9c0",
+"#74c476", "#a1d99b", "#c7e9c0",
 
 "#9e9ac8", "#bcbddc", "#dadaeb" ]);
 
 var getColor = function(d) {
-	return colorPalette(d);
+	return colorPalette3b(d);
 }
 var resizeId;
 
@@ -142,10 +173,10 @@ function setSidebarButtons() {
 		btnList_DecRel.removeClass("active");
 		btnList_OutRel.removeClass("active");
 		treeGraph.initialize();
-		$(window).on('resize.treeResize', function() {
-			clearTimeout(resizeId);
-			resizeId = setTimeout(treeGraph.resizeLayout(), 800);
-		});
+//		$(window).on('resize.treeResize', function() {
+//			clearTimeout(resizeId);
+//			resizeId = setTimeout(treeGraph.resizeLayout(), 800);
+//		});
 	});
 
 	btnList_DecRel.on('click', function(event) {

@@ -10,7 +10,6 @@ html, body {
 	border-radius: 0px;
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
-	
 }
 /* .jumbotron {
 	margin-bottom: 10px;
@@ -55,6 +54,7 @@ html, body {
 } */
 .navbar-inverse .navbar-nav>li>a {
 	color: #bdbdbd; /* d3 */
+	font-weight: bold;
 }
 
 .footer {
