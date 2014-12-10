@@ -139,6 +139,7 @@ var treeGraph = function() {
 
 			toggle(d);
 			update(d, svg);
+
 			// ToDo
 		}).on("mouseover", mouseOverArc).on("mousemove", mouseMoveArc).on(
 				"mouseout", mouseOutArc);
@@ -209,6 +210,8 @@ var treeGraph = function() {
 			d.x0 = d.x;
 			d.y0 = d.y;
 		});
+
+		setTimeout(mouseOutArc, 150);
 	}
 
 	// collapse all datapoints
@@ -381,16 +384,18 @@ var treeGraph = function() {
 
 	// tooltip
 	function format_description(d) {
-		return '<strong>' + d.label + '</strong> <p> ' + d.description + '</p>';
+		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p> <p><strong>Classification: </strong>' + d.classification + '</p';
 	}
 
 	function mouseOverArc(d) {
 		tooltip.html(format_description(d));
-		return tooltip.transition().duration(50).style("opacity", 0.9);
+		return tooltip.transition().duration(50).style("opacity", 0.9).style("z-index", 100);
 	}
 
 	function mouseOutArc() {
-		return tooltip.style("opacity", 0);
+		return tooltip.style("opacity", 0).style("z-index", -100);
 	}
 
 	function mouseMoveArc(d) {
