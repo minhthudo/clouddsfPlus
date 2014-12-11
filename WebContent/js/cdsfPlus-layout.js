@@ -70,6 +70,20 @@ var colorPalette3c = d3.scale.ordinal().domain(
 "#3182bd", "#6baed6", "#9ecae1",
 ]);
 
+var colorPalette3d = d3.scale.ordinal().domain(
+		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
+				"out3", "dp4", "dec4", "out4" ]).range([
+// cat20c dark (green, orange, purple, blue)
+"#636363",
+
+"#9ecae1", "#6baed6", "#3182bd",
+
+"#fdae6b", "#fd8d3c", "#e6550d",  
+
+"#bcbddc", "#9e9ac8", "#756bb1",
+
+"#a1d99b",  "#74c476", "#31a354",
+]);
 
 var colorPalette4 = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
@@ -86,7 +100,7 @@ var colorPalette4 = d3.scale.ordinal().domain(
 "#9e9ac8", "#bcbddc", "#dadaeb" ]);
 
 var getColor = function(d) {
-	return colorPalette3b(d);
+	return colorPalette3d(d);
 }
 var resizeId;
 
