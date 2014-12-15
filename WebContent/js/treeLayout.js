@@ -14,7 +14,7 @@ var treeGraph = function() {
 	};
 
 	var tree, nodes, root, mC, svg, diagonal;
-	var resizeId;
+	var resizeId, tip;
 	var tooltip;
 	function initialize() {
 		// compute panel size and margins after margin convention
@@ -33,6 +33,14 @@ var treeGraph = function() {
 				.append("g")
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
+
+		
+		
+		/* Initialize tooltip */
+		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([5, 5]).html(function(d) { return format_description(d); });
+
+		/* Invoke the tip in the context of your visualization */
+		svg.call(tip)
 
 		// Create new TreeLayout with svg size
 		tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
@@ -141,8 +149,9 @@ var treeGraph = function() {
 			update(d, svg);
 
 			// ToDo
-		}).on("mouseover", mouseOverArc).on("mousemove", mouseMoveArc).on(
-				"mouseout", mouseOutArc);
+		}).on("mouseover", tip.show).on("mouseout", tip.hide)
+		//.on("mouseover", mouseOverArc)//.on("mousemove", mouseMoveArc)
+		//.on("mouseout", mouseOutArc);
 		;
 
 		// Transition nodes to their new position.
@@ -330,7 +339,7 @@ var treeGraph = function() {
 	}
 
 	// show all decision points
-	function showDPs() {
+	function showDps() {
 		root.children.forEach(toggleNeg);
 		update(root, svg);
 	}
@@ -390,16 +399,20 @@ var treeGraph = function() {
 	}
 
 	function mouseOverArc(d) {
-		tooltip.html(format_description(d));
-		return tooltip.transition().duration(50).style("opacity", 0.9).style("z-index", 100);
+//		tooltip.html(format_description(d));
+//		return tooltip.style("top", (d3.event.pageY + 10) + "px").style("left",
+//				(d3.event.pageX + 10) + "px").style("z-index", 30).transition().duration(150).style("opacity", 0.9);
+//		$('#svgContainer').tooltip(options)
+		tip.show();
 	}
 
 	function mouseOutArc() {
-		return tooltip.style("opacity", 0).style("z-index", -100);
+		tip.hide();
+		//return tooltip.transition().duration(5).style("opacity", 0).style("z-index", -100);
 	}
 
 	function mouseMoveArc(d) {
-		return tooltip.style("top", (d3.event.pageY + 10) + "px").style("left",
+		return tooltip.transition().duration(5).style("top", (d3.event.pageY + 10) + "px").style("left",
 				(d3.event.pageX + 10) + "px");
 	}
 
@@ -407,7 +420,7 @@ var treeGraph = function() {
 		update : update,
 		initialize : initialize,
 		resizeLayout : resizeLayout,
-		showDPs : showDPs,
+		showDps : showDps,
 		showDecisions : showDecisions,
 		showOutcomes : showOutcomes,
 	};

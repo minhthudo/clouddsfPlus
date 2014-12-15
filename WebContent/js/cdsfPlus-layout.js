@@ -52,8 +52,7 @@ var colorPalette3b = d3.scale.ordinal().domain(
 
 "#756bb1", "#9e9ac8", "#bcbddc",
 
-"#3182bd", "#6baed6", "#9ecae1",
-]);
+"#3182bd", "#6baed6", "#9ecae1", ]);
 
 var colorPalette3c = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
@@ -67,8 +66,7 @@ var colorPalette3c = d3.scale.ordinal().domain(
 
 "#e6550d", "#fd8d3c", "#fdae6b",
 
-"#3182bd", "#6baed6", "#9ecae1",
-]);
+"#3182bd", "#6baed6", "#9ecae1", ]);
 
 var colorPalette3d = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
@@ -78,12 +76,11 @@ var colorPalette3d = d3.scale.ordinal().domain(
 
 "#9ecae1", "#6baed6", "#3182bd",
 
-"#fdae6b", "#fd8d3c", "#e6550d",  
+"#fdae6b", "#fd8d3c", "#e6550d",
 
 "#bcbddc", "#9e9ac8", "#756bb1",
 
-"#a1d99b",  "#74c476", "#31a354",
-]);
+"#a1d99b", "#74c476", "#31a354", ]);
 
 var colorPalette4 = d3.scale.ordinal().domain(
 		[ "root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
@@ -144,24 +141,49 @@ $(document).ready(function() {
 
 	// todo move to own file
 
-	$('#buttonGroupRelations .btn.active input').each(function(index) {
-		$(this).prop("checked", true);
-	});
-	$('#buttonGroupRelations .btn').on('change', function() {
-		if ($(this).prop("checked") == true) {
-			$(this).prop("checked", false);
-		} else {
-			$(this).prop("checked", true);
-		}
-		var data = [];
-		$('#buttonGroupRelations .btn input').each(function(index) {
-			if ($(this).prop("checked") == true) {
-				data.push(this.value);
-			}
-		});
-		decisionGraph.setLinks(data);
+	// $('#buttonGroupRelations .btn.active input').each(function(index) {
+	// $(this).prop("checked", true);
+	// });
 
+	$('#relationTypes').multiselect({
+		onDropdownHide : function(event) {
+			var data = [];
+			$("#relationTypes option:selected").each(function() {
+				data.push($(this).val());
+			});
+			decisionGraph.setLinks(data);
+		},
+		numberDisplayed : 4,
+		nonSelectedText : 'Select relation type(s)',
+		selectAllText : '(De)Select All',
+		includeSelectAllOption : true,
 	});
+
+	$('#showDps').on('click', function(event) {
+		treeGraph.showDps();
+	});
+	$('#showDecs').on('click', function(event) {
+		treeGraph.showDecisions();
+	});
+	$('#showOutcomes').on('click', function(event) {
+		treeGraph.showOutcomes();
+	});
+
+	// $('#buttonGroupRelations .btn').on('change', function() {
+	// if ($(this).prop("checked") == true) {
+	// $(this).prop("checked", false);
+	// } else {
+	// $(this).prop("checked", true);
+	// }
+	// var data = [];
+	// $('#buttonGroupRelations .btn input').each(function(index) {
+	// if ($(this).prop("checked") == true) {
+	// data.push(this.value);
+	// }
+	// });
+	// decisionGraph.setLinks(data);
+	//
+	// });
 });
 
 function setSidebar() {
@@ -179,34 +201,38 @@ function setSidebar() {
 function setSidebarButtons() {
 	var btnList_DecRel = $('#btnList_DecRel');
 	var btnList_OutRel = $('#btnList_OutRel');
-	var toolbar = $('#toolbarDecisions');
+	var toolbarDec = $('#toolbarDecisions');
+	var toolbarTree = $('#toolbarTree');
 	var btnList_treeLayout = $('#btnList_treeLayout');
 
 	btnList_treeLayout.on('click', function(event) {
 		btnList_treeLayout.addClass("active");
 		btnList_DecRel.removeClass("active");
 		btnList_OutRel.removeClass("active");
+		toolbarDec.addClass("hidden");
+		toolbarTree.removeClass("hidden");
 		treeGraph.initialize();
-//		$(window).on('resize.treeResize', function() {
-//			clearTimeout(resizeId);
-//			resizeId = setTimeout(treeGraph.resizeLayout(), 800);
-//		});
+		// $(window).on('resize.treeResize', function() {
+		// clearTimeout(resizeId);
+		// resizeId = setTimeout(treeGraph.resizeLayout(), 800);
+		// });
 	});
 
 	btnList_DecRel.on('click', function(event) {
 		btnList_DecRel.addClass("active");
 		btnList_OutRel.removeClass("active");
 		btnList_treeLayout.removeClass("active");
-		toolbar.removeClass("hidden");
+		toolbarDec.removeClass("hidden");
+		toolbarTree.addClass("hidden");
 		$(window).off('resize.treeResize');
 		// eventuell neues objekt und nicht gleich instanzieren
 		var data = [];
-//		$('#buttonGroupRelations .btn input').each(function(index) {
-//			if ($(this).prop("checked") == true) {
-//				data.push(this.value);
-//			}
-//		});
-//		decisionGraph.initialize(data);
+		// $('#buttonGroupRelations .btn input').each(function(index) {
+		// if ($(this).prop("checked") == true) {
+		// data.push(this.value);
+		// }
+		// });
+		// decisionGraph.initialize(data);
 		decisionGraph.initialize();
 	});
 
@@ -214,7 +240,8 @@ function setSidebarButtons() {
 		btnList_OutRel.addClass("active");
 		btnList_DecRel.removeClass("active");
 		btnList_treeLayout.removeClass("active");
-		toolbar.addClass("hidden");
+		toolbarDec.addClass("hidden");
+		toolbarTree.addClass("hidden");
 		// eventuell neues objekt und nicht gleich instanzieren lassen
 		outcomeGraph.initialize();
 	});

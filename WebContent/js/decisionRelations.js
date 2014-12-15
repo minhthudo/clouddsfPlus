@@ -209,9 +209,9 @@ var decisionGraph = (function() {
 		});
 
 		path.enter().append("path").attr("class", function(d) {
-			return "link " + d.label.toLowerCase();
+			return "link " + d.type.toLowerCase();
 		}).attr("marker-end", function(d) {
-			return "url(#" + d.label.toLowerCase() + ")";
+			return "url(#" + d.type.toLowerCase() + ")";
 		});
 
 		path.exit().remove();
