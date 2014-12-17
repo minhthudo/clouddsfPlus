@@ -136,9 +136,6 @@ var marginConvention = (function marginConvention(padding, height) {
 // var decRelGraph, outRelGraph, hierRelGraph;
 
 $(document).ready(function() {
-	setSidebar();
-	setSidebarButtons();
-
 	// todo move to own file
 
 	// $('#buttonGroupRelations .btn.active input').each(function(index) {
@@ -146,7 +143,7 @@ $(document).ready(function() {
 	// });
 
 	$('#relationTypes').multiselect({
-		onDropdownHide : function(event) {
+		onChange : function(event) {
 			var data = [];
 			$("#relationTypes option:selected").each(function() {
 				data.push($(this).val());
@@ -169,6 +166,8 @@ $(document).ready(function() {
 		treeGraph.showOutcomes();
 	});
 
+	setSidebar();
+	setSidebarButtons();
 	// $('#buttonGroupRelations .btn').on('change', function() {
 	// if ($(this).prop("checked") == true) {
 	// $(this).prop("checked", false);
@@ -227,13 +226,12 @@ function setSidebarButtons() {
 		$(window).off('resize.treeResize');
 		// eventuell neues objekt und nicht gleich instanzieren
 		var data = [];
-		// $('#buttonGroupRelations .btn input').each(function(index) {
-		// if ($(this).prop("checked") == true) {
-		// data.push(this.value);
-		// }
-		// });
-		// decisionGraph.initialize(data);
-		decisionGraph.initialize();
+		//todo
+		var data = [];
+		$("#relationTypes option:selected").each(function() {
+			data.push($(this).val());
+		});
+		decisionGraph.initialize(data);
 	});
 
 	btnList_OutRel.on('click', function(event) {

@@ -42,7 +42,6 @@ html, body {
 	border-bottom: solid 7px #6baed6;
 	border-bottom: solid 7px #337AB7; /* btn */
 	border-bottom: solid 7px #3182bd; /* d3 */
-	margin-bottom: 0px;
 }
 
 .navbar-nav>li {
@@ -82,9 +81,9 @@ html, body {
 	top: 0px;
 	right: -30px;
 	width: 30px;
-	height: 100%;
-	background-color: #3182bd; /* d3 */
+	height: 100%; background-color : #3182bd; /* d3 */
 	border-color: #3182bd;
+	background-color: #3182bd;
 }
 
 #sidebar {
@@ -119,7 +118,8 @@ html, body {
 	}
 	.sidebar-offcanvas {
 		position: absolute;
-		top: 0;
-		/* height: 100%; */
+		top: 0; /*
+		height: 100%;
+		*/
 	}
 }

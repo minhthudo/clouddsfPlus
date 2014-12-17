@@ -65,6 +65,35 @@
 
       return tip
     }
+    
+    // Public - show the tooltip on the screen
+    //
+    // Returns a tip
+    tip.showTransition = function() {
+      var args = Array.prototype.slice.call(arguments)
+      if(args[args.length - 1] instanceof SVGElement) target = args.pop()
+
+      var content = html.apply(this, args),
+          poffset = offset.apply(this, args),
+          dir     = direction.apply(this, args),
+          nodel   = d3.select(node),
+          i       = directions.length,
+          coords,
+          scrollTop  = document.documentElement.scrollTop || document.body.scrollTop,
+          scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
+
+      nodel.html(content).transition()
+        .style({ opacity: 1, 'pointer-events': 'all' })
+
+      while(i--) nodel.classed(directions[i], false)
+      coords = direction_callbacks.get(dir).apply(this)
+      nodel.classed(dir, true).style({
+        top: (coords.top +  poffset[0]) + scrollTop + 'px',
+        left: (coords.left + poffset[1]) + scrollLeft + 'px'
+      })
+
+      return tip
+    }
 
     // Public - hide the tooltip
     //
@@ -77,7 +106,7 @@
     
     tip.hideDelayed = function() {
         var nodel = d3.select(node)
-        nodel.transition().duration(600).style({ opacity: 0, 'pointer-events': 'none' })
+        nodel.transition().duration(500).style({ opacity: 0, 'pointer-events': 'none' })
         return tip
       }
 

@@ -10,21 +10,21 @@ var outcomeGraph = (function() {
 	var config = {
 		outcomeWidth : 10,
 		decisionWidth : 20,
-		ldRoot : 50,
-		ldDp : 80,
-		ldDec : 30,
-		ldOut : 20,
+		ldRoot : 220,
+		ldDp : 120,
+		ldDec : 50,
+		ldOut : 50,
 		// lsRoot : 50,
 		// lsDp : 80,
 		// lsDec : 30,
 		// lsOut : 20
-		gravity : 0.1,
-		friction : 0.7,
+		gravity : 0.05,
+		friction : 0.75,
 		lsDefault : 1,
-		chRoot : -80,
-		chDp : -80,
-		chDec : -80,
-		chOut : -400,
+		chRoot : -15,
+		chDp : -20,
+		chDec : -300,
+		chOut : -160,
 		minSvgWidth : 900
 	};
 
@@ -33,6 +33,11 @@ var outcomeGraph = (function() {
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [];
 	var node_lookup = [], root_lookup = [];
+
+	// Toggle stores whether the highlighting is on
+	var toggle = 0;
+	// Create an array logging what is connected to what
+	var linkedByIndex = {};
 
 	function initialize() {
 		// compute panel size and margins after margin convention
@@ -60,13 +65,6 @@ var outcomeGraph = (function() {
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
 		// todo
 
-		force.charge(function(d) {
-			return d._children ? config.chDp : config.chOut;
-		}).linkDistance(function(d) {
-			return setLinkDistance(d);
-		}).linkStrength(config.lsDefault).gravity(config.gravity).friction(
-				config.friction).on("tick", tick);
-
 		// array to finde nodes for link target and source
 
 		// set nodes and links as ref to force layout to keep in synch
@@ -87,6 +85,30 @@ var outcomeGraph = (function() {
 		node_lookup.splice(0, node_lookup.length);
 		var initialNodes = flatten(root);
 		initialNodes.forEach(function(d) {
+			if(d.type != "root"){
+			d.x = Math.cos(d.cluster / 4 * 2 * Math.PI) * 300 + mC.panelWidth / 2 + Math.random();
+			d.y = Math.sin(d.cluster / 4 * 2 * Math.PI) * 300 + mC.panelHeight / 2 + Math.random()}
+//			switch (d.cluster) {
+//			case 1:
+//				d.x = 5;
+//				d.y = 5;
+//				break;
+//			case 2:
+//				d.x = 600
+//				d.y = 100
+//				break;
+//			case 3:
+//				d.x = 100;
+//				d.y = 500;
+//				break;
+//			case 4:
+//				d.x = 600;
+//				d.y = 500;
+//				break;
+//			default:
+//				break;
+//			}
+
 			addNode(d);
 		});
 
@@ -101,9 +123,21 @@ var outcomeGraph = (function() {
 		});
 		// stop force not necessary
 		force.stop();
-		force.charge(function(d) {
-			return d._children ? config.chDp : config.chOut;
-		}).linkDistance(function(d) {
+
+		// force.charge(function(d) {
+		// return d._children ? config.chDp : config.chOut;
+		// }).linkDistance(function(d) {
+		// return setLinkDistance(d);
+		// }).linkStrength(config.lsDefault).gravity(config.gravity).friction(
+		// config.friction).on("tick", tick);
+		//		
+
+		force
+		.charge(function(d) {
+			return setCharge(d);
+			// return d._children ? config.chDp : config.chOut;
+		})
+		.linkDistance(function(d) {
 			return setLinkDistance(d);
 		}).linkStrength(config.lsDefault).gravity(config.gravity).friction(
 				config.friction).on("tick", tick);
@@ -151,13 +185,17 @@ var outcomeGraph = (function() {
 			// :
 			// outcomeWidth;
 		}).attr("cx", function(d) {
+			// if(d.cluster > 2) return 400;
+			// return -400;
 			return d.x;
 		}).attr("cy", function(d) {
+			// if(d.cluster > 2) return 400;
+			// return -400;
 			return d.y;
 		}).style("fill", function(d) {
 			return setCircleFill(d)
-		}).on("click", click).call(force.drag);
-
+		}).on("dbclick", click).call(force.drag);
+		// .on('click', function(d){connectedNodes(d);});
 		nodeEnter.filter(function(d) {
 			if (d.type != "out")
 				return d;
@@ -181,9 +219,12 @@ var outcomeGraph = (function() {
 		});
 
 		text = node.selectAll("g.node text");
-
-		// start force layout
 		force.start();
+		// for (var int = 0; int < 200; int++) {
+		// force.tick();
+		// }
+		// start force layout
+		// force.stop();
 	}
 
 	function tick() {
@@ -218,20 +259,43 @@ var outcomeGraph = (function() {
 	}
 
 	function setLinkDistance(d) {
-		switch (d.type) {
+		switch (d.source.type) {
 		case "root":
 			return config.ldRoot;
 			break;
 		case "dp":
 			return config.ldDp;
 			break;
-		case "out":
-			return config.ldOut;
+		case "dec":
+			return config.ldDec;
 			break;
 		default:
 			return config.ldRoot;
 			break;
 		}
+	}
+
+	function setCharge(d) {
+		switch (d.type) {
+		case "root":
+			return config.chRoot;
+			break;
+		case "dp":
+			return config.chDp;
+			break;
+		case "dec":
+			return config.chDec;
+			break;
+		case "out":
+			return config.chOut;
+			break;
+		}
+
+		// if(d.type =="root") return 0;
+		// if(d._children || d.children) return config.chDp;
+		// if(d.children) return config.chDec;
+		//		
+		// return config.chOut;
 	}
 
 	// Toggle children on click.
@@ -300,6 +364,30 @@ var outcomeGraph = (function() {
 		});
 	}
 
+	function connectedNodes(d) {
+		if (toggle == 0) {
+			// Reduce the opacity of all but the neighbouring nodes
+			// d = d3.select(this).node().__data__;
+			// node.style("opacity", function (o) {
+			// return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+			// });
+			// link.style("opacity", function (o) {
+			// return d.index==o.source.index | d.index==o.target.index ? 1 :
+			// 0.1;
+			// });
+			d3.selectAll("g.node").style("opacity", 0.1);
+			d3.selectAll("paths").style("opacity", 0.1);
+			// d.style("opacity", 0.1);
+			// Reduce the op
+			toggle = 1;
+		} else {
+			// Put them back to opacity=1
+			d3.selectAll("g.node").style("opacity", 1);
+			d3.selectAll("paths").style("opacity", 1);
+			toggle = 0;
+		}
+	}
+
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json.cdsfPlus;
 		outcomeLinks = json.outcomeLinks.filter(function(d) {
@@ -309,10 +397,34 @@ var outcomeGraph = (function() {
 		// initialize();
 	});
 
+	var setOutCharge = (function(d) {
+		config.chOut = d;
+		update();
+	});
+
+	var setDecCharge = (function(d) {
+		config.decOut = d;
+		update();
+	});
+	
+	var setDpCharge = (function(d) {
+		config.chDp = d;
+		update();
+	});
+	
+	var setRootCharge = (function(d) {
+		config.chRoot = d;
+		update();
+	});
+
 	// Reveal module pattern, offer functions to the outside
 	return {
 		getForce : force,
 		update : update,
-		initialize : initialize
+		initialize : initialize,
+		setOutCharge : setOutCharge,
+		setDecCharge : setDecCharge,
+		setDpCharge : setDpCharge,
+		setRootCharge : setRootCharge
 	};
 })();

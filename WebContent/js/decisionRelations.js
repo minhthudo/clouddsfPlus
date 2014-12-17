@@ -23,7 +23,7 @@ var decisionGraph = (function() {
 		// lsOut : 20
 		lsDefault : 1,
 		gravity : 0,
-		friction : 0.05,
+		friction : 0.01,
 		chRoot : -80,
 		chDp : -80,
 		chDec : -50,
@@ -32,7 +32,7 @@ var decisionGraph = (function() {
 
 	var mC, root, svg, force, node_lookup;
 	var nodes, links, pathGroup, text, circle, path;
-	var clusters, initialNodes;
+	var clusters, initialNodes, tip;
 
 	function initialize(linkTypes) {
 
@@ -71,6 +71,16 @@ var decisionGraph = (function() {
 		// .append("path")
 		// .attr("d", "M0,-5L10,0L0,5");
 		//	
+
+		/* Initialize tooltip */
+		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
+				.html(function(d) {
+					return format_description(d);
+				});
+
+		/* Invoke the tip in the context of your visualization */
+		svg.call(tip)
+
 		pathGroup = svg.append("g").attr("id", "paths");
 
 		node_lookup = [];
@@ -111,7 +121,7 @@ var decisionGraph = (function() {
 		if (typeof linkTypes === 'undefined') {
 			setLinks([ "" ]);
 		} else {
-			setLinks(relations);
+			setLinks(linkTypes);
 		}
 	}
 
@@ -193,7 +203,10 @@ var decisionGraph = (function() {
 				label : node.label,
 				type : node.type,
 				charge : config.chDec,
-				group : node.group
+				group : node.group,
+				classification : node.classification,
+				description : node.description,
+				abbrev : node.abbrev
 			};
 			node_lookup[d.id] = d;
 			nodes.push(d);
@@ -226,7 +239,7 @@ var decisionGraph = (function() {
 			return d.radius;
 		}).style("fill", function(d) {
 			return setCircleFill(d)
-		}).call(force.drag);
+		}).call(force.drag).on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
 
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
@@ -324,6 +337,14 @@ var decisionGraph = (function() {
 
 	function setCircleFill(d) {
 		return getColor(d.group);
+	}
+
+	// tooltip
+	function format_description(d) {
+		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p> <p><strong>Classification: </strong>'
+				+ d.classification + '</p';
 	}
 
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {

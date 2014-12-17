@@ -4,8 +4,8 @@
 	/* line-height: 1; */
 	/* font-weight: bold; */
 	padding: 12px;
- 	background: #222;
- 	color: #fff; 
+	background: #222;
+	color: #fff;
 	border-radius: 2px;
 	pointer-events: none;
 	max-width: 300px;
@@ -113,21 +113,21 @@
 }
 
 .link.influencing {
-	stroke: green;
+	stroke: #31a354;
 }
 
 .link.affecting {
 	stroke-dasharray: 5, 5;
-	stroke: black;
+	stroke: #000;
 }
 
 .link.binding {
-	stroke-dasharray: 5, 10;
-	stroke: blue;
+	stroke-dasharray: 25, 10;
+	stroke: #000;
 }
 
 .link.requiring {
-	stroke: red;
+	stroke: #e6550d;
 }
 
 #outcomeContainer circle {
@@ -138,5 +138,5 @@
 
 path {
 	fill: none;
-	/* stroke:#d9d9d9; */
+	stroke: #d9d9d9;
 }
