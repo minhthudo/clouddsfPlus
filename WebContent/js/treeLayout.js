@@ -312,7 +312,7 @@ var treeGraph = function() {
 	function resizeLayout() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
-		mC = marginConvention(padding, 1000);
+		mC = marginConvention(padding, 1200);
 
 		// delete old svg content
 		d3.select("#svgContainer").remove();

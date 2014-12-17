@@ -168,21 +168,7 @@ $(document).ready(function() {
 
 	setSidebar();
 	setSidebarButtons();
-	// $('#buttonGroupRelations .btn').on('change', function() {
-	// if ($(this).prop("checked") == true) {
-	// $(this).prop("checked", false);
-	// } else {
-	// $(this).prop("checked", true);
-	// }
-	// var data = [];
-	// $('#buttonGroupRelations .btn input').each(function(index) {
-	// if ($(this).prop("checked") == true) {
-	// data.push(this.value);
-	// }
-	// });
-	// decisionGraph.setLinks(data);
-	//
-	// });
+
 });
 
 function setSidebar() {
@@ -211,10 +197,10 @@ function setSidebarButtons() {
 		toolbarDec.addClass("hidden");
 		toolbarTree.removeClass("hidden");
 		treeGraph.initialize();
-		// $(window).on('resize.treeResize', function() {
-		// clearTimeout(resizeId);
-		// resizeId = setTimeout(treeGraph.resizeLayout(), 800);
-		// });
+		 $(window).on('resize.treeResize', function() {
+		 clearTimeout(resizeId);
+		 resizeId = setTimeout(treeGraph.resizeLayout, 500);
+		 });
 	});
 
 	btnList_DecRel.on('click', function(event) {
