@@ -11,6 +11,7 @@ var treeGraph = function() {
 	var config = {
 		decRadius : 10,
 		outRadius : 10,
+		minHeight : 1200
 	};
 
 	var tree, nodes, root, mC, svg, diagonal;
@@ -19,7 +20,7 @@ var treeGraph = function() {
 	function initialize() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
-		mC = marginConvention(padding, 1200);
+		mC = marginConvention(padding, config.minHeight);
 
 		// delete old svg content
 		d3.select("#svgContainer").remove();
@@ -312,7 +313,7 @@ var treeGraph = function() {
 	function resizeLayout() {
 		// compute panel size and margins after margin convention
 		// set height to 1000
-		mC = marginConvention(padding, 1200);
+		mC = marginConvention(padding, config.minHeight);
 
 		// delete old svg content
 		d3.select("#svgContainer").remove();
