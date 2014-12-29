@@ -1,12 +1,12 @@
 {
   "decisionTree" : {
     "id" : -1,
-    "label" : "Legacy CloudDSF",
+    "label" : "CloudDSF",
     "type" : "root",
     "parent" : 0,
     "children" : [ {
       "id" : 1,
-      "label" : "Distribute Application",
+      "label" : "Define Application Distribution",
       "type" : "decisionPoint",
       "parent" : 0,
       "classification" : "Cloud Migration specific / Application Migration in General",
@@ -188,7 +188,7 @@
           "parent" : 201
         }, {
           "id" : 20102,
-          "label" : "OS/VM Level Scaling",
+          "label" : "VM Level Scaling",
           "type" : "outcome",
           "parent" : 201
         }, {
@@ -203,12 +203,12 @@
           "parent" : 201
         }, {
           "id" : 20105,
-          "label" : "OS/VM + Middleware Level Scaling",
+          "label" : "VM + Middleware Level Scaling",
           "type" : "outcome",
           "parent" : 201
         }, {
           "id" : 20106,
-          "label" : "OS/VM + Application Level Scaling",
+          "label" : "VM + Application Level Scaling",
           "type" : "outcome",
           "parent" : 201
         }, {
@@ -218,7 +218,7 @@
           "parent" : 201
         }, {
           "id" : 20108,
-          "label" : "OS/VM + Middleware + Application Level Scaling",
+          "label" : "VM + Middleware + Application Level Scaling",
           "type" : "outcome",
           "parent" : 201
         } ]
@@ -307,28 +307,28 @@
       "classification" : "Cloud Migration specific",
       "children" : [ {
         "id" : 301,
-        "label" : "Select Multi-Tenancy Architecture",
+        "label" : "Select Multi-Tenancy Level",
         "type" : "decision",
         "parent" : 3,
         "classification" : "Cloud Migration specific",
         "children" : [ {
           "id" : 30101,
-          "label" : "Multi-Tenancy Architecture 0",
+          "label" : "Shared Hardware Multi-Tenancy",
           "type" : "outcome",
           "parent" : 301
         }, {
           "id" : 30102,
-          "label" : "Multi-Tenancy Architecture 1",
+          "label" : "Shared OS Multi-Tenancy",
           "type" : "outcome",
           "parent" : 301
         }, {
           "id" : 30103,
-          "label" : "Multi-Tenancy Architecture 2",
+          "label" : "Shared Middleware Multi-Tenancy",
           "type" : "outcome",
           "parent" : 301
         }, {
           "id" : 30104,
-          "label" : "Multi-Tenancy Architecture 3",
+          "label" : "Shared Application Multi-Tenancy",
           "type" : "outcome",
           "parent" : 301
         } ]
@@ -438,37 +438,37 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "children" : [ {
           "id" : 40401,
-          "label" : "Role Set 1",
+          "label" : "All Inhouse",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40402,
-          "label" : "Role Set 7",
+          "label" : "Only Managmenet",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40403,
-          "label" : "Role Set 8",
+          "label" : "All Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40404,
-          "label" : "Role Set 1 + 7",
+          "label" : "All Inhouse + Only Management",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40405,
-          "label" : "Role Set 1 + 8",
+          "label" : "All Inhouse + All Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40406,
-          "label" : "Role Set 7 + 8",
+          "label" : "Only Management + All Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40407,
-          "label" : "Role Set 1 + 7 + 8",
+          "label" : "All Inhouse + Only Management + All Outsourced",
           "type" : "outcome",
           "parent" : 404
         } ]
@@ -510,11 +510,6 @@
           "label" : "Charge-Per-Use (Subscription)",
           "type" : "outcome",
           "parent" : 406
-        }, {
-          "id" : 40605,
-          "label" : "Combined Pricing Model",
-          "type" : "outcome",
-          "parent" : 406
         } ]
       }, {
         "id" : 407,
@@ -524,12 +519,12 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "children" : [ {
           "id" : 40701,
-          "label" : "Data Location under same jurisdiction as company",
+          "label" : "Data In Same Jurisdiction",
           "type" : "outcome",
           "parent" : 407
         }, {
           "id" : 40702,
-          "label" : "Data Location outside jurisdiction of company",
+          "label" : "Data In Different Jurisdiction",
           "type" : "outcome",
           "parent" : 407
         } ]
@@ -938,6 +933,11 @@
     "target" : 904,
     "dir" : "auto",
     "type" : "taskRel"
+  }, {
+    "source" : 407,
+    "target" : 403,
+    "dir" : "auto",
+    "type" : "DecRel"
   }, {
     "source" : 407,
     "target" : 405,

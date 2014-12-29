@@ -1,21 +1,23 @@
 {
   "cdsfPlus" : {
     "id" : 0,
-    "label" : "CloudDSFPlus",
+    "label" : "CloudDSF+",
     "type" : "root",
     "parent" : 0,
     "cluster" : 0,
     "group" : "root",
+    "description" : "CDSF+ knowledge base containing decision point, decisions and their outcomes.",
+    "abbrev" : "CDSF+",
     "children" : [ {
       "id" : 1,
-      "label" : "Distribute Application",
+      "label" : "Define Application Distribution",
       "type" : "dp",
       "parent" : 0,
       "classification" : "Cloud Migration specific / Application Migration in General",
       "cluster" : 1,
       "group" : "dp1",
       "description" : "Comprises decisions regarding what parts of an application and how they are migrated. The distribution can be based on layers, tiers and components.",
-      "abbrev" : "DDA",
+      "abbrev" : "DAD",
       "children" : [ {
         "id" : 101,
         "label" : "Select Application Layer",
@@ -24,7 +26,7 @@
         "classification" : "Application Migration in General",
         "cluster" : 1,
         "group" : "dec1",
-        "description" : "Enables a selection based on the logical distribution of to be migrated application parts.",
+        "description" : "Enables a selection based of application parts based on their logical distribution.",
         "abbrev" : "SAL",
         "children" : [ {
           "id" : 10101,
@@ -34,7 +36,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation layer shall be migrated e.g. a web server or a rich client. ",
-          "abbrev" : "PL"
+          "abbrev" : "P-L"
         }, {
           "id" : 10102,
           "label" : "Business Layer",
@@ -43,7 +45,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete business layer shall be migrated e.g. an application server or an ESB.",
-          "abbrev" : "BL"
+          "abbrev" : "B-L"
         }, {
           "id" : 10103,
           "label" : "Resource Layer",
@@ -52,7 +54,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The comple resource layer shall be migrated e.g. a database.",
-          "abbrev" : "RL"
+          "abbrev" : "R-L"
         }, {
           "id" : 10104,
           "label" : "Presentation + Business Layer",
@@ -61,7 +63,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation and business layer shall be migrated.",
-          "abbrev" : "P+BL"
+          "abbrev" : "P+B-L"
         }, {
           "id" : 10105,
           "label" : "Presentation + Resource Layer",
@@ -70,7 +72,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation and resource layer shall be migrated.",
-          "abbrev" : "P+RL"
+          "abbrev" : "P+R-L"
         }, {
           "id" : 10106,
           "label" : "Business + Resource Layer",
@@ -79,7 +81,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete business and resource layer shall be migrated.",
-          "abbrev" : "B+RL"
+          "abbrev" : "B+R-L"
         }, {
           "id" : 10107,
           "label" : "Presentation + Business + Resource Layer",
@@ -88,7 +90,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation, business and resource layer shall be migrated hence the complete application.",
-          "abbrev" : "P+B+RL"
+          "abbrev" : "P+B+R-L"
         } ]
       }, {
         "id" : 102,
@@ -98,7 +100,7 @@
         "classification" : "Application Migration in General",
         "cluster" : 1,
         "group" : "dec1",
-        "description" : "Enables a selection based on the physical distribution of to be migrated application parts.",
+        "description" : "Enables a selection of application parts based on their physical distribution.",
         "abbrev" : "SAT",
         "children" : [ {
           "id" : 10201,
@@ -108,7 +110,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The client tier shall be migrated or rather substituted through the application tier since a migration to the cloud will render a client tier obsolete.",
-          "abbrev" : "CT"
+          "abbrev" : "C-T"
         }, {
           "id" : 10202,
           "label" : "Application Tier",
@@ -117,7 +119,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The application tier and all the components which are running on shall be migrated.",
-          "abbrev" : "AT"
+          "abbrev" : "A-T"
         }, {
           "id" : 10203,
           "label" : "Data Tier",
@@ -126,7 +128,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The data tier and all the components which are running on shall be migrated.",
-          "abbrev" : "DT"
+          "abbrev" : "D-T"
         }, {
           "id" : 10204,
           "label" : "Client + Application Tier",
@@ -135,7 +137,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The client and applicaton tier shall be migrated.",
-          "abbrev" : "C+AT"
+          "abbrev" : "C+A-T"
         }, {
           "id" : 10205,
           "label" : "Client + Data Tier",
@@ -144,7 +146,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The client and data tier shall be migrated.",
-          "abbrev" : "C+DT"
+          "abbrev" : "C+D-T"
         }, {
           "id" : 10206,
           "label" : "Application + Data Tier",
@@ -153,7 +155,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The application and data tier shall be migrated.",
-          "abbrev" : "A+DT"
+          "abbrev" : "A+D-T"
         }, {
           "id" : 10207,
           "label" : "Client + Application + Data Tier",
@@ -161,8 +163,8 @@
           "parent" : 102,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The client, application and data tier shall be migrated hence the complete application.",
-          "abbrev" : "C+A+DT"
+          "description" : "The client, application and data tier shall be migrated, hence the complete application.",
+          "abbrev" : "C+A+D-T"
         } ]
       }, {
         "id" : 103,
@@ -172,7 +174,7 @@
         "classification" : "Application Migration in General",
         "cluster" : 1,
         "group" : "dec1",
-        "description" : "Enables a selection based on to be migrated components according to their type and amount.  ",
+        "description" : "Enables a selection of application parts based on components including their type and amount.  ",
         "abbrev" : "SAC",
         "children" : [ {
           "id" : 10301,
@@ -182,7 +184,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application component shall be migrated e.g. an application server.",
-          "abbrev" : "AC"
+          "abbrev" : "A-C"
         }, {
           "id" : 10302,
           "label" : "Application Components",
@@ -191,7 +193,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "Multiple application components shall be migrated e.g. a rich client and an ESB.",
-          "abbrev" : "ACs"
+          "abbrev" : "A-Cs"
         }, {
           "id" : 10303,
           "label" : "Middleware Component",
@@ -200,7 +202,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single middleware component shall be migrated e.g. a database.",
-          "abbrev" : "MC"
+          "abbrev" : "M-C"
         }, {
           "id" : 10304,
           "label" : "Middleware Components",
@@ -209,7 +211,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "Multiple middleware components shall be migrated e.g. multiple databases, a caching server and a database cluster.",
-          "abbrev" : "MCs"
+          "abbrev" : "M-Cs"
         }, {
           "id" : 10305,
           "label" : "Application + Middleware Component",
@@ -218,7 +220,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application and a single middleware component shall be migrated.",
-          "abbrev" : "A+MC"
+          "abbrev" : "A+M-C"
         }, {
           "id" : 10306,
           "label" : "Application Component + Middleware Components",
@@ -227,7 +229,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application and multiple middleware components shall be migrated.",
-          "abbrev" : "AC+MCs"
+          "abbrev" : "A-C+M-Cs"
         }, {
           "id" : 10307,
           "label" : "Middleware Component + Application Components",
@@ -236,7 +238,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single middleware component and multiple application components shall be migrated.",
-          "abbrev" : "MC+ACs"
+          "abbrev" : "M-C+A-Cs"
         }, {
           "id" : 10308,
           "label" : "Application + Middleware Components",
@@ -245,7 +247,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "Multiple application and middleware components shall be migrated.",
-          "abbrev" : "ACs+MCs"
+          "abbrev" : "A+M-Cs"
         } ]
       }, {
         "id" : 104,
@@ -313,7 +315,7 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 2,
         "group" : "dec2",
-        "description" : "Enables defintion on which level the migrated component(s) will be scaled.",
+        "description" : "Enables defintion on which level the migrated component(s) shall be scaled.",
         "abbrev" : "DSL",
         "children" : [ {
           "id" : 20101,
@@ -322,17 +324,17 @@
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The migrated components will not have to scale.",
-          "abbrev" : "NoS"
+          "description" : "The migrated components do not have to scale.",
+          "abbrev" : "No-S"
         }, {
           "id" : 20102,
-          "label" : "OS/VM Level Scaling",
+          "label" : "VM Level Scaling",
           "type" : "out",
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on VM level e.g. by instantiating new machines or requiring more resources for existing ones.",
-          "abbrev" : "VM-S"
+          "abbrev" : "VM-LS"
         }, {
           "id" : 20103,
           "label" : "Middleware Level Scaling",
@@ -341,7 +343,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the middleware level e.g. by adding or removing application servers.",
-          "abbrev" : "MW-S"
+          "abbrev" : "M-LS"
         }, {
           "id" : 20104,
           "label" : "Application Level Scaling",
@@ -350,25 +352,25 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the application level e.g. by adding or removing instances inside an application server.",
-          "abbrev" : "A-S"
+          "abbrev" : "A-LS"
         }, {
           "id" : 20105,
-          "label" : "OS/VM + Middleware Level Scaling",
+          "label" : "VM + Middleware Level Scaling",
           "type" : "out",
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The application shall scale on the VM as well as on the middleware level.",
-          "abbrev" : "VM+M-S"
+          "description" : "The application shall scale on the VM and on the middleware level.",
+          "abbrev" : "VM+M-LS"
         }, {
           "id" : 20106,
-          "label" : "OS/VM + Application Level Scaling",
+          "label" : "VM + Application Level Scaling",
           "type" : "out",
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the VM and the application level.",
-          "abbrev" : "VM+A-S"
+          "abbrev" : "VM+A-LS"
         }, {
           "id" : 20107,
           "label" : "Middleware + Application Level Scaling",
@@ -377,16 +379,16 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the middleware and the application level.",
-          "abbrev" : "M+A-S"
+          "abbrev" : "M+A-LS"
         }, {
           "id" : 20108,
-          "label" : "OS/VM + Middleware + Application Level Scaling",
+          "label" : "VM + Middleware + Application Level Scaling",
           "type" : "out",
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the VM, the middleware and the application level.",
-          "abbrev" : "VM+M+A-S"
+          "abbrev" : "VM+M+A-LS"
         } ]
       }, {
         "id" : 202,
@@ -396,8 +398,8 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 2,
         "group" : "dec2",
-        "description" : "Enables selection if the scaled component(s) will be scaled up/out or both.",
-        "abbrev" : "SST",
+        "description" : "Enables selection if the scaled component(s) shall be scaled up/out or both.",
+        "abbrev" : "SSTy",
         "children" : [ {
           "id" : 20201,
           "label" : "Vertical Scaling",
@@ -406,7 +408,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The component shall scale up and down i.e. through adding or removing resources.",
-          "abbrev" : "VS"
+          "abbrev" : "V-S"
         }, {
           "id" : 20202,
           "label" : "Horizontal Scaling",
@@ -415,7 +417,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The component shall scale out and in i.e. adding or removing instances.",
-          "abbrev" : "HS"
+          "abbrev" : "H-S"
         }, {
           "id" : 20203,
           "label" : "Hybrid Scaling",
@@ -424,7 +426,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The component shall scale up and down as well as in and out.",
-          "abbrev" : "HyS"
+          "abbrev" : "Hy-S"
         } ]
       }, {
         "id" : 203,
@@ -434,7 +436,7 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 2,
         "group" : "dec2",
-        "description" : "Enables selection of the automation degree of the applied scaling level and type.",
+        "description" : "Enables selection what kind of automation degree shall be applied to the scaling level and type.",
         "abbrev" : "SEAD",
         "children" : [ {
           "id" : 20301,
@@ -444,7 +446,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be performed manually.",
-          "abbrev" : "MS"
+          "abbrev" : "M-S"
         }, {
           "id" : 20302,
           "label" : "Semi-Automatic Scaling",
@@ -453,7 +455,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be performed semi-automatically i.e. by defining tresholds which trigger defined scaling actions.",
-          "abbrev" : "SAS"
+          "abbrev" : "SA-S"
         }, {
           "id" : 20303,
           "label" : "Semi-Automatic Third-Party Scaling",
@@ -462,7 +464,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be performed semi-automatically i.e. by defining tresholds which trigger defined scaling actions and entirely performed by a third party.",
-          "abbrev" : "SA3S"
+          "abbrev" : "SA3-S"
         }, {
           "id" : 20304,
           "label" : "Automatic Scaling",
@@ -471,7 +473,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be fully automatic without prior manual set up.",
-          "abbrev" : "AS"
+          "abbrev" : "A-S"
         }, {
           "id" : 20305,
           "label" : "Automatic Third-Party Scaling",
@@ -480,7 +482,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be fully automatic without prior manual set up and entirely performed by a third party.",
-          "abbrev" : "A3S"
+          "abbrev" : "A3-S"
         } ]
       }, {
         "id" : 204,
@@ -490,8 +492,8 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 2,
         "group" : "dec2",
-        "description" : "Enables selection if and how the scaling is triggered.",
-        "abbrev" : "Metz:\nSST",
+        "description" : "Enables selection if and how the scaling shall be triggered.",
+        "abbrev" : "Metz:\nSSTr",
         "children" : [ {
           "id" : 20401,
           "label" : "No Trigger",
@@ -500,7 +502,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling action shall not be triggered by anything. Notifications are not subsumed under triggers.",
-          "abbrev" : "NT"
+          "abbrev" : "No-T"
         }, {
           "id" : 20402,
           "label" : "Event-Driven Trigger",
@@ -509,7 +511,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The scaling shall be triggered by events e.g. exceeding thresholds.",
-          "abbrev" : "EDT"
+          "abbrev" : "E-T"
         }, {
           "id" : 20403,
           "label" : "Proactive Trigger",
@@ -517,8 +519,8 @@
           "parent" : 204,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The scaling shall be triggered prior to the unexpected resource limitation.",
-          "abbrev" : "PT"
+          "description" : "The scaling shall be triggered prior to even unexpected resource limitation.",
+          "abbrev" : "P-T"
         } ]
       } ]
     }, {
@@ -530,53 +532,53 @@
       "cluster" : 3,
       "group" : "dp3",
       "description" : "Comprises decision to denote if and how  multi-tenancy is supported by the migrated application.",
-      "abbrev" : "DMTS",
+      "abbrev" : "DMTR",
       "children" : [ {
         "id" : 301,
-        "label" : "Select Multi-Tenancy Architecture",
+        "label" : "Select Multi-Tenancy Level",
         "type" : "dec",
         "parent" : 3,
         "classification" : "Cloud Migration specific",
         "cluster" : 3,
         "group" : "dec3",
-        "description" : "Enables selection of a specific multi-tenancy architecture.",
-        "abbrev" : "SMTA",
+        "description" : "Enables selection of multi-tenancy levels varying in their amount of application stack sharing among tenants.",
+        "abbrev" : "SMTL",
         "children" : [ {
           "id" : 30101,
-          "label" : "Multi-Tenancy Architecture 0",
+          "label" : "Shared Hardware Multi-Tenancy",
           "type" : "out",
           "parent" : 301,
           "cluster" : 3,
           "group" : "out3",
-          "description" : "The application stack shall only be shared between tenants on the level of infrastructure e.g. hardware, facility.",
-          "abbrev" : "MTA0"
+          "description" : "The application stack shall only be shared between tenants on the level of infrastructure e.g. hardware, storage etc.",
+          "abbrev" : "MTL0"
         }, {
           "id" : 30102,
-          "label" : "Multi-Tenancy Architecture 1",
+          "label" : "Shared OS Multi-Tenancy",
           "type" : "out",
           "parent" : 301,
           "cluster" : 3,
           "group" : "out3",
-          "description" : "The application stack shall only be shared between tenants on the level of the operating system, virtual machines (hypervisor level) and below.",
-          "abbrev" : "MTA1"
+          "description" : "The application stack shall only be shared between tenants on the level of the operating system, virtual machine and below.",
+          "abbrev" : "MTL1"
         }, {
           "id" : 30103,
-          "label" : "Multi-Tenancy Architecture 2",
+          "label" : "Shared Middleware Multi-Tenancy",
           "type" : "out",
           "parent" : 301,
           "cluster" : 3,
           "group" : "out3",
-          "description" : "The application stack shall only be shared between tenants on the level of the middleware and below e.g. sharing the same enterprise service bus or application server.",
-          "abbrev" : "MTA2"
+          "description" : "The application stack shall only be shared between tenants on the level of the middleware and below e.g. sharing the application server.",
+          "abbrev" : "MTL2"
         }, {
           "id" : 30104,
-          "label" : "Multi-Tenancy Architecture 3",
+          "label" : "Shared Application Multi-Tenancy",
           "type" : "out",
           "parent" : 301,
           "cluster" : 3,
           "group" : "out3",
           "description" : "The application stack shall be fully shared between tenantes i.e. they use the same application instance.",
-          "abbrev" : "MTA3"
+          "abbrev" : "MTL3"
         } ]
       } ]
     }, {
@@ -607,7 +609,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be deployed in a public cloud environment.",
-          "abbrev" : "PC"
+          "abbrev" : "P-C"
         }, {
           "id" : 40102,
           "label" : "Private Cloud",
@@ -616,7 +618,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be deployed in a private cloud environment.",
-          "abbrev" : "PrC"
+          "abbrev" : "Pr-C"
         }, {
           "id" : 40103,
           "label" : "Community Cloud",
@@ -625,7 +627,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be deployed in a community cloud environment.",
-          "abbrev" : "CC"
+          "abbrev" : "C-C"
         }, {
           "id" : 40104,
           "label" : "Hybrid Cloud ",
@@ -634,7 +636,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be deployed in a public and private cloud environment.",
-          "abbrev" : "HyC"
+          "abbrev" : "Hy-C"
         } ]
       }, {
         "id" : 402,
@@ -681,7 +683,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall use a combination of IaaS and PaaS offering.",
-          "abbrev" : "I/PaaS"
+          "abbrev" : "I+P-aaS"
         }, {
           "id" : 40205,
           "label" : "IaaS + SaaS",
@@ -690,7 +692,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall use a combination of PaaS and SaaS offering.",
-          "abbrev" : "I/SaaS"
+          "abbrev" : "I+S-aaS"
         }, {
           "id" : 40206,
           "label" : "PaaS + SaaS",
@@ -699,7 +701,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall use a combination of IaaS and SaaS offering.",
-          "abbrev" : "P/SaaS"
+          "abbrev" : "P+S-aaS"
         }, {
           "id" : 40207,
           "label" : "Iaas + PaaS + SaaS",
@@ -708,7 +710,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall use a combination of Iaas, PaaS and SaaS offering.",
-          "abbrev" : "I/P/SaaS"
+          "abbrev" : "I+P+S-aaS"
         } ]
       }, {
         "id" : 403,
@@ -718,7 +720,7 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 4,
         "group" : "dec4",
-        "description" : "Enables selection where the cloud application will be hosted.",
+        "description" : "Enables selection where the cloud application shall be hosted.",
         "abbrev" : "DCH",
         "children" : [ {
           "id" : 40301,
@@ -728,7 +730,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be hosted on-premise.",
-          "abbrev" : "Metz:\nOnPH"
+          "abbrev" : "Metz:\nOnP-H"
         }, {
           "id" : 40302,
           "label" : "Off-Premise Hosting",
@@ -737,7 +739,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The application shall be hosted off-premise.",
-          "abbrev" : "OffPH"
+          "abbrev" : "OffP-H"
         }, {
           "id" : 40303,
           "label" : "Hybrid Hosting",
@@ -746,7 +748,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The applicaton shall be hosted on- as well as off-premise.",
-          "abbrev" : "HyH"
+          "abbrev" : "Hy-H"
         } ]
       }, {
         "id" : 404,
@@ -760,67 +762,67 @@
         "abbrev" : "DRR",
         "children" : [ {
           "id" : 40401,
-          "label" : "Role Set 1",
+          "label" : "All Inhouse",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
           "description" : "The hardware is owned by the company which also operates and manages the migrated cloud application and environment.",
-          "abbrev" : "RS1"
+          "abbrev" : "AI-R"
         }, {
           "id" : 40402,
-          "label" : "Role Set 7",
+          "label" : "Only Managmenet",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
           "description" : "The cloud environment and the underlying hardware is owned and operated by a third party whereas the cloud application is managed by the company.",
-          "abbrev" : "RS7"
+          "abbrev" : "OM-R"
         }, {
           "id" : 40403,
-          "label" : "Role Set 8",
+          "label" : "All Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
           "description" : "The hardware and the cloud environment is owned and operated by a third party which also manages the application.",
-          "abbrev" : "RS8"
+          "abbrev" : "AO-R"
         }, {
           "id" : 40404,
-          "label" : "Role Set 1 + 7",
+          "label" : "All Inhouse + Only Management",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of Role Set 1 and 7.",
-          "abbrev" : "RS1+7"
+          "description" : "Combination of All Inhouse + Only Management",
+          "abbrev" : "AI+OM-R"
         }, {
           "id" : 40405,
-          "label" : "Role Set 1 + 8",
+          "label" : "All Inhouse + All Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of Role Set 1 and 8.",
-          "abbrev" : "RS1+8"
+          "description" : "Combination of All Inhouse + All Outsourced",
+          "abbrev" : "AI+AO-R"
         }, {
           "id" : 40406,
-          "label" : "Role Set 7 + 8",
+          "label" : "Only Management + All Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of Role Set 7 and 8.",
-          "abbrev" : "RS7+8"
+          "description" : "Combination of Only Management + All Outsourced",
+          "abbrev" : "OM+AO-R"
         }, {
           "id" : 40407,
-          "label" : "Role Set 1 + 7 + 8",
+          "label" : "All Inhouse + Only Management + All Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of Role Set 1, 7 and 8.",
-          "abbrev" : "RS1+7+8"
+          "description" : "Combination of All Inhouse+ Only Management + All Outsourced",
+          "abbrev" : "AI+OM+AO-R"
         } ]
       }, {
         "id" : 405,
@@ -830,7 +832,7 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 4,
         "group" : "dec4",
-        "description" : "Decision stands for a cloud vendor such as Amazon, Microsoft or Google.",
+        "description" : "Decision stands exemplary for a cloud vendor such as Amazon, Microsoft or Google.",
         "abbrev" : "SCV",
         "children" : [ {
           "id" : 40501,
@@ -850,7 +852,7 @@
         "classification" : "Cloud Migration specific",
         "cluster" : 4,
         "group" : "dec4",
-        "description" : "Enables selection of a pricing scheme for the used cloud resources.",
+        "description" : "Enables selection of a pricing scheme which shall be used for the used cloud resources.",
         "abbrev" : "SPM",
         "children" : [ {
           "id" : 40601,
@@ -859,8 +861,8 @@
           "parent" : 406,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Denotes freely offered serivces through cloud vendors.",
-          "abbrev" : "Free"
+          "description" : "A free pricing model shall be used.",
+          "abbrev" : "Free-PM"
         }, {
           "id" : 40602,
           "label" : "Pay-Per-Use",
@@ -868,8 +870,8 @@
           "parent" : 406,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The application usage shall be charged on a pay-per-use basis e.g. cent per gigabyte of occupied storage over a specific time.",
-          "abbrev" : "PPU"
+          "description" : "The cloud resources shall be charged on a pay-per-use basis e.g. cent per gigabyte of occupied storage over a specific time.",
+          "abbrev" : "Use-PM"
         }, {
           "id" : 40603,
           "label" : "Pay-Per-Unit",
@@ -877,8 +879,8 @@
           "parent" : 406,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The application usage shall be charged on a pay-per-unit basis",
-          "abbrev" : "PPU"
+          "description" : "The cloud resources shall be charged on a pay-per-unit basis",
+          "abbrev" : "Unit-PM"
         }, {
           "id" : 40604,
           "label" : "Charge-Per-Use (Subscription)",
@@ -886,17 +888,8 @@
           "parent" : 406,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The application usage shall be charded on a subscription basis e.g. upfront payment for the use to specific terms and conditions.",
-          "abbrev" : "CPU"
-        }, {
-          "id" : 40605,
-          "label" : "Combined Pricing Model",
-          "type" : "out",
-          "parent" : 406,
-          "cluster" : 4,
-          "group" : "out4",
-          "description" : "The application shall use a combination of pricing models.",
-          "abbrev" : "CPM"
+          "description" : "The cloud resources shall be charded on a subscription basis e.g. upfront payment for the use to specific terms and conditions.",
+          "abbrev" : "C-PM"
         } ]
       }, {
         "id" : 407,
@@ -906,26 +899,26 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "cluster" : 4,
         "group" : "dec4",
-        "description" : "Enables selection of geographical position in relation to the jurisdiction of the company.",
+        "description" : "Enables selection if the data shall be stored within or outside of the jurisdiction of the company.",
         "abbrev" : "DRL",
         "children" : [ {
           "id" : 40701,
-          "label" : "Data Location under same jurisdiction as company",
+          "label" : "Data In Same Jurisdiction",
           "type" : "out",
           "parent" : 407,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The data location has to be under the same jurisdiction as the company at all time to keep data security laws enforced.",
-          "abbrev" : "DLSJ"
+          "description" : "The data location has to be under the same jurisdiction as the company at all time to keep the same data security laws enforced.",
+          "abbrev" : "S-J"
         }, {
           "id" : 40702,
-          "label" : "Data Location outside jurisdiction of company",
+          "label" : "Data In Different Jurisdiction",
           "type" : "out",
           "parent" : 407,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The data location can be under a different jurisdiction than the company is and hence data is allowed to fall under country or region specific laws and regulations.",
-          "abbrev" : "DLOJ"
+          "description" : "The data location can be under a different jurisdiction than the company is, hence data is allowed to fall under country or region specific laws and regulations.",
+          "abbrev" : "D-J"
         } ]
       } ]
     } ]
@@ -1342,27 +1335,22 @@
     "type" : "Affecting"
   }, {
     "source" : 407,
+    "target" : 403,
+    "relationGroup" : "decRel",
+    "type" : "Influencing"
+  }, {
+    "source" : 407,
     "target" : 405,
     "relationGroup" : "decRel",
     "type" : "Affecting"
+  }, {
+    "source" : 407,
+    "target" : 403,
+    "relationGroup" : "decRel",
+    "type" : "Requiring"
   } ],
   "outcomeLinks" : [ {
     "source" : 10101,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10101,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10101,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10101,
     "target" : 10301,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -1375,10 +1363,30 @@
     "source" : 10101,
     "target" : 10303,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10101,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10101,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10101,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10101,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10101,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1423,21 +1431,6 @@
     "type" : "ex"
   }, {
     "source" : 10102,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10102,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10102,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10102,
     "target" : 10301,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -1454,6 +1447,26 @@
   }, {
     "source" : 10102,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10102,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10102,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10102,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10102,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1498,21 +1511,6 @@
     "type" : "ex"
   }, {
     "source" : 10103,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10103,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10103,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10103,
     "target" : 10301,
     "relationGroup" : "outRel",
     "type" : "ex"
@@ -1533,9 +1531,29 @@
     "type" : "a"
   }, {
     "source" : 10103,
-    "target" : 10401,
+    "target" : 10305,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 10103,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10103,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10103,
+    "target" : 10308,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10103,
+    "target" : 10401,
+    "relationGroup" : "outRel",
+    "type" : "a"
   }, {
     "source" : 10103,
     "target" : 10402,
@@ -1573,24 +1591,9 @@
     "type" : "ex"
   }, {
     "source" : 10104,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10104,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10104,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10104,
     "target" : 10301,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10104,
     "target" : 10302,
@@ -1600,10 +1603,30 @@
     "source" : 10104,
     "target" : 10303,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10104,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10104,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10104,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10104,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10104,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1648,37 +1671,42 @@
     "type" : "ex"
   }, {
     "source" : 10105,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10105,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10105,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10105,
     "target" : 10301,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10105,
     "target" : 10302,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10105,
     "target" : 10303,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10105,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10105,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10105,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10105,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10105,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1723,37 +1751,42 @@
     "type" : "ex"
   }, {
     "source" : 10106,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10106,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10106,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10106,
     "target" : 10301,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10106,
     "target" : 10302,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10106,
     "target" : 10303,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10106,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10106,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10106,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10106,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10106,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1798,37 +1831,42 @@
     "type" : "ex"
   }, {
     "source" : 10107,
-    "target" : 10101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10107,
-    "target" : 10102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10107,
-    "target" : 10103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10107,
     "target" : 10301,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10107,
     "target" : 10302,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10107,
     "target" : 10303,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10107,
     "target" : 10304,
+    "relationGroup" : "outRel",
+    "type" : "ex"
+  }, {
+    "source" : 10107,
+    "target" : 10305,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10107,
+    "target" : 10306,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10107,
+    "target" : 10307,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10107,
+    "target" : 10308,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -1872,111 +1910,6 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
-    "source" : 10201,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10201,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10201,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10202,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10202,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10202,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10203,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10203,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10203,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10204,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10204,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10204,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10205,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10205,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10205,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10206,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10206,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10206,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10207,
-    "target" : 10201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10207,
-    "target" : 10202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10207,
-    "target" : 10203,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
     "source" : 10301,
     "target" : 10101,
     "relationGroup" : "outRel",
@@ -1993,24 +1926,24 @@
     "type" : "ex"
   }, {
     "source" : 10301,
-    "target" : 10301,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10301,
-    "target" : 10302,
+    "target" : 10104,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
     "source" : 10301,
-    "target" : 10303,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10301,
-    "target" : 10304,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
+  }, {
+    "source" : 10301,
+    "target" : 10107,
+    "relationGroup" : "outRel",
+    "type" : "ex"
   }, {
     "source" : 10301,
     "target" : 10401,
@@ -2103,24 +2036,24 @@
     "type" : "ex"
   }, {
     "source" : 10302,
-    "target" : 10301,
+    "target" : 10104,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
     "source" : 10302,
-    "target" : 10302,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "ex"
   }, {
     "source" : 10302,
-    "target" : 10303,
+    "target" : 10107,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 10302,
-    "target" : 10304,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10302,
     "target" : 10401,
@@ -2213,22 +2146,22 @@
     "type" : "a"
   }, {
     "source" : 10303,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10303,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "ex"
   }, {
     "source" : 10303,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "ex"
   }, {
     "source" : 10303,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
@@ -2323,24 +2256,24 @@
     "type" : "a"
   }, {
     "source" : 10304,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
     "source" : 10304,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
     "source" : 10304,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10304,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10304,
     "target" : 10401,
@@ -2433,22 +2366,22 @@
     "type" : "a"
   }, {
     "source" : 10305,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10305,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10305,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10305,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
@@ -2543,24 +2476,24 @@
     "type" : "a"
   }, {
     "source" : 10306,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10306,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10306,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10306,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10306,
     "target" : 10401,
@@ -2653,24 +2586,24 @@
     "type" : "a"
   }, {
     "source" : 10307,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10307,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10307,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10307,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10307,
     "target" : 10401,
@@ -2763,24 +2696,24 @@
     "type" : "a"
   }, {
     "source" : 10308,
-    "target" : 10301,
+    "target" : 10104,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10308,
-    "target" : 10302,
+    "target" : 10105,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10308,
-    "target" : 10303,
+    "target" : 10106,
     "relationGroup" : "outRel",
-    "type" : "ex"
+    "type" : "a"
   }, {
     "source" : 10308,
-    "target" : 10304,
+    "target" : 10107,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 10308,
     "target" : 10401,
@@ -2893,26 +2826,6 @@
     "type" : "ex"
   }, {
     "source" : 10401,
-    "target" : 10401,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10401,
-    "target" : 10402,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10401,
-    "target" : 10403,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10401,
-    "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10401,
     "target" : 20101,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -3003,26 +2916,6 @@
     "type" : "a"
   }, {
     "source" : 10402,
-    "target" : 10401,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10402,
-    "target" : 10402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10402,
-    "target" : 10403,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10402,
-    "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10402,
     "target" : 20101,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -3103,26 +2996,6 @@
     "type" : "in"
   }, {
     "source" : 10403,
-    "target" : 10401,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10403,
-    "target" : 10402,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10403,
-    "target" : 10403,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10403,
-    "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10403,
     "target" : 20101,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -3199,26 +3072,6 @@
   }, {
     "source" : 10404,
     "target" : 10304,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 10404,
-    "target" : 10401,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10404,
-    "target" : 10402,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10404,
-    "target" : 10403,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 10404,
-    "target" : 10404,
     "relationGroup" : "outRel",
     "type" : "in"
   }, {
@@ -3314,26 +3167,6 @@
   }, {
     "source" : 20101,
     "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20101,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20101,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20101,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20101,
-    "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
@@ -3422,6 +3255,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20101,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20102,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -3459,26 +3297,6 @@
   }, {
     "source" : 20102,
     "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20102,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20102,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20102,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20102,
-    "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -3567,6 +3385,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20102,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20103,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -3604,26 +3427,6 @@
   }, {
     "source" : 20103,
     "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20103,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20103,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20103,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20103,
-    "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -3707,6 +3510,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20103,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20104,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -3746,26 +3554,6 @@
     "target" : 10404,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20104,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20104,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20104,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20104,
-    "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20104,
     "target" : 20201,
@@ -3847,6 +3635,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20104,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20105,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -3884,26 +3677,6 @@
   }, {
     "source" : 20105,
     "target" : 10404,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20105,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20105,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20105,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20105,
-    "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -3992,6 +3765,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20105,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20106,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -4031,26 +3809,6 @@
     "target" : 10404,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20106,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20106,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20106,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20106,
-    "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20106,
     "target" : 20201,
@@ -4137,6 +3895,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20106,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20107,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -4176,26 +3939,6 @@
     "target" : 10404,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20107,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20107,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20107,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20107,
-    "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20107,
     "target" : 20201,
@@ -4277,6 +4020,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20107,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20108,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -4316,26 +4064,6 @@
     "target" : 10404,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20108,
-    "target" : 20101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20108,
-    "target" : 20102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20108,
-    "target" : 20103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20108,
-    "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20108,
     "target" : 20201,
@@ -4422,6 +4150,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20108,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20201,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4439,16 +4172,6 @@
   }, {
     "source" : 20201,
     "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20201,
-    "target" : 20201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20201,
-    "target" : 20202,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
@@ -4467,6 +4190,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20201,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20202,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4486,16 +4214,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20202,
-    "target" : 20201,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 20202,
-    "target" : 20202,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20202,
     "target" : 40201,
@@ -4512,6 +4230,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20202,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20203,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4531,16 +4254,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20203,
-    "target" : 20201,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20203,
-    "target" : 20202,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20203,
     "target" : 40201,
@@ -4557,6 +4270,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20203,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20301,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4576,31 +4294,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20301,
-    "target" : 20301,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20301,
-    "target" : 20302,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20301,
-    "target" : 20303,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20301,
-    "target" : 20304,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20301,
-    "target" : 20305,
-    "relationGroup" : "outRel",
-    "type" : "ex"
   }, {
     "source" : 20301,
     "target" : 20401,
@@ -4632,6 +4325,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20301,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20302,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4651,31 +4349,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20302,
-    "target" : 20301,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20302,
-    "target" : 20302,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20302,
-    "target" : 20303,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20302,
-    "target" : 20304,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20302,
-    "target" : 20305,
-    "relationGroup" : "outRel",
-    "type" : "ex"
   }, {
     "source" : 20302,
     "target" : 20401,
@@ -4707,6 +4380,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20302,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20303,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4726,31 +4404,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "a"
-  }, {
-    "source" : 20303,
-    "target" : 20301,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20303,
-    "target" : 20302,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20303,
-    "target" : 20303,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20303,
-    "target" : 20304,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20303,
-    "target" : 20305,
-    "relationGroup" : "outRel",
-    "type" : "ex"
   }, {
     "source" : 20303,
     "target" : 20401,
@@ -4777,6 +4430,11 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
+    "source" : 20303,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20304,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4794,31 +4452,6 @@
   }, {
     "source" : 20304,
     "target" : 20104,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20304,
-    "target" : 20301,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20304,
-    "target" : 20302,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20304,
-    "target" : 20303,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20304,
-    "target" : 20304,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20304,
-    "target" : 20305,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
@@ -4852,6 +4485,11 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
+    "source" : 20304,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20305,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4871,31 +4509,6 @@
     "target" : 20104,
     "relationGroup" : "outRel",
     "type" : "ex"
-  }, {
-    "source" : 20305,
-    "target" : 20301,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20305,
-    "target" : 20302,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20305,
-    "target" : 20303,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20305,
-    "target" : 20304,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20305,
-    "target" : 20305,
-    "relationGroup" : "outRel",
-    "type" : "in"
   }, {
     "source" : 20305,
     "target" : 20401,
@@ -4917,6 +4530,11 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
+    "source" : 20305,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 20401,
     "target" : 20101,
     "relationGroup" : "outRel",
@@ -4963,21 +4581,6 @@
     "type" : "ex"
   }, {
     "source" : 20401,
-    "target" : 20401,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20401,
-    "target" : 20402,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20401,
-    "target" : 20403,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20401,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -4991,6 +4594,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 20401,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 20402,
     "target" : 20101,
@@ -5033,21 +4641,6 @@
     "type" : "ex"
   }, {
     "source" : 20402,
-    "target" : 20401,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20402,
-    "target" : 20402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20402,
-    "target" : 20403,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20402,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -5061,6 +4654,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 20402,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 20403,
     "target" : 20101,
@@ -5098,21 +4696,6 @@
     "type" : "a"
   }, {
     "source" : 20403,
-    "target" : 20401,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20403,
-    "target" : 20402,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 20403,
-    "target" : 20403,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 20403,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -5126,6 +4709,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 20403,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 30101,
     "target" : 10101,
@@ -5203,26 +4791,6 @@
     "type" : "a"
   }, {
     "source" : 30101,
-    "target" : 30101,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 30101,
-    "target" : 30102,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30101,
-    "target" : 30103,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30101,
-    "target" : 30104,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30101,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "in"
@@ -5236,6 +4804,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 30101,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 30102,
     "target" : 10101,
@@ -5313,26 +4886,6 @@
     "type" : "a"
   }, {
     "source" : 30102,
-    "target" : 30101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30102,
-    "target" : 30102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 30102,
-    "target" : 30103,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30102,
-    "target" : 30104,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30102,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "in"
@@ -5346,6 +4899,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 30102,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 30103,
     "target" : 10101,
@@ -5423,26 +4981,6 @@
     "type" : "a"
   }, {
     "source" : 30103,
-    "target" : 30101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30103,
-    "target" : 30102,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30103,
-    "target" : 30103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 30103,
-    "target" : 30104,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30103,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -5456,6 +4994,11 @@
     "target" : 40203,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 30103,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 30104,
     "target" : 10101,
@@ -5533,26 +5076,6 @@
     "type" : "in"
   }, {
     "source" : 30104,
-    "target" : 30101,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30104,
-    "target" : 30102,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30104,
-    "target" : 30103,
-    "relationGroup" : "outRel",
-    "type" : "ex"
-  }, {
-    "source" : 30104,
-    "target" : 30104,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 30104,
     "target" : 40201,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -5567,25 +5090,10 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
-    "source" : 40101,
-    "target" : 40101,
+    "source" : 30104,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40101,
-    "target" : 40102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40101,
-    "target" : 40103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40101,
-    "target" : 40104,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40101,
     "target" : 40301,
@@ -5612,25 +5120,10 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
-    "source" : 40102,
-    "target" : 40101,
+    "source" : 40101,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40102,
-    "target" : 40102,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40102,
-    "target" : 40103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40102,
-    "target" : 40104,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40102,
     "target" : 40301,
@@ -5657,25 +5150,10 @@
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
-    "source" : 40103,
-    "target" : 40101,
+    "source" : 40102,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40103,
-    "target" : 40102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40103,
-    "target" : 40103,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40103,
-    "target" : 40104,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40103,
     "target" : 40301,
@@ -5702,25 +5180,10 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
-    "source" : 40104,
-    "target" : 40101,
+    "source" : 40103,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40104,
-    "target" : 40102,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40104,
-    "target" : 40103,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40104,
-    "target" : 40104,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40104,
     "target" : 40301,
@@ -5747,6 +5210,11 @@
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
+    "source" : 40104,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
     "source" : 40201,
     "target" : 10301,
     "relationGroup" : "outRel",
@@ -5878,19 +5346,9 @@
     "type" : "a"
   }, {
     "source" : 40201,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40201,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40201,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40202,
     "target" : 10301,
@@ -6023,19 +5481,9 @@
     "type" : "a"
   }, {
     "source" : 40202,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40202,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40202,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40203,
     "target" : 10301,
@@ -6168,19 +5616,9 @@
     "type" : "a"
   }, {
     "source" : 40203,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40203,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40203,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40204,
     "target" : 10301,
@@ -6313,19 +5751,9 @@
     "type" : "a"
   }, {
     "source" : 40204,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40204,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40204,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40205,
     "target" : 10301,
@@ -6458,19 +5886,9 @@
     "type" : "a"
   }, {
     "source" : 40205,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40205,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40205,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40206,
     "target" : 10301,
@@ -6603,19 +6021,9 @@
     "type" : "a"
   }, {
     "source" : 40206,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40206,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40206,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40207,
     "target" : 10301,
@@ -6748,19 +6156,9 @@
     "type" : "a"
   }, {
     "source" : 40207,
-    "target" : 40201,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40207,
-    "target" : 40202,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40207,
-    "target" : 40203,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40301,
     "target" : 40101,
@@ -6783,16 +6181,6 @@
     "type" : "ex"
   }, {
     "source" : 40301,
-    "target" : 40301,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40301,
-    "target" : 40302,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40301,
     "target" : 40401,
     "relationGroup" : "outRel",
     "type" : "in"
@@ -6806,6 +6194,11 @@
     "target" : 40403,
     "relationGroup" : "outRel",
     "type" : "ex"
+  }, {
+    "source" : 40301,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 40301,
     "target" : 40701,
@@ -6838,16 +6231,6 @@
     "type" : "ex"
   }, {
     "source" : 40302,
-    "target" : 40301,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40302,
-    "target" : 40302,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40302,
     "target" : 40401,
     "relationGroup" : "outRel",
     "type" : "ex"
@@ -6861,6 +6244,11 @@
     "target" : 40403,
     "relationGroup" : "outRel",
     "type" : "a"
+  }, {
+    "source" : 40302,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 40302,
     "target" : 40701,
@@ -6893,16 +6281,6 @@
     "type" : "a"
   }, {
     "source" : 40303,
-    "target" : 40301,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40303,
-    "target" : 40302,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40303,
     "target" : 40401,
     "relationGroup" : "outRel",
     "type" : "a"
@@ -6916,6 +6294,11 @@
     "target" : 40403,
     "relationGroup" : "outRel",
     "type" : "a"
+  }, {
+    "source" : 40303,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
   }, {
     "source" : 40303,
     "target" : 40701,
@@ -6958,19 +6341,9 @@
     "type" : "ex"
   }, {
     "source" : 40401,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40401,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40401,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40402,
     "target" : 40101,
@@ -7003,19 +6376,9 @@
     "type" : "in"
   }, {
     "source" : 40402,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40402,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40402,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40403,
     "target" : 40101,
@@ -7048,19 +6411,9 @@
     "type" : "in"
   }, {
     "source" : 40403,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40403,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40403,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40404,
     "target" : 40101,
@@ -7093,19 +6446,9 @@
     "type" : "in"
   }, {
     "source" : 40404,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40404,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40404,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40405,
     "target" : 40101,
@@ -7138,19 +6481,9 @@
     "type" : "in"
   }, {
     "source" : 40405,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40405,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40405,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40406,
     "target" : 40101,
@@ -7183,19 +6516,9 @@
     "type" : "in"
   }, {
     "source" : 40406,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40406,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40406,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40407,
     "target" : 40101,
@@ -7228,19 +6551,9 @@
     "type" : "in"
   }, {
     "source" : 40407,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40407,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40407,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   }, {
     "source" : 40501,
     "target" : 20101,
@@ -7428,153 +6741,63 @@
     "type" : "eb"
   }, {
     "source" : 40601,
-    "target" : 40601,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40601,
-    "target" : 40602,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40601,
-    "target" : 40603,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40601,
-    "target" : 40604,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40602,
-    "target" : 40601,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40602,
-    "target" : 40602,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40602,
-    "target" : 40603,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40602,
-    "target" : 40604,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40603,
-    "target" : 40601,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40603,
-    "target" : 40602,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40603,
-    "target" : 40603,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40603,
-    "target" : 40604,
-    "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
     "source" : 40604,
-    "target" : 40601,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
+    "type" : "aff"
   }, {
-    "source" : 40604,
-    "target" : 40602,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40604,
-    "target" : 40603,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40604,
-    "target" : 40604,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40605,
-    "target" : 40601,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40605,
-    "target" : 40602,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40605,
-    "target" : 40603,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40605,
-    "target" : 40604,
+    "source" : 40701,
+    "target" : 40301,
     "relationGroup" : "outRel",
     "type" : "a"
   }, {
     "source" : 40701,
-    "target" : 40401,
+    "target" : 40302,
     "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "a"
   }, {
     "source" : 40701,
-    "target" : 40402,
+    "target" : 40303,
+    "relationGroup" : "outRel",
+    "type" : "a"
+  }, {
+    "source" : 40701,
+    "target" : 40501,
+    "relationGroup" : "outRel",
+    "type" : "aff"
+  }, {
+    "source" : 40702,
+    "target" : 40301,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
-    "source" : 40701,
-    "target" : 40403,
+    "source" : 40702,
+    "target" : 40302,
+    "relationGroup" : "outRel",
+    "type" : "in"
+  }, {
+    "source" : 40702,
+    "target" : 40303,
     "relationGroup" : "outRel",
     "type" : "ex"
   }, {
-    "source" : 40701,
-    "target" : 40701,
-    "relationGroup" : "outRel",
-    "type" : "in"
-  }, {
-    "source" : 40701,
-    "target" : 40702,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
     "source" : 40702,
-    "target" : 40401,
+    "target" : 40501,
     "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40702,
-    "target" : 40402,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40702,
-    "target" : 40403,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40702,
-    "target" : 40701,
-    "relationGroup" : "outRel",
-    "type" : "a"
-  }, {
-    "source" : 40702,
-    "target" : 40702,
-    "relationGroup" : "outRel",
-    "type" : "in"
+    "type" : "aff"
   } ]
 }
