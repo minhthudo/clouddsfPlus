@@ -35,10 +35,11 @@ var treeGraph = function() {
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
 
-		
-		
 		/* Initialize tooltip */
-		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([5, 5]).html(function(d) { return format_description(d); });
+		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
+				.html(function(d) {
+					return format_description(d);
+				});
 
 		/* Invoke the tip in the context of your visualization */
 		svg.call(tip)
@@ -82,10 +83,10 @@ var treeGraph = function() {
 				x = 4.5;
 				break;
 			case "dec":
-				x = 8;
+				x = 8.5;
 				break;
 			case "out":
-				x = 10;
+				x = 11;
 				break;
 			}
 			d.y = (x * distance) + padding.left;
@@ -126,12 +127,12 @@ var treeGraph = function() {
 		textWrapper.filter(function(d) {
 			if (d.type != "out")
 				return d;
-		}).call(wrap, mC.panelWidth / 6);
+		}).call(wrap, (mC.panelWidth / 16) * 3);
 
 		textWrapper.filter(function(d) {
 			if (d.type == "out")
 				return d;
-		}).call(wrap, mC.panelWidth / 3);
+		}).call(wrap, (mC.panelWidth / 16) * 5 );
 
 		// append different css classes through method
 		nodeEnter.append("svg:circle").attr("r", function(d) {
@@ -151,8 +152,8 @@ var treeGraph = function() {
 
 			// ToDo
 		}).on("mouseover", tip.show).on("mouseout", tip.hide)
-		//.on("mouseover", mouseOverArc)//.on("mousemove", mouseMoveArc)
-		//.on("mouseout", mouseOutArc);
+		// .on("mouseover", mouseOverArc)//.on("mousemove", mouseMoveArc)
+		// .on("mouseout", mouseOutArc);
 		;
 
 		// Transition nodes to their new position.
@@ -396,24 +397,29 @@ var treeGraph = function() {
 	function format_description(d) {
 		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
 				+ ')</p><p><strong>Description: </strong>' + d.description
-				+ '</p> <p><strong>Classification: </strong>' + d.classification + '</p';
+				+ '</p> <p><strong>Classification: </strong>'
+				+ d.classification + '</p';
 	}
 
 	function mouseOverArc(d) {
-//		tooltip.html(format_description(d));
-//		return tooltip.style("top", (d3.event.pageY + 10) + "px").style("left",
-//				(d3.event.pageX + 10) + "px").style("z-index", 30).transition().duration(150).style("opacity", 0.9);
-//		$('#svgContainer').tooltip(options)
+		// tooltip.html(format_description(d));
+		// return tooltip.style("top", (d3.event.pageY + 10) +
+		// "px").style("left",
+		// (d3.event.pageX + 10) + "px").style("z-index",
+		// 30).transition().duration(150).style("opacity", 0.9);
+		// $('#svgContainer').tooltip(options)
 		tip.show();
 	}
 
 	function mouseOutArc() {
 		tip.hide();
-		//return tooltip.transition().duration(5).style("opacity", 0).style("z-index", -100);
+		// return tooltip.transition().duration(5).style("opacity",
+		// 0).style("z-index", -100);
 	}
 
 	function mouseMoveArc(d) {
-		return tooltip.transition().duration(5).style("top", (d3.event.pageY + 10) + "px").style("left",
+		return tooltip.transition().duration(5).style("top",
+				(d3.event.pageY + 10) + "px").style("left",
 				(d3.event.pageX + 10) + "px");
 	}
 
