@@ -33,96 +33,99 @@
 </head>
 
 <body>
-	<header class="navbar navbar-inverse navbar-static-top "
-		role="navigation">
-		<div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand visible-xs" href="./index.html">CloudDSF+</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<nav id="navbar" class="collapse navbar-collapse" role="navigation">
-				<ul class="nav navbar-nav nav-justified">
-					<li><a href="./index.html"> <!-- <span
-							class="glyphicon glyphicon-home"></span> --> <span><strong>
-									CloudDSF+</strong></span></a></li>
-					<li><a href="./cloudDSFPrototype.html"> <!-- <span
-							class="glyphicon glyphicon-globe"></span> --> <span>Prototype</span>
-					</a></li>
-					<li class="active"><a href="./knowledgeBase.html"> <!--  <span
-							class="glyphicon glyphicon-book"> </span>  --> <span>Knowledge
-								Base</span>
-					</a></li>
-					<li><a href="./cloudDSFVisualizations.html"> <!--  <span
-							class="glyphicon glyphicon-picture"></span> --> <span>CloudDSF
-								Visualizations</span>
-					</a></li>
-					<li><a href="./about.html"> <!-- <span
-							class="glyphicon glyphicon-flag"></span> --> <span>About</span>
-					</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
-
-	<div class="container-fluid">
-		<div class="row row-offcanvas row-offcanvas-left active">
-
-			<div class="col-sm-12 col-md-2 navbar-inverse sidebar-offcanvas"
-				id="sidebar" role="navigation">
-				<ul class="nav navbar-nav ">
-					<li role="presentation"><a role="pill" data-toggle="pill"
-						id="btnList_treeLayout" href="#"> <span>Hierarchical
-								Layout</span></a></li>
-					<li role="presentation"><a role="pill" data-toggle="pill"
-						id="btnList_DecRel" href="#"> <span>Decision Relations</span>
-					</a></li>
-					<li role="presentation"><a role="pill" data-toggle="pill"
-						id="btnList_OutRel" href="#"> <span>Outcome Relations</span>
-					</a></li>
-				</ul>
-				<button id="toggleButton" type="button"
-					class="btn btn-primary hidden-sd hidden-xs" data-toggle="offcanvas">
-					<span class="glyphicon glyphicon-chevron-left"></span>
-				</button>
-			</div>
-			<div class="col-sm-12 col-md-10">
-				<div class="row">
-					<div class="col-md-6">
-						<!-- Toolbar for decision Graph -->
-						<div id="toolbarDecisions" class="hidden text-center">
-							<select id="relationTypes" multiple="multiple">
-								<option value="Influencing">Influencing</option>
-								<option value="Requiring">Requiring</option>
-								<option value="Affecting">Affecting</option>
-								<option value="Binding">Binding</option>
-							</select>
-						</div>
-
-						<!-- 	<div id="toolbarTree" class="hidden text-center"> -->
-						<div id="toolbarTree"
-							class="btn-group btn-group-justified hidden text-center"
-							role="group">
-							<a id="showDps" class="btn btn-default" role="button">Show
-								All Decision Points</a> <a id="showDecs" class="btn btn-default"
-								role="button">Show All Decisions</a> <a id="showOutcomes"
-								class="btn btn-default" role="button">Show All Outcomes</a>
-						</div>
-					</div>
+		<header class="navbar navbar-inverse navbar-static-top "
+			role="navigation">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand visible-xs" href="./index.html">CloudDSF+</a>
 				</div>
-				<div class="row">
-					<div id="visContent" class="col-md-12"></div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<nav id="navbar" class="collapse navbar-collapse" role="navigation">
+					<ul class="nav navbar-nav nav-justified">
+						<li><a href="./index.html"> <!-- <span
+							class="glyphicon glyphicon-home"></span> --> <span><strong>
+										CloudDSF+</strong></span></a></li>
+						<li><a href="./cloudDSFPrototype.html"> <!-- <span
+							class="glyphicon glyphicon-globe"></span> --> <span>Prototype</span>
+						</a></li>
+						<li class="active"><a href="./knowledgeBase.html"> <!--  <span
+							class="glyphicon glyphicon-book"> </span>  --> <span>Knowledge
+									Base</span>
+						</a></li>
+						<li><a href="./cloudDSFVisualizations.html"> <!--  <span
+							class="glyphicon glyphicon-picture"></span> --> <span>CloudDSF
+									Visualizations</span>
+						</a></li>
+						<li><a href="./about.html"> <!-- <span
+							class="glyphicon glyphicon-flag"></span> --> <span>About</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<div class="navbar navbar-inverse navbar-static-top subnav"
+			role="navigation">
+			<div class="container">
+				<ul class="nav navbar-nav nav-justified">
+					<li class="active"><a id="btnList_treeLayout" href="#"> <span>Hierarchical
+								Layout</span>
+					</a></li>
+					<li><a id="btnList_DecRel" href="#"> <span>Decision
+								Relations</span>
+					</a></li>
+					<li><a id="btnList_OutRel" href="#"> <span>Outcome
+								Relations</span>
+					</a></li>
+				</ul>
+			</div>
+		</div>
+
+	<div class="container">
+		<div class=row>
+			<div class="col-sm-12 col-md-12">
+				<!-- Toolbar for decision Graph -->
+				<div id="toolbarDecisions" class="hidden text-center">
+					<select id="relationTypes" multiple="multiple">
+						<option value="Influencing">Influencing</option>
+						<option value="Requiring">Requiring</option>
+						<option value="Affecting">Affecting</option>
+						<option value="Binding">Binding</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class=row>
+			<div class="col-md-12 center-block">
+				<!-- 	<div id="toolbarTree" class="hidden text-center"> -->
+				<div id="toolbarTree"
+					class="btn-group btn-group-justified hidden text-center"
+					role="group">
+					<a id="showDps" class="btn btn-default" role="button">Show All
+						Decision Points</a> <a id="showDecs" class="btn btn-default"
+						role="button">Show All Decisions</a> <a id="showOutcomes"
+						class="btn btn-default" role="button">Show All Outcomes</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="container-fluid">
+		<div class="col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
+				<div id="visContent"></div>
+			</div>
+		</div>
+	</div>
+
 
 	<footer class="footer">
 		<div class="container">

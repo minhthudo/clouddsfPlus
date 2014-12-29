@@ -191,29 +191,27 @@ function setSidebarButtons() {
 	var toolbarTree = $('#toolbarTree');
 	var btnList_treeLayout = $('#btnList_treeLayout');
 
+	$(".subnav li").removeClass("active");
+	btnList_treeLayout.parent().addClass("active");
 	btnList_treeLayout.on('click', function(event) {
-		btnList_treeLayout.addClass("active");
-		btnList_DecRel.removeClass("active");
-		btnList_OutRel.removeClass("active");
 		toolbarDec.addClass("hidden");
 		toolbarTree.removeClass("hidden");
 		treeGraph.initialize();
-		 $(window).on('resize.treeResize', function() {
-		 clearTimeout(resizeId);
-		 resizeId = setTimeout(treeGraph.resizeLayout, 500);
-		 });
+		$(window).on('resize.treeResize', function() {
+			clearTimeout(resizeId);
+			resizeId = setTimeout(treeGraph.resizeLayout, 500);
+		});
 	});
 
 	btnList_DecRel.on('click', function(event) {
-		btnList_DecRel.addClass("active");
-		btnList_OutRel.removeClass("active");
-		btnList_treeLayout.removeClass("active");
+		$(".subnav li").removeClass("active");
+		btnList_DecRel.parent().addClass("active");
 		toolbarDec.removeClass("hidden");
 		toolbarTree.addClass("hidden");
 		$(window).off('resize.treeResize');
 		// eventuell neues objekt und nicht gleich instanzieren
 		var data = [];
-		//todo
+		// todo
 		var data = [];
 		$("#relationTypes option:selected").each(function() {
 			data.push($(this).val());
@@ -222,9 +220,9 @@ function setSidebarButtons() {
 	});
 
 	btnList_OutRel.on('click', function(event) {
-		btnList_OutRel.addClass("active");
-		btnList_DecRel.removeClass("active");
-		btnList_treeLayout.removeClass("active");
+
+		$(".subnav li").removeClass("active");
+		btnList_OutRel.parent().addClass("active");
 		toolbarDec.addClass("hidden");
 		toolbarTree.addClass("hidden");
 		// eventuell neues objekt und nicht gleich instanzieren lassen

@@ -35,22 +35,44 @@ html, body {
 	padding-bottom: 5px;
 	margin-bottom: 10px;
 }
-
  */
+a, a:active, a:focus {
+	outline: none;
+}
+
 .navbar {
-	border-bottom: solid 7px #1270CA;
-	border-bottom: solid 7px #6baed6;
-	border-bottom: solid 7px #337AB7; /* btn */
-	border-bottom: solid 7px #3182bd; /* d3 */
+	border-bottom: solid 5px #3182bd; /* d3 */
+	margin-bottom: 0px;
 }
 
 .navbar-nav>li {
 	float: none;
 }
 
-/* .navbar-nav li:hover {
-	background-color: black;
-} */
+.subnav {
+	font-size: 13px;
+	border-bottom: none !important;
+	margin-bottom: 20px !important;
+	min-height: auto;
+}
+
+.subnav ul {
+	padding: 0% 20%;
+}
+
+.subnav li>a {
+	padding: 8px 0px;
+}
+
+.subnav .active>a {
+	background-color: #222 !important;
+}
+
+.subnav .active span {
+	padding-bottom: 3px;
+	border-bottom: 1px solid #fff;
+}
+
 .navbar-inverse .navbar-nav>li>a {
 	color: #bdbdbd; /* d3 */
 	font-weight: bold;
@@ -72,16 +94,17 @@ html, body {
 }
 
 .footer p {
-	color: #bdbdbd;
+	color: #BDBDBD;
 	margin: 0px 0px 0px 0px;
 }
 
-#toggleButton {
+/* #toggleButton {
 	position: absolute;
 	top: 0px;
 	right: -30px;
 	width: 30px;
-	height: 100%; background-color : #3182bd; /* d3 */
+	height: 100%;
+	background-color: #3182bd; d3
 	border-color: #3182bd;
 	background-color: #3182bd;
 }
@@ -89,7 +112,7 @@ html, body {
 #sidebar {
 	padding: 0px 0px;
 	z-index: 200;
-	/* height: 100%; */
+	height: 100%;
 }
 
 #sidebar .navbar-nav {
@@ -111,15 +134,15 @@ html, body {
 	}
 	.row-offcanvas-left
   .sidebar-offcanvas {
-		left: -16.67%; /* 6 columns */
+		left: -16.67%; 6 columns
 	}
 	.row-offcanvas-left.active {
-		left: 16.67%; /* 6 columns */
+		left: 16.67%; 6 columns
 	}
 	.sidebar-offcanvas {
 		position: absolute;
-		top: 0; /*
+		top: 0; 
 		height: 100%;
-		*/
+		
 	}
-}
+} */

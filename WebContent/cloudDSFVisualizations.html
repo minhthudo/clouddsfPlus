@@ -47,7 +47,6 @@ limitations under the License.
 </script>
 </head>
 <body>
-
 	<header class="navbar navbar-inverse navbar-static-top "
 		role="navigation">
 		<div class="container">
@@ -88,45 +87,50 @@ limitations under the License.
 		</div>
 	</header>
 
-	<div class="container">
-		<div class="row">
-			<div id="visTypeDIV" class="col-md-3 text-right">
-				<div id="visTypeBTNGroup" class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle"
-						data-toggle="dropdown">
-						<span class="caret"></span>
-					</button>
-					<button id="visTypeSelectedBTN" type="button"
-						class="btn btn-default" data-toggle="dropdown"></button>
-
-					<ul id="visTypeUL" class="dropdown-menu">
-						<li role="presentation" class="dropdown-header">Network
-							Layouts</li>
-						<li><a href="#" id="forceLayout">Force Layout</a></li>
-						<li><a href="#" id="clusterLayout">Cluster Layout</a></li>
-						<li role="presentation" class="divider"></li>
-						<li role="presentation" class="dropdown-header">Hierarchy
-							Layouts</li>
-						<li><a href="#" id="treeLayout">Tree Layout</a></li>
-						<li><a href="#" id="treemapLayout">Treemap Layout</a></li>
-						<li><a href="#" id="partitionLayout">Partition Layout</a></li>
-					</ul>
-				</div>
-			</div>
-			<div id="visLabel" class="col-md-9">
-				<h3></h3>
-				<a id="vislabelInfo" class="glyphicon glyphicon-question-sign"></a>
-			</div>
+	<div class="navbar navbar-inverse navbar-static-top subnav"
+		role="navigation">
+		<div id="visTypeDIV" class="container">
+			<ul id="visTypeUL" class="nav navbar-nav nav-justified">
+				<li><a href="#" id="clusterLayout"><span>Cluster
+							Layout</span></a></li>
+				<li class="active"><a href="#" id="forceLayout"><span>Force
+							Layout</span></a></li>
+				<li><a href="#" id="treemapLayout"><span>Treemap
+							Layout</span></a></li>
+				<li><a href="#" id="partitionLayout"><span>Partition
+							Layout</span></a></li>
+			</ul>
 		</div>
 	</div>
 
-	<hr style="margin-bottom: 0px;">
-
 	<div class="container-fluid">
 		<div class="row">
-			<div id="visContent" class="col-md 10 col-lg-9"></div>
-			<div id="visRightDIV" class="col-md 2 col-lg-3">
+			<div class="col-sm-8 col-sm-offset-2 bg-warning"
+				style="padding: 20px 20px;">
+				<p>
+					<strong>These visualizations have been included from the
+						old CloudDSF Prototype with minor adaptations only, hence
+						displaying errors may occur. The underlying data has been updated
+						to the new refined knowledge base. However, all tasks as well as
+						the relations between tasks and decisions have been adopted as-is
+						wihout any review and might not be valid anymore.</strong>
+				</p>
+			</div>
+		</div>
 
+		<!-- <hr style="margin-bottom: 0px;"> -->
+
+		<div class="row top-buffer">
+			<div id="visContentDIV" class="col-md-10 col-lg-9 text-center">
+				<div id="visLabel">
+					<h4></h4>
+					<a id="vislabelInfo" href="#" tabindex="0" role="button"
+						data-toggle="popover" data-trigger="focus"
+						class="glyphicon glyphicon-question-sign"></a>
+				</div>
+				<div id="visContent"></div>
+			</div>
+			<div id="visRightDIV" class="col-md-2 col-lg-3">
 				<div class="visPanelHeader">
 					<div class="visPanelHeaderIconLeft pull-left">
 						<a id="visPanelSettingsIconToogle" href="#"> <span

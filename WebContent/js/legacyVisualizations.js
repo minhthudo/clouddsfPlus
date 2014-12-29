@@ -243,10 +243,13 @@ $('#visPanelSettingsLabelToogle').click(function() {
 	toogleSettingsBox();
 });
 
-$("#visTypeBTNGroup button").click(function() {
-});
+//$("#visTypeBTNGroup button").click(function() {
+//});
 
-$("#visTypeBTNGroup a").click(function() {
+//$("#visTypeBTNGroup a").click(function() {
+//	doVisType($(this).attr("id"));
+//});
+$("#visTypeUL a").click(function() {
 	doVisType($(this).attr("id"));
 });
 
@@ -361,7 +364,6 @@ function drawPartitionLayout() {
 	// New Root
 	// partitionNodesTree = {id: -2, type: "root", parent: null,
 	// children: []};
-
 	var partitionLayoutData = JSON.parse(JSON.stringify(visualizationData));
 
 	partitionLayoutData.decisionTree.type = "decRoot";
@@ -3760,22 +3762,22 @@ function removeLegend() {
 
 /* Function setVisLabel */
 function setVisLabel(visLabelText, visLabelInfoText) {
-	$('#visLabel h3').text(visLabelText);
+	$('#visLabel h4').text(visLabelText);
 
-	$('#vislabelInfo').popover('destroy');
+	// $('#vislabelInfo').popover('destroy');
 
 	$('#vislabelInfo').popover({
 		placement : "bottom",
 		title : "Visualization Information",
-		content : visLabelInfoText
+		content : visLabelInfoText,
 	});
-	if (showVislabelInfo) {
-		$('#vislabelInfo').popover('show');
-		setTimeout(function() {
-			$('#vislabelInfo').popover('hide');
-		}, 3000);
-		showVislabelInfo = false;
-	}
+	// if (showVislabelInfo) {
+	// $('#vislabelInfo').popover('show');
+	// setTimeout(function() {
+	// $('#vislabelInfo').popover('hide');
+	// }, 2000);
+	// showVislabelInfo = false;
+	// }
 }
 
 /* Function visInfoHeaderToogle */

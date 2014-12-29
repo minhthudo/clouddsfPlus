@@ -181,12 +181,12 @@ html {}
  	width: 60%;
 	float: left;
 } */
-#visLabel h3 {
+#visLabel h4 {
 	/* font-size: 1.4em; */
 	/*not a perfect solution*/
-	padding-top: 6px;
+	/* padding-top: 6px; */
 	display: inline-block;
-	margin: 0;
+	/* margin: 0; */
 }
 
 #visLabel a {
@@ -196,10 +196,10 @@ html {}
 
 /* General Panel */
 /* ========================================== */
-.container-fluid {
+/* .container-fluid {
 	padding-right: 0px;
 }
-
+ */
 .visPanelContent {
 	padding: 10px 8% 10px 8%;
 }
@@ -323,13 +323,13 @@ html {}
 
 /* visContent */
 /* ========================================== */
-/* #visContentDIV {
-	width: 80%;
+ #visContentDIV {
+	/* width: 80%;
 	float: left;
-		background-color: #FFFFFF;
-	border-right: solid 1px #DDDDDD;
+		background-color: #FFFFFF; */
+	border-right: solid 1px #BDBDBD;
 	padding-right: 0px;
-} */
+} 
 #visContent {
 	/* 	height: 900px;
 	width: 900px;
@@ -340,8 +340,13 @@ html {}
 	/* Width for the svg was fixed. Now javascript has fixed width*/
 	/*todo change border layout*/
 	/* border-right: solid 1px #DDDDDD; */
-	border-right: solid 1px #BDBDBD;
-	text-align: center !important;
+	/* border-right: solid 2px #BDBDBD; */
+	/* text-align: center !important; */
+}
+
+.top-buffer {
+	border-top: solid 1px #BDBDBD;
+	 margin-top: 20px; 
 }
 
 /* #layoutLegend {
@@ -382,6 +387,7 @@ html {}
 	/* 	background-color: #FFFFFF;
 	border-bottom: solid 1px #DDDDDD;  */
 	padding-left: 0px;
+	padding-right:0px;
 }
 
 /* #visRightContent {
@@ -567,7 +573,7 @@ html {}
 }
 
 svg {
-	margin: auto;
+	/* margin: auto; */
 	overflow: visible !important;
 }
 

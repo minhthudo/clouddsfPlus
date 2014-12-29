@@ -3,7 +3,7 @@ var treeGraph = function() {
 	// Padding for svg container
 	var padding = {
 		top : 5,
-		right : 10,
+		right : 5,
 		bottom : 5,
 		left : 50
 	};
@@ -85,7 +85,7 @@ var treeGraph = function() {
 				x = 8;
 				break;
 			case "out":
-				x = 9.5;
+				x = 10;
 				break;
 			}
 			d.y = (x * distance) + padding.left;
