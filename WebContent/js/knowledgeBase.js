@@ -6,7 +6,7 @@ $(window).load(function() {
 
 	setSubnavButtons();
 	setToolbarButtons();
-	treeGraph.initialize();
+	//treeGraph.initialize();
 });
 
 function setToolbarButtons() {
@@ -29,8 +29,10 @@ function setToolbarButtons() {
 			decisionGraph.setLinks(data);
 		},
 		numberDisplayed : 4,
-		nonSelectedText : 'Select relation type(s)',
-		selectAllText : '(De)Select All',
+		buttonWidth: "400px",
+		nonSelectedText : 'Select relationship type(s)',
+		selectAllText : 'Select All',
+		allSelectedText: 'Influencing, Requiring, Affecting, Binding',
 		includeSelectAllOption : true,
 	});
 }
@@ -41,7 +43,7 @@ function setSubnavButtons() {
 	var toolbarDec = $('#toolbarDecisions');
 	var toolbarTree = $('#toolbarTree');
 	var btnList_treeLayout = $('#btnList_treeLayout');
-	
+
 	btnList_treeLayout.on('click', function(event) {
 		$(".subnav li").removeClass("active");
 		btnList_treeLayout.parent().addClass("active");
@@ -61,13 +63,21 @@ function setSubnavButtons() {
 		toolbarTree.addClass("hidden");
 		$(window).off('resize.treeResize');
 		// eventuell neues objekt und nicht gleich instanzieren
-		var data = [];
+		// var data = [];
 		// todo
 		var data = [];
 		$("#relationTypes option:selected").each(function() {
 			data.push($(this).val());
 		});
 		decisionGraph.initialize(data);
+		$(window).on('resize.decResize', function() {
+			var data = [];
+			$("#relationTypes option:selected").each(function() {
+				data.push($(this).val());
+			});
+			clearTimeout(resizeId);
+			resizeId = setTimeout(decisionGraph.resizeLayout(data), 500);
+		});
 	});
 
 	btnList_OutRel.on('click', function(event) {

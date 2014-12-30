@@ -53,13 +53,14 @@ var treeGraph = function() {
 		tooltip = d3.select("body").append("div").attr("id", "tooltip").style(
 				"position", "absolute").style("z-index", "10").style("opacity",
 				0);
-		// start in the left-middle of the svg
-		root.x0 = mC.panelWidth / 2;
-		root.y0 = 0;
+
 
 		// collapse all children
 		root.children.forEach(toggleAll);
 		// update tree depending on node
+		// start in the left-middle of the svg
+		root.x0 = mC.panelWidth / 2;
+		root.y0 = 0;
 		update(root, svg);
 	}
 
@@ -308,7 +309,7 @@ var treeGraph = function() {
 	// get data
 	d3.json("./data/cloudDSFPlus.json", function(json) {
 		root = json.cdsfPlus;
-		// initialize();
+		initialize();
 	});
 
 	function resizeLayout() {
