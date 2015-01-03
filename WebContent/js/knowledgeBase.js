@@ -29,7 +29,7 @@ function setToolbarButtons() {
 			decisionGraph.setLinks(data);
 		},
 		numberDisplayed : 4,
-		buttonWidth: "400px",
+		buttonWidth: "100%",
 		nonSelectedText : 'Select relationship type(s)',
 		selectAllText : 'Select All',
 		allSelectedText: 'Influencing, Requiring, Affecting, Binding',

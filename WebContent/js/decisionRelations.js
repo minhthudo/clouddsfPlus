@@ -7,48 +7,43 @@ var decisionGraph = (function() {
 	};
 
 	var config = {
-		decisionWidth : 20,
+		decisionWidth : 30,
 		nodePadding : 140,
+		strokeWidth : 20,
 		clusterPadding : 120,
-		maxRadius : 12,
-		amountClusters : 4,
-		// ld34 : 60,
-		// ld12 : 33,
-		// ld13 : 30,
-		// ld14 : 43,
-		// lsRoot : 50,
-		// lsDp : 80,
-		// lsDec : 30,
-		// lsOut : 20
+		maxRadius : 32,
+		// amountClusters : 4,
 		lsDefault : 0.5,
-		// lsCluster : 0.5,
 		gravity : 0,
 		friction : 0.01,
 		chDec : -50,
-		minHeight : 900,
+		minHeight : 800,
 	};
 
-	var mC, root, svg, force, node_lookup;
-	var nodes, links, // = [],
-	pathGroup, text, circle, path;
-	var // clusters,
-	initialNodes, tip;
-	var foci;
+	var mC, root, svg, tip;
+	var force, node, nodes, links = [], pathGroup, text, circle, path;
+	var node_lookup, initialNodes, foci;
+	// var clusters;
+
+	// Toggle stores whether the highlighting is on
+	var toggle = 0;
+	// Create an array logging what is connected to what
+	var linkedByIndex = {};
 
 	function initialize(linkTypes) {
 
-		mC = marginConvention(padding, 800);
+		mC = marginConvention(padding, config.minHeight);
 		config.nodePadding = mC.panelHeight / 6;
-		//cluster padding eventuell berechnen und mitnehmen ansonsten lassen
+
 		foci = [ {
-			x : mC.panelWidth / 100 * 28,
+			x : mC.panelWidth / 100 * 30,
 			y : mC.panelHeight / 100 * 30
 		}, {
-			x : mC.panelWidth / 100 * 72,
+			x : mC.panelWidth / 100 * 70,
 			y : mC.panelHeight / 100 * 30
 		}, {
 			x : mC.panelWidth / 2,
-			y : mC.panelHeight / 100 * 5
+			y : mC.panelHeight / 100 * 10
 		}, {
 			x : mC.panelWidth / 2,
 			y : mC.panelHeight / 100 * 70
@@ -62,31 +57,49 @@ var decisionGraph = (function() {
 				.attr("width", mC.oWidth)
 				.attr("height", mC.oHeight)
 				.attr("id", "svgContainer")
+				.on("click", clearHighlights)
 				.append("g")
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
-				.attr("class", "outcomeContainer");
+				.attr("class", "decisionContainer");
+		
 
 		svg.append("defs").selectAll("marker").data(
 				[ "requiring", "influencing", "affecting", "binding" ]).enter()
 				.append("marker").attr("id", function(d) {
 					return d;
-				})// .attr("viewBox", "0 -5 10 10")
-				.attr("refX", 8).attr("refY", 4).attr("markerWidth", 10).attr(
-						"markerHeight", 10).attr("orient", "auto").append(
-						"polyline").attr("class", function(d) {
-					return "arrow " + d;
-				}).attr("points", "0 0, 10 5, 0 8");
+				})
+				// .attr("viewBox", "0 -8 16 16").attr("refX", 16).attr("refY",
+				// -1.5).attr("markerWidth", 6).attr("markerHeight", 6)
+				// .attr("orient", "auto").append("svg:path").attr("d",
+				// "M0,-8L16,0L0,8 z");
 
-		// .attr("viewBox", "0 -5 10 10")
-		// .attr("refX", 15)
-		// .attr("refY", -1.5)
-		// .attr("markerWidth", 6)
-		// .attr("markerHeight", 6)
-		// .attr("orient", "auto")
-		// .append("path")
-		// .attr("d", "M0,-5L10,0L0,5");
-		//	
+				// .attr("viewBox", "0 -5 10 10")
+				// .attr("refX", 15)
+				// .attr("refY", -1.5)
+				// .attr("markerWidth", 6)
+				// .attr("markerHeight", 6)
+				// .attr("orient", "auto")
+				// .append("path")
+				// .attr("d", "M0,-5L10,0L0,5");
+				//	
+				// .enter().append("svg:marker") // This section adds in the
+				// arrows
+				// .attr("id", String)
+				.attr("viewBox", "0 0 10 10").attr("refX", function(d) {
+					if (d == "requiring")
+						return 10;
+					return 10;
+				}).attr("refY", function(d) {
+					if (d == "requiring")
+						return 5;
+					return 5;
+				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+						"markerUnits", "strokeWidth").attr("orient", "auto")
+				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
+						"class", function(d) {
+							return d + "Arrow";
+						});
 
 		/* Initialize tooltip */
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
@@ -114,12 +127,10 @@ var decisionGraph = (function() {
 		}).gravity(config.gravity).friction(config.friction).on("tick", tick);
 
 		nodes = force.nodes();
-		links = force.links();
+		// links = force.links();
 
 		// amountClusters = root.cluster.length; // number of distinct clusters
-
 		// clusters = new Array(config.amountClusters);
-
 		// setClusters();
 
 		initialNodes = flatten(root.cdsfPlus);
@@ -127,6 +138,9 @@ var decisionGraph = (function() {
 		initialNodes.forEach(function(d) {
 			addNode(d);
 		});
+
+		
+
 
 		if (typeof linkTypes === 'undefined') {
 			setLinks([ "" ]);
@@ -191,6 +205,9 @@ var decisionGraph = (function() {
 	}
 
 	function setLinks(relationType) {
+		links.forEach(function(d) {
+			linkedByIndex[d.source.id + "," + d.target.id] = 0;
+		});
 		links.splice(0, links.length);
 		var specificLinks = root.links.filter(function(d) {
 			for (var i = 0; i < relationType.length; i++) {
@@ -201,15 +218,20 @@ var decisionGraph = (function() {
 		specificLinks.forEach(function(d) {
 			addLink(d);
 		});
+
+		links.forEach(function(d) {
+			linkedByIndex[d.source.id + "," + d.target.id] = 1;
+		});
+
 		update();
 	}
 
 	function addNode(node) {
 		switch (node.type) {
 		case "dec":
-			var r = 22, d = {
+			var d = {
 				cluster : node.cluster,
-				radius : r,
+				radius : config.decisionWidth,
 				id : node.id,
 				label : node.label,
 				type : node.type,
@@ -225,6 +247,7 @@ var decisionGraph = (function() {
 			};
 			node_lookup[d.id] = d;
 			nodes.push(d);
+			linkedByIndex[d.id + "," + d.id] = 1;
 			break;
 		}
 	}
@@ -232,29 +255,21 @@ var decisionGraph = (function() {
 	function update() {
 		force.stop();
 
-		// path = pathGroup.selectAll("path").data(links, function(d) {
-		// return d.source.id + "-" + d.target.id + "-" + d.label;
-		// });
-		//
-		// path.enter().append("path").attr("class", function(d) {
-		// return "link " + d.type.toLowerCase();
-		// }).attr("marker-end", function(d) {
-		// return "url(#" + d.type.toLowerCase() + ")";
-		// });
-		//
-		// path.exit().remove();
-
-		var node = svg.selectAll("g.node").data(nodes, function(d) {
+		node = svg.selectAll("g.node").data(nodes, function(d) {
 			return d.id;
 		});
 
-		var nodeEnter = node.enter().append("g").attr("class", "node");
+		var nodeEnter = node.enter().append("g").attr("class", "node").on(
+				'click', connectedNodes);
 
 		nodeEnter.append("circle").attr("r", function(d) {
 			return d.radius;
 		}).style("fill", function(d) {
 			return setCircleFill(d)
-		}).attr("cx", function(d) {
+		})
+		// .attr("stroke", function(d){return
+		// setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
+		.attr("cx", function(d) {
 			return d.cx;
 		}).attr("cy", function(d) {
 			return d.cy;
@@ -264,8 +279,8 @@ var decisionGraph = (function() {
 		nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
 				"text-anchor", "middle").text(function(d) {
 			return d.abbrev;
-		}).on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
-		;
+		}).call(force.drag).on("mouseover", tip.showTransition).on("mouseout",
+				tip.hideDelayed);
 
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
@@ -324,13 +339,13 @@ var decisionGraph = (function() {
 	}
 
 	function calculateDistance(link) {
-		var x1 = link.source.x, x2 = link.target.x, y1 = link.source.y, y2 = link.target.y;
-		var distance = Math.sqrt((Math.pow(Math.abs(x1 - x2), 2) + Math.pow(
-				Math.abs(y1 - y2), 2)));
-		if (link.source.cluster == link.target.cluster)
-			return config.nodePadding + 20;
+		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, distance = Math
+				.sqrt(dx * dx + dy * dy);
+		// if (link.source.cluster == link.target.cluster)
+		// return config.nodePadding + 20;
 		// distance = distance <= 0 ? 1 : distance;
-		return distance <= 0 ? 20 : distance;
+		// return distance <= 0 ? 20 : distance;
+		return distance;
 	}
 
 	function linkArc(d) {
@@ -340,11 +355,12 @@ var decisionGraph = (function() {
 		var offsetY = (dy * d.target.radius) / dr;
 		if (d.type != "Requiring")
 			return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
-					+ " -0 0,1 " + (d.target.x - offsetX) + ","
-					+ (d.target.y - offsetY);
+					+ " 0 0,1 " // + d.target.x
+					+ (d.target.x - offsetX) + "," + (d.target.y - offsetY);
+		// + d.target.y;
 
-		return "M" + d.source.x + "," + d.source.y + "A" + (dr + 50) + ","
-				+ (dr) + " -50 0,1 " + (d.target.x - offsetX) + ","
+		return "M" + d.source.x + "," + d.source.y + "A" + (dr * 0.6) + ","
+				+ (dr * 0.7) + " 0 0,1 " + (d.target.x - offsetX) + ","
 				+ (d.target.y - offsetY);
 		// return "M" + d.source.x + "," + d.source.y + "L" + (d.target.x -
 		// offsetX) + ","
@@ -355,7 +371,7 @@ var decisionGraph = (function() {
 		return "translate(" + d.x + "," + d.y + ")";
 	}
 
-	function collide(alpha) {
+	function collideCluster(alpha) {
 		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
 			var r = d.radius + config.maxRadius
@@ -383,7 +399,7 @@ var decisionGraph = (function() {
 		};
 	}
 
-	function collide2(alpha) {
+	function collide(alpha) {
 		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
 			var r = d.radius + config.maxRadius + config.nodePadding, nx1 = d.x
@@ -407,35 +423,38 @@ var decisionGraph = (function() {
 		};
 	}
 
-//	// todo can be made much easier now without distinct clusters
-//	function cluster(alpha) {
-//		return function(d) {
-//			var cluster = clusters[d.cluster], k = 1;
-//			// For cluster nodes, apply custom gravity.
-//			if (cluster === d) {
-//				cluster = {
-//					x : d.x,
-//					y : d.y,
-//					// x : width / 2,
-//					// y : height / 2,
-//					radius : -d.radius
-//				};
-//				k = .1 * Math.sqrt(d.radius);
-//			}
-//			var x = d.x - cluster.x, y = d.y - cluster.y, l = Math.sqrt(x * x
-//					+ y * y), r = d.radius + cluster.radius;
-//			if (l != r) {
-//				l = (l - r) / l * alpha * k;
-//				d.x -= x *= l;
-//				d.y -= y *= l;
-//				cluster.x += x;
-//				cluster.y += y;
-//			}
-//		};
-//	}
+	// // todo can be made much easier now without distinct clusters
+	// function cluster(alpha) {
+	// return function(d) {
+	// var cluster = clusters[d.cluster], k = 1;
+	// // For cluster nodes, apply custom gravity.
+	// if (cluster === d) {
+	// cluster = {
+	// x : d.x,
+	// y : d.y,
+	// // x : width / 2,
+	// // y : height / 2,
+	// radius : -d.radius
+	// };
+	// k = .1 * Math.sqrt(d.radius);
+	// }
+	// var x = d.x - cluster.x, y = d.y - cluster.y, l = Math.sqrt(x * x
+	// + y * y), r = d.radius + cluster.radius;
+	// if (l != r) {
+	// l = (l - r) / l * alpha * k;
+	// d.x -= x *= l;
+	// d.y -= y *= l;
+	// cluster.x += x;
+	// cluster.y += y;
+	// }
+	// };
+	// }
 
 	function setCircleFill(d) {
 		return getColor(d.group);
+	}
+	function setStrokeFill(d) {
+		return getColor("dp" + d.cluster);
 	}
 
 	// tooltip
@@ -448,6 +467,46 @@ var decisionGraph = (function() {
 
 	function resizeLayout(linkTypes) {
 		initialize(linkTypes);
+	}
+
+	// This function looks up whether a pair are neighbours
+	function neighboring(a, b) {
+		return linkedByIndex[a.id + "," + b.id];
+	}
+
+	function connectedNodes() {
+		d = d3.select(this).node().__data__;
+		if (toggle != d.id || toggle == 0) {
+			// Reduce the opacity of all but the neighbouring nodes
+			
+			node.transition().duration(300).style("opacity", function(o) {
+				return neighboring(d, o) ? null : 0.1;
+			});
+			// | neighboring(o, d)
+			path.transition().duration(300).style("opacity", function(o) {
+				return d.id == o.source.id ? 1 : 0.1;
+			});
+			// nodes.forEach(function(n) {
+			// node.style("opacity", function(n) {
+			// return d.id == n.id ? 1 : 0.1;
+			// })
+			// })
+			// Reduce the op
+			toggle = d.id;
+			d3.event.stopPropagation();
+		} else {
+			// Put them back to opacity=1
+//			node.transition().duration(300).style("opacity", null);
+//			path.transition().duration(300).style("opacity", null);
+//			toggle = 0;
+//			d3.event.stopPropagation();
+		}
+	}
+
+	function clearHighlights() {
+		toggle=0;
+		node.transition().duration(300).style("opacity", null);
+		path.transition().duration(300).style("opacity", null);
 	}
 
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {

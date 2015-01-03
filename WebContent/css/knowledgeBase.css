@@ -108,26 +108,51 @@
 /*DecisionGraph*/
 .link {
 	fill: none;
-	stroke: #666;
-	stroke-width: 1.5px;
+	stroke: #222;
+	stroke-width: 2px;
+}
+
+.arrow {
+	/* 	fill: #636363; */
+	fill: #222;
+}
+
+.influencingArrow {
+	fill: none;
+	stroke-width: 2px;
+	stroke: #222;
 }
 
 .link.influencing {
-	stroke: #31a354;
+	/* stroke: #31a354; */
+	
 }
 
 .link.affecting {
-	stroke-dasharray: 5, 5;
-	stroke: #000;
+	stroke-dasharray: 4, 4;
+	opacity: 0.25;
 }
 
 .link.binding {
 	stroke-dasharray: 25, 10;
-	stroke: #000;
+	/* stroke: #000; */
+	opacity: 0.5;
+}
+
+.fullOpacity{
+	opacity: 0.1;
 }
 
 .link.requiring {
-	stroke: #e6550d;
+	/* stroke: #e6550d; */
+	stroke-dasharray: 15, 10, 5, 10;
+	opacity: 0.75;
+}
+
+.decCircle {
+	fill: none;
+	stroke: black;
+	stroke-width: 10px;
 }
 
 #outcomeContainer circle {
@@ -136,7 +161,7 @@
 	stroke-width: 1.5px;
 }
 
-path {
+/* #decisionContainer path{
 	fill: none;
-	stroke: #d9d9d9;
-}
+	stroke: #636363;
+} */

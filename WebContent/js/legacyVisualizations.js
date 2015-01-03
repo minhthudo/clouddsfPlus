@@ -128,7 +128,7 @@ function initializationOfPage() {
 /* Layout Functions */
 /* ======================================================================== */
 
-// function toogleVisLeftDiv(duration) {
+// function toggleVisLeftDiv(duration) {
 // if(!duration) {duration=500;}
 //    
 // if(visLeftDIVStatus) {
@@ -208,7 +208,7 @@ function updateVisTypeSelection() {
 // }
 // }
 
-function toogleSettingsBox(endState, duration) {
+function toggleSettingsBox(endState, duration) {
 	if ("collapsed" == endState) {
 		if (!$('#visPanelSettingsContent').is(":hidden"))
 			$('#visPanelSettingsContent').slideToggle('fast').delay(duration);
@@ -232,15 +232,19 @@ function toogleSettingsBox(endState, duration) {
 /* onClick Events */
 /* ======================================================================== */
 
-// $("#visPanelToogle").click(function() {
-// toogleVisLeftDiv();
+// $("#visPanelToggle").click(function() {
+// toggleVisLeftDiv();
 // });
-$('#visPanelSettingsIconToogle').click(function() {
-	toogleSettingsBox();
+$('#visPanelSettingsIconToggle').click(function() {
+	toggleSettingsBox();
+	//@Metz avoid jump to top of page
+	return false;
 });
 
-$('#visPanelSettingsLabelToogle').click(function() {
-	toogleSettingsBox();
+$('#visPanelSettingsLabelToggle').click(function() {
+	toggleSettingsBox();
+	//@Metz avoid jump to top of page
+	return false;
 });
 
 //$("#visTypeBTNGroup button").click(function() {
@@ -314,8 +318,8 @@ function drawLayout() {
 	}
 
 	// Auto hide Settings Panel
-	toogleSettingsBox("collapsed", 750);
-	// setTimeout(toogleSettingsBox(),750);
+	toggleSettingsBox("collapsed", 750);
+	// setTimeout(toggleSettingsBox(),750);
 
 }
 
@@ -660,12 +664,12 @@ function setPartitionSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -710,8 +714,8 @@ function setPartitionSettings() {
 	$('#visPanelSettingsContent').prepend(information);
 
 	// Register Events
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	$('#showLabels').change(
@@ -760,9 +764,9 @@ function mouseNodeClickPartition(n) {
 		var nodeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Decisions")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -783,13 +787,13 @@ function mouseNodeClickPartition(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -846,9 +850,9 @@ function mouseNodeClickPartition(n) {
 		var decOutcomeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Possible Outcomes")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -870,13 +874,13 @@ function mouseNodeClickPartition(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -908,9 +912,9 @@ function mouseNodeClickPartition(n) {
 
 	}
 
-	// Register Toogle
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	// Register Toggle
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 }
@@ -966,7 +970,7 @@ function drawTreeLayout() {
 		}
 	}
 
-	/* === Toogle === */
+	/* === Toggle === */
 	function toggle(d) {
 		if (d.children) {
 			d._children = d.children;
@@ -1189,12 +1193,12 @@ function setTreeSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -1239,8 +1243,8 @@ function setTreeSettings() {
 	$('#visPanelSettingsContent').prepend(information);
 
 	// Register Events
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	$('#showLabels').change(function() {
@@ -1286,9 +1290,9 @@ function mouseNodeClickTree(n) {
 		var nodeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Decisions")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -1309,13 +1313,13 @@ function mouseNodeClickTree(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -1372,9 +1376,9 @@ function mouseNodeClickTree(n) {
 		var decOutcomeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Possible Outcomes")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -1396,13 +1400,13 @@ function mouseNodeClickTree(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -1434,9 +1438,9 @@ function mouseNodeClickTree(n) {
 
 	}
 
-	// Register Toogle
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	// Register Toggle
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 }
@@ -1698,9 +1702,9 @@ function setClusterSettings() {
 	var clearHighlight = $('<div>').attr("class", "visInfoBOX").append(
 			$('<div>').attr("class", "visInfoHeaderBOX").append(
 					$('<h4>').text("Clear Highlights")).append(
-					$('<div>').attr("class", "visInfoHeaderToogle").append(
+					$('<div>').attr("class", "visInfoHeaderToggle").append(
 							$('<a>').attr("href", "#").attr("class",
-									"visInfoHeaderToogleLink").append(
+									"visInfoHeaderToggleLink").append(
 									$('<span>').attr("class",
 											"glyphicon glyphicon-minus"))))
 					.append($('<div>').attr("class", "clearfix")))
@@ -1722,8 +1726,8 @@ function setClusterSettings() {
 		clearClusterHighligths();
 	});
 
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 }
@@ -1761,13 +1765,13 @@ function mouseNodeClickCluster(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -1869,9 +1873,9 @@ function mouseNodeClickCluster(n) {
 	var relatedTasksInfoBOX = $('<div>').attr("class", "visInfoBOX").append(
 			$('<div>').attr("class", "visInfoHeaderBOX").append(
 					$('<h4>').text(relatedLabel)).append(
-					$('<div>').attr("class", "visInfoHeaderToogle").append(
+					$('<div>').attr("class", "visInfoHeaderToggle").append(
 							$('<a>').attr("href", "#").attr("class",
-									"visInfoHeaderToogleLink").append(
+									"visInfoHeaderToggleLink").append(
 									$('<span>').attr("class",
 											"glyphicon glyphicon-minus"))))
 					.append($('<div>').attr("class", "clearfix")))
@@ -1919,7 +1923,7 @@ function mouseNodeClickCluster(n) {
 									.append(
 											$('<div>')
 													.attr("class",
-															"visInfoHeaderToogle")
+															"visInfoHeaderToggle")
 													.append(
 															$('<a>')
 																	.attr(
@@ -1927,7 +1931,7 @@ function mouseNodeClickCluster(n) {
 																			"#")
 																	.attr(
 																			"class",
-																			"visInfoHeaderToogleLink")
+																			"visInfoHeaderToggleLink")
 																	.append(
 																			$(
 																					'<span>')
@@ -1993,7 +1997,7 @@ function mouseNodeClickCluster(n) {
 									.append(
 											$('<div>')
 													.attr("class",
-															"visInfoHeaderToogle")
+															"visInfoHeaderToggle")
 													.append(
 															$('<a>')
 																	.attr(
@@ -2001,7 +2005,7 @@ function mouseNodeClickCluster(n) {
 																			"#")
 																	.attr(
 																			"class",
-																			"visInfoHeaderToogleLink")
+																			"visInfoHeaderToggleLink")
 																	.append(
 																			$(
 																					'<span>')
@@ -2020,9 +2024,9 @@ function mouseNodeClickCluster(n) {
 
 	}
 
-	// Register Toogle
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	// Register Toggle
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	// Node Highlight
@@ -2596,12 +2600,12 @@ function setForceSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -2681,12 +2685,12 @@ function setForceSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -2808,9 +2812,9 @@ function setForceSettings() {
 	var clearHighlight = $('<div>').attr("class", "visInfoBOX").append(
 			$('<div>').attr("class", "visInfoHeaderBOX").append(
 					$('<h4>').text("Clear Highlights")).append(
-					$('<div>').attr("class", "visInfoHeaderToogle").append(
+					$('<div>').attr("class", "visInfoHeaderToggle").append(
 							$('<a>').attr("href", "#").attr("class",
-									"visInfoHeaderToogleLink").append(
+									"visInfoHeaderToggleLink").append(
 									$('<span>').attr("class",
 											"glyphicon glyphicon-minus"))))
 					.append($('<div>').attr("class", "clearfix")))
@@ -2834,12 +2838,12 @@ function setForceSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -2891,8 +2895,8 @@ function setForceSettings() {
 		clearForceHighligths();
 	});
 
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	$('#showLabels').change(
@@ -2932,9 +2936,9 @@ function mouseNodeClickForce(n) {
 		var nodeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Decisions")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -2954,13 +2958,13 @@ function mouseNodeClickForce(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -3059,9 +3063,9 @@ function mouseNodeClickForce(n) {
 		var relatedNodesInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text(relatedLabel)).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -3073,9 +3077,9 @@ function mouseNodeClickForce(n) {
 
 	}
 
-	// Register Toogle
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	// Register Toggle
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	// Node Highlight
@@ -3408,12 +3412,12 @@ function setTreemapSettings() {
 							.append(
 									$('<div>')
 											.attr("class",
-													"visInfoHeaderToogle")
+													"visInfoHeaderToggle")
 											.append(
 													$('<a>')
 															.attr("href", "#")
 															.attr("class",
-																	"visInfoHeaderToogleLink")
+																	"visInfoHeaderToggleLink")
 															.append(
 																	$('<span>')
 																			.attr(
@@ -3457,8 +3461,8 @@ function setTreemapSettings() {
 	$('#visPanelSettingsContent').prepend(information);
 
 	// Register Events
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 
 	$('#showLabels').change(function() {
@@ -3502,9 +3506,9 @@ function mouseNodeClickTreemap(n) {
 		var nodeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Decisions")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -3525,13 +3529,13 @@ function mouseNodeClickTreemap(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -3588,9 +3592,9 @@ function mouseNodeClickTreemap(n) {
 		var decOutcomeInfos = $('<div>').attr("class", "visInfoBOX").append(
 				$('<div>').attr("class", "visInfoHeaderBOX").append(
 						$('<h4>').text("Possible Outcomes")).append(
-						$('<div>').attr("class", "visInfoHeaderToogle").append(
+						$('<div>').attr("class", "visInfoHeaderToggle").append(
 								$('<a>').attr("href", "#").attr("class",
-										"visInfoHeaderToogleLink").append(
+										"visInfoHeaderToggleLink").append(
 										$('<span>').attr("class",
 												"glyphicon glyphicon-minus"))))
 						.append($('<div>').attr("class", "clearfix")))
@@ -3612,13 +3616,13 @@ function mouseNodeClickTreemap(n) {
 								.append(
 										$('<div>')
 												.attr("class",
-														"visInfoHeaderToogle")
+														"visInfoHeaderToggle")
 												.append(
 														$('<a>')
 																.attr("href",
 																		"#")
 																.attr("class",
-																		"visInfoHeaderToogleLink")
+																		"visInfoHeaderToggleLink")
 																.append(
 																		$(
 																				'<span>')
@@ -3650,9 +3654,9 @@ function mouseNodeClickTreemap(n) {
 
 	}
 
-	// Register Toogle
-	$('.visInfoHeaderToogleLink').click(function() {
-		visInfoHeaderToogle($(this));
+	// Register Toggle
+	$('.visInfoHeaderToggleLink').click(function() {
+		visInfoHeaderToggle($(this));
 	});
 }
 
@@ -3780,8 +3784,8 @@ function setVisLabel(visLabelText, visLabelInfoText) {
 	// }
 }
 
-/* Function visInfoHeaderToogle */
-function visInfoHeaderToogle(input) {
+/* Function visInfoHeaderToggle */
+function visInfoHeaderToggle(input) {
 	input.closest('.visInfoBOX').children('.visInfoContentBOX').slideToggle(
 			'fast',
 			function() {
