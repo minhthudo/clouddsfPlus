@@ -1,56 +1,61 @@
 var decisionGraph = (function() {
+
+	// padding for svg
 	var padding = {
-		top : 10,
+		top : 50,
 		right : 10,
 		bottom : 10,
 		left : 10
 	};
 
+	// config parameters
 	var config = {
 		decisionWidth : 30,
 		nodePadding : 140,
 		strokeWidth : 20,
-		clusterPadding : 120,
-		maxRadius : 32,
+		// clusterPadding : 120,
+		// maxRadius : 30, //collide function with clusters
 		// amountClusters : 4,
 		lsDefault : 0.5,
 		gravity : 0,
 		friction : 0.01,
 		chDec : -50,
-		minHeight : 800,
+		minHeight : 900,
 	};
 
 	var mC, root, svg, tip;
 	var force, node, nodes, links = [], pathGroup, text, circle, path;
 	var node_lookup, initialNodes, foci;
 	// var clusters;
-
+	var relations = [ "requiring", "influencing", "affecting", "binding" ];
 	// Toggle stores whether the highlighting is on
 	var toggle = 0;
 	// Create an array logging what is connected to what
 	var linkedByIndex = {};
 
 	function initialize(linkTypes) {
-
+		// calculate panel
 		mC = marginConvention(padding, config.minHeight);
+		// adjust node padding to size
 		config.nodePadding = mC.panelHeight / 6;
-
+		// set focis for clusters
 		foci = [ {
-			x : mC.panelWidth / 100 * 30,
-			y : mC.panelHeight / 100 * 30
+			x : (mC.panelWidth / 100 * 30) + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 30) + mC.marginTop + padding.top
 		}, {
-			x : mC.panelWidth / 100 * 70,
-			y : mC.panelHeight / 100 * 30
+			x : (mC.panelWidth / 100 * 70) + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 30) + mC.marginTop + padding.top
 		}, {
-			x : mC.panelWidth / 2,
-			y : mC.panelHeight / 100 * 10
+			x : (mC.panelWidth / 2) + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 10) + mC.marginTop + padding.top
 		}, {
-			x : mC.panelWidth / 2,
-			y : mC.panelHeight / 100 * 70
+			x : (mC.panelWidth / 2) + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 65) + mC.marginTop + padding.top
 		} ];
 
+		// remove old svg
 		d3.select("#svgContainer").remove();
-
+		// create new svg
 		svg = d3
 				.select("#visContent")
 				.append("svg")
@@ -62,71 +67,94 @@ var decisionGraph = (function() {
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
 				.attr("class", "decisionContainer");
-		
 
-		svg.append("defs").selectAll("marker").data(
-				[ "requiring", "influencing", "affecting", "binding" ]).enter()
-				.append("marker").attr("id", function(d) {
-					return d;
-				})
-				// .attr("viewBox", "0 -8 16 16").attr("refX", 16).attr("refY",
-				// -1.5).attr("markerWidth", 6).attr("markerHeight", 6)
-				// .attr("orient", "auto").append("svg:path").attr("d",
-				// "M0,-8L16,0L0,8 z");
+		svg.append("defs").selectAll("marker").data(relations).enter().append(
+				"marker").attr("id", function(d) {
+			return d;
+		}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
+			if (d == "requiring")
+				return 10;
+			return 10;
+		}).attr("refY", function(d) {
+			if (d == "requiring")
+				return 5;
+			return 5;
+		}).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
+				"strokeWidth").attr("orient", "auto").append("svg:path").attr(
+				"d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
+			return d + "Arrow";
+		});
 
-				// .attr("viewBox", "0 -5 10 10")
-				// .attr("refX", 15)
-				// .attr("refY", -1.5)
-				// .attr("markerWidth", 6)
-				// .attr("markerHeight", 6)
-				// .attr("orient", "auto")
-				// .append("path")
-				// .attr("d", "M0,-5L10,0L0,5");
-				//	
-				// .enter().append("svg:marker") // This section adds in the
-				// arrows
-				// .attr("id", String)
-				.attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-					if (d == "requiring")
-						return 10;
-					return 10;
-				}).attr("refY", function(d) {
-					if (d == "requiring")
-						return 5;
-					return 5;
-				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
-						"markerUnits", "strokeWidth").attr("orient", "auto")
-				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
-						"class", function(d) {
-							return d + "Arrow";
-						});
+		// .attr("viewBox", "0 -8 16 16").attr("refX", 16).attr("refY",
+		// -1.5).attr("markerWidth", 6).attr("markerHeight", 6)
+		// .attr("orient", "auto").append("svg:path").attr("d",
+		// "M0,-8L16,0L0,8 z");
 
-		/* Initialize tooltip */
+		// .attr("viewBox", "0 -5 10 10")
+		// .attr("refX", 15)
+		// .attr("refY", -1.5)
+		// .attr("markerWidth", 6)
+		// .attr("markerHeight", 6)
+		// .attr("orient", "auto")
+		// .append("path")
+		// .attr("d", "M0,-5L10,0L0,5");
+		//	
+		// .enter().append("svg:marker") // This section adds in the
+		// arrows
+		// .attr("id", String)
+
+		// create legend above chart
+		var legend = svg.append("g");
+		legend.selectAll("line").data(relations).enter().append("line").attr(
+				"class", function(d) {
+					return "link " + d;
+				}).attr("x1", function(d, i) {
+			return (mC.iWidth / 12) * ((i * 2) + 3) + mC.marginLeft;
+		}).attr("y1", mC.marginTop).attr("y2", mC.marginTop).attr("x2",
+				function(d, i) {
+					return (mC.iWidth / 12) * ((i * 2) + 4) + mC.marginLeft;
+				}).attr("marker-end", function(d) {
+			return "url(#" + d.toLowerCase() + ")";
+		});
+		legend.selectAll("text").data(relations).enter().append("text").attr(
+				"x", function(d, i) {
+					return (mC.iWidth / 12) * ((i * 2) + 3.5) + mC.marginLeft;
+				}).attr("y", mC.marginTop).attr("dy", "2em").attr(
+				"text-anchor", "middle").text(function(d) {
+			return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
+		});
+
+		// tooltip
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
 				.html(function(d) {
 					return format_description(d);
 				});
 
-		/* Invoke the tip in the context of your visualization */
-		svg.call(tip)
-
+		// Invoke tip in context of visualization
+		svg.call(tip);
+		// g element for all paths
 		pathGroup = svg.append("g").attr("id", "paths");
-
+		// helper object to finde nodes
 		node_lookup = [];
-
+		// new force layout
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
-
-		force.linkDistance(function(d) {
-			return calculateDistance(d)
-		}).charge(function(d) {
+		// set force parameters
+		force
+		// .linkDistance(function(d) {
+		// return calculateDistance(d)
+		// })
+		.charge(function(d) {
 			return d.charge
-		}).linkStrength(function(d) {
-			// if (d.target.cluster == d.source.cluster)
-			// return config.lsCluster;
-			return config.lsDefault;
-		}).gravity(config.gravity).friction(config.friction).on("tick", tick);
+		})
+		// .linkStrength(function(d) {
+		// // if (d.target.cluster == d.source.cluster)
+		// // return config.lsCluster;
+		// return config.lsDefault;
+		// })
+		.gravity(config.gravity).friction(config.friction).on("tick", tick);
 
 		nodes = force.nodes();
+		// separated from force to avoid calculations
 		// links = force.links();
 
 		// amountClusters = root.cluster.length; // number of distinct clusters
@@ -139,14 +167,11 @@ var decisionGraph = (function() {
 			addNode(d);
 		});
 
-		
-
-
-		if (typeof linkTypes === 'undefined') {
-			setLinks([ "" ]);
-		} else {
-			setLinks(linkTypes);
-		}
+		// if (typeof linkTypes === 'undefined') {
+		// setLinks([ "" ]);
+		// } else {
+		setLinks(linkTypes);
+		// }
 	}
 
 	// function setClusters() {
@@ -208,6 +233,7 @@ var decisionGraph = (function() {
 		links.forEach(function(d) {
 			linkedByIndex[d.source.id + "," + d.target.id] = 0;
 		});
+		// linkedByIndex = {};
 		links.splice(0, links.length);
 		var specificLinks = root.links.filter(function(d) {
 			for (var i = 0; i < relationType.length; i++) {
@@ -226,6 +252,7 @@ var decisionGraph = (function() {
 		update();
 	}
 
+	// create node based on json data
 	function addNode(node) {
 		switch (node.type) {
 		case "dec":
@@ -240,13 +267,17 @@ var decisionGraph = (function() {
 				classification : node.classification,
 				description : node.description,
 				abbrev : node.abbrev,
+				// initialize position around cluster to avoid jitter
 				x : foci[node.cluster - 1].x + Math.random(),
 				y : foci[node.cluster - 1].y + Math.random(),
 				cx : foci[node.cluster - 1].y + Math.random(),
 				cy : foci[node.cluster - 1].y + Math.random(),
 			};
+			// add node to lookup
 			node_lookup[d.id] = d;
+			// add node to force layout
 			nodes.push(d);
+			// set internal connection for highlighting
 			linkedByIndex[d.id + "," + d.id] = 1;
 			break;
 		}
@@ -258,10 +289,13 @@ var decisionGraph = (function() {
 		node = svg.selectAll("g.node").data(nodes, function(d) {
 			return d.id;
 		});
-
+		// nodeEnter to append everything to same group
+		// tooltip on mouseover and out and highlight on click
 		var nodeEnter = node.enter().append("g").attr("class", "node").on(
-				'click', connectedNodes);
+				'click', connectedNodes).call(force.drag).on("mouseover",
+				tip.showTransition).on("mouseout", tip.hideDelayed);
 
+		// append circle for decisions
 		nodeEnter.append("circle").attr("r", function(d) {
 			return d.radius;
 		}).style("fill", function(d) {
@@ -273,15 +307,15 @@ var decisionGraph = (function() {
 			return d.cx;
 		}).attr("cy", function(d) {
 			return d.cy;
-		}).call(force.drag).on("mouseover", tip.showTransition).on("mouseout",
-				tip.hideDelayed);
+		});
 
+		// append abbrev in middle of circle
 		nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
 				"text-anchor", "middle").text(function(d) {
 			return d.abbrev;
-		}).call(force.drag).on("mouseover", tip.showTransition).on("mouseout",
-				tip.hideDelayed);
+		}).attr("class", "legend");
 
+		// append dec label below circle
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
 					return "" + (d.radius + 15) + "px";
@@ -298,28 +332,27 @@ var decisionGraph = (function() {
 		path = pathGroup.selectAll("path").data(links, function(d) {
 			return d.source.id + "-" + d.target.id + "-" + d.type;
 		});
-
+		// enter new paths with link type as class and respective marker head
 		path.enter().append("path").attr("class", function(d) {
 			return "link " + d.type.toLowerCase();
 		}).attr("marker-end", function(d) {
 			return "url(#" + d.type.toLowerCase() + ")";
 		});
-
+		// remove old paths
 		path.exit().remove();
 
 		force.start();
 	}
 
 	function tick(e) {
-
-		var k = .4 * e.alpha;
-
 		// Push nodes toward their designated focus.
+		var k = .4 * e.alpha;
 		nodes.forEach(function(o, i) {
 			o.y += (foci[o.cluster - 1].y - o.y) * k;
 			o.x += (foci[o.cluster - 1].x - o.x) * k;
 		});
 
+		// check that circles dont collide
 		circle.each(collide(e.alpha)).attr("cx", function(d) {
 			return d.x;
 		}).attr("cy", function(d) {
@@ -333,11 +366,14 @@ var decisionGraph = (function() {
 		// return d.y;
 		// });
 
+		// adjust text to circle
 		text.attr("transform", transform);
+		// adjust paths to circle
 		path.attr("d", linkArc);
 
 	}
 
+	// link gets exact distance between nodes as length
 	function calculateDistance(link) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, distance = Math
 				.sqrt(dx * dx + dy * dy);
@@ -353,15 +389,24 @@ var decisionGraph = (function() {
 				.sqrt(dx * dx + dy * dy);
 		var offsetX = (dx * d.target.radius) / dr;
 		var offsetY = (dy * d.target.radius) / dr;
+		var targetX = d.target.x - offsetX;
+		var targetY = d.target.y - offsetY;
+		// possibility to adjust start and end to a point at the edge of the
+		// circle with a fixed degree depending on the direction
+		// It would be necessary to calculate a random angle between 10-80
+		// depending on the direction
+		// var addX = 0;
+		// var addY = 0;
+		// if(targetX > d.source.x) {addX = -15; } else {addX = 15;}
+		// if(targetY > d.source.y) {addY = -25.9;} else {addY = 25.9;}
 		if (d.type != "Requiring")
 			return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 					+ " 0 0,1 " // + d.target.x
 					+ (d.target.x - offsetX) + "," + (d.target.y - offsetY);
 		// + d.target.y;
-
-		return "M" + d.source.x + "," + d.source.y + "A" + (dr * 0.6) + ","
-				+ (dr * 0.7) + " 0 0,1 " + (d.target.x - offsetX) + ","
-				+ (d.target.y - offsetY);
+		// requiring relation get different radius
+		return "M" + (d.source.x) + "," + (d.source.y) + "A" + (dr * 0.6) + ","
+				+ (dr * 0.7) + " 0 0,1 " + (targetX) + "," + (targetY);
 		// return "M" + d.source.x + "," + d.source.y + "L" + (d.target.x -
 		// offsetX) + ","
 		// + (d.target.y - offsetY);
@@ -371,38 +416,38 @@ var decisionGraph = (function() {
 		return "translate(" + d.x + "," + d.y + ")";
 	}
 
-	function collideCluster(alpha) {
-		var quadtree = d3.geom.quadtree(nodes);
-		return function(d) {
-			var r = d.radius + config.maxRadius
-					+ Math.max(config.nodePadding, config.clusterPadding), nx1 = d.x
-					- r, nx2 = d.x + r, ny1 = d.y - r, ny2 = d.y + r;
-			quadtree
-					.visit(function(quad, x1, y1, x2, y2) {
-						if (quad.point && (quad.point !== d)) {
-							var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math
-									.sqrt(x * x + y * y), r = d.radius
-									+ quad.point.radius
-									+ (d.cluster === quad.point.cluster ? config.nodePadding
-											: config.clusterPadding);
-
-							if (l < r) {
-								l = (l - r) / l * alpha;
-								d.x -= x *= l;
-								d.y -= y *= l;
-								quad.point.x += x;
-								quad.point.y += y;
-							}
-						}
-						return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-					});
-		};
-	}
+	// function collideCluster(alpha) {
+	// var quadtree = d3.geom.quadtree(nodes);
+	// return function(d) {
+	// var r = d.radius + config.maxRadius
+	// + Math.max(config.nodePadding, config.clusterPadding), nx1 = d.x
+	// - r, nx2 = d.x + r, ny1 = d.y - r, ny2 = d.y + r;
+	// quadtree
+	// .visit(function(quad, x1, y1, x2, y2) {
+	// if (quad.point && (quad.point !== d)) {
+	// var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math
+	// .sqrt(x * x + y * y), r = d.radius
+	// + quad.point.radius
+	// + (d.cluster === quad.point.cluster ? config.nodePadding
+	// : config.clusterPadding);
+	//
+	// if (l < r) {
+	// l = (l - r) / l * alpha;
+	// d.x -= x *= l;
+	// d.y -= y *= l;
+	// quad.point.x += x;
+	// quad.point.y += y;
+	// }
+	// }
+	// return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+	// });
+	// };
+	// }
 
 	function collide(alpha) {
 		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
-			var r = d.radius + config.maxRadius + config.nodePadding, nx1 = d.x
+			var r = d.radius + config.decisionWidth + config.nodePadding, nx1 = d.x
 					- r, nx2 = d.x + r, ny1 = d.y - r, ny2 = d.y + r;
 			quadtree
 					.visit(function(quad, x1, y1, x2, y2) {
@@ -453,11 +498,12 @@ var decisionGraph = (function() {
 	function setCircleFill(d) {
 		return getColor(d.group);
 	}
+
 	function setStrokeFill(d) {
 		return getColor("dp" + d.cluster);
 	}
 
-	// tooltip
+	// tooltip text
 	function format_description(d) {
 		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
 				+ ')</p><p><strong>Description: </strong>' + d.description
@@ -465,26 +511,30 @@ var decisionGraph = (function() {
 				+ d.classification + '</p';
 	}
 
+	// resize decGraph
 	function resizeLayout(linkTypes) {
 		initialize(linkTypes);
 	}
 
-	// This function looks up whether a pair are neighbours
+	// check if pair are neighbours
 	function neighboring(a, b) {
 		return linkedByIndex[a.id + "," + b.id];
 	}
 
 	function connectedNodes() {
+		if (d3.event.defaultPrevented)
+			return;
 		d = d3.select(this).node().__data__;
 		if (toggle != d.id || toggle == 0) {
 			// Reduce the opacity of all but the neighbouring nodes
-			
+			// todo can be changed to including also ingoing links and nodes
 			node.transition().duration(300).style("opacity", function(o) {
-				return neighboring(d, o) ? null : 0.1;
+				return neighboring(d, o) ? null : 0.5;
 			});
 			// | neighboring(o, d)
 			path.transition().duration(300).style("opacity", function(o) {
-				return d.id == o.source.id ? 1 : 0.1;
+				return d.id == o.source.id ? null : 0.05;
+				// | d.id == o.target.id
 			});
 			// nodes.forEach(function(n) {
 			// node.style("opacity", function(n) {
@@ -495,16 +545,14 @@ var decisionGraph = (function() {
 			toggle = d.id;
 			d3.event.stopPropagation();
 		} else {
-			// Put them back to opacity=1
-//			node.transition().duration(300).style("opacity", null);
-//			path.transition().duration(300).style("opacity", null);
-//			toggle = 0;
-//			d3.event.stopPropagation();
+			clearHighlights();
+			d3.event.stopPropagation();
 		}
 	}
 
+	// clear opacity to normal level by css
 	function clearHighlights() {
-		toggle=0;
+		toggle = 0;
 		node.transition().duration(300).style("opacity", null);
 		path.transition().duration(300).style("opacity", null);
 	}

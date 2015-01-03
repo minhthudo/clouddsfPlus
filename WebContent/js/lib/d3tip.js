@@ -72,18 +72,18 @@
     tip.showTransition = function() {
       var args = Array.prototype.slice.call(arguments)
       if(args[args.length - 1] instanceof SVGElement) target = args.pop()
-
+      
       var content = html.apply(this, args),
           poffset = offset.apply(this, args),
           dir     = direction.apply(this, args),
           nodel   = d3.select(node),
           i       = directions.length,
+          
           coords,
           scrollTop  = document.documentElement.scrollTop || document.body.scrollTop,
           scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
 
-      nodel.html(content).transition()
-        .style({ opacity: 1, 'pointer-events': 'all' })
+          nodel.html(content).transition().delay(700).duration(200).style("opacity", 1).style("pointer-events", "all");
 
       while(i--) nodel.classed(directions[i], false)
       coords = direction_callbacks.get(dir).apply(this)
@@ -103,10 +103,10 @@
       nodel.style({ opacity: 0, 'pointer-events': 'none' })
       return tip
     }
-    
+    //custom hide
     tip.hideDelayed = function() {
         var nodel = d3.select(node)
-        nodel.transition().duration(500).style({ opacity: 0, 'pointer-events': 'none' })
+         nodel.transition().duration(200).style("opacity", 0).style("pointer-events", 'none');
         return tip
       }
 
@@ -335,5 +335,4 @@
 
     return tip
   };
-
 }));

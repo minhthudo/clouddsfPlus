@@ -1,5 +1,6 @@
 //TreeLayout Module
 var treeGraph = function() {
+
 	// Padding for svg container
 	var padding = {
 		top : 5,
@@ -8,18 +9,18 @@ var treeGraph = function() {
 		left : 50
 	};
 
+	// config parameters
 	var config = {
 		decRadius : 10,
 		outRadius : 10,
 		minHeight : 1200
 	};
 
-	var tree, nodes, root, mC, svg, diagonal;
-	var resizeId, tip;
-	var tooltip;
+	var tree, nodes, root, svg, diagonal;
+	var mC, resize = false, tip;
+
 	function initialize() {
 		// compute panel size and margins after margin convention
-		// set height to 1000
 		mC = marginConvention(padding, config.minHeight);
 
 		// delete old svg content
@@ -35,13 +36,13 @@ var treeGraph = function() {
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
 
-		/* Initialize tooltip */
+		// tooltip with offeset 5,5 and southeast
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
 				.html(function(d) {
 					return format_description(d);
 				});
 
-		/* Invoke the tip in the context of your visualization */
+		// Invoke tip in context of visualization
 		svg.call(tip)
 
 		// Create new TreeLayout with svg size
@@ -50,20 +51,19 @@ var treeGraph = function() {
 			return [ d.y, d.x ];
 		});
 
-		tooltip = d3.select("body").append("div").attr("id", "tooltip").style(
-				"position", "absolute").style("z-index", "10").style("opacity",
-				0);
-
-
-		// collapse all children
-		root.children.forEach(toggleAll);
-		// update tree depending on node
 		// start in the left-middle of the svg
 		root.x0 = mC.panelWidth / 2;
 		root.y0 = 0;
+		// if tree is resized avoid toggle of any nodes
+		if (!resize) {
+			// collapse all children
+			root.children.forEach(toggleAll);
+		}
+		// update tree depending on node
 		update(root, svg);
 	}
 
+	// redraw tree based on selectiongs
 	function update(source, svg) {
 		var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
@@ -93,7 +93,7 @@ var treeGraph = function() {
 			d.y = (x * distance) + padding.left;
 		});
 
-		// Update the nodes…
+		// Update the node selection groups
 		var node = svg.selectAll("g.treeNode").data(nodes, function(d) {
 			return d.id;
 		});
@@ -103,6 +103,7 @@ var treeGraph = function() {
 				.attr("transform", function(d) {
 					return "translate(" + source.y0 + "," + source.x0 + ")";
 				});
+
 		// append text element with placement in dependance to circle radius and
 		// wrap in case it exceeds treshold.
 		var textWrapper = nodeEnter.append("svg:text").attr(
@@ -125,6 +126,7 @@ var treeGraph = function() {
 		}).text(function(d) {
 			return d.label;
 		});
+
 		textWrapper.filter(function(d) {
 			if (d.type != "out")
 				return d;
@@ -133,7 +135,7 @@ var treeGraph = function() {
 		textWrapper.filter(function(d) {
 			if (d.type == "out")
 				return d;
-		}).call(wrap, (mC.panelWidth / 16) * 5 );
+		}).call(wrap, (mC.panelWidth / 16) * 5);
 
 		// append different css classes through method
 		nodeEnter.append("svg:circle").attr("r", function(d) {
@@ -147,15 +149,9 @@ var treeGraph = function() {
 		}).attr("stroke", function(d) {
 			return setCircleStroke(d);
 		}).on("click", function(d) {
-
 			toggle(d);
 			update(d, svg);
-
-			// ToDo
-		}).on("mouseover", tip.show).on("mouseout", tip.hide)
-		// .on("mouseover", mouseOverArc)//.on("mousemove", mouseMoveArc)
-		// .on("mouseout", mouseOutArc);
-		;
+		}).on("mouseover", tip.show).on("mouseout", tip.hide);
 
 		// Transition nodes to their new position.
 		var nodeUpdate = node.transition().duration(duration).attr("transform",
@@ -178,9 +174,9 @@ var treeGraph = function() {
 				"transform", function(d) {
 					return "translate(" + source.y + "," + source.x + ")";
 				}).remove();
-		// toDo
+
+		// smoother
 		nodeExit.select("circle").attr("r", 1e-6);
-		// toDo
 		nodeExit.select("text").style("fill-opacity", 1e-6);
 
 		// Update the links…
@@ -222,27 +218,7 @@ var treeGraph = function() {
 			d.x0 = d.x;
 			d.y0 = d.y;
 		});
-
-		setTimeout(mouseOutArc, 150);
-	}
-
-	// collapse all datapoints
-	function toggleAll(d) {
-		if (d.children) {
-			d.children.forEach(toggleAll);
-			toggle(d);
-		}
-	}
-
-	// Toggle children.
-	function toggle(d) {
-		if (d.children) {
-			d._children = d.children;
-			d.children = null;
-		} else {
-			d.children = d._children;
-			d._children = null;
-		}
+		// setTimeout(tip.hide(), 150);
 	}
 
 	// Set classes for entities
@@ -257,10 +233,12 @@ var treeGraph = function() {
 		}
 	}
 
+	// set circle storke
 	function setCircleStroke(d) {
 		return getColor(d.group);
 	}
 
+	// set color of fill
 	function setCircleFill(d) {
 		return getColor(d.group);
 	}
@@ -306,39 +284,12 @@ var treeGraph = function() {
 		});
 	}
 
-	// get data
-	d3.json("./data/cloudDSFPlus.json", function(json) {
-		root = json.cdsfPlus;
-		initialize();
-	});
-
-	function resizeLayout() {
-		// compute panel size and margins after margin convention
-		// set height to 1000
-		mC = marginConvention(padding, config.minHeight);
-
-		// delete old svg content
-		d3.select("#svgContainer").remove();
-
-		svg = d3
-				.select("#visContent")
-				.append("svg")
-				.attr("width", mC.oWidth)
-				.attr("height", mC.oHeight)
-				.attr("id", "svgContainer")
-				.append("g")
-				.attr("transform",
-						"translate(" + mC.marginLeft + "," + mC.marginTop + ")");
-
-		// Create new TreeLayout with svg size
-		tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
-		diagonal = d3.svg.diagonal().projection(function(d) {
-			return [ d.y, d.x ];
-		});
-
-		// start in the left-middle of the svg
-		root.x0 = mC.panelWidth / 2;
-		update(root, svg);
+	// tooltip
+	function format_description(d) {
+		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p> <p><strong>Classification: </strong>'
+				+ d.classification + '</p';
 	}
 
 	// show all decision points
@@ -377,6 +328,25 @@ var treeGraph = function() {
 		update(root, svg);
 	}
 
+	// collapse all datapoints
+	function toggleAll(d) {
+		if (d.children) {
+			d.children.forEach(toggleAll);
+			toggle(d);
+		}
+	}
+
+	// Toggle children.
+	function toggle(d) {
+		if (d.children) {
+			d._children = d.children;
+			d.children = null;
+		} else {
+			d.children = d._children;
+			d._children = null;
+		}
+	}
+
 	// Show all children
 	function togglePos(d) {
 		if (d.children) {
@@ -394,36 +364,19 @@ var treeGraph = function() {
 		}
 	}
 
-	// tooltip
-	function format_description(d) {
-		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
-				+ ')</p><p><strong>Description: </strong>' + d.description
-				+ '</p> <p><strong>Classification: </strong>'
-				+ d.classification + '</p';
+	// resize tree without collapsing nodes
+	function resizeLayout() {
+		resize = true;
+		initialize();
 	}
 
-	function mouseOverArc(d) {
-		// tooltip.html(format_description(d));
-		// return tooltip.style("top", (d3.event.pageY + 10) +
-		// "px").style("left",
-		// (d3.event.pageX + 10) + "px").style("z-index",
-		// 30).transition().duration(150).style("opacity", 0.9);
-		// $('#svgContainer').tooltip(options)
-		tip.show();
-	}
+	// get data and create tree
+	d3.json("./data/cloudDSFPlus.json", function(json) {
+		root = json.cdsfPlus;
+		initialize();
+	});
 
-	function mouseOutArc() {
-		tip.hide();
-		// return tooltip.transition().duration(5).style("opacity",
-		// 0).style("z-index", -100);
-	}
-
-	function mouseMoveArc(d) {
-		return tooltip.transition().duration(5).style("top",
-				(d3.event.pageY + 10) + "px").style("left",
-				(d3.event.pageX + 10) + "px");
-	}
-
+	// revealing module
 	return {
 		update : update,
 		initialize : initialize,

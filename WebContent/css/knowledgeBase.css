@@ -80,7 +80,7 @@
 }
 
 /*OutcomeRelationsGraph*/
-.outcomeContainer.node>circle {
+#outcomeContainer.node>circle {
 	cursor: pointer;
 	stroke: #000;
 	stroke-width: .5px;
@@ -104,6 +104,12 @@
 	stroke: green;
 	stroke-width: 0.5px;
 }
+
+/* #outcomeContainer circle {
+	fill: #ccc;
+	stroke: #333;
+	stroke-width: 1.5px;
+} */
 
 /*DecisionGraph*/
 .link {
@@ -139,10 +145,6 @@
 	opacity: 0.5;
 }
 
-.fullOpacity{
-	opacity: 0.1;
-}
-
 .link.requiring {
 	/* stroke: #e6550d; */
 	stroke-dasharray: 15, 10, 5, 10;
@@ -155,13 +157,7 @@
 	stroke-width: 10px;
 }
 
-#outcomeContainer circle {
-	fill: #ccc;
-	stroke: #333;
-	stroke-width: 1.5px;
+.legend {
+	font-weight: bold;
+	cursor: default;
 }
-
-/* #decisionContainer path{
-	fill: none;
-	stroke: #636363;
-} */

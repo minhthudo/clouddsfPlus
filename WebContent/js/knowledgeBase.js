@@ -6,6 +6,10 @@ $(window).load(function() {
 
 	setSubnavButtons();
 	setToolbarButtons();
+	$(window).on('resize.treeResize', function() {
+		clearTimeout(resizeId);
+		resizeId = setTimeout(treeGraph.resizeLayout, 500);
+	});
 	//treeGraph.initialize();
 });
 
@@ -49,6 +53,7 @@ function setSubnavButtons() {
 		btnList_treeLayout.parent().addClass("active");
 		toolbarDec.addClass("hidden");
 		toolbarTree.removeClass("hidden");
+		$(window).off('resize.decResize');
 		treeGraph.initialize();
 		$(window).on('resize.treeResize', function() {
 			clearTimeout(resizeId);
@@ -62,9 +67,6 @@ function setSubnavButtons() {
 		toolbarDec.removeClass("hidden");
 		toolbarTree.addClass("hidden");
 		$(window).off('resize.treeResize');
-		// eventuell neues objekt und nicht gleich instanzieren
-		// var data = [];
-		// todo
 		var data = [];
 		$("#relationTypes option:selected").each(function() {
 			data.push($(this).val());
