@@ -1,47 +1,111 @@
+var marginConventionOutcome = (function marginConvention(padding, height) {
+
+	var margin = {
+		top : 10,
+		right : 10,
+		bottom : 10,
+		left : 10
+	};
+
+	var oWidth = 1140;
+	var oHeight = height || 900;
+
+	var iWidth = oWidth - margin.left - margin.right;
+	var iHeight = oHeight - margin.top - margin.bottom;
+	var panelWidth = iWidth - padding.left - padding.right;
+	var panelHeight = iHeight - padding.top - padding.bottom;
+
+	var marginConvention = {
+		"panelWidth" : panelWidth,
+		"panelHeight" : panelHeight,
+		"oWidth" : oWidth,
+		"oHeight" : oHeight,
+		"iWidth" : iWidth,
+		"iHeight" : iHeight,
+		"marginTop" : margin.top,
+		"marginRight" : margin.right,
+		"marginBottom" : margin.bottom,
+		"marginLeft" : margin.left
+	}
+	return marginConvention;
+});
+
 var outcomeGraph = (function() {
+
 	// Padding for svg container
 	var padding = {
-		top : 5,
-		right : 5,
-		bottom : 5,
-		left : 5
+		top : 100,
+		right : 50,
+		bottom : 30,
+		left : 50
 	};
 
 	var config = {
-		outcomeWidth : 10,
-		decisionWidth : 20,
-		ldRoot : 220,
+		outWidth : 10,
+		decWidth : 23,
+		dpWidth : 28,
+		rootWidth : 30,
+		ldRoot : 260,
 		ldDp : 120,
 		ldDec : 50,
-		ldOut : 50,
+		// ldOut : 50,
 		// lsRoot : 50,
 		// lsDp : 80,
 		// lsDec : 30,
 		// lsOut : 20
-		gravity : 0.05,
-		friction : 0.75,
+		// gravity : 0.05,// 0.05,
+		// friction : 0.8,
+		// lsDefault : 1,
+		// chRoot : -20,
+		// chDp : -20,
+		// chDec : -200, // -300,
+		// chOut : -150, // -160,
+		// minHeight : 1000
+		// gravity : 0.1,// 0.05,
+		// friction : 0.8,
+		// lsDefault : 1,
+		// chRoot : -200,
+		// chDp : -20,// -10,
+		// chDec : -350,// -40, // -300,
+		// chOut : -350, // -50, // -160,
+		// minHeight : 1000,
+		gravity : 0.1,
+		friction : 0.8,
 		lsDefault : 1,
-		chRoot : -15,
+		chRoot : -20,
 		chDp : -20,
-		chDec : -300,
-		chOut : -160,
-		minSvgWidth : 900
-	};
+		chDec : -450,
+		chOut : -300,
+		minHeight : 1000
 
+	// gravity : 0.1,// 0.05,
+	// friction : 0.8,
+	// lsDefault : 1,
+	// chRoot : -20,
+	// chDp : -20,
+	// chDec : -650,
+	// chOut : -350,
+	// minHeight : 1000
+
+	};
+	var start = true;
 	var mC, root, initialNodes;
 	var svg, pathGroup, linkGroup, node, link, circle;
 	var force, nodes, links;
-	var outcomeLinks, outcomePaths = [];
+	// var outcomeLinks, outcomePaths = [];
 	var node_lookup = [], root_lookup = [];
-
-	// Toggle stores whether the highlighting is on
-	var toggle = 0;
-	// Create an array logging what is connected to what
-	var linkedByIndex = {};
 
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = marginConvention(padding, config.minSvgWidth);
+		mC = marginConventionOutcome(padding, config.minHeight);
+		// console.log(mC.panelWidth);
+		// console.log(mC.panelHeight);
+		// config.ldRoot = Math.floor(Math.sqrt((Math.pow(
+		// mC.panelWidth / 100 * 20, 2) - padding.left)
+		// + (Math.pow(mC.panelHeight / 100 * 25, 2) - padding.top)));
+		// console.log(config.ldRoot);
+		// config.ldDp = config.ldRoot - config.ldDec - 100;
+		// console.log(config.ldDp);
 
 		// select container and remove it in case it exists already
 		d3.select("#svgContainer").remove();
@@ -57,97 +121,98 @@ var outcomeGraph = (function() {
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
 				.attr("class", "outcomeContainer");
 
+		// svg.append("defs").selectAll("marker").data(relations).enter().append(
+		// "marker").attr("id", function(d) {
+		// return d;
+		// }).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
+		// if (d == "requiring")
+		// return 10;
+		// return 10;
+		// }).attr("refY", function(d) {
+		// if (d == "requiring")
+		// return 5;
+		// return 5;
+		// }).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
+		// "strokeWidth").attr("orient", "auto").append("svg:path").attr(
+		// "d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
+		// return d + "Arrow";
+		// });
+
+		// create legend above chart
+		// var legend = svg.append("g");
+		// legend.selectAll("line").data(relations).enter().append("line").attr(
+		// "class", function(d) {
+		// return "link " + d;
+		// }).attr("x1", function(d, i) {
+		// return (mC.iWidth / 12) * ((i * 2) + 3) + mC.marginLeft;
+		// }).attr("y1", mC.marginTop).attr("y2", mC.marginTop).attr("x2",
+		// function(d, i) {
+		// return (mC.iWidth / 12) * ((i * 2) + 4) + mC.marginLeft;
+		// }).attr("marker-end", function(d) {
+		// return "url(#" + d.toLowerCase() + ")";
+		// });
+		// legend.selectAll("text").data(relations).enter().append("text").attr(
+		// "x", function(d, i) {
+		// return (mC.iWidth / 12) * ((i * 2) + 3.5) + mC.marginLeft;
+		// }).attr("y", mC.marginTop).attr("dy", "2em").attr(
+		// "text-anchor", "middle").text(function(d) {
+		// return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
+		// });
+
+		// tooltip
+		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
+				.html(function(d) {
+					return format_description(d);
+				});
+
+		// Invoke tip in context of visualization
+		svg.call(tip);
+
 		// append group for links (lines) and paths
-		pathGroup = svg.append("g").attr("id", "paths");
+		// pathGroup = svg.append("g").attr("id", "paths");
 		linkGroup = svg.append("g").attr("id", "links");
 
 		// new force layout and configuration
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
 		// todo
-
 		// array to finde nodes for link target and source
 
 		// set nodes and links as ref to force layout to keep in synch
 		nodes = force.nodes();
-		links = force.links();
 		// variables for layout entities
 
-		root.fixed = true;
-		root.x = mC.panelWidth / 2;
-		root.y = mC.panelHeight / 2;
+		initializeNode();
 
 		update();
 	}
 
 	// update the layout according to the changes and start the simulation
 	function update() {
-		nodes.splice(0, nodes.length);
-		node_lookup.splice(0, node_lookup.length);
-		var initialNodes = flatten(root);
-		initialNodes.forEach(function(d) {
-			if(d.type != "root"){
-			d.x = Math.cos(d.cluster / 4 * 2 * Math.PI) * 300 + mC.panelWidth / 2 + Math.random();
-			d.y = Math.sin(d.cluster / 4 * 2 * Math.PI) * 300 + mC.panelHeight / 2 + Math.random()}
-//			switch (d.cluster) {
-//			case 1:
-//				d.x = 5;
-//				d.y = 5;
-//				break;
-//			case 2:
-//				d.x = 600
-//				d.y = 100
-//				break;
-//			case 3:
-//				d.x = 100;
-//				d.y = 500;
-//				break;
-//			case 4:
-//				d.x = 600;
-//				d.y = 500;
-//				break;
-//			default:
-//				break;
-//			}
+		// force.stop();
+		links = d3.layout.tree().links(nodes);
+		force.links(links);
 
-			addNode(d);
-		});
-
-		links.splice(0, links.length);
-		var layoutLinks = d3.layout.tree().links(nodes);
-		layoutLinks.forEach(function(d) {
-			addLayoutLink(d);
-		});
-		outcomePaths.splice(0, outcomePaths.length);
-		outcomeLinks.forEach(function(d) {
-			addLink(d);
-		});
-		// stop force not necessary
-		force.stop();
-
-		// force.charge(function(d) {
-		// return d._children ? config.chDp : config.chOut;
-		// }).linkDistance(function(d) {
-		// return setLinkDistance(d);
-		// }).linkStrength(config.lsDefault).gravity(config.gravity).friction(
-		// config.friction).on("tick", tick);
+		// outcomePaths.splice(0, outcomePaths.length);
 		//		
+		// outcomeLinks.forEach(function(d) {
+		// addLink(d);
+		// });
 
-		force
-		.charge(function(d) {
+		force.charge(function(d) {
 			return setCharge(d);
-			// return d._children ? config.chDp : config.chOut;
-		})
-		.linkDistance(function(d) {
+		}).linkDistance(function(d) {
 			return setLinkDistance(d);
 		}).linkStrength(config.lsDefault).gravity(config.gravity).friction(
 				config.friction).on("tick", tick);
-		// get group with all line (layoutLinks)
+
+		// get all layout links
 		link = linkGroup.selectAll("line").data(links, function(d) {
-			return d.source.id + "-" + d.target.id + "-" + d.type;
+			return d.source.id + "-" + d.target.id + "-" + "layoutLink";
 		});
+
 		// update and insert new lines
 		link.enter().insert("line").attr("class", function(d) {
-			return d.type;
+			return "layoutLink";
 		}).attr("x1", function(d) {
 			return d.source.x;
 		}).attr("y1", function(d) {
@@ -161,15 +226,15 @@ var outcomeGraph = (function() {
 		// Exit any old links.
 		link.exit().remove();
 
-		path = pathGroup.selectAll("path").data(outcomePaths, function(d) {
-			return d.source.id + "-" + d.target.id + "-" + d.type;
-		});
-
-		path.enter().insert("path").attr("class", function(d) {
-			return d.relationGroup + d.type;
-		});
-
-		path.exit().remove();
+		// path = pathGroup.selectAll("path").data(outcomePaths, function(d) {
+		// return d.source.id + "-" + d.target.id + "-" + d.type;
+		// });
+		//
+		// path.enter().insert("path").attr("class", function(d) {
+		// return d.relationGroup + d.type;
+		// });
+		//
+		// path.exit().remove();
 
 		// select groups for nodes
 		var node = svg.selectAll("g.node").data(nodes, function(d) {
@@ -177,57 +242,65 @@ var outcomeGraph = (function() {
 		});
 
 		// select new groups and updates for nodes
-		var nodeEnter = node.enter().append("g").attr("class", "node");
+		var nodeEnter = node.enter().append("g").attr("class", "node").call(
+				force.drag);
 
 		// append circle
 		nodeEnter.append("svg:circle").attr("r", function(d) {
-			return d.children ? config.decisionWidth : config.outcomeWidth;// d.size
-			// :
-			// outcomeWidth;
+			return setCircleRadius(d);
 		}).attr("cx", function(d) {
-			// if(d.cluster > 2) return 400;
-			// return -400;
 			return d.x;
 		}).attr("cy", function(d) {
-			// if(d.cluster > 2) return 400;
-			// return -400;
 			return d.y;
 		}).style("fill", function(d) {
 			return setCircleFill(d)
-		}).on("dbclick", click).call(force.drag);
-		// .on('click', function(d){connectedNodes(d);});
+		}).on("click", function(d) {
+			if (d.type != "out" && d.type != "root") {
+				click(d);
+			}
+		});
+		// todo dblclick on group
+
 		nodeEnter.filter(function(d) {
 			if (d.type != "out")
 				return d;
-		}).append("text").attr("x", 0).attr("y", "1em").attr("dy", function(d) {
-			var i = d.children ? config.decisionWidth : config.outcomeWidth;
-			return "" + i + "px";
-		}).attr("text-anchor", "middle").text(function(d) {
-			return d.label;
-		});
+		}).append("text").attr("x", 0).attr("y", "0.5em").attr("text-anchor",
+				"middle").text(function(d) {
+			return d.abbrev;
+		}).attr("class", "legend");
 
 		// remove nodes
 		node.exit().remove();
 
 		// set circle for tick
-		circle = node.selectAll("g.node circle");
+		circle = node.selectAll("circle");
 
 		circle.transition().attr("r", function(d) {
-			return d.children ? config.decisionWidth : config.outcomeWidth;// d.size
-			// :
-			// outcomeWidth;
+			return setCircleRadius(d);
 		});
 
-		text = node.selectAll("g.node text");
-		force.start();
-		// for (var int = 0; int < 200; int++) {
+		text = node.selectAll("text");
+
+		// if (start) {
+		// force.start();
+		// for (var i = 0; i < 200; ++i)
 		// force.tick();
-		// }
-		// start force layout
 		// force.stop();
+		// force.nodes().forEach(function(d) {
+		// if (d.type == "dp") {
+		// d.fixed = true;
+		// }
+		// });
+		// start = false;
+		// force.resume();
+		// }
+		// else {
+		// force.start();
+		// }
+		force.start();
 	}
 
-	function tick() {
+	function tick(e) {
 		link.attr("x1", function(d) {
 			return d.source.x;
 		}).attr("y1", function(d) {
@@ -242,13 +315,14 @@ var outcomeGraph = (function() {
 			return "translate(" + d.x + "," + d.y + ")";
 		});
 
-		path.attr("d", linkArc);
+		// path.attr("d", linkArc);
 
 		circle.attr("cx", function(d) {
 			return d.x;
 		}).attr("cy", function(d) {
 			return d.y;
 		});
+
 	}
 
 	function linkArc(d) {
@@ -258,49 +332,17 @@ var outcomeGraph = (function() {
 				+ " 0 0,1 " + d.target.x + "," + d.target.y;
 	}
 
-	function setLinkDistance(d) {
-		switch (d.source.type) {
-		case "root":
-			return config.ldRoot;
-			break;
-		case "dp":
-			return config.ldDp;
-			break;
-		case "dec":
-			return config.ldDec;
-			break;
-		default:
-			return config.ldRoot;
-			break;
-		}
-	}
-
-	function setCharge(d) {
-		switch (d.type) {
-		case "root":
-			return config.chRoot;
-			break;
-		case "dp":
-			return config.chDp;
-			break;
-		case "dec":
-			return config.chDec;
-			break;
-		case "out":
-			return config.chOut;
-			break;
-		}
-
-		// if(d.type =="root") return 0;
-		// if(d._children || d.children) return config.chDp;
-		// if(d.children) return config.chDec;
-		//		
-		// return config.chOut;
+	// tooltip text
+	function format_description(d) {
+		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p> <p><strong>Classification: </strong>'
+				+ d.classification + '</p';
 	}
 
 	// Toggle children on click.
 	function click(d) {
-
+		console.log("clicked");
 		if (d.children) {
 			d._children = d.children;
 			d.children = null;
@@ -308,17 +350,24 @@ var outcomeGraph = (function() {
 			d.children = d._children;
 			d._children = null;
 		}
-
 		// todo löschen der unabhängigen pfade entsprechend des ausgewählten
 		// knotens
-		// initialize();
+
+		nodes.splice(0, nodes.length);
+		node_lookup.splice(0, node_lookup.length);
+		initialNodes = flatten(root);
+		initialNodes.forEach(function(d) {
+			nodes.push(d);
+			node_lookup[d.id] = d;
+		});
 		update();
 	}
 
-	// Returns a list of all nodes under the root.
+	// Returns a list of all nodes under the root. size is calculated
 	function flatten(root) {
 		var flattenedNodes = [];// i = 0;
 		function recurse(node) {
+			node.size = 1;
 			if (node.children)
 				node.size = node.children.reduce(function(p, v) {
 					return p + recurse(v);
@@ -330,15 +379,139 @@ var outcomeGraph = (function() {
 		return flattenedNodes;
 	}
 
+	function setCharge(d) {
+		switch (d.type) {
+		case "root":
+			return config.chRoot;
+			break;
+		case "dp":
+			if (d.cluster == 3) {
+				return d._children ? config.chDp + (d.size * config.chDec)
+						: config.chDp;
+			}
+			return d._children ? config.chDp
+					+ (d.size * 10 * (config.chDec + config.chOut))
+					: config.chDp;
+			break;
+		case "dec":
+			return d._children ? config.chDec + d.size * config.chOut
+					: config.chDec;
+			break;
+		case "out":
+			return config.chOut;
+			break;
+		}
+	}
+
+	function setLinkDistance(d) {
+		switch (d.source.type) {
+		case "root":
+			return config.ldRoot;
+			break;
+		case "dp":
+			return d.target.children ? config.ldDp : config.ldDp + config.ldDec
+					/ 2;
+			break;
+		case "dec":
+			return config.ldDec;
+			break;
+		}
+	}
+
+	function setCircleRadius(d) {
+		switch (d.type) {
+		case "root":
+			return config.rootWidth;
+			break;
+		case "dp":
+			return d.children ? config.dpWidth : config.dpWidth + 20;
+			break;
+		case "dec":
+			return d.children ? config.decWidth : config.decWidth + 10;
+			break;
+		default:
+			return config.outWidth;
+			break;
+		}
+	}
+
 	function setCircleFill(d) {
 		return getColor(d.group);
 	}
 
-	// Module functions
-	// add node to force.nodes and to lookup table
-	function addNode(d) {
-		nodes.push(d);
-		node_lookup[d.id] = d;
+	function initializeNode() {
+		nodes.splice(0, nodes.length);
+		node_lookup.splice(0, node_lookup.length);
+
+		initialNodes = flatten(root);
+		root.fixed = true;
+		root.x = mC.panelWidth / 2;
+		root.y = mC.panelHeight / 2;
+		root.px = mC.panelWidth / 2;
+		root.py = mC.panelHeight / 2;
+
+		initialNodes.forEach(function(d) {
+			if (d.type != "root") {
+				var location = setInitialLocation(d);
+				d.x = location[0];
+				d.y = location[1];
+				d.px = location[0];
+				d.py = location[1];
+			}
+			nodes.push(d);
+			node_lookup[d.id] = d;
+		});
+	}
+
+	function setInitialLocation(d) {
+		var h = mC.panelHeight / 100;
+		var w = mC.panelWidth / 100;
+		var angle = Math.random() * Math.PI * 2;
+		var randomX, randomY, dp;
+		// todo randomX and Y cann be calculated here
+		switch (d.cluster) {
+		case 1:
+			// randomX = -Math.abs(Math.cos(angle));
+			randomX = Math.cos(angle);
+			randomY = Math.sin(angle);
+			dp = [ (w * 25) + padding.left, (h * 25) + padding.top ];
+			break;
+		case 2:
+			// randomX = Math.abs(Math.cos(angle));
+			randomX = Math.cos(angle);
+			randomY = Math.sin(angle);
+			dp = [ (w * 75) + padding.left, (h * 25) + padding.top ];
+			break;
+		case 3:
+			randomX = Math.abs(Math.cos(angle));
+			randomY = Math.sin(angle);
+			dp = [ (w * 65) + padding.left, (h * 65) + padding.top ];
+			break;
+		case 4:
+			// randomX = -Math.abs(Math.cos(angle));
+			randomX = Math.cos(angle);
+			randomY = Math.sin(angle);
+			dp = [ (w * 30) + padding.left, (h * 75) + padding.top ]
+			break;
+		default:
+			return [ Math.random(), Math.random() ];
+			break;
+		}
+
+		switch (d.type) {
+		case "dp":
+			// d.fixed = true;
+			return dp;
+			break;
+		case "dec":
+			return [ dp[0] + randomX * (config.ldDp),
+					dp[1] + randomY * (config.ldDp) ];
+			break;
+		case "out":
+			return [ dp[0] + randomX * (config.ldDp + config.ldDec) - w,
+					dp[1] + randomY * (config.ldDp + config.ldDec) ];
+			break;
+		}
 	}
 
 	function addLink(link) {
@@ -354,46 +527,15 @@ var outcomeGraph = (function() {
 		}
 	}
 
-	// add layout link (tree) for hierarchy
-	function addLayoutLink(link) {
-		links.push({
-			"source" : link.source,
-			"target" : link.target,
-			"relationGroup" : "treeRel",
-			"type" : "layoutLink"
-		});
-	}
-
-	function connectedNodes(d) {
-		if (toggle == 0) {
-			// Reduce the opacity of all but the neighbouring nodes
-			// d = d3.select(this).node().__data__;
-			// node.style("opacity", function (o) {
-			// return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
-			// });
-			// link.style("opacity", function (o) {
-			// return d.index==o.source.index | d.index==o.target.index ? 1 :
-			// 0.1;
-			// });
-			d3.selectAll("g.node").style("opacity", 0.1);
-			d3.selectAll("paths").style("opacity", 0.1);
-			// d.style("opacity", 0.1);
-			// Reduce the op
-			toggle = 1;
-		} else {
-			// Put them back to opacity=1
-			d3.selectAll("g.node").style("opacity", 1);
-			d3.selectAll("paths").style("opacity", 1);
-			toggle = 0;
-		}
-	}
-
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json.cdsfPlus;
-		outcomeLinks = json.outcomeLinks.filter(function(d) {
-			if (d.target != d.source)
-				return d;
-		});
+
+		outcomeLinks = json.outcomeLinks;
+		// todo vermutlich nicht notwendig wenn richtiges json kommt
+		// .filter(function(d) {
+		// if (d.target != d.source)
+		// return d;
+		// });
 		// initialize();
 	});
 
@@ -403,17 +545,22 @@ var outcomeGraph = (function() {
 	});
 
 	var setDecCharge = (function(d) {
-		config.decOut = d;
+		config.chDec = d;
 		update();
 	});
-	
+
 	var setDpCharge = (function(d) {
 		config.chDp = d;
 		update();
 	});
-	
+
 	var setRootCharge = (function(d) {
 		config.chRoot = d;
+		update();
+	});
+
+	var setGravity = (function(d) {
+		config.gravity = d;
 		update();
 	});
 
@@ -425,6 +572,7 @@ var outcomeGraph = (function() {
 		setOutCharge : setOutCharge,
 		setDecCharge : setDecCharge,
 		setDpCharge : setDpCharge,
-		setRootCharge : setRootCharge
+		setRootCharge : setRootCharge,
+		setGravity : setGravity
 	};
 })();

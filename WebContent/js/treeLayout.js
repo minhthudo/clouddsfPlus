@@ -13,7 +13,7 @@ var treeGraph = function() {
 	var config = {
 		decRadius : 10,
 		outRadius : 10,
-		minHeight : 1200
+		minHeight : 1350
 	};
 
 	var tree, nodes, root, svg, diagonal;

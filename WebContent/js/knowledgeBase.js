@@ -87,6 +87,8 @@ function setSubnavButtons() {
 		btnList_OutRel.parent().addClass("active");
 		toolbarDec.addClass("hidden");
 		toolbarTree.addClass("hidden");
+		$(window).off('resize.treeResize');
+		$(window).off('resize.decResize');
 		// eventuell neues objekt und nicht gleich instanzieren lassen
 		outcomeGraph.initialize();
 	});
