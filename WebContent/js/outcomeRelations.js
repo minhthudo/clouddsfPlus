@@ -107,15 +107,18 @@ var outcomeGraph = (function() {
 			return 5;
 		}).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
 				"strokeWidth").attr("orient", "auto").append("svg:path").attr(
-				"d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
-			return "outRel " + d.substring(0,2) + " arrow" + d.substring(0,2);
-		});
+				"d", "M 0,0 l 10,5 l -10,5").attr(
+				"class",
+				function(d) {
+					return "outRel " + d.substring(0, 2) + " arrow"
+							+ d.substring(0, 2);
+				});
 
 		// create legend above chart
 		var legend = svg.append("g").attr("id", "legend");
 		legend.selectAll("line").data(relations).enter().append("line").attr(
 				"class", function(d) {
-					return "outRel " + d.substring(0,2);
+					return "outRel " + d.substring(0, 2);
 				}).attr("x1", function(d, i) {
 			return (mC.iWidth / 10) * ((i * 2) + 1);
 		}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
@@ -169,7 +172,7 @@ var outcomeGraph = (function() {
 
 		setLayout();
 		initializeNode();
-		setOutcomePaths();
+		// setOutcomePaths();
 		update();
 	}
 
@@ -188,12 +191,33 @@ var outcomeGraph = (function() {
 		});
 	}
 
+	function setOutcomePathsFiltered(id) {
+		// outcomePaths.splice(0, outcomePaths.length);
+		outcomeLinks.forEach(function(d) {
+			if (d.source == id) {// || d.target.id == id) {
+				addLink(d);
+			}
+		});
+	}
+
+	function addLink(link) {
+		var source = node_lookup[link.source];
+		var target = node_lookup[link.target];
+		if (source != null && target != null) {
+			outcomePaths.push({
+				"source" : source,
+				"target" : target,
+				"relationGroup" : link.relationGroup,
+				"type" : link.type
+			});
+		}
+	}
+
 	// update the layout according to the changes and start the simulation
 	function update() {
 		// force.stop();
 		links = d3.layout.tree().links(nodes);
 		force.links(links);
-		setOutcomePaths();
 
 		// get all layout links
 		link = linkGroup.selectAll("line").data(links, function(d) {
@@ -237,7 +261,11 @@ var outcomeGraph = (function() {
 		var nodeEnter = node.enter().append("g").attr("class", "node").call(
 				force.drag).on("dblclick", function(d) {
 			if (d.type != "out" && d.type != "root") {
-				click(d);
+				toggleNode(d);
+			}
+		}).on("click", function(d) {
+			if (d.type == "out") {
+				highlightNode(d);
 			}
 		}).on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
 
@@ -326,9 +354,31 @@ var outcomeGraph = (function() {
 				+ " 0 0,1 " + d.target.x + "," + d.target.y;
 	}
 
+	function highlightNode(d) {
+		if (typeof d.highlighted === "undefined") {
+			d.highlighted = false;
+		}
+		if (d.highlighted) {
+			removePaths(d.id);
+			d.highlighted = false;
+		} else {
+			setOutcomePathsFiltered(d.id);
+			d.highlighted = true;
+
+		}
+		update();
+	}
+
+	function removePaths(id) {
+		for (var i = outcomePaths.length - 1; i >= 0; i--) {
+			if (outcomePaths[i].source.id == id) {
+				outcomePaths.splice(i, 1);
+			}
+		}
+	}
+
 	// Toggle children on click.
-	function click(d) {
-		console.log("clicked");
+	function toggleNode(d) {
 		if (d.children) {
 			d._children = d.children;
 			d.children = null;
@@ -343,6 +393,7 @@ var outcomeGraph = (function() {
 			nodes.push(d);
 			node_lookup[d.id] = d;
 		});
+		setOutcomePaths();
 		update();
 	}
 
@@ -421,7 +472,7 @@ var outcomeGraph = (function() {
 
 		switch (d.type) {
 		case "dp":
-			 d.fixed = true;
+			// d.fixed = true;
 			return dp;
 			break;
 		case "dec":
@@ -432,19 +483,6 @@ var outcomeGraph = (function() {
 			return [ dp[0] + randomX * (config.ldDp + config.ldDec) - w,
 					dp[1] + randomY * (config.ldDp + config.ldDec) ];
 			break;
-		}
-	}
-
-	function addLink(link) {
-		var source = node_lookup[link.source];
-		var target = node_lookup[link.target];
-		if (source != null && target != null) {
-			outcomePaths.push({
-				"source" : source,
-				"target" : target,
-				"relationGroup" : link.relationGroup,
-				"type" : link.type
-			});
 		}
 	}
 
@@ -550,7 +588,7 @@ var outcomeGraph = (function() {
 		config.gravity = d;
 		update();
 	});
-	
+
 	var getOutCharge = (function(d) {
 		return config.chOut;
 	});
@@ -570,7 +608,6 @@ var outcomeGraph = (function() {
 	var getGravity = (function(d) {
 		return config.gravity;
 	});
-	
 
 	// Reveal module pattern, offer functions to the outside
 	return {
