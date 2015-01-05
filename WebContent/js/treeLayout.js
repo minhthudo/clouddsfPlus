@@ -16,7 +16,7 @@ var treeGraph = function() {
 		minHeight : 1350
 	};
 
-	var tree, nodes, root, svg, diagonal;
+	var tree, nodes, root, svg, diagonal, visGroup;
 	var mC, resize = false, tip;
 
 	function initialize() {
@@ -60,6 +60,11 @@ var treeGraph = function() {
 			root.children.forEach(toggleAll);
 		}
 		// update tree depending on node
+		
+		visGroup = svg.append("g").attr('id', 'visualization').attr(
+				"transform",
+				"translate(" + padding.left + "," + padding.top + ")");
+		
 		update(root, svg);
 	}
 
@@ -90,23 +95,23 @@ var treeGraph = function() {
 				x = 11;
 				break;
 			}
-			d.y = (x * distance) + padding.left;
+			d.y = (x * distance);
 		});
 
 		// Update the node selection groups
-		var node = svg.selectAll("g.treeNode").data(nodes, function(d) {
+		var node = visGroup.selectAll("g.treeNode").data(nodes, function(d) {
 			return d.id;
 		});
 
 		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("svg:g").attr("class", "treeNode")
+		var nodeEnter = node.enter().append("g").attr("class", "treeNode")
 				.attr("transform", function(d) {
 					return "translate(" + source.y0 + "," + source.x0 + ")";
 				});
 
 		// append text element with placement in dependance to circle radius and
 		// wrap in case it exceeds treshold.
-		var textWrapper = nodeEnter.append("svg:text").attr(
+		var textWrapper = nodeEnter.append("text").attr(
 				"x",
 				function(d) {
 					if (d.type == "root")
@@ -138,7 +143,7 @@ var treeGraph = function() {
 		}).call(wrap, (mC.panelWidth / 16) * 5);
 
 		// append different css classes through method
-		nodeEnter.append("svg:circle").attr("r", function(d) {
+		nodeEnter.append("circle").attr("r", function(d) {
 			if (d.type == "out")
 				return config.outRadius;
 			return config.decRadius;
@@ -180,13 +185,13 @@ var treeGraph = function() {
 		nodeExit.select("text").style("fill-opacity", 1e-6);
 
 		// Update the links…
-		var link = svg.selectAll("path.treeLink").data(tree.links(nodes),
+		var link = visGroup.selectAll("path.treeLink").data(tree.links(nodes),
 				function(d) {
 					return d.target.id;
 				});
 
 		// Enter any new links at the parent's previous position.
-		link.enter().insert("svg:path", "g").attr("class", "treeLink").attr(
+		link.enter().insert("path", "g").attr("class", "treeLink").attr(
 				"d", function(d) {
 					var o = {
 						x : source.x0,

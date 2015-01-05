@@ -89,20 +89,34 @@
 .layoutLink {
 	fill: none;
 	stroke: #9ecae1;
+	stroke: #222;
 	stroke-width: 1.5px;
-	opacity: 0px;
 }
 
-.outcomeLink.ex {
+.outRel {
+	fill: none;
+	stroke: #bdbdbd;
+	stroke-width: 1px;
+}
+
+.outRel.aff{
+	
+}
+
+.outRel.a{
+	
+}
+
+.outRel.ex {
 	fill: none;
 	stroke: red;
-	stroke-width: 0.5px;
+	stroke-width: 1px;
 }
 
-.outcomeLink.in {
+.outRel.in {
 	fill: none;
 	stroke: green;
-	stroke-width: 0.5px;
+	stroke-width: 1px;
 }
 
 /* #outcomeContainer circle {
@@ -110,7 +124,6 @@
 	stroke: #333;
 	stroke-width: 1.5px;
 } */
-
 
 /*DecisionGraph*/
 .link {

@@ -100,7 +100,7 @@ var getColor = function(d) {
 	return colorPalette3d(d);
 }
 
-var marginConvention = (function marginConvention(padding, height) {
+var marginConvention = (function marginConvention(padding, height, width) {
 
 	var margin = {
 		top : 10,
@@ -112,6 +112,9 @@ var marginConvention = (function marginConvention(padding, height) {
 	var oWidth = parseInt($('#visContent').width());
 	var oHeight = height || 900;
 	oWidth = oWidth < 900 ? 900 : oWidth;
+	if (typeof width !== "undefined") {
+		oWidth = width;
+	}
 
 	var iWidth = oWidth - margin.left - margin.right;
 	var iHeight = oHeight - margin.top - margin.bottom;

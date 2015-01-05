@@ -1,58 +1,27 @@
-var marginConventionOutcome = (function marginConvention(padding, height) {
-
-	var margin = {
-		top : 10,
-		right : 10,
-		bottom : 10,
-		left : 10
-	};
-
-	var oWidth = 1140;
-	var oHeight = height || 900;
-
-	var iWidth = oWidth - margin.left - margin.right;
-	var iHeight = oHeight - margin.top - margin.bottom;
-	var panelWidth = iWidth - padding.left - padding.right;
-	var panelHeight = iHeight - padding.top - padding.bottom;
-
-	var marginConvention = {
-		"panelWidth" : panelWidth,
-		"panelHeight" : panelHeight,
-		"oWidth" : oWidth,
-		"oHeight" : oHeight,
-		"iWidth" : iWidth,
-		"iHeight" : iHeight,
-		"marginTop" : margin.top,
-		"marginRight" : margin.right,
-		"marginBottom" : margin.bottom,
-		"marginLeft" : margin.left
-	}
-	return marginConvention;
-});
-
 var outcomeGraph = (function() {
 
 	// Padding for svg container
 	var padding = {
-		top : 100,
-		right : 50,
+		top : 80,
+		right : 10,
 		bottom : 30,
-		left : 50
+		left : 10
 	};
 
 	var config = {
 		outWidth : 10,
 		decWidth : 23,
 		dpWidth : 28,
+		addedDpWidth : 20,
+		addedDecWidth : 10,
 		rootWidth : 30,
-		ldRoot : 260,
+		ldRoot : 270,
 		ldDp : 120,
 		ldDec : 50,
-		// ldOut : 50,
-		// lsRoot : 50,
-		// lsDp : 80,
-		// lsDec : 30,
-		// lsOut : 20
+		// lsRoot : 1,
+		// lsDp : 0.5,
+		// lsDec : 1,
+
 		// gravity : 0.05,// 0.05,
 		// friction : 0.8,
 		// lsDefault : 1,
@@ -60,7 +29,7 @@ var outcomeGraph = (function() {
 		// chDp : -20,
 		// chDec : -200, // -300,
 		// chOut : -150, // -160,
-		// minHeight : 1000
+
 		// gravity : 0.1,// 0.05,
 		// friction : 0.8,
 		// lsDefault : 1,
@@ -68,7 +37,7 @@ var outcomeGraph = (function() {
 		// chDp : -20,// -10,
 		// chDec : -350,// -40, // -300,
 		// chOut : -350, // -50, // -160,
-		// minHeight : 1000,
+
 		gravity : 0.1,
 		friction : 0.8,
 		lsDefault : 1,
@@ -76,7 +45,8 @@ var outcomeGraph = (function() {
 		chDp : -20,
 		chDec : -450,
 		chOut : -300,
-		minHeight : 1000
+		minHeight : 1000,
+		minWidth : 1140
 
 	// gravity : 0.1,// 0.05,
 	// friction : 0.8,
@@ -85,19 +55,22 @@ var outcomeGraph = (function() {
 	// chDp : -20,
 	// chDec : -650,
 	// chOut : -350,
-	// minHeight : 1000
 
 	};
 	var start = true;
 	var mC, root, initialNodes;
 	var svg, pathGroup, linkGroup, node, link, circle;
 	var force, nodes, links;
-	// var outcomeLinks, outcomePaths = [];
+	var outcomeLinks, outcomePaths = [];
 	var node_lookup = [], root_lookup = [];
+	var relations = [ "including", "excluding", "affecting", "binding",
+			"allowing" ];
+	var visGroup;
 
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = marginConventionOutcome(padding, config.minHeight);
+		mC = marginConvention(padding, config.minHeight, config.minWidth);
+
 		// console.log(mC.panelWidth);
 		// console.log(mC.panelHeight);
 		// config.ldRoot = Math.floor(Math.sqrt((Math.pow(
@@ -121,56 +94,62 @@ var outcomeGraph = (function() {
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
 				.attr("class", "outcomeContainer");
 
-		// svg.append("defs").selectAll("marker").data(relations).enter().append(
-		// "marker").attr("id", function(d) {
-		// return d;
-		// }).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-		// if (d == "requiring")
-		// return 10;
-		// return 10;
-		// }).attr("refY", function(d) {
-		// if (d == "requiring")
-		// return 5;
-		// return 5;
-		// }).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
-		// "strokeWidth").attr("orient", "auto").append("svg:path").attr(
-		// "d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
-		// return d + "Arrow";
-		// });
+		svg.append("defs").selectAll("marker").data(relations).enter().append(
+				"marker").attr("id", function(d) {
+			return d;
+		}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
+			// if (d == "requiring")
+			// return 10;
+			return 10;
+		}).attr("refY", function(d) {
+			// if (d == "requiring")
+			// return 5;
+			return 5;
+		}).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
+				"strokeWidth").attr("orient", "auto").append("svg:path").attr(
+				"d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
+			return "outRel " + d.substring(0,2) + " arrow" + d.substring(0,2);
+		});
 
 		// create legend above chart
-		// var legend = svg.append("g");
-		// legend.selectAll("line").data(relations).enter().append("line").attr(
-		// "class", function(d) {
-		// return "link " + d;
-		// }).attr("x1", function(d, i) {
-		// return (mC.iWidth / 12) * ((i * 2) + 3) + mC.marginLeft;
-		// }).attr("y1", mC.marginTop).attr("y2", mC.marginTop).attr("x2",
-		// function(d, i) {
-		// return (mC.iWidth / 12) * ((i * 2) + 4) + mC.marginLeft;
-		// }).attr("marker-end", function(d) {
-		// return "url(#" + d.toLowerCase() + ")";
-		// });
-		// legend.selectAll("text").data(relations).enter().append("text").attr(
-		// "x", function(d, i) {
-		// return (mC.iWidth / 12) * ((i * 2) + 3.5) + mC.marginLeft;
-		// }).attr("y", mC.marginTop).attr("dy", "2em").attr(
-		// "text-anchor", "middle").text(function(d) {
-		// return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
-		// });
+		var legend = svg.append("g").attr("id", "legend");
+		legend.selectAll("line").data(relations).enter().append("line").attr(
+				"class", function(d) {
+					return "outRel " + d.substring(0,2);
+				}).attr("x1", function(d, i) {
+			return (mC.iWidth / 10) * ((i * 2) + 1);
+		}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
+			return (mC.iWidth / 10) * ((i * 2) + 2);
+		}).attr("marker-end", function(d) {
+			return "url(#" + d + ")";
+		});
+		legend.selectAll("text").data(relations).enter().append("text").attr(
+				"x", function(d, i) {
+					return (mC.iWidth / 10) * ((i * 2) + 1.5);
+				}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle")
+				.text(
+						function(d) {
+							return d.charAt(0).toUpperCase() + d.substring(1)
+									+ " Relation";
+						});
 
 		// tooltip
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
 				.html(function(d) {
-					return format_description(d);
+					return getTooltipText(d);
 				});
 
 		// Invoke tip in context of visualization
 		svg.call(tip);
 
+		visGroup = svg.append("g").attr('id', 'visualization').attr(
+				"transform",
+				"translate(" + padding.left + "," + padding.top + ")");
 		// append group for links (lines) and paths
-		// pathGroup = svg.append("g").attr("id", "paths");
-		linkGroup = svg.append("g").attr("id", "links");
+
+		pathGroup = visGroup.append("g").attr("id", "paths");
+
+		linkGroup = visGroup.append("g").attr("id", "links");
 
 		// new force layout and configuration
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
@@ -181,9 +160,32 @@ var outcomeGraph = (function() {
 		nodes = force.nodes();
 		// variables for layout entities
 
-		initializeNode();
+		force.charge(function(d) {
+			return setCharge(d);
+		}).linkDistance(function(d) {
+			return setLinkDistance(d);
+		}).linkStrength(config.lsDefault).gravity(config.gravity).friction(
+				config.friction).on("tick", tick);
 
+		setLayout();
+		initializeNode();
+		setOutcomePaths();
 		update();
+	}
+
+	function setLayout() {
+		nodes.splice(0, nodes.length);
+		node_lookup.splice(0, node_lookup.length);
+		initialNodes = flatten(root);
+		links = d3.layout.tree().links(nodes);
+		force.links(links);
+	}
+
+	function setOutcomePaths() {
+		outcomePaths.splice(0, outcomePaths.length);
+		outcomeLinks.forEach(function(d) {
+			addLink(d);
+		});
 	}
 
 	// update the layout according to the changes and start the simulation
@@ -191,19 +193,7 @@ var outcomeGraph = (function() {
 		// force.stop();
 		links = d3.layout.tree().links(nodes);
 		force.links(links);
-
-		// outcomePaths.splice(0, outcomePaths.length);
-		//		
-		// outcomeLinks.forEach(function(d) {
-		// addLink(d);
-		// });
-
-		force.charge(function(d) {
-			return setCharge(d);
-		}).linkDistance(function(d) {
-			return setLinkDistance(d);
-		}).linkStrength(config.lsDefault).gravity(config.gravity).friction(
-				config.friction).on("tick", tick);
+		setOutcomePaths();
 
 		// get all layout links
 		link = linkGroup.selectAll("line").data(links, function(d) {
@@ -226,24 +216,30 @@ var outcomeGraph = (function() {
 		// Exit any old links.
 		link.exit().remove();
 
-		// path = pathGroup.selectAll("path").data(outcomePaths, function(d) {
-		// return d.source.id + "-" + d.target.id + "-" + d.type;
-		// });
-		//
-		// path.enter().insert("path").attr("class", function(d) {
-		// return d.relationGroup + d.type;
-		// });
-		//
-		// path.exit().remove();
+		path = pathGroup.selectAll("path").data(outcomePaths, function(d) {
+			return d.source.id + "-" + d.target.id + "-" + d.type;
+		});
+
+		path.enter().insert("path").attr("class", function(d) {
+			return d.relationGroup + " " + d.type;
+		}).attr("marker-end", function(d) {
+			return "url(#" + d.type + ")";
+		});
+
+		path.exit().remove();
 
 		// select groups for nodes
-		var node = svg.selectAll("g.node").data(nodes, function(d) {
+		var node = visGroup.selectAll("g.node").data(nodes, function(d) {
 			return d.id;
 		});
 
 		// select new groups and updates for nodes
 		var nodeEnter = node.enter().append("g").attr("class", "node").call(
-				force.drag);
+				force.drag).on("dblclick", function(d) {
+			if (d.type != "out" && d.type != "root") {
+				click(d);
+			}
+		}).on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
 
 		// append circle
 		nodeEnter.append("svg:circle").attr("r", function(d) {
@@ -254,12 +250,7 @@ var outcomeGraph = (function() {
 			return d.y;
 		}).style("fill", function(d) {
 			return setCircleFill(d)
-		}).on("click", function(d) {
-			if (d.type != "out" && d.type != "root") {
-				click(d);
-			}
 		});
-		// todo dblclick on group
 
 		nodeEnter.filter(function(d) {
 			if (d.type != "out")
@@ -274,13 +265,13 @@ var outcomeGraph = (function() {
 
 		// set circle for tick
 		circle = node.selectAll("circle");
-
 		circle.transition().attr("r", function(d) {
 			return setCircleRadius(d);
 		});
 
 		text = node.selectAll("text");
 
+		// calculate layout for a few round than set dps fixed
 		// if (start) {
 		// force.start();
 		// for (var i = 0; i < 200; ++i)
@@ -301,6 +292,21 @@ var outcomeGraph = (function() {
 	}
 
 	function tick(e) {
+		text.attr("transform", function(d) {
+			return "translate(" + d.x + "," + d.y + ")";
+		});
+
+		path.attr("d", linkArc);
+
+		// in case bounding box is needed
+		circle.attr("cx", function(d) {
+			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+			return d.x;
+		}).attr("cy", function(d) {
+			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10, d.y));
+			return d.y;
+		});
+
 		link.attr("x1", function(d) {
 			return d.source.x;
 		}).attr("y1", function(d) {
@@ -310,34 +316,14 @@ var outcomeGraph = (function() {
 		}).attr("y2", function(d) {
 			return d.target.y;
 		});
-
-		text.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
-
-		// path.attr("d", linkArc);
-
-		circle.attr("cx", function(d) {
-			return d.x;
-		}).attr("cy", function(d) {
-			return d.y;
-		});
-
 	}
 
 	function linkArc(d) {
+		// todo offset
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
 				.sqrt(dx * dx + dy * dy);
 		return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 				+ " 0 0,1 " + d.target.x + "," + d.target.y;
-	}
-
-	// tooltip text
-	function format_description(d) {
-		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
-				+ ')</p><p><strong>Description: </strong>' + d.description
-				+ '</p> <p><strong>Classification: </strong>'
-				+ d.classification + '</p';
 	}
 
 	// Toggle children on click.
@@ -350,12 +336,9 @@ var outcomeGraph = (function() {
 			d.children = d._children;
 			d._children = null;
 		}
-		// todo löschen der unabhängigen pfade entsprechend des ausgewählten
+		// todo umpolen der pfade auf parent entsprechend des ausgewählten
 		// knotens
-
-		nodes.splice(0, nodes.length);
-		node_lookup.splice(0, node_lookup.length);
-		initialNodes = flatten(root);
+		setLayout();
 		initialNodes.forEach(function(d) {
 			nodes.push(d);
 			node_lookup[d.id] = d;
@@ -363,7 +346,7 @@ var outcomeGraph = (function() {
 		update();
 	}
 
-	// Returns a list of all nodes under the root. size is calculated
+	// Returns a list of all nodes under the root; size is calculated
 	function flatten(root) {
 		var flattenedNodes = [];// i = 0;
 		function recurse(node) {
@@ -377,6 +360,102 @@ var outcomeGraph = (function() {
 		}
 		root.size = recurse(root);
 		return flattenedNodes;
+	}
+
+	function initializeNode() {
+		root.fixed = true;
+		root.x = mC.panelWidth / 2;
+		root.y = mC.panelHeight / 2;
+		root.px = mC.panelWidth / 2;
+		root.py = mC.panelHeight / 2;
+
+		initialNodes.forEach(function(d) {
+			if (d.type != "root") {
+				var location = setInitialLocation(d);
+				d.x = location[0];
+				d.y = location[1];
+				d.px = location[0];
+				d.py = location[1];
+			}
+			nodes.push(d);
+			node_lookup[d.id] = d;
+		});
+	}
+
+	function setInitialLocation(d) {
+		var h = mC.panelHeight / 100;
+		var w = mC.panelWidth / 100;
+		var angle = Math.random() * Math.PI * 2;
+		var dp;
+		var randomX = Math.cos(angle);
+		var randomY = Math.sin(angle);
+
+		switch (d.cluster) {
+		case 1:
+			// randomX = -Math.abs(Math.cos(angle));
+			// randomX = Math.cos(angle);
+			// randomY = Math.sin(angle);
+			dp = [ (w * 25), (h * 25) ];
+			break;
+		case 2:
+			// randomX = Math.abs(Math.cos(angle));
+			// randomX = Math.cos(angle);
+			// randomY = Math.sin(angle);
+			dp = [ (w * 75), (h * 25) ];
+			break;
+		case 3:
+			// randomX = Math.abs(Math.cos(angle));
+			// randomY = Math.sin(angle);
+			dp = [ (w * 75), (h * 75) ];
+			break;
+		case 4:
+			// randomX = -Math.abs(Math.cos(angle));
+			// randomX = Math.cos(angle);
+			// randomY = Math.sin(angle);
+			dp = [ (w * 30), (h * 75) ]
+			break;
+		default:
+			return [ Math.random(), Math.random() ];
+			break;
+		}
+
+		switch (d.type) {
+		case "dp":
+			 d.fixed = true;
+			return dp;
+			break;
+		case "dec":
+			return [ dp[0] + randomX * (config.ldDp),
+					dp[1] + randomY * (config.ldDp) ];
+			break;
+		case "out":
+			return [ dp[0] + randomX * (config.ldDp + config.ldDec) - w,
+					dp[1] + randomY * (config.ldDp + config.ldDec) ];
+			break;
+		}
+	}
+
+	function addLink(link) {
+		var source = node_lookup[link.source];
+		var target = node_lookup[link.target];
+		if (source != null && target != null) {
+			outcomePaths.push({
+				"source" : source,
+				"target" : target,
+				"relationGroup" : link.relationGroup,
+				"type" : link.type
+			});
+		}
+	}
+
+	// tooltip text
+	function getTooltipText(d) {
+		var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p>';
+		var classification = '<p><strong>Classification: </strong>'
+				+ d.classification + '</p';
+		return d.type == "out" ? mainText : mainText + classification;
 	}
 
 	function setCharge(d) {
@@ -424,10 +503,12 @@ var outcomeGraph = (function() {
 			return config.rootWidth;
 			break;
 		case "dp":
-			return d.children ? config.dpWidth : config.dpWidth + 20;
+			return d.children ? config.dpWidth : config.dpWidth
+					+ config.addedDpWidth;
 			break;
 		case "dec":
-			return d.children ? config.decWidth : config.decWidth + 10;
+			return d.children ? config.decWidth : config.decWidth
+					+ config.addedDecWidth;
 			break;
 		default:
 			return config.outWidth;
@@ -439,104 +520,10 @@ var outcomeGraph = (function() {
 		return getColor(d.group);
 	}
 
-	function initializeNode() {
-		nodes.splice(0, nodes.length);
-		node_lookup.splice(0, node_lookup.length);
-
-		initialNodes = flatten(root);
-		root.fixed = true;
-		root.x = mC.panelWidth / 2;
-		root.y = mC.panelHeight / 2;
-		root.px = mC.panelWidth / 2;
-		root.py = mC.panelHeight / 2;
-
-		initialNodes.forEach(function(d) {
-			if (d.type != "root") {
-				var location = setInitialLocation(d);
-				d.x = location[0];
-				d.y = location[1];
-				d.px = location[0];
-				d.py = location[1];
-			}
-			nodes.push(d);
-			node_lookup[d.id] = d;
-		});
-	}
-
-	function setInitialLocation(d) {
-		var h = mC.panelHeight / 100;
-		var w = mC.panelWidth / 100;
-		var angle = Math.random() * Math.PI * 2;
-		var randomX, randomY, dp;
-		// todo randomX and Y cann be calculated here
-		switch (d.cluster) {
-		case 1:
-			// randomX = -Math.abs(Math.cos(angle));
-			randomX = Math.cos(angle);
-			randomY = Math.sin(angle);
-			dp = [ (w * 25) + padding.left, (h * 25) + padding.top ];
-			break;
-		case 2:
-			// randomX = Math.abs(Math.cos(angle));
-			randomX = Math.cos(angle);
-			randomY = Math.sin(angle);
-			dp = [ (w * 75) + padding.left, (h * 25) + padding.top ];
-			break;
-		case 3:
-			randomX = Math.abs(Math.cos(angle));
-			randomY = Math.sin(angle);
-			dp = [ (w * 65) + padding.left, (h * 65) + padding.top ];
-			break;
-		case 4:
-			// randomX = -Math.abs(Math.cos(angle));
-			randomX = Math.cos(angle);
-			randomY = Math.sin(angle);
-			dp = [ (w * 30) + padding.left, (h * 75) + padding.top ]
-			break;
-		default:
-			return [ Math.random(), Math.random() ];
-			break;
-		}
-
-		switch (d.type) {
-		case "dp":
-			// d.fixed = true;
-			return dp;
-			break;
-		case "dec":
-			return [ dp[0] + randomX * (config.ldDp),
-					dp[1] + randomY * (config.ldDp) ];
-			break;
-		case "out":
-			return [ dp[0] + randomX * (config.ldDp + config.ldDec) - w,
-					dp[1] + randomY * (config.ldDp + config.ldDec) ];
-			break;
-		}
-	}
-
-	function addLink(link) {
-		var source = node_lookup[link.source];
-		var target = node_lookup[link.target];
-		if (source != null && target != null) {
-			outcomePaths.push({
-				"source" : source,
-				"target" : target,
-				"relationGroup" : link.relationGroup,
-				"type" : link.type
-			});
-		}
-	}
-
+	// set initial data
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json.cdsfPlus;
-
 		outcomeLinks = json.outcomeLinks;
-		// todo vermutlich nicht notwendig wenn richtiges json kommt
-		// .filter(function(d) {
-		// if (d.target != d.source)
-		// return d;
-		// });
-		// initialize();
 	});
 
 	var setOutCharge = (function(d) {
@@ -563,6 +550,27 @@ var outcomeGraph = (function() {
 		config.gravity = d;
 		update();
 	});
+	
+	var getOutCharge = (function(d) {
+		return config.chOut;
+	});
+
+	var getDecCharge = (function(d) {
+		return config.chDec;
+	});
+
+	var getDpCharge = (function(d) {
+		return config.chDp;
+	});
+
+	var getRootCharge = (function(d) {
+		return config.chRoot;
+	});
+
+	var getGravity = (function(d) {
+		return config.gravity;
+	});
+	
 
 	// Reveal module pattern, offer functions to the outside
 	return {
@@ -573,6 +581,11 @@ var outcomeGraph = (function() {
 		setDecCharge : setDecCharge,
 		setDpCharge : setDpCharge,
 		setRootCharge : setRootCharge,
-		setGravity : setGravity
+		setGravity : setGravity,
+		getOutCharge : getOutCharge,
+		getDecCharge : getDecCharge,
+		getDpCharge : getDpCharge,
+		getRootCharge : getRootCharge,
+		getGravity : getGravity
 	};
 })();

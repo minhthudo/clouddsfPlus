@@ -24,7 +24,7 @@ var decisionGraph = (function() {
 	};
 
 	var mC, root, svg, tip;
-	var force, node, nodes, links = [], pathGroup, text, circle, path;
+	var force, node, nodes, links = [], pathGroup, text, circle, path, visGroup;
 	var node_lookup, initialNodes, foci;
 	// var clusters;
 	var relations = [ "requiring", "influencing", "affecting", "binding" ];
@@ -40,17 +40,17 @@ var decisionGraph = (function() {
 		config.nodePadding = mC.panelHeight / 6;
 		// set focis for clusters
 		foci = [ {
-			x : (mC.panelWidth / 100 * 30) + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 30) + mC.marginTop + padding.top
+			x : (mC.panelWidth / 100 * 30) ,//+ mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 30) ,//+ mC.marginTop + padding.top
 		}, {
-			x : (mC.panelWidth / 100 * 70) + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 30) + mC.marginTop + padding.top
+			x : (mC.panelWidth / 100 * 70) ,//+ mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
 		}, {
-			x : (mC.panelWidth / 2) + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 10) + mC.marginTop + padding.top
+			x : (mC.panelWidth / 2) ,// + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 10) ,//+ mC.marginTop + padding.top
 		}, {
-			x : (mC.panelWidth / 2) + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 65) + mC.marginTop + padding.top
+			x : (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 65),// + mC.marginTop + padding.top
 		} ];
 
 		// remove old svg
@@ -109,17 +109,17 @@ var decisionGraph = (function() {
 				"class", function(d) {
 					return "link " + d;
 				}).attr("x1", function(d, i) {
-			return (mC.iWidth / 12) * ((i * 2) + 3) + mC.marginLeft;
-		}).attr("y1", mC.marginTop).attr("y2", mC.marginTop).attr("x2",
+			return (mC.iWidth / 12) * ((i * 2) + 3);
+		}).attr("y1", 0).attr("y2", 0).attr("x2",
 				function(d, i) {
-					return (mC.iWidth / 12) * ((i * 2) + 4) + mC.marginLeft;
+					return (mC.iWidth / 12) * ((i * 2) + 4);
 				}).attr("marker-end", function(d) {
 			return "url(#" + d.toLowerCase() + ")";
 		});
 		legend.selectAll("text").data(relations).enter().append("text").attr(
 				"x", function(d, i) {
-					return (mC.iWidth / 12) * ((i * 2) + 3.5) + mC.marginLeft;
-				}).attr("y", mC.marginTop).attr("dy", "2em").attr(
+					return (mC.iWidth / 12) * ((i * 2) + 3.5);
+				}).attr("y", 0).attr("dy", "2em").attr(
 				"text-anchor", "middle").text(function(d) {
 			return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
 		});
@@ -132,8 +132,12 @@ var decisionGraph = (function() {
 
 		// Invoke tip in context of visualization
 		svg.call(tip);
+
+		visGroup = svg.append("g").attr('id', 'visualization').attr(
+				"transform",
+				"translate(" + padding.left + "," + padding.top + ")");
 		// g element for all paths
-		pathGroup = svg.append("g").attr("id", "paths");
+		pathGroup = visGroup.append("g").attr("id", "paths");
 		// helper object to finde nodes
 		node_lookup = [];
 		// new force layout
@@ -166,12 +170,50 @@ var decisionGraph = (function() {
 		initialNodes.forEach(function(d) {
 			addNode(d);
 		});
+		/*
+		 * #if change in nodes or textes desired move to update method #
+		 */
+		node = visGroup.selectAll("g.node").data(nodes, function(d) {
+			return d.id;
+		});
+		// nodeEnter to append everything to same group
+		// tooltip on mouseover and out and highlight on click
+		var nodeEnter = node.enter().append("g").attr("class", "node").on(
+				'click', connectedNodes).call(force.drag).on("mouseover",
+				tip.showTransition).on("mouseout", tip.hideDelayed);
 
-		// if (typeof linkTypes === 'undefined') {
-		// setLinks([ "" ]);
-		// } else {
+		// append circle for decisions
+		nodeEnter.append("circle").attr("r", function(d) {
+			return d.radius;
+		}).style("fill", function(d) {
+			return setCircleFill(d)
+		})
+		// .attr("stroke", function(d){return
+		// setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
+		.attr("cx", function(d) {
+			return d.cx;
+		}).attr("cy", function(d) {
+			return d.cy;
+		});
+
+		// append abbrev in middle of circle
+		nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
+				"text-anchor", "middle").text(function(d) {
+			return d.abbrev;
+		}).attr("class", "legend");
+
+		// append dec label below circle
+		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
+				function(d) {
+					return "" + (d.radius + 15) + "px";
+				}).attr("text-anchor", "middle").text(function(d) {
+			return d.label;
+		});
+
+		node.exit().remove();
+
 		setLinks(linkTypes);
-		// }
+
 	}
 
 	// function setClusters() {
@@ -285,45 +327,45 @@ var decisionGraph = (function() {
 
 	function update() {
 		force.stop();
-
-		node = svg.selectAll("g.node").data(nodes, function(d) {
+		//possible because node never change
+		node = visGroup.selectAll("g.node").data(nodes, function(d) {
 			return d.id;
 		});
-		// nodeEnter to append everything to same group
-		// tooltip on mouseover and out and highlight on click
-		var nodeEnter = node.enter().append("g").attr("class", "node").on(
-				'click', connectedNodes).call(force.drag).on("mouseover",
-				tip.showTransition).on("mouseout", tip.hideDelayed);
-
-		// append circle for decisions
-		nodeEnter.append("circle").attr("r", function(d) {
-			return d.radius;
-		}).style("fill", function(d) {
-			return setCircleFill(d)
-		})
-		// .attr("stroke", function(d){return
-		// setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
-		.attr("cx", function(d) {
-			return d.cx;
-		}).attr("cy", function(d) {
-			return d.cy;
-		});
-
-		// append abbrev in middle of circle
-		nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
-				"text-anchor", "middle").text(function(d) {
-			return d.abbrev;
-		}).attr("class", "legend");
-
-		// append dec label below circle
-		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
-				function(d) {
-					return "" + (d.radius + 15) + "px";
-				}).attr("text-anchor", "middle").text(function(d) {
-			return d.label;
-		});
-
-		node.exit().remove();
+		// // nodeEnter to append everything to same group
+		// // tooltip on mouseover and out and highlight on click
+		// var nodeEnter = node.enter().append("g").attr("class", "node").on(
+		// 'click', connectedNodes).call(force.drag).on("mouseover",
+		// tip.showTransition).on("mouseout", tip.hideDelayed);
+		//
+		// // append circle for decisions
+		// nodeEnter.append("circle").attr("r", function(d) {
+		// return d.radius;
+		// }).style("fill", function(d) {
+		// return setCircleFill(d)
+		// })
+		// // .attr("stroke", function(d){return
+		// // setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
+		// .attr("cx", function(d) {
+		// return d.cx;
+		// }).attr("cy", function(d) {
+		// return d.cy;
+		// });
+		//
+		// // append abbrev in middle of circle
+		// nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
+		// "text-anchor", "middle").text(function(d) {
+		// return d.abbrev;
+		// }).attr("class", "legend");
+		//
+		// // append dec label below circle
+		// nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
+		// function(d) {
+		// return "" + (d.radius + 15) + "px";
+		// }).attr("text-anchor", "middle").text(function(d) {
+		// return d.label;
+		// });
+		//
+		// node.exit().remove();
 
 		circle = node.selectAll("circle");
 
