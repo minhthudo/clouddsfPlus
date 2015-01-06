@@ -148,7 +148,7 @@ var decisionGraph = (function() {
 		// return calculateDistance(d)
 		// })
 		.charge(function(d) {
-			return d.charge
+			return d.charge;
 		})
 		// .linkStrength(function(d) {
 		// // if (d.target.cluster == d.source.cluster)
@@ -186,7 +186,7 @@ var decisionGraph = (function() {
 		nodeEnter.append("circle").attr("r", function(d) {
 			return d.radius;
 		}).style("fill", function(d) {
-			return setCircleFill(d)
+			return setCircleFill(d);
 		})
 		// .attr("stroke", function(d){return
 		// setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
@@ -388,7 +388,7 @@ var decisionGraph = (function() {
 
 	function tick(e) {
 		// Push nodes toward their designated focus.
-		var k = .4 * e.alpha;
+		var k = 0.4 * e.alpha;
 		nodes.forEach(function(o, i) {
 			o.y += (foci[o.cluster - 1].y - o.y) * k;
 			o.x += (foci[o.cluster - 1].x - o.x) * k;
@@ -567,7 +567,7 @@ var decisionGraph = (function() {
 		if (d3.event.defaultPrevented)
 			return;
 		d = d3.select(this).node().__data__;
-		if (toggle != d.id || toggle == 0) {
+		if (toggle != d.id || toggle === 0) {
 			// Reduce the opacity of all but the neighbouring nodes
 			// todo can be changed to including also ingoing links and nodes
 			node.transition().duration(300).style("opacity", function(o) {

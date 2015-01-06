@@ -43,7 +43,7 @@ var treeGraph = function() {
 				});
 
 		// Invoke tip in context of visualization
-		svg.call(tip)
+		svg.call(tip);
 
 		// Create new TreeLayout with svg size
 		tree = d3.layout.tree().size([ mC.panelHeight, mC.panelWidth ]);
@@ -284,7 +284,7 @@ var treeGraph = function() {
 					var span = d3.select(this);
 					olddY = parseFloat(span.attr("dy"));
 					return olddY - dyShift + "em";
-				})
+				});
 			}
 		});
 	}

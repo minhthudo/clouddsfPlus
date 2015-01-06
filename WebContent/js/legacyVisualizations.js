@@ -2134,7 +2134,7 @@ function drawForceLayout() {
 	layoutForce.nodes(forceNodesArray);
 	layoutForce.links(forceLinksArray);
 	layoutForce.start();
-	var subDecCount = new Array();
+	var subDecCount = [];
 	subDecCount[1] = layoutForce.nodes().filter(function(d) {
 		return "decision" == d.type && d.id.toString()[0] == 1;
 	}).length;

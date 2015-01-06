@@ -98,7 +98,7 @@ var colorPalette3d = d3.scale.ordinal().domain(
 
 var getColor = function(d) {
 	return colorPalette3d(d);
-}
+};
 
 var marginConvention = (function marginConvention(padding, height, width) {
 
@@ -121,7 +121,7 @@ var marginConvention = (function marginConvention(padding, height, width) {
 	var panelWidth = iWidth - padding.left - padding.right;
 	var panelHeight = iHeight - padding.top - padding.bottom;
 
-	var marginConvention = {
+	return {
 		"panelWidth" : panelWidth,
 		"panelHeight" : panelHeight,
 		"oWidth" : oWidth,
@@ -132,8 +132,7 @@ var marginConvention = (function marginConvention(padding, height, width) {
 		"marginRight" : margin.right,
 		"marginBottom" : margin.bottom,
 		"marginLeft" : margin.left
-	}
-	return marginConvention;
+	};
 });
 
 // var decRelGraph, outRelGraph, hierRelGraph;
