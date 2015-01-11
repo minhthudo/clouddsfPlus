@@ -50,11 +50,32 @@ var outcomeGraph = (function() {
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [], node_lookup = [];
 	var drag;
+	var g;
 
 	function dragend(d, i) {
 		force.alpha(0.04);
 	}
 
+// var zoom = d3.behavior.zoom()
+// .scaleExtent([1, 8])
+// .on("zoom", move);
+//	
+//	
+// function move() {
+//
+// var t = d3.event.translate;
+// var s = d3.event.scale;
+// var h = mC.panelHeight / 3;
+// t[0] = Math.min(t[0],0);
+// //t[0] = Math.min(mC.panelWidth / 2 * (s - 1), Math.max(mC.panelWidth / 2 *
+// (1 - s), t[0]));
+// // t[1] = Math.min(mC.panelHeight / 2 * (s - 1) + h * s,
+// Math.max(mC.panelHeight / 2 * (1 - s) - h * s, t[1]));
+// t[1] = Math.min(t[1],mC.panelHeight / 2);
+// t[1] = Math.max(t[1], -mC.panelHeight / 2);
+// zoom.translate(t);
+// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
+// }
 	/**
 	 * @memberOf outcomeGraph
 	 */
@@ -76,10 +97,12 @@ var outcomeGraph = (function() {
 				.attr("width", mC.oWidth)
 				.attr("height", mC.oHeight)
 				.attr("id", "svgContainer")
+				// .call(zoom)
 				.append("g")
 				.attr("transform",
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
-				.attr("class", "outcomeContainer");
+				.attr("class", "outcomeContainer").attr("id", "zoomGroup");
+
 		// defs for path endings
 		// todo different markers
 		svg.append("defs").selectAll("marker").data(config.relations).enter()
@@ -150,7 +173,9 @@ var outcomeGraph = (function() {
 
 		initialNodes = flatten(root);
 		initialLinks = d3.layout.tree().links(initialNodes);
-		initializeNode();
+		if (start === true) {
+			initializeNode();
+		}
 		setupForceLayout();
 		// update();
 	}
@@ -234,12 +259,14 @@ var outcomeGraph = (function() {
 		});
 
 		nodeEnter.filter(function(d) {
-			if (d.type != "out")
+		//	if (d.type != "out")
 				return d;
 		}).append("text").attr("x", 0).attr("y", "0.5em").attr("text-anchor",
 				"middle").text(function(d) {
 			return d.abbrev;
-		}).attr("class", "legend");
+		}).attr("class", function(d){
+			if(d.type != "out") return "legend"; return "legend small";});
+		
 
 		// remove nodes
 		nodeGroup.exit().remove();
@@ -279,7 +306,7 @@ var outcomeGraph = (function() {
 			// start is needed because otherwise the distances and strenghts are
 			// not calcuated
 			force.start();
-			force.alpha(0.01);
+			force.alpha(0.02);
 
 			// short iteration and new layout but is not inutitive and jumps
 			// while (force.alpha() > 0.03) {
