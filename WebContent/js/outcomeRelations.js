@@ -44,38 +44,45 @@ var outcomeGraph = (function() {
 
 	};
 
-	var start = true;
+	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
 	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle;
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [], node_lookup = [];
 	var drag;
 	var g;
+	
+	
+	var labelAnchors = [];
+	var labelAnchorLinks = [];
+	var force2, anchorNode, anchorLink;
+	
 
 	function dragend(d, i) {
 		force.alpha(0.04);
 	}
 
-// var zoom = d3.behavior.zoom()
-// .scaleExtent([1, 8])
-// .on("zoom", move);
-//	
-//	
-// function move() {
-//
-// var t = d3.event.translate;
-// var s = d3.event.scale;
-// var h = mC.panelHeight / 3;
-// t[0] = Math.min(t[0],0);
-// //t[0] = Math.min(mC.panelWidth / 2 * (s - 1), Math.max(mC.panelWidth / 2 *
-// (1 - s), t[0]));
-// // t[1] = Math.min(mC.panelHeight / 2 * (s - 1) + h * s,
-// Math.max(mC.panelHeight / 2 * (1 - s) - h * s, t[1]));
-// t[1] = Math.min(t[1],mC.panelHeight / 2);
-// t[1] = Math.max(t[1], -mC.panelHeight / 2);
-// zoom.translate(t);
-// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
-// }
+	// var zoom = d3.behavior.zoom()
+	// .scaleExtent([1, 8])
+	// .on("zoom", move);
+	//	
+	//	
+	// function move() {
+	//
+	// var t = d3.event.translate;
+	// var s = d3.event.scale;
+	// var h = mC.panelHeight / 3;
+	// t[0] = Math.min(t[0],0);
+	// //t[0] = Math.min(mC.panelWidth / 2 * (s - 1), Math.max(mC.panelWidth / 2
+	// *
+	// (1 - s), t[0]));
+	// // t[1] = Math.min(mC.panelHeight / 2 * (s - 1) + h * s,
+	// Math.max(mC.panelHeight / 2 * (1 - s) - h * s, t[1]));
+	// t[1] = Math.min(t[1],mC.panelHeight / 2);
+	// t[1] = Math.max(t[1], -mC.panelHeight / 2);
+	// zoom.translate(t);
+	// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
+	// }
 	/**
 	 * @memberOf outcomeGraph
 	 */
@@ -129,16 +136,16 @@ var outcomeGraph = (function() {
 				.attr("class", function(d) {
 					return "outRel " + d;
 				}).attr("x1", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 1);
+					return (mC.iWidth / 10) * ((i * 2) + 0.5);
 				}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 2);
+					return (mC.iWidth / 10) * ((i * 2) + 1.5);
 				}).attr("marker-end", function(d) {
 					return "url(#" + d + ")";
 				});
 		// set text in the middle below the links
 		legend.selectAll("text").data(config.legendRelations).enter().append(
 				"text").attr("x", function(d, i) {
-			return (mC.iWidth / 10) * ((i * 2) + 1.5);
+			return (mC.iWidth / 10) * ((i * 2) + 1);
 		}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle").text(
 				function(d) {
 					return d + " Relation";
@@ -176,6 +183,11 @@ var outcomeGraph = (function() {
 		if (start === true) {
 			initializeNode();
 		}
+		
+		
+		
+		
+		
 		setupForceLayout();
 		// update();
 	}
@@ -187,6 +199,9 @@ var outcomeGraph = (function() {
 	 */
 	function update() {
 		force.stop();
+		
+		force2 = d3.layout.force().nodes(labelAnchors).links(labelAnchorLinks).gravity(0).linkDistance(20).linkStrength(1).charge(-100).size([config.panelWidth, config.panelHeight]);
+		force2.start();
 
 		// get all layout links
 		link = linkGroup.selectAll("line").data(force.links(), function(d) {
@@ -259,18 +274,38 @@ var outcomeGraph = (function() {
 		});
 
 		nodeEnter.filter(function(d) {
-		//	if (d.type != "out")
+			if (d.type != "out")
 				return d;
 		}).append("text").attr("x", 0).attr("y", "0.5em").attr("text-anchor",
 				"middle").text(function(d) {
 			return d.abbrev;
-		}).attr("class", function(d){
-			if(d.type != "out") return "legend"; return "legend small";});
-		
+		}).attr("class", function(d) {
+			if (d.type != "out")
+				return "legend";
+			return "legend small";
+		});
+
+//		nodeEnter.filter(function(d) {
+//			if (d.type == "out")
+//				return d;
+//		}).append("text").attr("x", 0).attr("y", "0.5em").attr("dy", "1.5em")
+//				.attr("text-anchor", "middle").text(function(d) {
+//					return d.abbrev;
+//				}).attr("class", "legend small");
 
 		// remove nodes
 		nodeGroup.exit().remove();
 
+		anchorLink = visGroup.selectAll("line.anchorLink").data(labelAnchorLinks).enter().append("svg:line").attr("class", "anchorLink").style("stroke", "#999");
+
+		anchorNode = visGroup.selectAll("g.anchorNode").data(force2.nodes()).enter().append("svg:g").attr("class", "anchorNode");
+		anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
+			anchorNode.append("svg:text").text(function(d, i) {
+			return d.dummy === true ? "" : d.node.abbrev;
+		}).style("fill", "#555").style("font-family", "Arial").style("font-size", 12);
+
+		
+		
 		// set circle for tick
 		circle = nodeGroup.selectAll("circle");
 		circle.transition().attr("r", function(d) {
@@ -279,6 +314,7 @@ var outcomeGraph = (function() {
 		// select text nodes
 		text = nodeGroup.selectAll("text");
 
+		text2 = nodeGroup.selectAll(".legend.small");
 		// calculate layout for a few round than set dps fixed
 		if (start === true) {
 			force.start();
@@ -306,7 +342,7 @@ var outcomeGraph = (function() {
 			// start is needed because otherwise the distances and strenghts are
 			// not calcuated
 			force.start();
-			force.alpha(0.02);
+			force.alpha(0.01);
 
 			// short iteration and new layout but is not inutitive and jumps
 			// while (force.alpha() > 0.03) {
@@ -317,6 +353,26 @@ var outcomeGraph = (function() {
 		// without any differentiation always compute new loose layout
 		// force.start();
 	}
+	
+	var updateLink = function() {
+		this.attr("x1", function(d) {
+			return d.source.x;
+		}).attr("y1", function(d) {
+			return d.source.y;
+		}).attr("x2", function(d) {
+			return d.target.x;
+		}).attr("y2", function(d) {
+			return d.target.y;
+		});
+
+	}
+	
+	var updateNode = function() {
+		this.attr("transform", function(d) {
+			return "translate(" + d.x + "," + d.y + ")";
+		});
+
+	}
 
 	/**
 	 * Tick function of force layout
@@ -325,13 +381,7 @@ var outcomeGraph = (function() {
 	 */
 	function tick(e) {
 		// move text with group
-		text.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
-
-		// recalculate path
-		path.attr("d", linkArc);
-
+		force2.start();
 		// move circles
 		circle.attr("cx", function(d) {
 			// in case bounding box is needed
@@ -344,6 +394,44 @@ var outcomeGraph = (function() {
 			return d.y;
 		});
 
+	
+		
+		// console.log(e.alpha);
+//		text2.each(function(d){
+//			
+//			collide(e.alpha,Math.max(this.getBBox().width, this.getBBox().height));});// Added
+//		
+		text.attr("transform", function(d) {
+			return "translate(" + d.x + "," + d.y + ")";
+		});
+		
+		
+
+		anchorNode.each(function(d, i) {
+			if(d.dummy === true) {
+				d.x = d.node.x;
+				d.y = d.node.y;
+			} else {
+				var b = this.childNodes[1].getBBox();
+
+				var diffX = d.x - d.node.x;
+				var diffY = d.y - d.node.y;
+
+				var dist = Math.sqrt(diffX * diffX + diffY * diffY);
+
+				var shiftX = b.width * (diffX - dist) / (dist * 2);
+				shiftX = Math.max(-b.width, Math.min(0, shiftX));
+				var shiftY = 5;
+				this.childNodes[1].setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
+			}
+		});
+
+		anchorNode.call(updateNode);
+		
+		
+		// recalculate path
+		path.attr("d", linkArc);
+
 		// move layout links
 		link.attr("x1", function(d) {
 			return d.source.x;
@@ -354,7 +442,37 @@ var outcomeGraph = (function() {
 		}).attr("y2", function(d) {
 			return d.target.y;
 		});
-		// console.log(e.alpha);
+		
+		anchorLink.call(updateLink);
+
+	}
+
+	
+	
+	var tpadding = 10; 
+	function collide(alpha, radius) {
+		// separation between circles
+		//radius = d.getBBox().width;
+		var quadtree = d3.geom.quadtree(text2);
+		return function(d) {
+			var rb =  radius + tpadding, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y
+					- rb, ny2 = d.y + rb;
+			quadtree
+					.visit(function(quad, x1, y1, x2, y2) {
+						if (quad.point && (quad.point !== d)) {
+							var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math
+									.sqrt(x * x + y * y);
+							if (l < rb) {
+								l = (l - rb) / l * alpha;
+								d.x -= x *= l;
+								d.y -= y *= l;
+								quad.point.x += x;
+								quad.point.y += y;
+							}
+						}
+						return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+					});
+		};
 	}
 
 	/**
@@ -367,12 +485,49 @@ var outcomeGraph = (function() {
 		nodes.splice(0, nodes.length);
 		node_lookup.splice(0, node_lookup.length);
 		initialNodes.forEach(function(d) {
+			if (fixed === true) {
+				d.fixed = true;
+			} else {
+				d.fixed = false;
+			}
 			nodes.push(d);
 			node_lookup[d.id] = d;
+			
+			
+			
+			labelAnchors.push({
+				dummy : false,
+				x : 0,
+				y : 0,
+				node : d
+			});
+			
+			labelAnchors.push({
+				dummy : true,
+				node : d
+			});
+			
+			
+			
 		});
+		
+		for (var i = 0; i < nodes.length; i++) {
+			labelAnchorLinks.push({
+				source : i * 2,
+				target : i * 2 + 1,
+			});
+			
+		}
+		
 		links = d3.layout.tree().links(nodes);
 		force.links(links);
 		setOutcomePaths();
+		
+		
+		
+		
+		
+		
 		update();
 	}
 
@@ -445,9 +600,14 @@ var outcomeGraph = (function() {
 				.sqrt(dx * dx + dy * dy);
 		var radius;
 		if (d.target.type == "dp") {
-			radius = config.dpWidth;
+			radius = d.target._children ? config.dpWidth + config.addedDpWidth
+					: config.dpWidth;
 		} else {
-			radius = d.target.type == "out" ? config.outWidth : config.decWidth;
+			if (d.target.type == "out")
+				radius = config.outWidth;
+			else
+				radius = d.target._children ? config.decWidth
+						+ config.addedDecWidth : config.decWidth;
 		}
 		var offsetX = (dx * radius) / dr;
 		var offsetY = (dy * radius) / dr;
@@ -504,6 +664,47 @@ var outcomeGraph = (function() {
 		}
 		initialNodes = flatten(root);
 		setupForceLayout();
+	}
+	/**
+	 * 
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function fixLayout() {
+		fixed = true;
+		setupForceLayout();
+	}
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function looseLayout() {
+		fixed = false;
+		setupForceLayout();
+	}
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function showAllRelations() {
+		nodes.forEach(function(d) {
+			d.highlighted = true;
+		});
+		setOutcomePaths();
+		update();
+	}
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function hideAllRelations() {
+		nodes.forEach(function(d) {
+			d.highlighted = false;
+		});
+		setOutcomePaths();
+		update();
 	}
 
 	/**
@@ -750,6 +951,10 @@ var outcomeGraph = (function() {
 		getDecCharge : getDecCharge,
 		getDpCharge : getDpCharge,
 		getRootCharge : getRootCharge,
-		getGravity : getGravity
+		getGravity : getGravity,
+		fixLayout : fixLayout,
+		looseLayout : looseLayout,
+		showAllRelations : showAllRelations,
+		hideAllRelations : hideAllRelations
 	};
 })();
