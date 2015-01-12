@@ -47,27 +47,20 @@ var outcomeGraph = (function() {
 		force.alpha(0.04);
 	}
 
-	// var zoom = d3.behavior.zoom()
-	// .scaleExtent([1, 8])
-	// .on("zoom", move);
-	//	
-	//	
-	// function move() {
-	//
-	// var t = d3.event.translate;
-	// var s = d3.event.scale;
-	// var h = mC.panelHeight / 3;
-	// t[0] = Math.min(t[0],0);
-	// //t[0] = Math.min(mC.panelWidth / 2 * (s - 1), Math.max(mC.panelWidth / 2
-	// *
-	// (1 - s), t[0]));
-	// // t[1] = Math.min(mC.panelHeight / 2 * (s - 1) + h * s,
-	// Math.max(mC.panelHeight / 2 * (1 - s) - h * s, t[1]));
-	// t[1] = Math.min(t[1],mC.panelHeight / 2);
-	// t[1] = Math.max(t[1], -mC.panelHeight / 2);
-	// zoom.translate(t);
-	// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
-	// }
+//	var zoom = d3.behavior.zoom().scaleExtent([ 1, 8 ]).on("zoom", move);
+//	
+//	
+//function move() {
+//	var t = d3.event.translate;
+//	var s = d3.event.scale;
+//	var h = mC.panelHeight / 3;
+//	t[0] = Math.min(mC.panelWidth  * (s - 1), Math.max(mC.panelWidth
+//			* (1 - s), t[0]));
+//	t[1] = Math.min(mC.panelHeight * (s - 1) + h * s, Math.max(
+//			mC.panelHeight  * (1 - s) - h * s, t[1]));
+//	zoom.translate(t);
+//	visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
+//}
 	/**
 	 * @memberOf outcomeGraph
 	 */
