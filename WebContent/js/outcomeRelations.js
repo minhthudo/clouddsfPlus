@@ -20,14 +20,6 @@ var outcomeGraph = (function() {
 		ldDp : 120,
 		ldDec : 50,
 
-		// gravity : 0.05,// 0.05,
-		// friction : 0.8,
-		// lsDefault : 1,
-		// chRoot : -20,
-		// chDp : -20,
-		// chDec : -200, // -300,
-		// chOut : -150, // -160,
-
 		gravity : 0.1,
 		friction : 0.8,
 		lsDefault : 1,
@@ -43,39 +35,32 @@ var outcomeGraph = (function() {
 		relations : [ "in", "ex", "aff", "eb", "a" ],
 
 	};
-
-	var start = true;
+	var relationTypes = config.relations;
+	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
 	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle;
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [], node_lookup = [];
-	var drag;
-	var g;
+	var drag, labels;
 
 	function dragend(d, i) {
 		force.alpha(0.04);
 	}
 
-// var zoom = d3.behavior.zoom()
-// .scaleExtent([1, 8])
-// .on("zoom", move);
+//	var zoom = d3.behavior.zoom().scaleExtent([ 1, 8 ]).on("zoom", move);
 //	
 //	
-// function move() {
-//
-// var t = d3.event.translate;
-// var s = d3.event.scale;
-// var h = mC.panelHeight / 3;
-// t[0] = Math.min(t[0],0);
-// //t[0] = Math.min(mC.panelWidth / 2 * (s - 1), Math.max(mC.panelWidth / 2 *
-// (1 - s), t[0]));
-// // t[1] = Math.min(mC.panelHeight / 2 * (s - 1) + h * s,
-// Math.max(mC.panelHeight / 2 * (1 - s) - h * s, t[1]));
-// t[1] = Math.min(t[1],mC.panelHeight / 2);
-// t[1] = Math.max(t[1], -mC.panelHeight / 2);
-// zoom.translate(t);
-// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
-// }
+//function move() {
+//	var t = d3.event.translate;
+//	var s = d3.event.scale;
+//	var h = mC.panelHeight / 3;
+//	t[0] = Math.min(mC.panelWidth  * (s - 1), Math.max(mC.panelWidth
+//			* (1 - s), t[0]));
+//	t[1] = Math.min(mC.panelHeight * (s - 1) + h * s, Math.max(
+//			mC.panelHeight  * (1 - s) - h * s, t[1]));
+//	zoom.translate(t);
+//	visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
+//}
 	/**
 	 * @memberOf outcomeGraph
 	 */
@@ -120,7 +105,8 @@ var outcomeGraph = (function() {
 						"markerUnits", "strokeWidth").attr("orient", "auto")
 				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
 						"class", function(d) {
-							return "outRel " + d + " arrow" + d;
+							return "outRel " + d + " outRelArrow";
+							// return "outRelArrow";
 						});
 
 		// create legend above chart
@@ -129,16 +115,16 @@ var outcomeGraph = (function() {
 				.attr("class", function(d) {
 					return "outRel " + d;
 				}).attr("x1", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 1);
+					return (mC.iWidth / 10) * ((i * 2) + 0.5);
 				}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 2);
+					return (mC.iWidth / 10) * ((i * 2) + 1.5);
 				}).attr("marker-end", function(d) {
 					return "url(#" + d + ")";
 				});
 		// set text in the middle below the links
 		legend.selectAll("text").data(config.legendRelations).enter().append(
 				"text").attr("x", function(d, i) {
-			return (mC.iWidth / 10) * ((i * 2) + 1.5);
+			return (mC.iWidth / 10) * ((i * 2) + 1);
 		}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle").text(
 				function(d) {
 					return d + " Relation";
@@ -189,12 +175,14 @@ var outcomeGraph = (function() {
 		force.stop();
 
 		// get all layout links
-		link = linkGroup.selectAll("line").data(force.links(), function(d) {
+		link = linkGroup.selectAll("g.line").data(force.links(), function(d) {
 			return d.source.id + "-" + d.target.id + "-" + "layoutLink";
 		});
 
 		// update and insert new lines
-		link.enter().insert("line").attr("class", function(d) {
+		var linkEnter = link.enter().append("g").attr("class", "line");
+
+		linkEnter.append("line").attr("class", function(d) {
 			return "layoutLink";
 		}).attr("x1", function(d) {
 			return d.source.x;
@@ -206,6 +194,17 @@ var outcomeGraph = (function() {
 			return d.target.y;
 		});
 
+		linkEnter.filter(function(d) {
+			if (d.target.type == "out")
+				return d;
+		}).append("text").text(function(d) {
+			return d.target.abbrev
+		}).attr("x", function(d) {
+			return d.target.x;
+		}).attr("y", function(d) {
+			return d.target.y;
+		}).attr("class", "small");
+		
 		// Exit any old links.
 		link.exit().remove();
 		// paths for links between outcomes
@@ -259,14 +258,24 @@ var outcomeGraph = (function() {
 		});
 
 		nodeEnter.filter(function(d) {
-		//	if (d.type != "out")
+			if (d.type != "out")
 				return d;
 		}).append("text").attr("x", 0).attr("y", "0.5em").attr("text-anchor",
 				"middle").text(function(d) {
 			return d.abbrev;
-		}).attr("class", function(d){
-			if(d.type != "out") return "legend"; return "legend small";});
-		
+		}).attr("class", function(d) {
+			if (d.type != "out")
+				return "legend";
+			return "legend small";
+		});
+
+		// nodeEnter.filter(function(d) {
+		// if (d.type == "out")
+		// return d;
+		// }).append("text").attr("x", 0).attr("y", "0.5em").attr("dy", "1.5em")
+		// .attr("text-anchor", "middle").text(function(d) {
+		// return d.abbrev;
+		// }).attr("class", "legend small");
 
 		// remove nodes
 		nodeGroup.exit().remove();
@@ -279,6 +288,12 @@ var outcomeGraph = (function() {
 		// select text nodes
 		text = nodeGroup.selectAll("text");
 
+		link = linkGroup.selectAll("line");
+
+		labels = linkGroup.selectAll("text");
+		// text2.transition().attr("text-anchor",function(d){
+		// if(d.target.x >= d.source.x) return "start";
+		// return "end";});
 		// calculate layout for a few round than set dps fixed
 		if (start === true) {
 			force.start();
@@ -306,7 +321,7 @@ var outcomeGraph = (function() {
 			// start is needed because otherwise the distances and strenghts are
 			// not calcuated
 			force.start();
-			force.alpha(0.02);
+			force.alpha(0.01);
 
 			// short iteration and new layout but is not inutitive and jumps
 			// while (force.alpha() > 0.03) {
@@ -325,25 +340,44 @@ var outcomeGraph = (function() {
 	 */
 	function tick(e) {
 		// move text with group
-		text.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
+
+		// move circles
+
+//		circle.attr("cx", function(d) {
+//			// in case bounding box is needed
+//			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+//			return d.x;
+//		}).attr("cy", function(d) {
+//			// in case bounding box is needed
+//			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
+//			// d.y));
+//			return d.y;
+//		});
+
+		// // // console.log(e.alpha);
+		 nodeGroup.each(collide(0.1, 40)).attr({
+		 transform : function(d, i) {
+		 return "translate(" + d.x + "," + d.y + ")";
+		 }
+		 });
+
+		//		
+		 circle.attr("cx", function(d) {
+		 // in case bounding box is needed
+		 // return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+		 return 0;
+		 }).attr("cy", function(d) {
+		 // in case bounding box is needed
+		 // return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
+		 // d.y));
+		 return 0;
+		 });
 
 		// recalculate path
 		path.attr("d", linkArc);
-
-		// move circles
-		circle.attr("cx", function(d) {
-			// in case bounding box is needed
-			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
-			return d.x;
-		}).attr("cy", function(d) {
-			// in case bounding box is needed
-			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
-			// d.y));
-			return d.y;
-		});
-
+		// path.attr("d", function(d){ return "M" + d.source.x + "," +
+		// d.source.y + "A" + dr + "," + dr
+		// + " 0 0,1 " + targetX + "," + targetY;});
 		// move layout links
 		link.attr("x1", function(d) {
 			return d.source.x;
@@ -354,7 +388,65 @@ var outcomeGraph = (function() {
 		}).attr("y2", function(d) {
 			return d.target.y;
 		});
-		// console.log(e.alpha);
+		//
+		labels.attr("x", function(d) {
+			return d.target.x;
+		}).attr("y", function(d) {
+			return d.target.y;
+		}).transition().duration(150).attr("text-anchor", function(d) {
+			if (d.target.x >= (d.source.x + 20))
+				return "start";
+			if (d.target.x <= (d.source.x - 20))
+				return "end";
+			return "middle";
+		}).attr("dy", function(d) {
+			if (d.target.x >= (d.source.x + 20)) {
+				return "5px";
+			}
+			if (d.target.x <= (d.source.x - 20)) {
+				return "5px";
+			}
+			if (d.target.y > d.source.y) {
+				return "23px";
+			}
+			return "-15px";
+		}).attr("dx", function(d) {
+			if (d.target.x >= (d.source.x + 20))
+				return "15px";
+			if (d.target.x <= (d.source.x - 20))
+				return "-15px";
+			return 0;
+		});
+
+//		text.attr("transform", function(d) {
+//			return "translate(" + d.x + "," + d.y + ")";
+//		});
+
+	}
+	var tpadding = 5;
+	function collide(alpha, radius) {
+		// separation between circles
+
+		var quadtree = d3.geom.quadtree(nodes);
+		return function(d) {
+			var rb = radius + tpadding, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y
+					- rb, ny2 = d.y + rb;
+			quadtree
+					.visit(function(quad, x1, y1, x2, y2) {
+						if (quad.point && (quad.point !== d)) {
+							var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math
+									.sqrt(x * x + y * y);
+							if (l < rb) {
+								l = (l - rb) / l * alpha;
+								d.x -= x *= l;
+								d.y -= y *= l;
+								quad.point.x += x;
+								quad.point.y += y;
+							}
+						}
+						return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+					});
+		};
 	}
 
 	/**
@@ -367,12 +459,44 @@ var outcomeGraph = (function() {
 		nodes.splice(0, nodes.length);
 		node_lookup.splice(0, node_lookup.length);
 		initialNodes.forEach(function(d) {
+			if (fixed === true) {
+				d.fixed = true;
+			} else {
+				d.fixed = false;
+			}
 			nodes.push(d);
 			node_lookup[d.id] = d;
 		});
 		links = d3.layout.tree().links(nodes);
+
+		// initialNodes.forEach(function(d) {
+		// if (d.type = "out") {
+		// var newNode = {
+		// label : d.label,
+		// type : "out",
+		// abbrev : d.abbrev,
+		// cluster : d.cluster,
+		// group : d.group,
+		// highlighted : d.highlighted,
+		// description : d.description,
+		// parent : d.parent,
+		// fixed : d.fixed,
+		// id : (d.id * -1),
+		// }
+		// nodes.push(newNode);
+		// var s = node_lookup[d.id];
+		//
+		// links.push({
+		// source : s,
+		// target : newNode,
+		// });
+		// }
+
+		// });
+
 		force.links(links);
 		setOutcomePaths();
+
 		update();
 	}
 
@@ -383,54 +507,61 @@ var outcomeGraph = (function() {
 	 */
 	function setOutcomePaths() {
 		outcomePaths.splice(0, outcomePaths.length);
-		outcomeLinks.forEach(function(link) {
-			var source = node_lookup[link.source];
-			var target = node_lookup[link.target];
 
-			// todo if not defined than search for parent maybe in
-			// layout links
-			// if (typeof source !== 'undefined'
-			// && typeof target !== "undefined") {
-			// if (source.highlighted) {
-			//						
-			// outcomePaths.push({
-			// "source" : source,
-			// "target" : target,
-			// "relationGroup" : link.relationGroup,
-			// "type" : link.type
-			// });
-			// }
-			// }
-			// });
-
-			if (typeof source !== 'undefined') {
-				if (source.highlighted) {
-					var parent, topParent, newLink = {};
-					newLink.source = source;
-					if (typeof target === "undefined") {
-						initialLinks.forEach(function(d) {
-							if (link.target == d.target.id) {
-								parent = node_lookup[d.source.id];
-							}
-						});
-
-						if (typeof parent === "undefined") {
-							topParent = node_lookup[String(link.target).charAt(
-									0)];
-							newLink.target = topParent;
-						} else {
-							newLink.target = parent;
-						}
-					} else {
-						newLink.target = target;
-					}
-					newLink.relationGroup = link.relationGroup;
-					newLink.type = link.type;
-					outcomePaths.push(newLink);
-				}
+		outcomeLinks.filter(function(d) {
+			for (var i = 0; i < relationTypes.length; i++) {
+				if (d.type == relationTypes[i])
+					return d;
 			}
+		}).forEach(
+				function(link) {
+					var source = node_lookup[link.source];
+					var target = node_lookup[link.target];
 
-		});
+					// todo if not defined than search for parent maybe in
+					// layout links
+					// if (typeof source !== 'undefined'
+					// && typeof target !== "undefined") {
+					// if (source.highlighted) {
+					//						
+					// outcomePaths.push({
+					// "source" : source,
+					// "target" : target,
+					// "relationGroup" : link.relationGroup,
+					// "type" : link.type
+					// });
+					// }
+					// }
+					// });
+
+					if (typeof source !== 'undefined') {
+						if (source.highlighted) {
+							var parent, topParent, newLink = {};
+							newLink.source = source;
+							if (typeof target === "undefined") {
+								initialLinks.forEach(function(d) {
+									if (link.target == d.target.id) {
+										parent = node_lookup[d.source.id];
+									}
+								});
+
+								if (typeof parent === "undefined") {
+									topParent = node_lookup[String(link.target)
+											.charAt(0)];
+									newLink.target = topParent;
+								} else {
+									newLink.target = parent;
+								}
+							} else {
+								newLink.target = target;
+							}
+							newLink.relationGroup = link.relationGroup;
+							newLink.type = link.type;
+							outcomePaths.push(newLink);
+						}
+					}
+
+				});
 		links = d3.layout.tree().links(nodes);
 		force.links(links);
 	}
@@ -442,17 +573,25 @@ var outcomeGraph = (function() {
 	 */
 	function linkArc(d) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
-				.sqrt(dx * dx + dy * dy);
-		var radius;
-		if (d.target.type == "dp") {
-			radius = config.dpWidth;
-		} else {
-			radius = d.target.type == "out" ? config.outWidth : config.decWidth;
+				.sqrt(dx * dx + dy * dy), radius = 10;
+		switch (d.target.type) {
+		case "dp":
+			radius = d.target._children ? config.dpWidth + config.addedDpWidth
+					: config.dpWidth;
+			break;
+
+		case "out":
+			radius = config.outWidth;
+			break;
+		case "dec":
+			radius = d.target._children ? config.decWidth
+					+ config.addedDecWidth : config.decWidth;
+			break;
 		}
 		var offsetX = (dx * radius) / dr;
 		var offsetY = (dy * radius) / dr;
-		var targetX = d.target.x - offsetX;
-		var targetY = d.target.y - offsetY;
+		var targetX = d.target.x - ((dx * radius) / dr);
+		var targetY = d.target.y - ((dy * radius) / dr);
 
 		return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 				+ " 0 0,1 " + targetX + "," + targetY;
@@ -504,6 +643,56 @@ var outcomeGraph = (function() {
 		}
 		initialNodes = flatten(root);
 		setupForceLayout();
+	}
+	/**
+	 * 
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function fixLayout() {
+		fixed = true;
+		setupForceLayout();
+	}
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function looseLayout() {
+		fixed = false;
+		setupForceLayout();
+	}
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function showAllRelations() {
+		nodes.forEach(function(d) {
+			d.highlighted = true;
+		});
+		setOutcomePaths();
+		update();
+	}
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function hideAllRelations() {
+		nodes.forEach(function(d) {
+			d.highlighted = false;
+		});
+		setOutcomePaths();
+		update();
+	}
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function setRelationTypes(types) {
+		relationTypes = types;
+		setOutcomePaths();
+		update();
 	}
 
 	/**
@@ -750,6 +939,11 @@ var outcomeGraph = (function() {
 		getDecCharge : getDecCharge,
 		getDpCharge : getDpCharge,
 		getRootCharge : getRootCharge,
-		getGravity : getGravity
+		getGravity : getGravity,
+		fixLayout : fixLayout,
+		looseLayout : looseLayout,
+		showAllRelations : showAllRelations,
+		hideAllRelations : hideAllRelations,
+		setRelationTypes : setRelationTypes,
 	};
 })();
