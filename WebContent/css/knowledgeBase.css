@@ -89,36 +89,51 @@
 .layoutLink {
 	fill: none;
 	stroke: #9ecae1;
-	stroke: #222;
-	stroke-width: 1.5px;
-}
-
-.outRel {
-	fill: none;
 	stroke: #bdbdbd;
 	stroke-width: 1px;
 }
 
-.outRel.aff{
-	
+.outRel {
+	fill: none;
+	stroke: #222;
+	stroke-width: 1px;
 }
 
-.outRel.a{
-	
+.outRel.aff {
+	stroke: #fdd0a2;
+	stroke-dasharray: 2, 2;
+	opacity: 1;
+}
+
+.outRel.a {
+	stroke-dasharray: 15, 6, 10, 6;
+	opacity: 1;
+	stroke: #d9d9d9;
+}
+
+.outRel.eb {
+	stroke-dasharray: 20, 8;
+	stroke: #dadaeb;
+	opacity: 1;
 }
 
 .outRel.ex {
 	fill: none;
-	stroke: red;
-	stroke-width: 1px;
+	stroke: #c6dbef;
+	opacity: 1;
 }
 
 .outRel.in {
 	fill: none;
-	stroke: green;
-	stroke-width: 1px;
+	stroke: #c7e9c0;
+	opacity: 1;
 }
 
+.outRelArrow {
+	stroke-dasharray: 0 !important;
+	fill: none;
+	stroke-width: 1px;
+}
 /* #outcomeContainer circle {
 	fill: #ccc;
 	stroke: #333;

@@ -20,14 +20,6 @@ var outcomeGraph = (function() {
 		ldDp : 120,
 		ldDec : 50,
 
-		// gravity : 0.05,// 0.05,
-		// friction : 0.8,
-		// lsDefault : 1,
-		// chRoot : -20,
-		// chDp : -20,
-		// chDec : -200, // -300,
-		// chOut : -150, // -160,
-
 		gravity : 0.1,
 		friction : 0.8,
 		lsDefault : 1,
@@ -43,20 +35,13 @@ var outcomeGraph = (function() {
 		relations : [ "in", "ex", "aff", "eb", "a" ],
 
 	};
-
+	var relationTypes = config.relations;
 	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
 	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle;
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [], node_lookup = [];
-	var drag;
-	var g;
-	
-	
-	var labelAnchors = [];
-	var labelAnchorLinks = [];
-	var force2, anchorNode, anchorLink;
-	
+	var drag, labels;
 
 	function dragend(d, i) {
 		force.alpha(0.04);
@@ -127,7 +112,8 @@ var outcomeGraph = (function() {
 						"markerUnits", "strokeWidth").attr("orient", "auto")
 				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
 						"class", function(d) {
-							return "outRel " + d + " arrow" + d;
+							return "outRel " + d + " outRelArrow";
+							// return "outRelArrow";
 						});
 
 		// create legend above chart
@@ -183,11 +169,6 @@ var outcomeGraph = (function() {
 		if (start === true) {
 			initializeNode();
 		}
-		
-		
-		
-		
-		
 		setupForceLayout();
 		// update();
 	}
@@ -199,17 +180,16 @@ var outcomeGraph = (function() {
 	 */
 	function update() {
 		force.stop();
-		
-		force2 = d3.layout.force().nodes(labelAnchors).links(labelAnchorLinks).gravity(0).linkDistance(20).linkStrength(1).charge(-100).size([config.panelWidth, config.panelHeight]);
-		force2.start();
 
 		// get all layout links
-		link = linkGroup.selectAll("line").data(force.links(), function(d) {
+		link = linkGroup.selectAll("g.line").data(force.links(), function(d) {
 			return d.source.id + "-" + d.target.id + "-" + "layoutLink";
 		});
 
 		// update and insert new lines
-		link.enter().insert("line").attr("class", function(d) {
+		var linkEnter = link.enter().append("g").attr("class", "line");
+
+		linkEnter.append("line").attr("class", function(d) {
 			return "layoutLink";
 		}).attr("x1", function(d) {
 			return d.source.x;
@@ -221,6 +201,17 @@ var outcomeGraph = (function() {
 			return d.target.y;
 		});
 
+		linkEnter.filter(function(d) {
+			if (d.target.type == "out")
+				return d;
+		}).append("text").text(function(d) {
+			return d.target.abbrev
+		}).attr("x", function(d) {
+			return d.target.x;
+		}).attr("y", function(d) {
+			return d.target.y;
+		}).attr("class", "small");
+		
 		// Exit any old links.
 		link.exit().remove();
 		// paths for links between outcomes
@@ -285,27 +276,17 @@ var outcomeGraph = (function() {
 			return "legend small";
 		});
 
-//		nodeEnter.filter(function(d) {
-//			if (d.type == "out")
-//				return d;
-//		}).append("text").attr("x", 0).attr("y", "0.5em").attr("dy", "1.5em")
-//				.attr("text-anchor", "middle").text(function(d) {
-//					return d.abbrev;
-//				}).attr("class", "legend small");
+		// nodeEnter.filter(function(d) {
+		// if (d.type == "out")
+		// return d;
+		// }).append("text").attr("x", 0).attr("y", "0.5em").attr("dy", "1.5em")
+		// .attr("text-anchor", "middle").text(function(d) {
+		// return d.abbrev;
+		// }).attr("class", "legend small");
 
 		// remove nodes
 		nodeGroup.exit().remove();
 
-		anchorLink = visGroup.selectAll("line.anchorLink").data(labelAnchorLinks).enter().append("svg:line").attr("class", "anchorLink").style("stroke", "#999");
-
-		anchorNode = visGroup.selectAll("g.anchorNode").data(force2.nodes()).enter().append("svg:g").attr("class", "anchorNode");
-		anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
-			anchorNode.append("svg:text").text(function(d, i) {
-			return d.dummy === true ? "" : d.node.abbrev;
-		}).style("fill", "#555").style("font-family", "Arial").style("font-size", 12);
-
-		
-		
 		// set circle for tick
 		circle = nodeGroup.selectAll("circle");
 		circle.transition().attr("r", function(d) {
@@ -314,7 +295,12 @@ var outcomeGraph = (function() {
 		// select text nodes
 		text = nodeGroup.selectAll("text");
 
-		text2 = nodeGroup.selectAll(".legend.small");
+		link = linkGroup.selectAll("line");
+
+		labels = linkGroup.selectAll("text");
+		// text2.transition().attr("text-anchor",function(d){
+		// if(d.target.x >= d.source.x) return "start";
+		// return "end";});
 		// calculate layout for a few round than set dps fixed
 		if (start === true) {
 			force.start();
@@ -353,26 +339,6 @@ var outcomeGraph = (function() {
 		// without any differentiation always compute new loose layout
 		// force.start();
 	}
-	
-	var updateLink = function() {
-		this.attr("x1", function(d) {
-			return d.source.x;
-		}).attr("y1", function(d) {
-			return d.source.y;
-		}).attr("x2", function(d) {
-			return d.target.x;
-		}).attr("y2", function(d) {
-			return d.target.y;
-		});
-
-	}
-	
-	var updateNode = function() {
-		this.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
-
-	}
 
 	/**
 	 * Tick function of force layout
@@ -381,57 +347,44 @@ var outcomeGraph = (function() {
 	 */
 	function tick(e) {
 		// move text with group
-		force2.start();
+
 		// move circles
-		circle.attr("cx", function(d) {
-			// in case bounding box is needed
-			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
-			return d.x;
-		}).attr("cy", function(d) {
-			// in case bounding box is needed
-			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
-			// d.y));
-			return d.y;
-		});
 
-	
-		
-		// console.log(e.alpha);
-//		text2.each(function(d){
-//			
-//			collide(e.alpha,Math.max(this.getBBox().width, this.getBBox().height));});// Added
-//		
-		text.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
-		
-		
+//		circle.attr("cx", function(d) {
+//			// in case bounding box is needed
+//			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+//			return d.x;
+//		}).attr("cy", function(d) {
+//			// in case bounding box is needed
+//			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
+//			// d.y));
+//			return d.y;
+//		});
 
-		anchorNode.each(function(d, i) {
-			if(d.dummy === true) {
-				d.x = d.node.x;
-				d.y = d.node.y;
-			} else {
-				var b = this.childNodes[1].getBBox();
+		// // // console.log(e.alpha);
+		 nodeGroup.each(collide(0.1, 40)).attr({
+		 transform : function(d, i) {
+		 return "translate(" + d.x + "," + d.y + ")";
+		 }
+		 });
 
-				var diffX = d.x - d.node.x;
-				var diffY = d.y - d.node.y;
+		//		
+		 circle.attr("cx", function(d) {
+		 // in case bounding box is needed
+		 // return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+		 return 0;
+		 }).attr("cy", function(d) {
+		 // in case bounding box is needed
+		 // return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
+		 // d.y));
+		 return 0;
+		 });
 
-				var dist = Math.sqrt(diffX * diffX + diffY * diffY);
-
-				var shiftX = b.width * (diffX - dist) / (dist * 2);
-				shiftX = Math.max(-b.width, Math.min(0, shiftX));
-				var shiftY = 5;
-				this.childNodes[1].setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
-			}
-		});
-
-		anchorNode.call(updateNode);
-		
-		
 		// recalculate path
 		path.attr("d", linkArc);
-
+		// path.attr("d", function(d){ return "M" + d.source.x + "," +
+		// d.source.y + "A" + dr + "," + dr
+		// + " 0 0,1 " + targetX + "," + targetY;});
 		// move layout links
 		link.attr("x1", function(d) {
 			return d.source.x;
@@ -442,20 +395,48 @@ var outcomeGraph = (function() {
 		}).attr("y2", function(d) {
 			return d.target.y;
 		});
-		
-		anchorLink.call(updateLink);
+		//
+		labels.attr("x", function(d) {
+			return d.target.x;
+		}).attr("y", function(d) {
+			return d.target.y;
+		}).transition().duration(150).attr("text-anchor", function(d) {
+			if (d.target.x >= (d.source.x + 20))
+				return "start";
+			if (d.target.x <= (d.source.x - 20))
+				return "end";
+			return "middle";
+		}).attr("dy", function(d) {
+			if (d.target.x >= (d.source.x + 20)) {
+				return "5px";
+			}
+			if (d.target.x <= (d.source.x - 20)) {
+				return "5px";
+			}
+			if (d.target.y > d.source.y) {
+				return "23px";
+			}
+			return "-15px";
+		}).attr("dx", function(d) {
+			if (d.target.x >= (d.source.x + 20))
+				return "15px";
+			if (d.target.x <= (d.source.x - 20))
+				return "-15px";
+			return 0;
+		});
+
+//		text.attr("transform", function(d) {
+//			return "translate(" + d.x + "," + d.y + ")";
+//		});
 
 	}
-
-	
-	
-	var tpadding = 10; 
+	var tpadding = 5;
 	function collide(alpha, radius) {
 		// separation between circles
-		//radius = d.getBBox().width;
-		var quadtree = d3.geom.quadtree(text2);
+
+		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
-			var rb =  radius + tpadding, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y
+			var rb = radius + tpadding, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y
 					- rb, ny2 = d.y + rb;
 			quadtree
 					.visit(function(quad, x1, y1, x2, y2) {
@@ -492,42 +473,37 @@ var outcomeGraph = (function() {
 			}
 			nodes.push(d);
 			node_lookup[d.id] = d;
-			
-			
-			
-			labelAnchors.push({
-				dummy : false,
-				x : 0,
-				y : 0,
-				node : d
-			});
-			
-			labelAnchors.push({
-				dummy : true,
-				node : d
-			});
-			
-			
-			
 		});
-		
-		for (var i = 0; i < nodes.length; i++) {
-			labelAnchorLinks.push({
-				source : i * 2,
-				target : i * 2 + 1,
-			});
-			
-		}
-		
 		links = d3.layout.tree().links(nodes);
+
+		// initialNodes.forEach(function(d) {
+		// if (d.type = "out") {
+		// var newNode = {
+		// label : d.label,
+		// type : "out",
+		// abbrev : d.abbrev,
+		// cluster : d.cluster,
+		// group : d.group,
+		// highlighted : d.highlighted,
+		// description : d.description,
+		// parent : d.parent,
+		// fixed : d.fixed,
+		// id : (d.id * -1),
+		// }
+		// nodes.push(newNode);
+		// var s = node_lookup[d.id];
+		//
+		// links.push({
+		// source : s,
+		// target : newNode,
+		// });
+		// }
+
+		// });
+
 		force.links(links);
 		setOutcomePaths();
-		
-		
-		
-		
-		
-		
+
 		update();
 	}
 
@@ -538,54 +514,61 @@ var outcomeGraph = (function() {
 	 */
 	function setOutcomePaths() {
 		outcomePaths.splice(0, outcomePaths.length);
-		outcomeLinks.forEach(function(link) {
-			var source = node_lookup[link.source];
-			var target = node_lookup[link.target];
 
-			// todo if not defined than search for parent maybe in
-			// layout links
-			// if (typeof source !== 'undefined'
-			// && typeof target !== "undefined") {
-			// if (source.highlighted) {
-			//						
-			// outcomePaths.push({
-			// "source" : source,
-			// "target" : target,
-			// "relationGroup" : link.relationGroup,
-			// "type" : link.type
-			// });
-			// }
-			// }
-			// });
-
-			if (typeof source !== 'undefined') {
-				if (source.highlighted) {
-					var parent, topParent, newLink = {};
-					newLink.source = source;
-					if (typeof target === "undefined") {
-						initialLinks.forEach(function(d) {
-							if (link.target == d.target.id) {
-								parent = node_lookup[d.source.id];
-							}
-						});
-
-						if (typeof parent === "undefined") {
-							topParent = node_lookup[String(link.target).charAt(
-									0)];
-							newLink.target = topParent;
-						} else {
-							newLink.target = parent;
-						}
-					} else {
-						newLink.target = target;
-					}
-					newLink.relationGroup = link.relationGroup;
-					newLink.type = link.type;
-					outcomePaths.push(newLink);
-				}
+		outcomeLinks.filter(function(d) {
+			for (var i = 0; i < relationTypes.length; i++) {
+				if (d.type == relationTypes[i])
+					return d;
 			}
+		}).forEach(
+				function(link) {
+					var source = node_lookup[link.source];
+					var target = node_lookup[link.target];
 
-		});
+					// todo if not defined than search for parent maybe in
+					// layout links
+					// if (typeof source !== 'undefined'
+					// && typeof target !== "undefined") {
+					// if (source.highlighted) {
+					//						
+					// outcomePaths.push({
+					// "source" : source,
+					// "target" : target,
+					// "relationGroup" : link.relationGroup,
+					// "type" : link.type
+					// });
+					// }
+					// }
+					// });
+
+					if (typeof source !== 'undefined') {
+						if (source.highlighted) {
+							var parent, topParent, newLink = {};
+							newLink.source = source;
+							if (typeof target === "undefined") {
+								initialLinks.forEach(function(d) {
+									if (link.target == d.target.id) {
+										parent = node_lookup[d.source.id];
+									}
+								});
+
+								if (typeof parent === "undefined") {
+									topParent = node_lookup[String(link.target)
+											.charAt(0)];
+									newLink.target = topParent;
+								} else {
+									newLink.target = parent;
+								}
+							} else {
+								newLink.target = target;
+							}
+							newLink.relationGroup = link.relationGroup;
+							newLink.type = link.type;
+							outcomePaths.push(newLink);
+						}
+					}
+
+				});
 		links = d3.layout.tree().links(nodes);
 		force.links(links);
 	}
@@ -597,22 +580,25 @@ var outcomeGraph = (function() {
 	 */
 	function linkArc(d) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
-				.sqrt(dx * dx + dy * dy);
-		var radius;
-		if (d.target.type == "dp") {
+				.sqrt(dx * dx + dy * dy), radius = 10;
+		switch (d.target.type) {
+		case "dp":
 			radius = d.target._children ? config.dpWidth + config.addedDpWidth
 					: config.dpWidth;
-		} else {
-			if (d.target.type == "out")
-				radius = config.outWidth;
-			else
-				radius = d.target._children ? config.decWidth
-						+ config.addedDecWidth : config.decWidth;
+			break;
+
+		case "out":
+			radius = config.outWidth;
+			break;
+		case "dec":
+			radius = d.target._children ? config.decWidth
+					+ config.addedDecWidth : config.decWidth;
+			break;
 		}
 		var offsetX = (dx * radius) / dr;
 		var offsetY = (dy * radius) / dr;
-		var targetX = d.target.x - offsetX;
-		var targetY = d.target.y - offsetY;
+		var targetX = d.target.x - ((dx * radius) / dr);
+		var targetY = d.target.y - ((dy * radius) / dr);
 
 		return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 				+ " 0 0,1 " + targetX + "," + targetY;
@@ -703,6 +689,15 @@ var outcomeGraph = (function() {
 		nodes.forEach(function(d) {
 			d.highlighted = false;
 		});
+		setOutcomePaths();
+		update();
+	}
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	function setRelationTypes(types) {
+		relationTypes = types;
 		setOutcomePaths();
 		update();
 	}
@@ -955,6 +950,7 @@ var outcomeGraph = (function() {
 		fixLayout : fixLayout,
 		looseLayout : looseLayout,
 		showAllRelations : showAllRelations,
-		hideAllRelations : hideAllRelations
+		hideAllRelations : hideAllRelations,
+		setRelationTypes : setRelationTypes,
 	};
 })();
