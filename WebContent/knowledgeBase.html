@@ -30,7 +30,7 @@
 <script src="./js/lib/bootstrap-multiselect.js" type="text/javascript"></script>
 <script src="./js/lib/d3.4.13.js" type="text/javascript"></script>
 <script src="./js/lib/d3tip.js" type="text/javascript"></script>
-	
+
 
 </head>
 
@@ -93,9 +93,10 @@
 
 	<div class="container">
 		<div class=row>
-			<div class="col-md-12">
+			<div class="col-md-12" style="margin-bottom:10px">
 				<!-- Toolbar for decision Graph -->
-				<div id="toolbarDecisions" class="col-md-6 col-md-offset-3 text-center hidden">
+				<div id="toolbarDecisions"
+					class="col-md-6 col-md-offset-3 text-center hidden">
 					<select id="relationTypes" multiple="multiple">
 						<option value="Influencing">Influencing</option>
 						<option value="Requiring">Requiring</option>
@@ -106,9 +107,8 @@
 			</div>
 		</div>
 		<div class=row>
-			<div class="col-md-12 text-center">
-				<div id="toolbarTree"
-					class="btn-group btn-group-justified"
+			<div class="col-md-12 text-center" style="margin-bottom:10px" >
+				<div id="toolbarTree" class="btn-group btn-group-justified"
 					role="group">
 					<a id="showDps" class="btn btn-default" role="button">Show All
 						Decision Points</a> <a id="showDecs" class="btn btn-default"
@@ -117,19 +117,26 @@
 				</div>
 			</div>
 		</div>
-		
-				<div class=row>
-			<div class="col-md-12 text-center">
-				<div id="toolbarOutcomes"
-					class="btn-group btn-group-justified hidden"
-					role="group">
+
+		<div class=row>
+			<div id="toolbarOutcomes" class="col-md-12 text-center hidden" style="margin-bottom:10px">
+				<div class="col-md-6 col-md-offset-3 text-center " style="margin-bottom:15px">
+					<select id="outcomeRelationTypes" multiple="multiple">
+						<option value="in">Including</option>
+						<option value="ex">Excluding</option>
+						<option value="a">Allowing</option>
+						<option value="aff">Affecting</option>
+						<option value="eb">Binding</option>
+					</select>
+				</div>
+				<div class="btn-group btn-group-justified " role="group">
 					<a id="showAll" class="btn btn-default" role="button">Show All
-						Relations</a> <a id="hideAll" class="btn btn-default"
-						role="button">Hide All Relations</a> <a id="fixLayout"
-						class="btn btn-default" role="button">Fixated Layout</a>
-						<a id="looseLayout"
+						Relations</a> <a id="hideAll" class="btn btn-default" role="button">Hide
+						All Relations</a> <a id="fixLayout" class="btn btn-default"
+						role="button">Fixated Layout</a> <a id="looseLayout"
 						class="btn btn-default" role="button">Loose Layout</a>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -137,7 +144,7 @@
 	<div class="container-fluid">
 		<div class="col-md-12 col-lg-12">
 			<div class="row text-center">
-				<div id="visContent" ></div>
+				<div id="visContent"></div>
 			</div>
 		</div>
 	</div>
@@ -156,8 +163,5 @@
 	<script src="js/treeLayout.js" type="text/javascript"></script>
 	<script src="js/outcomeRelations.js" type="text/javascript"></script>
 	<script src="js/decisionRelations.js" type="text/javascript"></script>
-
-
-
 </body>
 </html>

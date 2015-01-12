@@ -53,6 +53,23 @@ function setToolbarButtons() {
 		allSelectedText : 'Influencing, Requiring, Affecting, Binding',
 		includeSelectAllOption : true,
 	});
+	
+	$('#outcomeRelationTypes').multiselect({
+		onChange : function(event) {
+			var data = [];
+			$("#outcomeRelationTypes option:selected").each(function() {
+				data.push($(this).val());
+			});
+			console.log(data);
+			outcomeGraph.setRelationTypes(data);
+		},
+		numberDisplayed : 5,
+		buttonWidth : "100%",
+		nonSelectedText : 'Select relationship type(s)',
+		selectAllText : 'Select All',
+		allSelectedText : 'Including, Excluding, Allowing, Affecting, Binding',
+		includeSelectAllOption : true,
+	});
 }
 
 function setSubnavButtons() {

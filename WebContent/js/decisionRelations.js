@@ -109,16 +109,16 @@ var decisionGraph = (function() {
 				"class", function(d) {
 					return "link " + d;
 				}).attr("x1", function(d, i) {
-			return (mC.iWidth / 12) * ((i * 2) + 3);
+			return (mC.iWidth / 8) * ((i * 2) + 0.5);
 		}).attr("y1", 0).attr("y2", 0).attr("x2",
 				function(d, i) {
-					return (mC.iWidth / 12) * ((i * 2) + 4);
+					return (mC.iWidth / 8) * ((i * 2) + 1.5);
 				}).attr("marker-end", function(d) {
 			return "url(#" + d.toLowerCase() + ")";
 		});
 		legend.selectAll("text").data(relations).enter().append("text").attr(
 				"x", function(d, i) {
-					return (mC.iWidth / 12) * ((i * 2) + 3.5);
+					return (mC.iWidth / 8) * ((i * 2) + 1);
 				}).attr("y", 0).attr("dy", "2em").attr(
 				"text-anchor", "middle").text(function(d) {
 			return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
