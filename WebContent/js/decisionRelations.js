@@ -11,16 +11,17 @@ var decisionGraph = (function() {
 	// config parameters
 	var config = {
 		decisionWidth : 30,
-		nodePadding : 140,
+		nodePadding : 200,
 		strokeWidth : 20,
 		// clusterPadding : 120,
 		// maxRadius : 30, //collide function with clusters
 		// amountClusters : 4,
 		lsDefault : 0.5,
 		gravity : 0,
-		friction : 0.01,
+		friction : 0.001,
 		chDec : -50,
-		minHeight : 900,
+		minHeight : 1000,
+		minWidth : 1050,
 	};
 
 	var mC, root, svg, tip;
@@ -35,22 +36,23 @@ var decisionGraph = (function() {
 
 	function initialize(linkTypes) {
 		// calculate panel
-		mC = marginConvention(padding, config.minHeight);
+		mC = marginConvention(padding, config.minHeight, config.minWidth);
 		// adjust node padding to size
-		config.nodePadding = mC.panelHeight / 6;
+		config.nodePadding = mC.panelHeight / 5;
 		// set focis for clusters
+		console.log(mC.panelWidth);
 		foci = [ {
-			x : (mC.panelWidth / 100 * 30) ,//+ mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 30) ,//+ mC.marginTop + padding.top
-		}, {
-			x : (mC.panelWidth / 100 * 70) ,//+ mC.marginLeft + padding.left,
+			x : (mC.panelWidth / 100 * 20),// + mC.marginLeft + padding.left,
 			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
 		}, {
-			x : (mC.panelWidth / 2) ,// + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 10) ,//+ mC.marginTop + padding.top
+			x : (mC.panelWidth / 100 * 80),// + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
 		}, {
 			x : (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 65),// + mC.marginTop + padding.top
+			y : (mC.panelHeight / 100 * 10),// + mC.marginTop + padding.top
+		}, {
+			x : (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
+			y : (mC.panelHeight / 100 * 60),// + mC.marginTop + padding.top
 		} ];
 
 		// remove old svg
@@ -110,19 +112,20 @@ var decisionGraph = (function() {
 					return "link " + d;
 				}).attr("x1", function(d, i) {
 			return (mC.iWidth / 8) * ((i * 2) + 0.5);
-		}).attr("y1", 0).attr("y2", 0).attr("x2",
-				function(d, i) {
-					return (mC.iWidth / 8) * ((i * 2) + 1.5);
-				}).attr("marker-end", function(d) {
+		}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
+			return (mC.iWidth / 8) * ((i * 2) + 1.5);
+		}).attr("marker-end", function(d) {
 			return "url(#" + d.toLowerCase() + ")";
 		});
 		legend.selectAll("text").data(relations).enter().append("text").attr(
 				"x", function(d, i) {
 					return (mC.iWidth / 8) * ((i * 2) + 1);
-				}).attr("y", 0).attr("dy", "2em").attr(
-				"text-anchor", "middle").text(function(d) {
-			return d.charAt(0).toUpperCase() + d.substring(1) + " Relation";
-		});
+				}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle")
+				.text(
+						function(d) {
+							return d.charAt(0).toUpperCase() + d.substring(1)
+									+ " Relation";
+						});
 
 		// tooltip
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
@@ -201,17 +204,20 @@ var decisionGraph = (function() {
 				"text-anchor", "middle").text(function(d) {
 			return d.abbrev;
 		}).attr("class", "legend");
-
+//		nodeEnter.append("rect").attr("width",30).attr("height", "30").attr("dy", "30px").style("fill", "green");
 		// append dec label below circle
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
 					return "" + (d.radius + 15) + "px";
 				}).attr("text-anchor", "middle").text(function(d) {
 			return d.label;
-		});
-
+		}).attr("class", "legend");
+		
 		node.exit().remove();
 
+		
+		
+		
 		setLinks(linkTypes);
 
 	}
@@ -327,7 +333,7 @@ var decisionGraph = (function() {
 
 	function update() {
 		force.stop();
-		//possible because node never change
+		// possible because node never change
 		node = visGroup.selectAll("g.node").data(nodes, function(d) {
 			return d.id;
 		});
@@ -384,6 +390,15 @@ var decisionGraph = (function() {
 		path.exit().remove();
 
 		force.start();
+		for (var i = 0; i < 50; ++i)
+			force.tick();
+		force.stop();
+		force.nodes().forEach(function(d) {
+			// d.fixed = true;
+
+			//d.fixed = true;
+		});
+		// force.start();
 	}
 
 	function tick(e) {

@@ -110,10 +110,13 @@ var marginConvention = (function marginConvention(padding, height, width) {
 	};
 
 	var oWidth = parseInt($('#visContent').width());
+	console.log(oWidth);
 	var oHeight = height || 900;
 	oWidth = oWidth < 900 ? 900 : oWidth;
 	if (typeof width !== "undefined") {
-		oWidth = width;
+		if (oWidth < width) {
+			oWidth = width;
+		}
 	}
 
 	var iWidth = oWidth - margin.left - margin.right;
