@@ -20,8 +20,8 @@ var decisionGraph = (function() {
 		gravity : 0,
 		friction : 0.001,
 		chDec : -50,
-		minHeight : 1000,
-		minWidth : 1050,
+		minHeight : 1200,
+		minWidth : 1150,
 	};
 
 	var mC, root, svg, tip;
@@ -38,21 +38,21 @@ var decisionGraph = (function() {
 		// calculate panel
 		mC = marginConvention(padding, config.minHeight, config.minWidth);
 		// adjust node padding to size
-		config.nodePadding = mC.panelHeight / 5;
+		config.nodePadding = mC.panelHeight / 6;
 		// set focis for clusters
 		console.log(mC.panelWidth);
 		foci = [ {
-			x : (mC.panelWidth / 100 * 20),// + mC.marginLeft + padding.left,
+			x : (mC.panelWidth / 100 * 25),// + mC.marginLeft + padding.left,
 			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
 		}, {
-			x : (mC.panelWidth / 100 * 80),// + mC.marginLeft + padding.left,
+			x : (mC.panelWidth / 100 * 75),// + mC.marginLeft + padding.left,
 			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
 		}, {
 			x : (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
 			y : (mC.panelHeight / 100 * 10),// + mC.marginTop + padding.top
 		}, {
 			x : (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
-			y : (mC.panelHeight / 100 * 60),// + mC.marginTop + padding.top
+			y : (mC.panelHeight / 100 * 70),// + mC.marginTop + padding.top
 		} ];
 
 		// remove old svg
@@ -394,7 +394,7 @@ var decisionGraph = (function() {
 			force.tick();
 		force.stop();
 		force.nodes().forEach(function(d) {
-			// d.fixed = true;
+			 d.fixed = true;
 
 			//d.fixed = true;
 		});
@@ -570,7 +570,7 @@ var decisionGraph = (function() {
 
 	// resize decGraph
 	function resizeLayout(linkTypes) {
-		initialize(linkTypes);
+	//	initialize(linkTypes);
 	}
 
 	// check if pair are neighbours
