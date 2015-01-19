@@ -204,7 +204,8 @@ var decisionGraph = (function() {
 				"text-anchor", "middle").text(function(d) {
 			return d.abbrev;
 		}).attr("class", "legend");
-//		nodeEnter.append("rect").attr("width",30).attr("height", "30").attr("dy", "30px").style("fill", "green");
+		// nodeEnter.append("rect").attr("width",30).attr("height",
+		// "30").attr("dy", "30px").style("fill", "green");
 		// append dec label below circle
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
@@ -212,12 +213,9 @@ var decisionGraph = (function() {
 				}).attr("text-anchor", "middle").text(function(d) {
 			return d.label;
 		}).attr("class", "legend");
-		
+
 		node.exit().remove();
 
-		
-		
-		
 		setLinks(linkTypes);
 
 	}
@@ -389,16 +387,16 @@ var decisionGraph = (function() {
 		// remove old paths
 		path.exit().remove();
 
-		force.start();
-		for (var i = 0; i < 50; ++i)
-			force.tick();
-		force.stop();
-		force.nodes().forEach(function(d) {
-			 d.fixed = true;
-
-			//d.fixed = true;
-		});
 		// force.start();
+		// for (var i = 0; i < 50; ++i)
+		// force.tick();
+		// force.stop();
+		// // force.nodes().forEach(function(d) {
+		// // d.fixed = true;
+		// //
+		// // //d.fixed = true;
+		// // });
+		force.start();
 	}
 
 	function tick(e) {
@@ -456,10 +454,15 @@ var decisionGraph = (function() {
 		// var addY = 0;
 		// if(targetX > d.source.x) {addX = -15; } else {addX = 15;}
 		// if(targetY > d.source.y) {addY = -25.9;} else {addY = 25.9;}
-		if (d.type != "Requiring")
+		if (d.type != "Requiring") {
+
 			return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 					+ " 0 0,1 " // + d.target.x
-					+ (d.target.x - offsetX) + "," + (d.target.y - offsetY);
+					+ targetX + "," + targetY;
+		}
+//		var t = 1.8 * Math.PI
+//		targetX = d.target.radius * Math.cos(t) + d.target.x;
+//		targetY = d.target.radius * Math.sin(t) + d.target.y;
 		// + d.target.y;
 		// requiring relation get different radius
 		return "M" + (d.source.x) + "," + (d.source.y) + "A" + (dr * 0.6) + ","
@@ -570,7 +573,7 @@ var decisionGraph = (function() {
 
 	// resize decGraph
 	function resizeLayout(linkTypes) {
-	//	initialize(linkTypes);
+		 initialize(linkTypes);
 	}
 
 	// check if pair are neighbours

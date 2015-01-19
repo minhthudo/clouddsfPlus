@@ -79,15 +79,13 @@
 }
 
 /*OutcomeRelationsGraph*/
-#outcomeContainer.node>circle {
+.outcomeContainer .node > circle {
 	cursor: pointer;
-	stroke: #000;
-	stroke-width: .5px;
+	stroke: #333;
 }
 
 .layoutLink {
 	fill: none;
-	stroke: #9ecae1;
 	stroke: #bdbdbd;
 	stroke-width: 1px;
 }

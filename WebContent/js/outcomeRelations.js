@@ -2,33 +2,33 @@ var outcomeGraph = (function() {
 
 	// Padding for svg container
 	var padding = {
-		top : 80,
-		right : 10,
-		bottom : 30,
-		left : 10
+		top : 30,
+		right : 30,
+		bottom : 40,
+		left : 30
 	};
 
 	var config = {
-		outWidth : 10,
+		outWidth : 13,
 		decWidth : 23,
 		dpWidth : 28,
 		addedDpWidth : 20,
 		addedDecWidth : 10,
 		rootWidth : 30,
 
-		ldRoot : 270,
-		ldDp : 120,
-		ldDec : 50,
+		ldRoot : 320,
+		ldDp : 170,
+		ldDec : 90,
 
-		gravity : 0.1,
-		friction : 0.8,
-		lsDefault : 1,
+		gravity : 0.05,
+		friction : 0.92,
+		lsDefault : 0.85,
 		chRoot : -20,
 		chDp : -20,
-		chDec : -450,
-		chOut : -300,
-		minHeight : 1000,
-		minWidth : 1140,
+		chDec : -150,
+		chOut : -400,
+		minHeight : 1400,
+		minWidth : 1600,
 
 		legendRelations : [ "Including", "Excluding", "Affecting", "Binding",
 				"Allowing" ],
@@ -47,26 +47,28 @@ var outcomeGraph = (function() {
 		force.alpha(0.04);
 	}
 
-//	var zoom = d3.behavior.zoom().scaleExtent([ 1, 8 ]).on("zoom", move);
-//	
-//	
-//function move() {
-//	var t = d3.event.translate;
-//	var s = d3.event.scale;
-//	var h = mC.panelHeight / 3;
-//	t[0] = Math.min(mC.panelWidth  * (s - 1), Math.max(mC.panelWidth
-//			* (1 - s), t[0]));
-//	t[1] = Math.min(mC.panelHeight * (s - 1) + h * s, Math.max(
-//			mC.panelHeight  * (1 - s) - h * s, t[1]));
-//	zoom.translate(t);
-//	visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
-//}
+	// var zoom = d3.behavior.zoom().scaleExtent([ 1, 8 ]).on("zoom", move);
+	//	
+	//	
+	// function move() {
+	// var t = d3.event.translate;
+	// var s = d3.event.scale;
+	// var h = mC.panelHeight / 3;
+	// t[0] = Math.min(mC.panelWidth * (s - 1), Math.max(mC.panelWidth
+	// * (1 - s), t[0]));
+	// t[1] = Math.min(mC.panelHeight * (s - 1) + h * s, Math.max(
+	// mC.panelHeight * (1 - s) - h * s, t[1]));
+	// zoom.translate(t);
+	// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
+	// }
 	/**
 	 * @memberOf outcomeGraph
 	 */
 	function initialize() {
 		// compute panel size and margins after margin convention
 		mC = marginConvention(padding, config.minHeight, config.minWidth);
+
+		// $('body').css("min-width", config.minWidth);
 
 		// config.ldRoot = Math.floor(Math.sqrt((Math.pow(
 		// mC.panelWidth / 100 * 20, 2) - padding.left)
@@ -152,8 +154,12 @@ var outcomeGraph = (function() {
 					return setCharge(d);
 				}).linkDistance(function(d) {
 					return setLinkDistance(d);
-				}).linkStrength(config.lsDefault).gravity(config.gravity)
-				.friction(config.friction).on("tick", tick);
+				}).linkStrength(function(d) {
+					if (d.type == "dp")
+						return 0.7;
+					return config.lsDefault;
+				}).gravity(config.gravity).friction(config.friction).on("tick",
+						tick);
 
 		nodes = force.nodes();
 
@@ -198,13 +204,13 @@ var outcomeGraph = (function() {
 			if (d.target.type == "out")
 				return d;
 		}).append("text").text(function(d) {
-			return d.target.abbrev
+			return d.target.abbrev;
 		}).attr("x", function(d) {
 			return d.target.x;
 		}).attr("y", function(d) {
 			return d.target.y;
 		}).attr("class", "small");
-		
+
 		// Exit any old links.
 		link.exit().remove();
 		// paths for links between outcomes
@@ -255,6 +261,8 @@ var outcomeGraph = (function() {
 			return d.y;
 		}).style("fill", function(d) {
 			return setCircleFill(d);
+		}).style("stroke-width", function(d) {
+			return setCircleStroke(d);
 		});
 
 		nodeEnter.filter(function(d) {
@@ -269,14 +277,6 @@ var outcomeGraph = (function() {
 			return "legend small";
 		});
 
-		// nodeEnter.filter(function(d) {
-		// if (d.type == "out")
-		// return d;
-		// }).append("text").attr("x", 0).attr("y", "0.5em").attr("dy", "1.5em")
-		// .attr("text-anchor", "middle").text(function(d) {
-		// return d.abbrev;
-		// }).attr("class", "legend small");
-
 		// remove nodes
 		nodeGroup.exit().remove();
 
@@ -284,6 +284,8 @@ var outcomeGraph = (function() {
 		circle = nodeGroup.selectAll("circle");
 		circle.transition().attr("r", function(d) {
 			return setCircleRadius(d);
+		}).style("stroke-width", function(d) {
+			return setCircleStroke(d);
 		});
 		// select text nodes
 		text = nodeGroup.selectAll("text");
@@ -295,15 +297,28 @@ var outcomeGraph = (function() {
 		// if(d.target.x >= d.source.x) return "start";
 		// return "end";});
 		// calculate layout for a few round than set dps fixed
+		force.nodes().forEach(function(d) {
+			// d.fixed = true;
+			if (d.type == "dp") {
+				d.fixed = true;
+			}
+
+			// if ((d.abbrev == "SCV") || (d.abbrev == "DRL"))
+			//
+			// d.fixed = true;
+			// if (d.type != "out") {
+			// // d.fixed = true;
+			// }
+		});
 		if (start === true) {
 			force.start();
-			for (var i = 0; i < 200; ++i)
+			for (var i = 0; i < 250; ++i)
 				force.tick();
 			force.stop();
 			force.nodes().forEach(function(d) {
-				// d.fixed = true;
+				d.fixed = true;
 				if (d.type == "dp") {
-					d.fixed = true;
+					// d.fixed = true;
 				}
 				// if (d.type != "out") {
 				// // d.fixed = true;
@@ -339,46 +354,38 @@ var outcomeGraph = (function() {
 	 * @memberOf outcomeGraph.d3Layout
 	 */
 	function tick(e) {
-		// move text with group
 
-		// move circles
+		circle.attr("cx", function(d) {
+			// in case bounding box is needed
+			return d.x = Math.max(30, Math.min(mC.panelWidth - 30, d.x));
+			return d.x;
+		}).attr("cy", function(d) {
+			// in case bounding box is needed
+			return d.y = Math.max(30, Math.min(mC.panelHeight - 30, d.y));
+			return d.y;
+		});
 
-//		circle.attr("cx", function(d) {
-//			// in case bounding box is needed
-//			// return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
-//			return d.x;
-//		}).attr("cy", function(d) {
-//			// in case bounding box is needed
-//			// return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
-//			// d.y));
-//			return d.y;
-//		});
-
-		// // // console.log(e.alpha);
-		 nodeGroup.each(collide(0.1, 40)).attr({
-		 transform : function(d, i) {
-		 return "translate(" + d.x + "," + d.y + ")";
-		 }
-		 });
+		// circle.each(collide(0.1, 40)).attr({
+		// transform : function(d, i) {
+		// return "translate(" + d.x + "," + d.y + ")";
+		// }
+		// });
 
 		//		
-		 circle.attr("cx", function(d) {
-		 // in case bounding box is needed
-		 // return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
-		 return 0;
-		 }).attr("cy", function(d) {
-		 // in case bounding box is needed
-		 // return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
-		 // d.y));
-		 return 0;
-		 });
+		// circle.attr("cx", function(d) {
+		// // in case bounding box is needed
+		// // return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
+		// return 0;
+		// }).attr("cy", function(d) {
+		// // in case bounding box is needed
+		// // return d.y = Math.max(10, Math.min(mC.panelHeight - 10,
+		// // d.y));
+		// return 0;
+		// });
 
 		// recalculate path
 		path.attr("d", linkArc);
-		// path.attr("d", function(d){ return "M" + d.source.x + "," +
-		// d.source.y + "A" + dr + "," + dr
-		// + " 0 0,1 " + targetX + "," + targetY;});
-		// move layout links
+
 		link.attr("x1", function(d) {
 			return d.source.x;
 		}).attr("y1", function(d) {
@@ -407,30 +414,30 @@ var outcomeGraph = (function() {
 				return "5px";
 			}
 			if (d.target.y > d.source.y) {
-				return "23px";
+				return "30px";
 			}
-			return "-15px";
+			return "-22px";
 		}).attr("dx", function(d) {
 			if (d.target.x >= (d.source.x + 20))
-				return "15px";
+				return "20px";
 			if (d.target.x <= (d.source.x - 20))
-				return "-15px";
+				return "-20px";
 			return 0;
 		});
 
-//		text.attr("transform", function(d) {
-//			return "translate(" + d.x + "," + d.y + ")";
-//		});
+		text.attr("transform", function(d) {
+			return "translate(" + d.x + "," + d.y + ")";
+		});
 
 	}
-	var tpadding = 5;
+
 	function collide(alpha, radius) {
 		// separation between circles
 
 		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
-			var rb = radius + tpadding, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y
-					- rb, ny2 = d.y + rb;
+			var rb = radius + 5, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y - rb, ny2 = d.y
+					+ rb;
 			quadtree
 					.visit(function(quad, x1, y1, x2, y2) {
 						if (quad.point && (quad.point !== d)) {
@@ -518,22 +525,6 @@ var outcomeGraph = (function() {
 					var source = node_lookup[link.source];
 					var target = node_lookup[link.target];
 
-					// todo if not defined than search for parent maybe in
-					// layout links
-					// if (typeof source !== 'undefined'
-					// && typeof target !== "undefined") {
-					// if (source.highlighted) {
-					//						
-					// outcomePaths.push({
-					// "source" : source,
-					// "target" : target,
-					// "relationGroup" : link.relationGroup,
-					// "type" : link.type
-					// });
-					// }
-					// }
-					// });
-
 					if (typeof source !== 'undefined') {
 						if (source.highlighted) {
 							var parent, topParent, newLink = {};
@@ -573,7 +564,7 @@ var outcomeGraph = (function() {
 	 */
 	function linkArc(d) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
-				.sqrt(dx * dx + dy * dy), radius = 10;
+				.sqrt(dx * dx + dy * dy), radius = config.outWidth;
 		switch (d.target.type) {
 		case "dp":
 			radius = d.target._children ? config.dpWidth + config.addedDpWidth
@@ -668,7 +659,9 @@ var outcomeGraph = (function() {
 	 */
 	function showAllRelations() {
 		nodes.forEach(function(d) {
-			d.highlighted = true;
+			if (d.type == "out") {
+				d.highlighted = true;
+			}
 		});
 		setOutcomePaths();
 		update();
@@ -739,7 +732,10 @@ var outcomeGraph = (function() {
 				d.px = location[0];
 				d.py = location[1];
 			}
-			// start with not outcome paths
+			if (d.type == "dp") {
+				d.fixed = true;
+			}
+			// start with no outcome paths
 			d.highlighted = false;
 		});
 	}
@@ -758,19 +754,19 @@ var outcomeGraph = (function() {
 		switch (d.cluster) {
 		case 1:
 			// randomX = -Math.abs(Math.cos(angle));
-			dp = [ (w * 25), (h * 25) ];
+			dp = [ (w * 31), (h * 30) ];
 			break;
 		case 2:
 			// randomX = Math.abs(Math.cos(angle));
-			dp = [ (w * 75), (h * 25) ];
+			dp = [ (w * 66), (h * 31) ];
 			break;
 		case 3:
 			// randomX = Math.abs(Math.cos(angle));
-			dp = [ (w * 75), (h * 75) ];
+			dp = [ (w * 69), (h * 59) ];
 			break;
 		case 4:
 			// randomX = -Math.abs(Math.cos(angle));
-			dp = [ (w * 30), (h * 75) ];
+			dp = [ (w * 40), (h * 69) ];
 			break;
 		default:
 			return [ Math.random(), Math.random() ];
@@ -780,6 +776,10 @@ var outcomeGraph = (function() {
 		case "dp":
 			return dp;
 		case "dec":
+			if (d.abbrev == "SCV")
+				return [ dp[0], dp[1] - config.ldDp ];
+			if (d.abbrev == "DRL")
+				return [ dp[0], dp[1] + config.ldDp ];
 			return [ dp[0] + randomX * (config.ldDp),
 					dp[1] + randomY * (config.ldDp) ];
 		case "out":
@@ -838,6 +838,16 @@ var outcomeGraph = (function() {
 		case "root":
 			return config.ldRoot;
 		case "dp":
+			// if (d.target.children) {
+			//
+			// if (d.source.cluster == 4 && d.target.children.length < 3
+			// && d.target.children.length > 1) {
+			// // return d.target.children ? config.ldDp : config.ldDp +
+			// // config.ldDec
+			// // / 2;
+			// return config.ldDp * 1.6;
+			// }
+			// }
 			return d.target.children ? config.ldDp : config.ldDp + config.ldDec
 					/ 2;
 		case "dec":
@@ -860,8 +870,8 @@ var outcomeGraph = (function() {
 		case "dec":
 			return d.children ? config.decWidth : config.decWidth
 					+ config.addedDecWidth;
-		default:
-			return config.outWidth;
+		case "out":
+			return d.highlighted ? config.outWidth - 1 : config.outWidth;
 		}
 	}
 
@@ -874,6 +884,12 @@ var outcomeGraph = (function() {
 		return getColor(d.group);
 	}
 
+	function setCircleStroke(d) {
+		if (d.type == "out" && d.highlighted === true) {
+			return "3px";
+		}
+		return "0px";
+	}
 	// set initial data on instantiation (in case of initialization is used
 	// shift to initialize() methode and set content in callback
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
