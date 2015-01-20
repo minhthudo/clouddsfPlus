@@ -79,11 +79,10 @@
 }
 
 /*OutcomeRelationsGraph*/
-.outcomeContainer .node > circle {
+/* .outcomeContainer .node>circle {
 	cursor: pointer;
 	stroke: #333;
-}
-
+} */
 .layoutLink {
 	fill: none;
 	stroke: #bdbdbd;
@@ -181,4 +180,19 @@
 .legend {
 	font-weight: bold;
 	cursor: default;
+}
+
+.highlighted {
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.deactivated {
+	fill: #fff !important;
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.selectable {
+	cursoer: pointer;
 }
