@@ -43,7 +43,7 @@ var dynamicGraph = (function() {
 
 	// margin Convention variable and config
 	var mC;
-	start = true, fixed = false;
+	var start = true, fixed = false;
 	// todo temp to select relations
 	var relationTypes = [ "in", "ex" ];
 	// d3 force layout variables
@@ -51,8 +51,7 @@ var dynamicGraph = (function() {
 	// d3 + svg layout variables for visualization elements
 	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle, labels;
 	// data nodes and links temp for serving state in case of rollback
-	var root, initialNodes, outcomeLinks, outcomePaths = [], tempNodes = [], r
-	tempLinks = [];
+	var root, initialNodes, outcomeLinks, outcomePaths = [], tempNodes = [], tempLinks = [];
 	// helper variables for O(n) lookup
 	var node_lookup = [], link_lookup = [], tempNodes_lookup = [], tempLinks_lookup = [];
 
@@ -62,7 +61,7 @@ var dynamicGraph = (function() {
 	 */
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = marginConvention(padding, config.minHeight, config.minWidth);
+		mC = cdsfPlus.marginConvention(padding, config.minHeight, config.minWidth);
 
 		// select container and remove it in case it exists already
 		d3.select("#svgContainer").remove();
@@ -91,7 +90,7 @@ var dynamicGraph = (function() {
 				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
 						"class", function(d) {
 							if (d.conflict === true) {
-								return "outRel " + d + " outRelArrow conflict"
+								return "outRel " + d + " outRelArrow conflict";
 							}
 							return "outRel " + d + " outRelArrow";
 						});
@@ -103,17 +102,18 @@ var dynamicGraph = (function() {
 					return "outRel " + d;
 				}).attr("x1", function(d, i) {
 					return (mC.iWidth / 15) * ((i * 1.5) + 0.5);
-				}).attr("y1", "2.5em").attr("y2", "2.5em").attr("x2", function(d, i) {
-					return (mC.iWidth / 15) * ((i * 1.5) + 1.5);
-				}).attr("marker-end", function(d) {
+				}).attr("y1", "2.5em").attr("y2", "2.5em").attr("x2",
+						function(d, i) {
+							return (mC.iWidth / 15) * ((i * 1.5) + 1.5);
+						}).attr("marker-end", function(d) {
 					return "url(#" + d + ")";
 				});
 		// set text in the middle below the links
 		legend.selectAll("text").data(config.legendRelations).enter().append(
 				"text").attr("x", function(d, i) {
 			return (mC.iWidth / 15) * ((i * 1.5) + 1);
-		}).attr("y", "2.5em").attr("dy", "2em").attr("text-anchor", "middle").text(
-				function(d) {
+		}).attr("y", "2.5em").attr("dy", "2em").attr("text-anchor", "middle")
+				.text(function(d) {
 					return d + " Relation";
 				});
 		legend.selectAll("circle").data(
@@ -122,8 +122,8 @@ var dynamicGraph = (function() {
 			return (mC.iWidth / 15) * ((i * 1.5) + 8.5);
 		}).attr("cy", "1.5em").style("fill", function(d) {
 			if (d == "oex" || d == "ocon")
-				return getColor("out1");
-			return getColor(d);
+				return cdsfPlus.getColor("out1");
+			return cdsfPlus.getColor(d);
 		}).attr("r", function(d) {
 			switch (d) {
 			case "dp1":
@@ -133,7 +133,7 @@ var dynamicGraph = (function() {
 			case "out1":
 				return config.outWidth - 1;
 			default:
-				return config.outWidth
+				return config.outWidth;
 			}
 		}).attr("class", function(d) {
 			switch (d) {
@@ -361,11 +361,11 @@ var dynamicGraph = (function() {
 
 		circle.attr("cx", function(d) {
 			// in case bounding box is needed
-			return d.x = Math.max(30, Math.min(mC.panelWidth - 30, d.x));
+			d.x = Math.max(30, Math.min(mC.panelWidth - 30, d.x));
 			return d.x;
 		}).attr("cy", function(d) {
 			// in case bounding box is needed
-			return d.y = Math.max(30, Math.min(mC.panelHeight - 30, d.y));
+			d.y = Math.max(30, Math.min(mC.panelHeight - 30, d.y));
 			return d.y;
 		});
 
@@ -658,7 +658,7 @@ var dynamicGraph = (function() {
 			}
 			if (d.type == "out") {
 				var newTempNode = new tempNode("out" + d.parent, d.id, d.type,
-						d.label)
+						d.label);
 				tempNodes.push(newTempNode);
 				tempNodes_lookup[newTempNode.id] = newTempNode;
 			}
@@ -799,7 +799,7 @@ var dynamicGraph = (function() {
 	 * @memberOf dynamicGraph.d3
 	 */
 	function setCircleFill(d) {
-		return getColor(d.group);
+		return cdsfPlus.getColor(d.group);
 	}
 
 	/**
@@ -988,7 +988,7 @@ var dynamicGraph = (function() {
 		this.conflict = false;
 		this.changeConflict = function(conflict) {
 			this.conflict = conflict;
-		}
+		};
 	}
 
 	function tempNode(outGroup, id, type, label) {
@@ -1008,12 +1008,12 @@ var dynamicGraph = (function() {
 			this.outgoingLinks.forEach(function(d) {
 				d.active = true;
 			});
-		}
+		};
 		this.deactivateOutgoingLinks = function() {
 			this.outgoingLinks.forEach(function(d) {
 				d.active = false;
 			});
-		}
+		};
 
 		this.checkIncomingLinks = function() {
 			var ex = 0, inc = 0;
@@ -1056,15 +1056,15 @@ var dynamicGraph = (function() {
 				return false;
 			}
 			return false;
-		}
+		};
 
-		this.setConflictingLinks = function(conflict) {
+		this.setConflictingLinks = (function(conflict) {
 			this.incomingLinks.forEach(function(d) {
 				if ((d.type == "ex" || d.type == "in") && d.active === true) {
 					d.changeConflict(conflict);
 				}
 			});
-		}
+		});
 
 		this.getRestrictingNodes = function() {
 			var restrictingNodes = [];
@@ -1075,23 +1075,23 @@ var dynamicGraph = (function() {
 				}
 			});
 			return restrictingNodes;
-		}
+		};
 
 		this.activateNode = function() {
 			this.highlighted = true;
 			this.selectable = true;
 			this.activateOutgoingLinks();
-		}
+		};
 
 		this.deactivateNode = function() {
 			this.highlighted = false;
 			this.deactivateOutgoingLinks();
-		}
+		};
 
 		this.resetOutcome = function() {
 			this.selectable = true;
 			this.highlighted = false;
-		}
+		};
 
 		this.excludeOutcome = function() {
 			if (this.highlighted === true) {
@@ -1099,7 +1099,7 @@ var dynamicGraph = (function() {
 				this.deactivateOutgoingLinks();
 			}
 			this.selectable = false;
-		}
+		};
 
 		this.resetEverything = function() {
 			this.selectable = true;
@@ -1107,7 +1107,7 @@ var dynamicGraph = (function() {
 			this.highlighted = false;
 			this.conflicting = false;
 			this.deactivateOutgoingLinks();
-		}
+		};
 	}
 
 	// Reveal module pattern, offer functions to the outside

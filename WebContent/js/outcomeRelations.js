@@ -33,8 +33,8 @@ var outcomeGraph = (function() {
 		legendRelations : [ "Including", "Excluding", "Affecting", "Binding",
 				"Allowing" ],
 		relations : [ "in", "ex", "aff", "eb", "a" ],
-
 	};
+
 	var relationTypes = config.relations;
 	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
@@ -47,33 +47,13 @@ var outcomeGraph = (function() {
 		force.alpha(0.04);
 	}
 
-	// var zoom = d3.behavior.zoom().scaleExtent([ 1, 8 ]).on("zoom", move);
-	//	
-	//	
-	// function move() {
-	// var t = d3.event.translate;
-	// var s = d3.event.scale;
-	// var h = mC.panelHeight / 3;
-	// t[0] = Math.min(mC.panelWidth * (s - 1), Math.max(mC.panelWidth
-	// * (1 - s), t[0]));
-	// t[1] = Math.min(mC.panelHeight * (s - 1) + h * s, Math.max(
-	// mC.panelHeight * (1 - s) - h * s, t[1]));
-	// zoom.translate(t);
-	// visGroup.attr("transform", "translate(" + t + ")scale(" + s + ")");
-	// }
 	/**
 	 * @memberOf outcomeGraph
 	 */
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = marginConvention(padding, config.minHeight, config.minWidth);
-
-		// $('body').css("min-width", config.minWidth);
-
-		// config.ldRoot = Math.floor(Math.sqrt((Math.pow(
-		// mC.panelWidth / 100 * 20, 2) - padding.left)
-		// + (Math.pow(mC.panelHeight / 100 * 25, 2) - padding.top)));
-		// config.ldDp = config.ldRoot - config.ldDec - 100;
+		mC = cdsfPlus.marginConvention(padding, config.minHeight,
+				config.minWidth);
 
 		// select container and remove it in case it exists already
 		d3.select("#svgContainer").remove();
@@ -357,11 +337,11 @@ var outcomeGraph = (function() {
 
 		circle.attr("cx", function(d) {
 			// in case bounding box is needed
-			return d.x = Math.max(30, Math.min(mC.panelWidth - 30, d.x));
+			d.x = Math.max(30, Math.min(mC.panelWidth - 30, d.x));
 			return d.x;
 		}).attr("cy", function(d) {
 			// in case bounding box is needed
-			return d.y = Math.max(30, Math.min(mC.panelHeight - 30, d.y));
+			d.y = Math.max(30, Math.min(mC.panelHeight - 30, d.y));
 			return d.y;
 		});
 
@@ -635,58 +615,6 @@ var outcomeGraph = (function() {
 		initialNodes = flatten(root);
 		setupForceLayout();
 	}
-	/**
-	 * 
-	 * 
-	 * @memberOf outcomeGraph
-	 */
-	function fixLayout() {
-		fixed = true;
-		setupForceLayout();
-	}
-	/**
-	 * 
-	 * @memberOf outcomeGraph
-	 */
-	function looseLayout() {
-		fixed = false;
-		setupForceLayout();
-	}
-
-	/**
-	 * 
-	 * @memberOf outcomeGraph
-	 */
-	function showAllRelations() {
-		nodes.forEach(function(d) {
-			if (d.type == "out") {
-				d.highlighted = true;
-			}
-		});
-		setOutcomePaths();
-		update();
-	}
-
-	/**
-	 * 
-	 * @memberOf outcomeGraph
-	 */
-	function hideAllRelations() {
-		nodes.forEach(function(d) {
-			d.highlighted = false;
-		});
-		setOutcomePaths();
-		update();
-	}
-	/**
-	 * 
-	 * @memberOf outcomeGraph
-	 */
-	function setRelationTypes(types) {
-		relationTypes = types;
-		setOutcomePaths();
-		update();
-	}
 
 	/**
 	 * Returns a list of all nodes under the root; size is calculated
@@ -881,7 +809,7 @@ var outcomeGraph = (function() {
 	 * @memberOf outcomeGraph.d3Layout
 	 */
 	function setCircleFill(d) {
-		return getColor(d.group);
+		return cdsfPlus.getColor(d.group);
 	}
 
 	function setCircleStroke(d) {
@@ -890,12 +818,6 @@ var outcomeGraph = (function() {
 		}
 		return "0px";
 	}
-	// set initial data on instantiation (in case of initialization is used
-	// shift to initialize() methode and set content in callback
-	d3.json("./data/cloudDSFPlus.json", function(error, json) {
-		root = json.cdsfPlus;
-		outcomeLinks = json.outcomeLinks;
-	});
 
 	var setOutCharge = (function(d) {
 		config.chOut = d;
@@ -942,24 +864,113 @@ var outcomeGraph = (function() {
 		return config.gravity;
 	});
 
+	/**
+	 * 
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	var fixLayout = (function() {
+		fixed = true;
+		setupForceLayout();
+	});
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	var looseLayout = (function() {
+		fixed = false;
+		setupForceLayout();
+	});
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	var showAllRelations = (function() {
+		nodes.forEach(function(d) {
+			if (d.type == "out") {
+				d.highlighted = true;
+			}
+		});
+		setOutcomePaths();
+		update();
+	});
+
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	var hideAllRelations = (function() {
+		nodes.forEach(function(d) {
+			d.highlighted = false;
+		});
+		setOutcomePaths();
+		update();
+	});
+	/**
+	 * 
+	 * @memberOf outcomeGraph
+	 */
+	var removeRelationType = (function(type) {
+		for (var int = 0; int < relationTypes.length; int++) {
+			if (relationTypes[int] == type) {
+				relationTypes.splice(int, 1);
+				break;
+			}
+		}
+		setOutcomePaths();
+		update();
+	});
+
+	var removeAllRelations = (function() {
+		relationTypes.splice(0, relationTypes.length);
+		relationTypes.push([ "" ]);
+		setOutcomePaths();
+		update();
+	});
+
+	var setAllRelations = (function(type) {
+		relationTypes.splice(0, relationTypes.length);
+		type.forEach(function(d) {
+			relationTypes.push(d);
+		});
+		setOutcomePaths();
+		update();
+	});
+
+	var addRelationType = (function(type) {
+		relationTypes.push(type);
+		setOutcomePaths();
+		update();
+	});
+
+	// set initial data on instantiation (in case of initialization is used
+	// shift to initialize() methode and set content in callback
+	d3.json("./data/cloudDSFPlus.json", function(error, json) {
+		root = json.cdsfPlus;
+		outcomeLinks = json.outcomeLinks;
+	});
+
 	// Reveal module pattern, offer functions to the outside
 	return {
-		update : update,
 		initialize : initialize,
-		setOutCharge : setOutCharge,
-		setDecCharge : setDecCharge,
-		setDpCharge : setDpCharge,
-		setRootCharge : setRootCharge,
-		setGravity : setGravity,
-		getOutCharge : getOutCharge,
-		getDecCharge : getDecCharge,
-		getDpCharge : getDpCharge,
-		getRootCharge : getRootCharge,
-		getGravity : getGravity,
+		// setOutCharge : setOutCharge,
+		// setDecCharge : setDecCharge,
+		// setDpCharge : setDpCharge,
+		// setRootCharge : setRootCharge,
+		// setGravity : setGravity,
+		// getOutCharge : getOutCharge,
+		// getDecCharge : getDecCharge,
+		// getDpCharge : getDpCharge,
+		// getRootCharge : getRootCharge,
+		// getGravity : getGravity,
 		fixLayout : fixLayout,
 		looseLayout : looseLayout,
 		showAllRelations : showAllRelations,
 		hideAllRelations : hideAllRelations,
-		setRelationTypes : setRelationTypes,
+		removeRelationType : removeRelationType,
+		addRelationType : addRelationType,
+		removeAllRelations : removeAllRelations,
+		setAllRelations : setAllRelations,
 	};
 })();

@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-
+/*D3 Tooltip*/
 .d3-tip {
 	/* line-height: 1; */
 	/* font-weight: bold; */
@@ -10,6 +10,7 @@
 	pointer-events: none;
 	max-width: 300px;
 }
+
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
 	box-sizing: border-box;
@@ -21,6 +22,7 @@
 	position: absolute;
 	pointer-events: none;
 }
+
 /* Northward tooltips */
 .d3-tip.n:after {
 	content: "\25BC";
@@ -29,6 +31,7 @@
 	left: 0;
 	text-align: center;
 }
+
 /* Eastward tooltips */
 .d3-tip.e:after {
 	content: "\25C0";
@@ -36,6 +39,7 @@
 	top: 50%;
 	left: -8px;
 }
+
 /* Southward tooltips */
 .d3-tip.s:after {
 	content: "\25B2";
@@ -44,6 +48,7 @@
 	left: 0;
 	text-align: center;
 }
+
 /* Westward tooltips */
 .d3-tip.w:after {
 	content: "\25B6";
@@ -52,6 +57,7 @@
 	left: 100%;
 }
 
+/*Tree Layout*/
 .treeLink {
 	fill: none;
 	stroke: #D9D9D9;
@@ -78,11 +84,7 @@
 	font-weight: normal;
 }
 
-/*OutcomeRelationsGraph*/
-/* .outcomeContainer .node>circle {
-	cursor: pointer;
-	stroke: #333;
-} */
+/*Outcome Relations Graph*/
 .layoutLink {
 	fill: none;
 	stroke: #bdbdbd;
@@ -131,6 +133,31 @@
 	stroke-width: 1px;
 }
 
+.highlighted {
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.deactivated {
+	fill: #fff !important;
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.selectable {
+	cursor: pointer;
+}
+
+.conflicting {
+	fill: red !important;
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.conflict {
+	stroke: red !important;
+}
+
 /*DecisionGraph*/
 .link {
 	fill: none;
@@ -139,7 +166,6 @@
 }
 
 .arrow {
-	/* 	fill: #636363; */
 	fill: #222;
 }
 
@@ -147,11 +173,6 @@
 	fill: none;
 	stroke-width: 2px;
 	stroke: #222;
-}
-
-.link.influencing {
-	/* stroke: #31a354; */
-	
 }
 
 .link.affecting {
@@ -180,29 +201,4 @@
 .legend {
 	font-weight: bold;
 	cursor: default;
-}
-
-.highlighted {
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.deactivated {
-	fill: #fff !important;
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.selectable {
-	cursor: pointer;
-}
-
-.conflicting {
-	fill: red !important;
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.conflict {
-	stroke: red !important;
 }

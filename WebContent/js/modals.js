@@ -44,7 +44,7 @@ var modals = (function() {
 				+ strong
 				+ parent.label
 				+ endStrong
-				+ +" decision?"
+				+ " decision?"
 				+ br
 				+ br
 				+ "Description: " + outcome.description;
@@ -138,5 +138,4 @@ var modals = (function() {
 		showProgress : showProgress,
 		hideProgress : hideProgress
 	};
-
 })();

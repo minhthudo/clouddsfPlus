@@ -28,19 +28,20 @@ var decisionGraph = (function() {
 	var force, node, nodes, links = [], pathGroup, text, circle, path, visGroup;
 	var node_lookup, initialNodes, foci;
 	// var clusters;
-	var relations = [ "requiring", "influencing", "affecting", "binding" ];
+	var relations = [];
+	var legendRelations = [ "Requiring", "Influencing", "Affecting", "Binding" ];
 	// Toggle stores whether the highlighting is on
 	var toggle = 0;
 	// Create an array logging what is connected to what
 	var linkedByIndex = {};
 
-	function initialize(linkTypes) {
+	function initialize() {
 		// calculate panel
-		mC = marginConvention(padding, config.minHeight, config.minWidth);
+		mC = cdsfPlus.marginConvention(padding, config.minHeight,
+				config.minWidth);
 		// adjust node padding to size
 		config.nodePadding = mC.panelHeight / 6;
 		// set focis for clusters
-		console.log(mC.panelWidth);
 		foci = [ {
 			x : (mC.panelWidth / 100 * 25),// + mC.marginLeft + padding.left,
 			y : (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
@@ -70,62 +71,43 @@ var decisionGraph = (function() {
 						"translate(" + mC.marginLeft + "," + mC.marginTop + ")")
 				.attr("class", "decisionContainer");
 
-		svg.append("defs").selectAll("marker").data(relations).enter().append(
-				"marker").attr("id", function(d) {
-			return d;
-		}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-			if (d == "requiring")
-				return 10;
-			return 10;
-		}).attr("refY", function(d) {
-			if (d == "requiring")
-				return 5;
-			return 5;
-		}).attr("markerWidth", 6).attr("markerHeight", 6).attr("markerUnits",
-				"strokeWidth").attr("orient", "auto").append("svg:path").attr(
-				"d", "M 0,0 l 10,5 l -10,5").attr("class", function(d) {
-			return d + "Arrow";
-		});
-
-		// .attr("viewBox", "0 -8 16 16").attr("refX", 16).attr("refY",
-		// -1.5).attr("markerWidth", 6).attr("markerHeight", 6)
-		// .attr("orient", "auto").append("svg:path").attr("d",
-		// "M0,-8L16,0L0,8 z");
-
-		// .attr("viewBox", "0 -5 10 10")
-		// .attr("refX", 15)
-		// .attr("refY", -1.5)
-		// .attr("markerWidth", 6)
-		// .attr("markerHeight", 6)
-		// .attr("orient", "auto")
-		// .append("path")
-		// .attr("d", "M0,-5L10,0L0,5");
-		//	
-		// .enter().append("svg:marker") // This section adds in the
-		// arrows
-		// .attr("id", String)
+		svg.append("defs").selectAll("marker").data(legendRelations).enter()
+				.append("marker").attr("id", function(d) {
+					return d.toLowerCase();
+				}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
+					if (d == "Requiring")
+						return 10;
+					return 10;
+				}).attr("refY", function(d) {
+					if (d == "Requiring")
+						return 5;
+					return 5;
+				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+						"markerUnits", "strokeWidth").attr("orient", "auto")
+				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
+						"class", function(d) {
+							return d.toLowerCase() + "Arrow";
+						});
 
 		// create legend above chart
 		var legend = svg.append("g");
-		legend.selectAll("line").data(relations).enter().append("line").attr(
-				"class", function(d) {
-					return "link " + d;
+		legend.selectAll("line").data(legendRelations).enter().append("line")
+				.attr("class", function(d) {
+					return "link " + d.toLowerCase();
 				}).attr("x1", function(d, i) {
-			return (mC.iWidth / 8) * ((i * 2) + 0.5);
-		}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
-			return (mC.iWidth / 8) * ((i * 2) + 1.5);
-		}).attr("marker-end", function(d) {
-			return "url(#" + d.toLowerCase() + ")";
-		});
-		legend.selectAll("text").data(relations).enter().append("text").attr(
-				"x", function(d, i) {
+					return (mC.iWidth / 8) * ((i * 2) + 0.5);
+				}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
+					return (mC.iWidth / 8) * ((i * 2) + 1.5);
+				}).attr("marker-end", function(d) {
+					return "url(#" + d.toLowerCase() + ")";
+				});
+		legend.selectAll("text").data(legendRelations).enter().append("text")
+				.attr("x", function(d, i) {
 					return (mC.iWidth / 8) * ((i * 2) + 1);
 				}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle")
-				.text(
-						function(d) {
-							return d.charAt(0).toUpperCase() + d.substring(1)
-									+ " Relation";
-						});
+				.text(function(d) {
+					return d + " Relation";
+				});
 
 		// tooltip
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
@@ -146,27 +128,12 @@ var decisionGraph = (function() {
 		// new force layout
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
 		// set force parameters
-		force
-		// .linkDistance(function(d) {
-		// return calculateDistance(d)
-		// })
-		.charge(function(d) {
+		force.charge(function(d) {
 			return d.charge;
-		})
-		// .linkStrength(function(d) {
-		// // if (d.target.cluster == d.source.cluster)
-		// // return config.lsCluster;
-		// return config.lsDefault;
-		// })
-		.gravity(config.gravity).friction(config.friction).on("tick", tick);
+		}).gravity(config.gravity).friction(config.friction).on("tick", tick);
 
 		nodes = force.nodes();
 		// separated from force to avoid calculations
-		// links = force.links();
-
-		// amountClusters = root.cluster.length; // number of distinct clusters
-		// clusters = new Array(config.amountClusters);
-		// setClusters();
 
 		initialNodes = flatten(root.cdsfPlus);
 
@@ -216,42 +183,9 @@ var decisionGraph = (function() {
 
 		node.exit().remove();
 
-		setLinks(linkTypes);
+		setLinks();
 
 	}
-
-	// function setClusters() {
-	// var clusterNodes = root.cdsfPlus.children.filter(function(d) {
-	// if (d.type = "dp")
-	// return d;
-	// });
-	// clusterNodes.map(function(node) {
-	// var r = 4, d = {
-	// cluster : node.cluster,
-	// radius : r,
-	// id : node.id,
-	// label : node.label,
-	// charge : -500,
-	// group : node.group,
-	// type : node.type,
-	// x : 0,
-	// y : 0,
-	// // cx : 0,
-	// // cy : 0,
-	// fixed : true
-	// };
-	// clusters[d.cluster] = d;
-	// // nodes.push(d);
-	// });
-	// clusters[1].x = mC.panelWidth / 3;
-	// clusters[1].y = mC.panelHeight / 3;
-	// clusters[2].x = mC.panelWidth / 3 * 2;
-	// clusters[2].y = mC.panelHeight / 3;
-	// clusters[3].x = mC.panelWidth / 3;
-	// clusters[3].y = mC.panelHeight / 3 * 2;
-	// clusters[4].x = mC.panelWidth / 3 * 2;
-	// clusters[4].y = mC.panelHeight / 3 * 2;
-	// }
 
 	function addLink(link) {
 		links.push({
@@ -275,26 +209,23 @@ var decisionGraph = (function() {
 		return nodes;
 	}
 
-	function setLinks(relationType) {
+	function setLinks() {
 		links.forEach(function(d) {
 			linkedByIndex[d.source.id + "," + d.target.id] = 0;
 		});
-		// linkedByIndex = {};
 		links.splice(0, links.length);
 		var specificLinks = root.links.filter(function(d) {
-			for (var i = 0; i < relationType.length; i++) {
-				if (d.type == relationType[i])
+			for (var i = 0; i < relations.length; i++) {
+				if (d.type == relations[i])
 					return d;
 			}
 		});
 		specificLinks.forEach(function(d) {
 			addLink(d);
 		});
-
 		links.forEach(function(d) {
 			linkedByIndex[d.source.id + "," + d.target.id] = 1;
 		});
-
 		update();
 	}
 
@@ -380,22 +311,13 @@ var decisionGraph = (function() {
 		});
 		// enter new paths with link type as class and respective marker head
 		path.enter().append("path").attr("class", function(d) {
-			return "link " + d.type.toLowerCase();
+			return "link " + d.type;
 		}).attr("marker-end", function(d) {
-			return "url(#" + d.type.toLowerCase() + ")";
+			return "url(#" + d.type + ")";
 		});
 		// remove old paths
 		path.exit().remove();
 
-		// force.start();
-		// for (var i = 0; i < 50; ++i)
-		// force.tick();
-		// force.stop();
-		// // force.nodes().forEach(function(d) {
-		// // d.fixed = true;
-		// //
-		// // //d.fixed = true;
-		// // });
 		force.start();
 	}
 
@@ -413,13 +335,6 @@ var decisionGraph = (function() {
 		}).attr("cy", function(d) {
 			return d.y;
 		});
-
-		// circle.each(cluster(10 * e.alpha * e.alpha)).each(collide(.5)).attr(
-		// "cx", function(d) {
-		// return d.x;
-		// }).attr("cy", function(d) {
-		// return d.y;
-		// });
 
 		// adjust text to circle
 		text.attr("transform", transform);
@@ -460,9 +375,9 @@ var decisionGraph = (function() {
 					+ " 0 0,1 " // + d.target.x
 					+ targetX + "," + targetY;
 		}
-//		var t = 1.8 * Math.PI
-//		targetX = d.target.radius * Math.cos(t) + d.target.x;
-//		targetY = d.target.radius * Math.sin(t) + d.target.y;
+		// var t = 1.8 * Math.PI
+		// targetX = d.target.radius * Math.cos(t) + d.target.x;
+		// targetY = d.target.radius * Math.sin(t) + d.target.y;
 		// + d.target.y;
 		// requiring relation get different radius
 		return "M" + (d.source.x) + "," + (d.source.y) + "A" + (dr * 0.6) + ","
@@ -556,11 +471,11 @@ var decisionGraph = (function() {
 	// }
 
 	function setCircleFill(d) {
-		return getColor(d.group);
+		return cdsfPlus.getColor(d.group);
 	}
 
 	function setStrokeFill(d) {
-		return getColor("dp" + d.cluster);
+		return cdsfPlus.getColor("dp" + d.cluster);
 	}
 
 	// tooltip text
@@ -572,8 +487,8 @@ var decisionGraph = (function() {
 	}
 
 	// resize decGraph
-	function resizeLayout(linkTypes) {
-		 initialize(linkTypes);
+	function resizeLayout() {
+		initialize();
 	}
 
 	// check if pair are neighbours
@@ -617,6 +532,35 @@ var decisionGraph = (function() {
 		path.transition().duration(300).style("opacity", null);
 	}
 
+	var removeRelationType = function(type) {
+		for (var int = 0; int < relations.length; int++) {
+			if (relations[int] == type) {
+				relations.splice(int, 1);
+				break;
+			}
+		}
+		setLinks();
+	};
+
+	var removeAllRelations = function(type) {
+		relations.splice(0, relations.length);
+		relations.push([ "" ]);
+		setLinks();
+	};
+
+	var setAllRelations = function(type) {
+		relations.splice(0, relations.length);
+		type.forEach(function(d) {
+			relations.push(d);
+		});
+		setLinks();
+	};
+
+	var addRelationType = function(type) {
+		relations.push(type);
+		setLinks();
+	};
+
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json;
 		// initialize();
@@ -626,7 +570,10 @@ var decisionGraph = (function() {
 	return {
 		update : update,
 		initialize : initialize,
-		setLinks : setLinks,
+		removeRelationType : removeRelationType,
+		addRelationType : addRelationType,
+		setAllRelations : setAllRelations,
+		removeAllRelations : removeAllRelations,
 		resizeLayout : resizeLayout,
 	};
 })();

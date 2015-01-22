@@ -1,5 +1,5 @@
 //TreeLayout Module
-var treeGraph = function() {
+var treeGraph = (function() {
 
 	// Padding for svg container
 	var padding = {
@@ -21,7 +21,7 @@ var treeGraph = function() {
 
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = marginConvention(padding, config.minHeight);
+		mC = cdsfPlus.marginConvention(padding, config.minHeight);
 
 		// delete old svg content
 		d3.select("#svgContainer").remove();
@@ -60,11 +60,11 @@ var treeGraph = function() {
 			root.children.forEach(toggleAll);
 		}
 		// update tree depending on node
-		
+
 		visGroup = svg.append("g").attr('id', 'visualization').attr(
 				"transform",
 				"translate(" + padding.left + "," + padding.top + ")");
-		
+
 		update(root, svg);
 	}
 
@@ -191,8 +191,8 @@ var treeGraph = function() {
 				});
 
 		// Enter any new links at the parent's previous position.
-		link.enter().insert("path", "g").attr("class", "treeLink").attr(
-				"d", function(d) {
+		link.enter().insert("path", "g").attr("class", "treeLink").attr("d",
+				function(d) {
 					var o = {
 						x : source.x0,
 						y : source.y0
@@ -240,12 +240,12 @@ var treeGraph = function() {
 
 	// set circle storke
 	function setCircleStroke(d) {
-		return getColor(d.group);
+		return cdsfPlus.getColor(d.group);
 	}
 
 	// set color of fill
 	function setCircleFill(d) {
-		return getColor(d.group);
+		return cdsfPlus.getColor(d.group);
 	}
 
 	// wrap text items in multiple tspans to avoid foreignobject which is not
@@ -260,7 +260,7 @@ var treeGraph = function() {
 			var amountSpans = 1;
 			var tspan = text.text(null).append("tspan").attr("x", x).attr("y",
 					y).attr("dy", dy);
-			while (word = words.pop()) {
+			while (typeof (word = words.pop()) !== 'undefined') {
 				line.push(word);
 				tspan.text(line.join(" "));
 				if (tspan.node().getComputedTextLength() > width) {
@@ -295,42 +295,6 @@ var treeGraph = function() {
 				+ ')</p><p><strong>Description: </strong>' + d.description
 				+ '</p> <p><strong>Classification: </strong>'
 				+ d.classification + '</p';
-	}
-
-	// show all decision points
-	function showDps() {
-		root.children.forEach(toggleNeg);
-		update(root, svg);
-	}
-
-	// show all decisions
-	function showDecisions() {
-		root.children.forEach(function(d) {
-			if (d.children) {
-				d.children.forEach(toggleNeg);
-			}
-			if (d._children) {
-				d.children = d._children;
-				d._children = null;
-				d.children.forEach(toggleNeg);
-			}
-		});
-		update(root, svg);
-	}
-
-	// show all outcomes
-	function showOutcomes() {
-		root.children.forEach(function(d) {
-			if (d.children) {
-				d.children.forEach(togglePos);
-			}
-			if (d._children) {
-				d.children = d._children;
-				d._children = null;
-				d.children.forEach(togglePos);
-			}
-		});
-		update(root, svg);
 	}
 
 	// collapse all datapoints
@@ -369,11 +333,47 @@ var treeGraph = function() {
 		}
 	}
 
+	// show all decision points
+	var showDps = (function() {
+		root.children.forEach(toggleNeg);
+		update(root, svg);
+	});
+
+	// show all decisions
+	var showDecisions = (function() {
+		root.children.forEach(function(d) {
+			if (d.children) {
+				d.children.forEach(toggleNeg);
+			}
+			if (d._children) {
+				d.children = d._children;
+				d._children = null;
+				d.children.forEach(toggleNeg);
+			}
+		});
+		update(root, svg);
+	});
+
+	// show all outcomes
+	var showOutcomes = (function() {
+		root.children.forEach(function(d) {
+			if (d.children) {
+				d.children.forEach(togglePos);
+			}
+			if (d._children) {
+				d.children = d._children;
+				d._children = null;
+				d.children.forEach(togglePos);
+			}
+		});
+		update(root, svg);
+	});
+
 	// resize tree without collapsing nodes
-	function resizeLayout() {
+	var resizeLayout = (function() {
 		resize = true;
 		initialize();
-	}
+	});
 
 	// get data and create tree
 	d3.json("./data/cloudDSFPlus.json", function(json) {
@@ -383,11 +383,10 @@ var treeGraph = function() {
 
 	// revealing module
 	return {
-		update : update,
-		initialize : initialize,
 		resizeLayout : resizeLayout,
 		showDps : showDps,
 		showDecisions : showDecisions,
 		showOutcomes : showOutcomes,
+		initialize : initialize,
 	};
-}();
+})();
