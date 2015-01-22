@@ -17,14 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ======================================================================== */
- 
- 
- /*
+
+/*
  * This file has been changed in order to implement the Cloud Decision Support Framework Plus.
  * Copyright 2015 Balduin Metz	
  */
- 
- 
 @CHARSET "UTF-8";
 
 /* General Element Styles */
@@ -331,13 +328,15 @@ html {}
 
 /* visContent */
 /* ========================================== */
- #visContentDIV {
+#visContentDIV {
 	/* width: 80%;
 	float: left;
 		background-color: #FFFFFF; */
 	border-right: solid 1px #BDBDBD;
 	padding-right: 0px;
-} 
+	padding-top: 10px;
+}
+
 #visContent {
 	/* 	height: 900px;
 	width: 900px;
@@ -350,11 +349,7 @@ html {}
 	/* border-right: solid 1px #DDDDDD; */
 	/* border-right: solid 2px #BDBDBD; */
 	/* text-align: center !important; */
-}
-
-.top-buffer {
-	border-top: solid 1px #BDBDBD;
-	 margin-top: 20px; 
+	
 }
 
 /* #layoutLegend {
@@ -395,7 +390,7 @@ html {}
 	/* 	background-color: #FFFFFF;
 	border-bottom: solid 1px #DDDDDD;  */
 	padding-left: 0px;
-	padding-right:0px;
+	padding-right: 0px;
 }
 
 /* #visRightContent {

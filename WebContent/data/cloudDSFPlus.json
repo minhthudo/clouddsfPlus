@@ -927,427 +927,427 @@
     "source" : 101,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 101,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 101,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 101,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 102,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 103,
     "target" : 101,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 103,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 103,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 103,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 103,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 103,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 103,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 104,
     "target" : 101,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 104,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 104,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 104,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 104,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 104,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 201,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 202,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 203,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 204,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 201,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 201,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 202,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 202,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 202,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 202,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 203,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 203,
     "target" : 204,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 203,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 203,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 203,
     "target" : 202,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 203,
     "target" : 204,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 204,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 204,
     "target" : 203,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 204,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 204,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 204,
     "target" : 203,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 301,
     "target" : 101,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 301,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 301,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 301,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 301,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 301,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 301,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 401,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 401,
     "target" : 404,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 401,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 401,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 401,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 402,
     "target" : 103,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 104,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 202,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 203,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 204,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 402,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 403,
     "target" : 401,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 403,
     "target" : 404,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 403,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 403,
     "target" : 407,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 403,
     "target" : 407,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   }, {
     "source" : 404,
     "target" : 401,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 404,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 404,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 405,
     "target" : 201,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 202,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 203,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 204,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 301,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 401,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 402,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 404,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 406,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 405,
     "target" : 407,
     "relationGroup" : "decRel",
-    "type" : "Binding"
+    "type" : "binding"
   }, {
     "source" : 406,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 407,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Influencing"
+    "type" : "influencing"
   }, {
     "source" : 407,
     "target" : 405,
     "relationGroup" : "decRel",
-    "type" : "Affecting"
+    "type" : "affecting"
   }, {
     "source" : 407,
     "target" : 403,
     "relationGroup" : "decRel",
-    "type" : "Requiring"
+    "type" : "requiring"
   } ],
   "outcomeLinks" : [ {
     "source" : 10101,
