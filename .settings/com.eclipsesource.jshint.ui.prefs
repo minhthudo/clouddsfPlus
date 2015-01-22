@@ -1,3 +1,0 @@
-eclipse.preferences.version=1
-excluded=//legacyVisualizations.js\:WebContent/js/lib//*
-included=//*.js
