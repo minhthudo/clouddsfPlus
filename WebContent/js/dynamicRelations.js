@@ -2,13 +2,13 @@
  * @type dynamicGraph
  */
 var dynamicGraph = (function() {
-
+	modals.showProgress();
 	// Padding for svg container
 	var padding = {
-		top : 30,
-		right : 30,
-		bottom : 40,
-		left : 30
+		top : 50,
+		right : 10,
+		bottom : 10,
+		left : 10
 	};
 	// configuration
 	var config = {
@@ -33,7 +33,7 @@ var dynamicGraph = (function() {
 		chOut : -400,
 
 		minHeight : 1400,
-		minWidth : 1600,
+		minWidth : 1500,
 
 		legendRelations : [ "Including", "Excluding", "Affecting", "Binding",
 				"Allowing" ],
@@ -90,6 +90,9 @@ var dynamicGraph = (function() {
 						"markerUnits", "strokeWidth").attr("orient", "auto")
 				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
 						"class", function(d) {
+							if (d.conflict === true) {
+								return "outRel " + d + " outRelArrow conflict"
+							}
 							return "outRel " + d + " outRelArrow";
 						});
 
@@ -99,19 +102,57 @@ var dynamicGraph = (function() {
 				.attr("class", function(d) {
 					return "outRel " + d;
 				}).attr("x1", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 0.5);
-				}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
-					return (mC.iWidth / 10) * ((i * 2) + 1.5);
+					return (mC.iWidth / 15) * ((i * 1.5) + 0.5);
+				}).attr("y1", "2.5em").attr("y2", "2.5em").attr("x2", function(d, i) {
+					return (mC.iWidth / 15) * ((i * 1.5) + 1.5);
 				}).attr("marker-end", function(d) {
 					return "url(#" + d + ")";
 				});
 		// set text in the middle below the links
 		legend.selectAll("text").data(config.legendRelations).enter().append(
 				"text").attr("x", function(d, i) {
-			return (mC.iWidth / 10) * ((i * 2) + 1);
-		}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle").text(
+			return (mC.iWidth / 15) * ((i * 1.5) + 1);
+		}).attr("y", "2.5em").attr("dy", "2em").attr("text-anchor", "middle").text(
 				function(d) {
 					return d + " Relation";
+				});
+		legend.selectAll("circle").data(
+				[ "dp1", "dec1", "out1", "oex", "ocon" ]).enter().append(
+				"circle").attr("cx", function(d, i) {
+			return (mC.iWidth / 15) * ((i * 1.5) + 8.5);
+		}).attr("cy", "1.5em").style("fill", function(d) {
+			if (d == "oex" || d == "ocon")
+				return getColor("out1");
+			return getColor(d);
+		}).attr("r", function(d) {
+			switch (d) {
+			case "dp1":
+				return config.dpWidth;
+			case "dec1":
+				return config.decWidth;
+			case "out1":
+				return config.outWidth - 1;
+			default:
+				return config.outWidth
+			}
+		}).attr("class", function(d) {
+			switch (d) {
+			case "out1":
+				return "highlighted";
+			case "oex":
+				return "deactivated";
+			case "ocon":
+				return "conflicting";
+			}
+		});
+		legend.selectAll("text .legend").data(
+				[ "Decision Point", "Decision", "Highlighted Outcome",
+						"Excluded Outcome", "Conflicted Outcome" ]).enter()
+				.append("text").attr("x", function(d, i) {
+					return (mC.iWidth / 15) * ((i * 1.5) + 8.5);
+				}).attr("y", "1.5em").attr("dy", "3em").attr("text-anchor",
+						"middle").text(function(d) {
+					return d;
 				});
 
 		// tooltip
@@ -224,6 +265,9 @@ var dynamicGraph = (function() {
 		});
 		// enter new links
 		path.enter().insert("path").attr("class", function(d) {
+			// if (d.conflict === true) {
+			// return d.relationGroup + " " + d.type + " conflict";
+			// }
 			return d.relationGroup + " " + d.type;
 		}).attr("marker-end", function(d) {
 			return "url(#" + d.type + ")";
@@ -293,13 +337,14 @@ var dynamicGraph = (function() {
 		// calculate layout for a few round than set dps fixed
 		if (start === true) {
 			force.start();
-			for (var i = 0; i < 230; ++i)
+			for (var i = 0; i < 250; ++i)
 				force.tick();
 			force.stop();
 			force.nodes().forEach(function(d) {
 				d.fixed = true;
 			});
 			start = false;
+			modals.hideProgress();
 		} else // in case layout has been calcuated just resume it shortly
 		{
 			force.start();
@@ -389,19 +434,18 @@ var dynamicGraph = (function() {
 				if (d.type == relationTypes[i])
 					return d;
 			}
-		}).forEach(function(link) {
-			var source = node_lookup[link.source];
-			var target = node_lookup[link.target];
-			if (source.highlighted === true) {
-				// todo alle auf graphLinks umstellen
-				var newLink = {};
-				newLink.relationGroup = link.relationGroup;
-				newLink.type = link.type;
-				newLink.source = source;
-				newLink.target = target;
-				outcomePaths.push(newLink);
-			}
-		});
+		}).forEach(
+				function(link) {
+					var source = node_lookup[link.source];
+					var target = node_lookup[link.target];
+					if (source.highlighted === true) {
+						// todo alle auf graphLinks umstellen
+						var newGraphLink = new graphLink(source, target,
+								link.type, link.relationGroup, link.active,
+								link.conflict);
+						outcomePaths.push(newGraphLink);
+					}
+				});
 	}
 
 	/**
@@ -544,7 +588,7 @@ var dynamicGraph = (function() {
 		}
 		if (conflict) {
 			console.log("do nothing because there is a conflict");
-			confirmChanges(false);
+			confirmChanges(true);
 		} else {
 			confirmChanges(true);
 		}
@@ -557,44 +601,37 @@ var dynamicGraph = (function() {
 	 */
 	function confirmChanges(confirm) {
 		if (confirm === true) {
-			tempNodes.forEach(function(d) {
-				var oNode = node_lookup[d.id];
-				oNode.selectable = d.selectable;
-				oNode.excluded = d.excluded;
-				oNode.highlighted = d.highlighted;
+			tempNodes.forEach(function(tempNode) {
+				var oNode = node_lookup[tempNode.id];
+				oNode.selectable = tempNode.selectable;
+				oNode.excluded = tempNode.excluded;
+				oNode.highlighted = tempNode.highlighted;
+				oNode.conflicting = tempNode.conflicting;
 			});
 			tempLinks
 					.forEach(function(tempLink) {
 						var oLink = link_lookup[tempLink.source + ","
 								+ tempLink.target];
 						oLink.active = tempLink.active;
+						oLink.conflict = tempLink.conflict;
 					});
 			setOutcomePaths();
 			update();
 		} else {
-			tempNodes.forEach(function(d) {
-				var oNode = node_lookup[d.id];
-				d.selectable = oNode.selectable;
-				d.excluded = oNode.excluded;
-				d.highlighted = oNode.highlighted;
+			tempNodes.forEach(function(tempNode) {
+				var oNode = node_lookup[tempNode.id];
+				tempNode.selectable = oNode.selectable;
+				tempNode.excluded = oNode.excluded;
+				tempNode.highlighted = oNode.highlighted;
 			});
 			tempLinks
 					.forEach(function(tempLink) {
 						var oLink = link_lookup[tempLink.source + ","
 								+ tempLink.target];
 						tempLink.active = oLink.active;
+						tempLink.conflict = oLink.conflict;
 					});
 		}
-	}
-
-	/**
-	 * 
-	 * @memberOf dynamicGraph.d3
-	 */
-	function setRelationTypes(types) {
-		relationTypes = types;
-		setOutcomePaths();
-		update();
 	}
 
 	/**
@@ -772,6 +809,10 @@ var dynamicGraph = (function() {
 	 */
 	function setCircleClass(d) {
 		if (d.type == "out") {
+			if (d.conflicting === true) {
+				console.log("conflicting");
+				return "conflicting";
+			}
 			if (d.selectable === false || d.excluded === true) {
 				return "deactivated";
 			}
@@ -806,6 +847,7 @@ var dynamicGraph = (function() {
 	// shift to initialize() methode and set content in callback
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json.cdsfPlus;
+
 		outcomeLinks = json.outcomeLinks;
 
 		initialNodes = flatten(root);
@@ -871,9 +913,69 @@ var dynamicGraph = (function() {
 		return node_lookup;
 	});
 
-	function graphLink(source, target, type) {
+	var resetSelection = (function() {
+		tempNodes.forEach(function(d) {
+			d.resetEverything();
+			// d.checkIncomingLinks();
+		});
+		confirmChanges(true);
+	});
+
+	var setData = (function(json) {
+		var newTempNodes = json.tempNodes;
+		var newTempLinks = json.tempLinks;
+		newTempLinks.forEach(function(d) {
+			var tempLink = tempLinks_lookup[d.source + "," + d.target];
+			tempLink.active = d.active;
+			tempLink.conflict = d.conflict;
+		});
+
+		newTempNodes.forEach(function(d) {
+			var tempNode = tempNodes_lookup[d.id];
+			tempNode.selectable = d.selectable;
+			tempNode.excluded = d.excluded;
+			tempNode.highlighted = d.highlighted;
+			tempNode.conflicting = d.conflicting;
+			tempNode.checkIncomingLinks();
+		});
+		confirmChanges(true);
+	});
+
+	var getData = (function(d) {
+		var data = {};
+		data.tempNodes = tempNodes;
+		data.tempLinks = tempLinks;
+		var json = JSON.stringify(data, null, 3);
+		var blob = new Blob([ json ], {
+			type : "application/json"
+		});
+		var url = URL.createObjectURL(blob);
+		return url;
+	});
+
+	var removeRelationType = (function(type) {
+		for (var int = 0; int < relationTypes.length; int++) {
+			if (relationTypes[int] == type) {
+				relationTypes.splice(int, 1);
+				break;
+			}
+		}
+		setOutcomePaths();
+		update();
+	});
+
+	var addRelationType = (function(type) {
+		relationTypes.push(type);
+		setOutcomePaths();
+		update();
+	});
+
+	function graphLink(source, target, type, relationGroup, active, conflict) {
 		this.source = source;
 		this.target = target;
+		this.relationGroup = relationGroup;
+		this.active = active;
+		this.conflict = conflict;
 		this.type = type;
 	}
 
@@ -892,7 +994,8 @@ var dynamicGraph = (function() {
 	function tempNode(outGroup, id, type, label) {
 		this.selectable = true;
 		this.excluded = false;
-		this.higlighted = false;
+		this.highlighted = false;
+		this.conflicting = false;
 		this.outGroup = outGroup;
 		this.id = id;
 		this.label = label;
@@ -903,7 +1006,6 @@ var dynamicGraph = (function() {
 		this.outgoingLinks = [];
 		this.activateOutgoingLinks = function() {
 			this.outgoingLinks.forEach(function(d) {
-				console.log("test");
 				d.active = true;
 			});
 		}
@@ -929,8 +1031,20 @@ var dynamicGraph = (function() {
 			});
 			this.excluding = ex;
 			this.including = inc;
+			// check if there is already a conflict
+			if (this.conflicting === true) {
+				this.setConflictingLinks(false);
+				this.conflicting = false;
+			}
+			// yes see if there is still one and if yes
 			if (this.including > 0 && this.excluding > 0) {
-				// todo
+				this.conflicting = true;
+				this.setConflictingLinks(true);
+				return true;
+			}
+			if (this.excluding > 0 && this.highlighted === true) {
+				this.conflicting = true;
+				this.setConflictingLinks(true);
 				return true;
 			}
 			if (this.excluding > 0) {
@@ -942,6 +1056,14 @@ var dynamicGraph = (function() {
 				return false;
 			}
 			return false;
+		}
+
+		this.setConflictingLinks = function(conflict) {
+			this.incomingLinks.forEach(function(d) {
+				if ((d.type == "ex" || d.type == "in") && d.active === true) {
+					d.changeConflict(conflict);
+				}
+			});
 		}
 
 		this.getRestrictingNodes = function() {
@@ -978,25 +1100,37 @@ var dynamicGraph = (function() {
 			}
 			this.selectable = false;
 		}
+
+		this.resetEverything = function() {
+			this.selectable = true;
+			this.excluded = false;
+			this.highlighted = false;
+			this.conflicting = false;
+			this.deactivateOutgoingLinks();
+		}
 	}
 
 	// Reveal module pattern, offer functions to the outside
 	return {
-		update : update,
-		initialize : initialize,
-		setOutCharge : setOutCharge,
-		setDecCharge : setDecCharge,
-		setDpCharge : setDpCharge,
-		setRootCharge : setRootCharge,
-		setGravity : setGravity,
-		getOutCharge : getOutCharge,
-		getDecCharge : getDecCharge,
-		getDpCharge : getDpCharge,
-		getRootCharge : getRootCharge,
-		getGravity : getGravity,
-		setRelationTypes : setRelationTypes,
+		// update : update,
+		// initialize : initialize,
+		// setOutCharge : setOutCharge,
+		// setDecCharge : setDecCharge,
+		// setDpCharge : setDpCharge,
+		// setRootCharge : setRootCharge,
+		// setGravity : setGravity,
+		// getOutCharge : getOutCharge,
+		// getDecCharge : getDecCharge,
+		// getDpCharge : getDpCharge,
+		// getRootCharge : getRootCharge,
+		// getGravity : getGravity,
 		selectDecisionOutcome : selectDecisionOutcome,
 		getLookup : getLookup,
+		getData : getData,
+		resetSelection : resetSelection,
+		addRelationType : addRelationType,
+		removeRelationType : removeRelationType,
+		setData : setData,
 		forceExcludedSelectableOutcome : forceExcludedSelectableOutcome,
 	};
 })();

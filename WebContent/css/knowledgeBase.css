@@ -96,7 +96,7 @@
 }
 
 .outRel.aff {
-	stroke: #fdd0a2;
+	stroke: #c6dbef;
 	stroke-dasharray: 2, 2;
 	opacity: 1;
 }
@@ -115,7 +115,7 @@
 
 .outRel.ex {
 	fill: none;
-	stroke: #c6dbef;
+	stroke: #d9d9d9;
 	opacity: 1;
 }
 
@@ -194,5 +194,15 @@
 }
 
 .selectable {
-	cursoer: pointer;
+	cursor: pointer;
+}
+
+.conflicting {
+	fill: red !important;
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.conflict {
+	stroke: red !important;
 }
