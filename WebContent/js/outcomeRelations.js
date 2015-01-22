@@ -35,7 +35,7 @@ var outcomeGraph = (function() {
 		relations : [ "in", "ex", "aff", "eb", "a" ],
 	};
 
-	var relationTypes = config.relations;
+	var relationTypes = [ "in", "ex" ];
 	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
 	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle;

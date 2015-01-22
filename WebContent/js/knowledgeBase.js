@@ -25,26 +25,26 @@ var kbStartup = (function() {
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "binding");
+							setDecisionRelations(state, "binding");
 						});
 
 		$("[name='toggleInfluencing']").bootstrapSwitch('labelText',
 				"Influencing").bootstrapSwitch('state', false).bootstrapSwitch(
 				'size', 'small').on('switchChange.bootstrapSwitch',
 				function(event, state) {
-					setRelations(state, "influencing");
+					setDecisionRelations(state, "influencing");
 				});
 		$("[name='toggleAffecting']").bootstrapSwitch('labelText', "Affecting")
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "affecting");
+							setDecisionRelations(state, "affecting");
 						});
 		$("[name='toggleRequiring']").bootstrapSwitch('labelText', "Requiring")
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "requiring");
+							setDecisionRelations(state, "requiring");
 						});
 		$("[name='toggleAll']").bootstrapSwitch('labelText', "All")
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
@@ -62,6 +62,14 @@ var kbStartup = (function() {
 								decisionGraph.removeAllRelations();
 						});
 	};
+
+	function setDecisionRelations(state, type) {
+		if (state === true) {
+			decisionGraph.addRelationType(type);
+		} else {
+			decisionGraph.removeRelationType(type);
+		}
+	}
 
 	var setOutcomeGraphToolbar = function() {
 		$('#showAll').on('click', function(event) {
@@ -82,35 +90,35 @@ var kbStartup = (function() {
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "eb");
+							setOutcomeRelations(state, "eb");
 						});
 
 		$("[name='outExcluding']").bootstrapSwitch('labelText', "Excluding")
-				.bootstrapSwitch('state', false).bootstrapSwitch('size',
+				.bootstrapSwitch('state', true).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "ex");
+							setOutcomeRelations(state, "ex");
 						});
 
 		$("[name='outAffecting']").bootstrapSwitch('labelText', "Affecting")
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "aff");
+							setOutcomeRelations(state, "aff");
 						});
 
 		$("[name='outAllowing']").bootstrapSwitch('labelText', "Allowing")
 				.bootstrapSwitch('state', false).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "a");
+							setOutcomeRelations(state, "a");
 						});
 
 		$("[name='outIncluding']").bootstrapSwitch('labelText', "Including")
-				.bootstrapSwitch('state', false).bootstrapSwitch('size',
+				.bootstrapSwitch('state', true).bootstrapSwitch('size',
 						'small').on('switchChange.bootstrapSwitch',
 						function(event, state) {
-							setRelations(state, "in");
+							setOutcomeRelations(state, "in");
 						});
 
 		$("[name='outcomeToggleAll']").bootstrapSwitch('labelText', "All")
@@ -122,17 +130,17 @@ var kbStartup = (function() {
 					});
 					if (state === true) {
 						var relations = [ "ex", "in", "aff", "a", "eb" ];
-						decisionGraph.setAllRelations(relations);
+						outcomeGraph.setAllRelations(relations);
 					} else
-						decisionGraph.removeAllRelations();
+						outcomeGraph.removeAllRelations();
 				});
 	};
 
-	function setRelations(state, type) {
+	function setOutcomeRelations(state, type) {
 		if (state === true) {
-			decisionGraph.addRelationType(type);
+			outcomeGraph.addRelationType(type);
 		} else {
-			decisionGraph.removeRelationType(type);
+			outcomeGraph.removeRelationType(type);
 		}
 	}
 
