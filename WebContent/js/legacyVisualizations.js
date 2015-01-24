@@ -94,7 +94,7 @@ var layoutTreemapDefaultSettings = {
 // var forceLayoutData;
 // var partitionLayoutData;
 var visualizationData;
-
+//@Metz only one synchronous retrieval
 var jsonRetrieval = function() {
 	$.ajax({
 		url : "./data/cloudDSF.json",
