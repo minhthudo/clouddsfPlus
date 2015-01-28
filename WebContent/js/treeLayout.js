@@ -17,9 +17,9 @@ var treeGraph = (function() {
 	};
 
 	var tree, nodes, root, svg, diagonal, visGroup;
-	var mC, resize = false, tip;
+	var mC, tip;
 
-	function initialize() {
+	function initialize(reset) {
 		// compute panel size and margins after margin convention
 		mC = cdsfPlus.marginConvention(padding, config.minHeight);
 
@@ -55,7 +55,7 @@ var treeGraph = (function() {
 		root.x0 = mC.panelWidth / 2;
 		root.y0 = 0;
 		// if tree is resized avoid toggle of any nodes
-		if (!resize) {
+		if (reset === true) {
 			// collapse all children
 			root.children.forEach(toggleAll);
 		}
@@ -371,14 +371,13 @@ var treeGraph = (function() {
 
 	// resize tree without collapsing nodes
 	var resizeLayout = (function() {
-		resize = true;
-		initialize();
+		initialize(false);
 	});
 
 	// get data and create tree
 	d3.json("./data/cloudDSFPlus.json", function(json) {
 		root = json.cdsfPlus;
-		initialize();
+		initialize(true);
 	});
 
 	// revealing module
