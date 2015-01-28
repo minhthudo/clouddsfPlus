@@ -164,13 +164,14 @@
 	fill: none;
 	stroke: #4e4e4e;
 	stroke-width: 2px;
-	/* 	opacity:0.75; */
+	stroke-linecap: round;
 }
 
 .arrow {
 	stroke: #4e4e4e;
-	fill :  #4e4e4e;
+	fill: #4e4e4e;
 	stroke-linejoin: round;
+	stroke-dasharray: 0;
 }
 
 .influencingArrow {
@@ -187,16 +188,18 @@
 	fill: #a7a7a7;
 }
 
+.requiringArrow {
+	
+}
+
 .link.affecting {
 	stroke-dasharray: 4, 4;
 	stroke: #a7a7a7;
-	/* opacity: 0.5; */
 }
 
 .link.binding {
 	stroke-dasharray: 25, 10;
 	stroke: #a7a7a7;
-	/* 	opacity: 0.5; */
 }
 
 .link.requiring {
