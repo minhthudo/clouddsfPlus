@@ -117,14 +117,15 @@
 
 .outRel.ex {
 	fill: none;
-	stroke: #d9d9d9;
-	opacity: 1;
+	stroke: #222;
+	opacity: 0.75;
 }
 
 .outRel.in {
 	fill: none;
-	stroke: #c7e9c0;
-	opacity: 1;
+	stroke-dasharray: 20, 5;
+	stroke: #222;
+	opacity: 0.75;
 }
 
 .outRelArrow {
@@ -161,35 +162,45 @@
 /*DecisionGraph*/
 .link {
 	fill: none;
-	stroke: #222;
+	stroke: #4e4e4e;
 	stroke-width: 2px;
+	/* 	opacity:0.75; */
 }
 
 .arrow {
-	fill: #222;
+	stroke: #4e4e4e;
+	fill :  #4e4e4e;
+	stroke-linejoin: round;
 }
 
 .influencingArrow {
 	fill: none;
-	stroke-width: 2px;
-	stroke: #222;
+}
+
+.bindingArrow {
+	stroke: #a7a7a7;
+	fill: #a7a7a7;
+}
+
+.affectingArrow {
+	stroke: #a7a7a7;
+	fill: #a7a7a7;
 }
 
 .link.affecting {
 	stroke-dasharray: 4, 4;
-	opacity: 0.25;
+	stroke: #a7a7a7;
+	/* opacity: 0.5; */
 }
 
 .link.binding {
 	stroke-dasharray: 25, 10;
-	/* stroke: #000; */
-	opacity: 0.5;
+	stroke: #a7a7a7;
+	/* 	opacity: 0.5; */
 }
 
 .link.requiring {
-	/* stroke: #e6550d; */
-	stroke-dasharray: 15, 10, 5, 10;
-	opacity: 0.75;
+	stroke-dasharray: 20, 8, 6, 8;
 }
 
 .decCircle {

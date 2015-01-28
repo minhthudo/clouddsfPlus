@@ -74,20 +74,20 @@ var decisionGraph = (function() {
 		svg.append("defs").selectAll("marker").data(legendRelations).enter()
 				.append("marker").attr("id", function(d) {
 					return d.toLowerCase();
-				}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-					if (d == "Requiring")
-						return 10;
-					return 10;
-				}).attr("refY", function(d) {
-					if (d == "Requiring")
-						return 5;
-					return 5;
-				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+				})
+				.attr("refX", "9.8").attr("refY", function(d) {
+					if (d.type == "Influencing")
+						return "3";
+					return "5";
+				}).attr("markerWidth", 12).attr("markerHeight", 12).attr(
 						"markerUnits", "strokeWidth").attr("orient", "auto")
-				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
-						"class", function(d) {
-							return d.toLowerCase() + "Arrow";
-						});
+				.append("svg:path").attr("d", function(d) {
+					if (d.type == "influencing")
+						return "M 0,0 L10,3 L0,6";
+					return "M 0,2 L10,5 L0,8";
+				}).attr("class", function(d) {
+					return "arrow " + d.toLowerCase() + "Arrow";
+				});
 
 		// create legend above chart
 		var legend = svg.append("g");
@@ -96,7 +96,7 @@ var decisionGraph = (function() {
 					return "link " + d.toLowerCase();
 				}).attr("x1", function(d, i) {
 					return (mC.iWidth / 8) * ((i * 2) + 0.5);
-				}).attr("y1", 0).attr("y2", 0).attr("x2", function(d, i) {
+				}).attr("y1", 5).attr("y2", 5).attr("x2", function(d, i) {
 					return (mC.iWidth / 8) * ((i * 2) + 1.5);
 				}).attr("marker-end", function(d) {
 					return "url(#" + d.toLowerCase() + ")";
@@ -104,7 +104,7 @@ var decisionGraph = (function() {
 		legend.selectAll("text").data(legendRelations).enter().append("text")
 				.attr("x", function(d, i) {
 					return (mC.iWidth / 8) * ((i * 2) + 1);
-				}).attr("y", 0).attr("dy", "2em").attr("text-anchor", "middle")
+				}).attr("y", 5).attr("dy", "2em").attr("text-anchor", "middle")
 				.text(function(d) {
 					return d + " Relation";
 				});
@@ -369,7 +369,7 @@ var decisionGraph = (function() {
 		// var addY = 0;
 		// if(targetX > d.source.x) {addX = -15; } else {addX = 15;}
 		// if(targetY > d.source.y) {addY = -25.9;} else {addY = 25.9;}
-		if (d.type != "Requiring") {
+		if (d.type != "requiring") {
 
 			return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
 					+ " 0 0,1 " // + d.target.x

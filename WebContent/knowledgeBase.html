@@ -69,10 +69,10 @@
 							Layout</span>
 				</a></li>
 				<li><a id="btnList_DecRel" href="#"> <span>Decision
-							Relations</span>
+							Relations Layout</span>
 				</a></li>
 				<li><a id="btnList_OutRel" href="#"> <span>Outcome
-							Relations</span>
+							Relations Layout</span>
 				</a></li>
 			</ul>
 		</div>
@@ -82,81 +82,87 @@
 
 		<div class="row" id="toolbarTree">
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2" style="padding: 10px 10px;">
+				<div class="col-lg-8 col-lg-offset-2">
 					<h4>Hierarchical Layout</h4>
 					<p>The hierarchical layot shows the structure of CloudDSF+ with
 						Decision Points, Decisions and Outcomes. For easier navigation all
 						elements can be toggled at once with the respective controls.</p>
 				</div>
 			</div>
-			<div class="col-lg-8 col-lg-offset-2">
-				<div class="btn-group-sm">
-					<button id="showDps" class="btn btn-primary" role="button">Show
-						All Decision Points</button>
-					<button id="showDecs" class="btn btn-primary" role="button">Show
-						All Decisions</button>
-					<button id="showOutcomes" class="btn btn-primary" role="button">Show
-						All Outcomes</button>
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					<div class="btn-group-sm">
+						<button id="showDps" class="btn btn-primary" role="button">Show
+							All Decision Points</button>
+						<button id="showDecs" class="btn btn-primary" role="button">Show
+							All Decisions</button>
+						<button id="showOutcomes" class="btn btn-primary" role="button">Show
+							All Outcomes</button>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row hidden" id="toolbarDecisions">
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace"
-					style="padding: 10px 10px;">
+				<div class="col-lg-8 col-lg-offset-2 vspace">
 					<h4>Decision Relations Layout</h4>
-					<p>The visualization show all decision of CloudDSF+ clustered
-						by their respective decision point. All identified relationship
+					<p>The visualization shows all decisions of CloudDSF+ clustered
+						by their respective decision points. All identified relationship
 						types can be toggled through the respective controls. Clicking on
-						a decision will highlight its outgoing decisions.</p>
+						a decision will highlight its outgoing relations while fading out everything else.</p>
 				</div>
 			</div>
-			<div class="col-lg-8 col-lg-offset-2 vspace">
-				<div class="btn-group" role="group">
-					<span><strong>Toggle Relationships: </strong></span> <input
-						type="checkbox" name="toggleAll" checked></input> <input
-						type="checkbox" class="toggle-state-switch" name="toggleBinding"
-						checked></input> <input type="checkbox"
-						class="toggle-state-switch" name="toggleAffecting" checked></input>
-					<input type="checkbox" class="toggle-state-switch"
-						name="toggleInfluencing" checked></input> <input type="checkbox"
-						class="toggle-state-switch" name="toggleRequiring" checked></input>
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 vspace">
+					<div class="btn-group" role="group">
+						<span><strong>Toggle Relationships: </strong></span> <input
+							type="checkbox" name="toggleAll" checked></input> <input
+							type="checkbox" class="toggle-state-switch" name="toggleBinding"
+							checked></input> <input type="checkbox"
+							class="toggle-state-switch" name="toggleAffecting" checked></input>
+						<input type="checkbox" class="toggle-state-switch"
+							name="toggleInfluencing" checked></input> <input type="checkbox"
+							class="toggle-state-switch" name="toggleRequiring" checked></input>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row hidden" id="toolbarOutcomes">
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace"
-					style="padding: 10px 10px;">
+				<div class="col-lg-8 col-lg-offset-2 vspace">
 					<h4>Outcome Relations Layout</h4>
 					<p>This visualization shows all outcomes of CloudDSF+. Clicking
 						on an outcome will highlight the outgoing relations depending on
 						the selection of relationship types</p>
 				</div>
 			</div>
-			<div class="btn-group  btn-group-sm vspace col-lg-offset-2"
-				role="group">
-				<button id="showAll" class="btn btn-primary" role="button">Show
-					All Relations</button>
-				<button id="hideAll" class="btn btn-primary" role="button">Hide
-					All Relations</button>
-				<button id="fixLayout" class="btn btn-primary" role="button">Fixated
-					Layout</button>
-				<button id="looseLayout" class="btn btn-primary" role="button">Loose
-					Layout</button>
+			<div class="row">
+				<div class="col-lg-10 btn-group btn-group-sm vspace col-lg-offset-2"
+					role="group">
+					<button id="showAll" class="btn btn-primary" role="button">Show
+						All Relations</button>
+					<button id="hideAll" class="btn btn-primary" role="button">Hide
+						All Relations</button>
+					<button id="fixLayout" class="btn btn-primary" role="button">Fixated
+						Layout</button>
+					<button id="looseLayout" class="btn btn-primary" role="button">Loose
+						Layout</button>
+				</div>
 			</div>
-
-			<div class="btn-group vspace col-lg-offset-2" role="group">
-				<span><strong>Toggle Relationships: </strong></span> <input
-					type="checkbox" name="outcomeToggleAll" checked></input> <input
-					type="checkbox" class="out-state-switch" name="outBinding" checked></input>
-				<input type="checkbox" class="out-state-switch" name="outAffecting"
-					checked></input> <input type="checkbox" class="out-state-switch"
-					name="outIncluding" checked></input> <input type="checkbox"
-					class="out-state-switch" name="outExcluding" checked></input> <input
-					type="checkbox" class="out-state-switch" name="outAllowing" checked></input>
+			<div class="row">
+				<div class="col-lg-10 btn-group vspace col-lg-offset-2" role="group">
+					<span><strong>Toggle Relationships: </strong></span> <input
+						type="checkbox" name="outcomeToggleAll" checked></input> <input
+						type="checkbox" class="out-state-switch" name="outBinding" checked></input>
+					<input type="checkbox" class="out-state-switch" name="outAffecting"
+						checked></input> <input type="checkbox" class="out-state-switch"
+						name="outIncluding" checked></input> <input type="checkbox"
+						class="out-state-switch" name="outExcluding" checked></input> <input
+						type="checkbox" class="out-state-switch" name="outAllowing"
+						checked></input>
+				</div>
 			</div>
 		</div>
 	</div>
