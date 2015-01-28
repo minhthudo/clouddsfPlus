@@ -35,10 +35,10 @@ var dynamicGraph = (function() {
 		minHeight : 1400,
 		minWidth : 1500,
 
-		legendRelations : [ "Including", "Excluding", "Affecting", "Binding",
-				"Allowing" ],
+		legendRelations : [ "Including", "Excluding", "Allowing", "Affecting",
+				"Binding" ],
 
-		relations : [ "in", "ex", "aff", "eb", "a" ],
+		relations : [ "in", "ex", "a", "aff", "eb" ],
 	};
 
 	// margin Convention variable and config
@@ -49,7 +49,7 @@ var dynamicGraph = (function() {
 	// d3 force layout variables
 	var force, nodes, links;
 	// d3 + svg layout variables for visualization elements
-	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle, labels;
+	var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle, labels;
 	// data nodes and links temp for serving state in case of rollback
 	var root, initialNodes, outcomeLinks, outcomePaths = [], tempNodes = [], tempLinks = [];
 	// helper variables for O(n) lookup
@@ -61,7 +61,8 @@ var dynamicGraph = (function() {
 	 */
 	function initialize() {
 		// compute panel size and margins after margin convention
-		mC = cdsfPlus.marginConvention(padding, config.minHeight, config.minWidth);
+		mC = cdsfPlus.marginConvention(padding, config.minHeight,
+				config.minWidth);
 
 		// select container and remove it in case it exists already
 		d3.select("#svgContainer").remove();
@@ -81,19 +82,26 @@ var dynamicGraph = (function() {
 		svg.append("defs").selectAll("marker").data(config.relations).enter()
 				.append("marker").attr("id", function(d) {
 					return d;
-				}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-					return 10;
-				}).attr("refY", function(d) {
-					return 5;
-				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+				}).attr("refX", "7.5").attr("refY", "4")
+				.attr("markerWidth", 10).attr("markerHeight", 10).attr(
 						"markerUnits", "strokeWidth").attr("orient", "auto")
-				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
-						"class", function(d) {
-							if (d.conflict === true) {
-								return "outRel " + d + " outRelArrow conflict";
-							}
-							return "outRel " + d + " outRelArrow";
-						});
+				.append("svg:path").attr("d", "M 0,2 L7,4 L0,6")
+				// ;
+				//		
+				// .attr("viewBox", "0 0 10 10")
+				// .attr("refX", function(d) {
+				// return 10;
+				// }).attr("refY", function(d) {
+				// return 5;
+				// }).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+				// "markerUnits", "strokeWidth").attr("orient", "auto")
+				// .append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5")
+				.attr("class", function(d) {
+					if (d.conflict === true) {
+						return "outRelArrow " + d + "Arrow" + " conflict";
+					}
+					return "outRelArrow " + d + "Arrow";
+				});
 
 		// create legend above chart
 		var legend = svg.append("g").attr("id", "legend");
@@ -146,7 +154,7 @@ var dynamicGraph = (function() {
 			}
 		});
 		legend.selectAll("text .legend").data(
-				[ "Decision Point", "Decision", "Highlighted Outcome",
+				[ "Decision Point", "Decision", "Selected Outcome",
 						"Excluded Outcome", "Conflicted Outcome" ]).enter()
 				.append("text").attr("x", function(d, i) {
 					return (mC.iWidth / 15) * ((i * 1.5) + 8.5);
@@ -168,8 +176,10 @@ var dynamicGraph = (function() {
 				"transform",
 				"translate(" + padding.left + "," + padding.top + ")");
 		// append group for links (lines) and paths
-		pathGroup = visGroup.append("g").attr("id", "paths");
 		linkGroup = visGroup.append("g").attr("id", "links");
+		pathGroup = visGroup.append("g").attr("id", "paths");
+		nodeGroup = visGroup.append("g").attr("id", "nodes");
+		labelGroup = visGroup.append("g").attr("id", "labels");
 
 		// new force layout and configuration
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ])
@@ -244,11 +254,15 @@ var dynamicGraph = (function() {
 			return d.target.y;
 		});
 
-		// insert text abbrev for outcomes
-		linkEnter.filter(function(d) {
-			if (d.target.type == "out")
-				return d;
-		}).append("text").text(function(d) {
+		label = labelGroup.selectAll("text.small").data(
+				force.links().filter(function(d) {
+					if (d.target.type == "out")
+						return d;
+				}), function(d) {
+					return d.source.id + "-" + d.target.id + "-" + "label";
+				});
+
+		var labelEnter = label.enter().append("text").text(function(d) {
 			return d.target.abbrev;
 		}).attr("x", function(d) {
 			return d.target.x;
@@ -275,14 +289,13 @@ var dynamicGraph = (function() {
 		// exit old paths
 		path.exit().remove();
 
-		// select groups for nodes
-		nodeGroup = visGroup.selectAll("g.node").data(force.nodes(),
+		node = nodeGroup.selectAll("g.node").data(force.nodes(),
 				function(d) {
-					return d.id;
-				});
+			return d.id;
+		});
 
 		// select new groups and updates for nodes
-		var nodeEnter = nodeGroup.enter().append("g").attr("class", "node")
+		var nodeEnter = node.enter().append("g").attr("class", "node")
 				.call(force.drag()).on("click", function(d) {
 					if (d.type == "out") {
 						highlightNode(d);
@@ -316,7 +329,7 @@ var dynamicGraph = (function() {
 		});
 
 		// remove nodes
-		nodeGroup.exit().remove();
+		node.exit().remove();
 
 		// set circle for tick
 		circle = nodeGroup.selectAll("circle");
@@ -332,7 +345,8 @@ var dynamicGraph = (function() {
 
 		link = linkGroup.selectAll("line");
 
-		labels = linkGroup.selectAll("text");
+		// labels = linkGroup.selectAll("text");
+		labels = labelGroup.selectAll("text");
 
 		// calculate layout for a few round than set dps fixed
 		if (start === true) {

@@ -84,92 +84,17 @@
 	font-weight: normal;
 }
 
-/*Outcome Relations Graph*/
-.layoutLink {
-	fill: none;
-	stroke: #bdbdbd;
-	stroke-width: 1px;
-}
-
-.outRel {
-	fill: none;
-	stroke: #222;
-	stroke-width: 3px;
-}
-
-.outRel.aff {
-	stroke: #c6dbef;
-	stroke-dasharray: 2, 2;
-	opacity: 1;
-}
-
-.outRel.a {
-	stroke-dasharray: 15, 6, 10, 6;
-	opacity: 1;
-	stroke: #d9d9d9;
-}
-
-.outRel.eb {
-	stroke-dasharray: 20, 8;
-	stroke: #dadaeb;
-	opacity: 1;
-}
-
-.outRel.ex {
-	fill: none;
-	stroke: #222;
-	opacity: 0.75;
-}
-
-.outRel.in {
-	fill: none;
-	stroke-dasharray: 20, 5;
-	stroke: #222;
-	opacity: 0.75;
-}
-
-.outRelArrow {
-	stroke-dasharray: 0 !important;
-	fill: none;
-	stroke-width: 1px;
-}
-
-.highlighted {
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.deactivated {
-	fill: #fff !important;
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.selectable {
-	cursor: pointer;
-}
-
-.conflicting {
-	fill: red !important;
-	stroke-width: 3px;
-	stroke: #333;
-}
-
-.conflict {
-	stroke: red !important;
-}
-
 /*DecisionGraph*/
 .link {
 	fill: none;
-	stroke: #4e4e4e;
+	stroke: #636363;
 	stroke-width: 2px;
 	stroke-linecap: round;
 }
 
 .arrow {
-	stroke: #4e4e4e;
-	fill: #4e4e4e;
+	stroke: #636363;
+	fill: #636363;
 	stroke-linejoin: round;
 	stroke-dasharray: 0;
 }
@@ -179,27 +104,26 @@
 }
 
 .bindingArrow {
-	stroke: #a7a7a7;
-	fill: #a7a7a7;
+	stroke: #bdbdbd;
+	fill: #bdbdbd;
 }
 
 .affectingArrow {
-	stroke: #a7a7a7;
-	fill: #a7a7a7;
+	stroke: #bdbdbd;
+	fill: #bdbdbd;
 }
 
-.requiringArrow {
+/* .requiringArrow {
 	
-}
-
+} */
 .link.affecting {
 	stroke-dasharray: 4, 4;
-	stroke: #a7a7a7;
+	stroke: #bdbdbd;
 }
 
 .link.binding {
 	stroke-dasharray: 25, 10;
-	stroke: #a7a7a7;
+	stroke: #bdbdbd;
 }
 
 .link.requiring {
@@ -215,4 +139,104 @@
 .legend {
 	font-weight: bold;
 	cursor: default;
+}
+
+/*Outcome Relations Graph*/
+.layoutLink {
+	fill: none;
+	stroke: #bdbdbd;
+	stroke-width: 1px;
+}
+
+.outRel {
+	fill: none;
+	stroke: #d9d9d9;
+	stroke-width: 3px;
+	stroke-linejoin: round;
+}
+
+.outRel.aff {
+	/* 	stroke: #d9d9d9; */
+	stroke-dasharray: 10, 3;
+	stroke-width: 2px;
+}
+
+.outRel.a {
+	stroke-dasharray: 2, 4;
+	/* 	stroke: #bdbdbd; */
+	stroke-width: 2px;
+}
+
+.outRel.eb {
+	stroke-dasharray: 25, 10;
+	/* 	stroke: #bdbdbd; */
+	stroke-width: 2px;
+}
+
+.outRel.ex {
+	
+}
+
+.outRel.in {
+	stroke: #636363;
+	stroke-dasharray: 20, 5, 2, 5;
+}
+
+.outRelArrow {
+	stroke: #d9d9d9;
+	fill: #d9d9d9;
+	stroke-linejoin: round;
+	stroke-dasharray: 0;
+}
+
+.inArrow {
+	stroke: #636363;
+	fill: #636363;
+}
+
+.exArrow {
+	fill: none;
+}
+
+.ebArrow {
+	/* 	stroke: #bdbdbd;
+	fill: #bdbdbd; */
+	
+}
+
+.affArrow {
+	/* 	stroke: #bdbdbd;
+	fill: #bdbdbd; */
+	
+}
+
+.aArrow {
+	/* 	stroke: #bdbdbd;
+	fill: #bdbdbd; */
+	
+}
+
+.highlighted {
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.deactivated {
+	fill: #fff !important;
+	stroke-width: 2px;
+	stroke: #d9d9d9;
+}
+
+.selectable {
+	cursor: pointer;
+}
+
+.conflicting {
+	fill: red !important;
+	stroke-width: 3px;
+	stroke: #333;
+}
+
+.conflict {
+	stroke: red !important;
 }
