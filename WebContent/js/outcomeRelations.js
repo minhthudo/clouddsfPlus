@@ -28,17 +28,19 @@ var outcomeGraph = (function() {
 		chDec : -150,
 		chOut : -400,
 		minHeight : 1400,
-		minWidth : 1600,
+		minWidth : 1400,
 
-		legendRelations : [ "Including", "Excluding", "Affecting", "Binding",
-				"Allowing" ],
-		relations : [ "in", "ex", "aff", "eb", "a" ],
+		legendRelations : [ "Including", "Excluding", "Allowing", "Affecting",
+
+		"Binding" ],
+
+		relations : [ "in", "ex", "a", "aff", "eb" ],
 	};
 
 	var relationTypes = [ "in", "ex" ];
 	var start = true, fixed = false;
 	var mC, root, initialNodes, initialLinks;
-	var svg, visGroup, pathGroup, linkGroup, nodeGroup, link, circle;
+	var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle;
 	var force, nodes, links;
 	var outcomeLinks, outcomePaths = [], node_lookup = [];
 	var drag, labels;
@@ -75,21 +77,30 @@ var outcomeGraph = (function() {
 		svg.append("defs").selectAll("marker").data(config.relations).enter()
 				.append("marker").attr("id", function(d) {
 					return d;
-				}).attr("viewBox", "0 0 10 10").attr("refX", function(d) {
-					// if (d == "requiring")
-					// return 10;
-					return 10;
-				}).attr("refY", function(d) {
-					// if (d == "requiring")
-					// return 5;
-					return 5;
-				}).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+
+				}).attr("refX", "7.5").attr("refY", "4")
+
+				.attr("markerWidth", 10).attr("markerHeight", 10).attr(
 						"markerUnits", "strokeWidth").attr("orient", "auto")
-				.append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5").attr(
-						"class", function(d) {
-							return "outRel " + d + " outRelArrow";
-							// return "outRelArrow";
-						});
+				.append("svg:path").attr("d", "M 0,2 L7,4 L0,6")
+				// ;
+				//		
+				// .attr("viewBox", "0 0 10 10")
+				// .attr("refX", function(d) {
+				// return 10;
+				// }).attr("refY", function(d) {
+				// return 5;
+				// }).attr("markerWidth", 6).attr("markerHeight", 6).attr(
+				// "markerUnits", "strokeWidth").attr("orient", "auto")
+				// .append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5")
+				.attr("class", function(d) {
+
+					if (d.conflict === true) {
+						return "outRelArrow " + d + "Arrow" + " conflict";
+					}
+					return "outRelArrow " + d + "Arrow";
+
+				});
 
 		// create legend above chart
 		var legend = svg.append("g").attr("id", "legend");
@@ -125,8 +136,10 @@ var outcomeGraph = (function() {
 				"transform",
 				"translate(" + padding.left + "," + padding.top + ")");
 		// append group for links (lines) and paths
-		pathGroup = visGroup.append("g").attr("id", "paths");
 		linkGroup = visGroup.append("g").attr("id", "links");
+		pathGroup = visGroup.append("g").attr("id", "paths");
+		nodeGroup = visGroup.append("g").attr("id", "nodes");
+		labelGroup = visGroup.append("g").attr("id", "labels");
 
 		// new force layout and configuration
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ])
@@ -134,12 +147,9 @@ var outcomeGraph = (function() {
 					return setCharge(d);
 				}).linkDistance(function(d) {
 					return setLinkDistance(d);
-				}).linkStrength(function(d) {
-					if (d.type == "dp")
-						return 0.7;
-					return config.lsDefault;
-				}).gravity(config.gravity).friction(config.friction).on("tick",
-						tick);
+				}).linkStrength(config.lsDefault).gravity(config.gravity)
+
+				.friction(config.friction).on("tick", tick);
 
 		nodes = force.nodes();
 
@@ -180,10 +190,15 @@ var outcomeGraph = (function() {
 			return d.target.y;
 		});
 
-		linkEnter.filter(function(d) {
-			if (d.target.type == "out")
-				return d;
-		}).append("text").text(function(d) {
+		label = labelGroup.selectAll("text.small").data(
+				force.links().filter(function(d) {
+					if (d.target.type == "out")
+						return d;
+				}), function(d) {
+					return d.source.id + "-" + d.target.id + "-" + "label";
+				});
+
+		var labelEnter = label.enter().append("text").text(function(d) {
 			return d.target.abbrev;
 		}).attr("x", function(d) {
 			return d.target.x;
@@ -191,6 +206,7 @@ var outcomeGraph = (function() {
 			return d.target.y;
 		}).attr("class", "small");
 
+		label.exit().remove();
 		// Exit any old links.
 		link.exit().remove();
 		// paths for links between outcomes
@@ -207,10 +223,10 @@ var outcomeGraph = (function() {
 		path.exit().remove();
 
 		// select groups for nodes
-		nodeGroup = visGroup.selectAll("g.node").data(force.nodes(),
-				function(d) {
-					return d.id;
-				});
+		node = nodeGroup.selectAll("g.node").data(force.nodes(), function(d) {
+			return d.id;
+
+		});
 		// set specific drag behaviour
 		drag = force.drag()
 		// .on("dragstart", dragstart)
@@ -218,19 +234,18 @@ var outcomeGraph = (function() {
 		.on("dragend", dragend);
 
 		// select new groups and updates for nodes
-		var nodeEnter = nodeGroup.enter().append("g").attr("class", "node")
-				.call(drag)
-				// .call(force.drag)
-				.on("dblclick", function(d) {
-					if (d.type != "out" && d.type != "root") {
-						toggleNode(d);
-					}
-				}).on("click", function(d) {
-					if (d.type == "out") {
-						highlightNode(d);
-					}
-				}).on("mouseover", tip.showTransition).on("mouseout",
-						tip.hideDelayed);
+		var nodeEnter = node.enter().append("g").attr("class", "node").call(
+				drag)
+		// .call(force.drag)
+		.on("dblclick", function(d) {
+			if (d.type != "out" && d.type != "root") {
+				toggleNode(d);
+			}
+		}).on("click", function(d) {
+			if (d.type == "out") {
+				highlightNode(d);
+			}
+		}).on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
 
 		// append circle
 		nodeEnter.append("circle").attr("r", function(d) {
@@ -241,8 +256,8 @@ var outcomeGraph = (function() {
 			return d.y;
 		}).style("fill", function(d) {
 			return setCircleFill(d);
-		}).style("stroke-width", function(d) {
-			return setCircleStroke(d);
+		}).attr("class", function(d) {
+			return setCircleClass(d);
 		});
 
 		nodeEnter.filter(function(d) {
@@ -258,21 +273,21 @@ var outcomeGraph = (function() {
 		});
 
 		// remove nodes
-		nodeGroup.exit().remove();
+		node.exit().remove();
 
 		// set circle for tick
 		circle = nodeGroup.selectAll("circle");
 		circle.transition().attr("r", function(d) {
 			return setCircleRadius(d);
-		}).style("stroke-width", function(d) {
-			return setCircleStroke(d);
+		}).attr("class", function(d) {
+			return setCircleClass(d);
 		});
 		// select text nodes
 		text = nodeGroup.selectAll("text");
 
 		link = linkGroup.selectAll("line");
 
-		labels = linkGroup.selectAll("text");
+		labels = labelGroup.selectAll("text");
 		// text2.transition().attr("text-anchor",function(d){
 		// if(d.target.x >= d.source.x) return "start";
 		// return "end";});
@@ -376,32 +391,40 @@ var outcomeGraph = (function() {
 			return d.target.y;
 		});
 		//
+		// move label depnding on incoming link direction to adjust label either
+		// on the left top right or bottom of outcome circle
 		labels.attr("x", function(d) {
 			return d.target.x;
 		}).attr("y", function(d) {
 			return d.target.y;
 		}).transition().duration(150).attr("text-anchor", function(d) {
+			// set anchor either left, right or middle
 			if (d.target.x >= (d.source.x + 20))
 				return "start";
 			if (d.target.x <= (d.source.x - 20))
 				return "end";
 			return "middle";
+
 		}).attr("dy", function(d) {
-			if (d.target.x >= (d.source.x + 20)) {
-				return "5px";
+			// set y shift to either 5 for left and right
+			if ((d.target.x >= (d.source.x + 20))
+
+			|| (d.target.x <= (d.source.x - 20))) {
+				return (0.5 * 0.85 / 2) + "em";
+
 			}
-			if (d.target.x <= (d.source.x - 20)) {
-				return "5px";
-			}
+			// 30 if below
 			if (d.target.y > d.source.y) {
-				return "30px";
+				return "2.5em";
+
 			}
-			return "-22px";
+			// if above
+			return "-1.5em";
 		}).attr("dx", function(d) {
 			if (d.target.x >= (d.source.x + 20))
-				return "20px";
+				return config.outWidth + 7 + "px";
 			if (d.target.x <= (d.source.x - 20))
-				return "-20px";
+				return (config.outWidth + 7) * -1 + "px";
 			return 0;
 		});
 
@@ -801,6 +824,20 @@ var outcomeGraph = (function() {
 		case "out":
 			return d.highlighted ? config.outWidth - 1 : config.outWidth;
 		}
+	}
+
+	/**
+	 * Returns class for circl
+	 * 
+	 * @memberOf outcomeGraph.d3Layout
+	 */
+	function setCircleClass(d) {
+		if (d.type == "out") {
+			if (d.highlighted === true) {
+				return "highlighted";
+			}
+		}
+		return "";
 	}
 
 	/**

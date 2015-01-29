@@ -21,7 +21,7 @@ var decisionGraph = (function() {
 		friction : 0.001,
 		chDec : -50,
 		minHeight : 1200,
-		minWidth : 1150,
+		minWidth : 1100,
 	};
 
 	var mC, root, svg, tip;
