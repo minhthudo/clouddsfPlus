@@ -17,8 +17,8 @@ var modals = (function() {
 				title : "Processing...",
 				show : false,
 				closeButton : false,
-				backdrop : true,
-				animate : true,
+				backdrop : false,
+				animate : false
 			});
 
 	var showProgress = (function() {

@@ -39,7 +39,7 @@ var treeGraph = (function() {
 		// tooltip with offeset 5,5 and southeast
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
 				.html(function(d) {
-					return format_description(d);
+					return getTooltipText(d);
 				});
 
 		// Invoke tip in context of visualization
@@ -289,12 +289,18 @@ var treeGraph = (function() {
 		});
 	}
 
-	// tooltip
-	function format_description(d) {
-		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+	/**
+	 * generate tooltip text with distinction between out and others
+	 * 
+	 * @memberOf outcomeGraph.d3Layout
+	 */
+	function getTooltipText(d) {
+		var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
 				+ ')</p><p><strong>Description: </strong>' + d.description
-				+ '</p> <p><strong>Classification: </strong>'
+				+ '</p>';
+		var classification = '<p><strong>Classification: </strong>'
 				+ d.classification + '</p';
+		return d.type == "out" ? mainText : mainText + classification;
 	}
 
 	// collapse all datapoints

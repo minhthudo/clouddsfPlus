@@ -2,7 +2,6 @@
  * @type dynamicGraph
  */
 var dynamicGraph = (function() {
-	modals.showProgress();
 	// Padding for svg container
 	var padding = {
 		top : 50,
@@ -859,6 +858,7 @@ var dynamicGraph = (function() {
 
 	// set initial data on instantiation (in case of initialization is used
 	// shift to initialize() methode and set content in callback
+	modals.showProgress();
 	d3.json("./data/cloudDSFPlus.json", function(error, json) {
 		root = json.cdsfPlus;
 

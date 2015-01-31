@@ -1,8 +1,11 @@
+/**
+ * @type decisionGraph
+ */
 var decisionGraph = (function() {
 
 	// padding for svg
 	var padding = {
-		top : 50,
+		top : 40,
 		right : 10,
 		bottom : 10,
 		left : 10
@@ -26,8 +29,8 @@ var decisionGraph = (function() {
 
 	var mC, root, svg, tip;
 	var force, node, nodes, links = [], pathGroup, text, circle, path, visGroup;
-	var node_lookup, initialNodes, foci;
-	// var clusters;
+	var node_lookup = [], initialNodes, foci;
+
 	var relations = [];
 	var legendRelations = [ "Requiring", "Influencing", "Affecting", "Binding" ];
 	// Toggle stores whether the highlighting is on
@@ -35,6 +38,10 @@ var decisionGraph = (function() {
 	// Create an array logging what is connected to what
 	var linkedByIndex = {};
 
+	/**
+	 * Sets up svg element and d3 force layout with cluster (focis) and all
+	 * necessary elements
+	 */
 	function initialize() {
 		// calculate panel
 		mC = cdsfPlus.marginConvention(padding, config.minHeight,
@@ -105,7 +112,7 @@ var decisionGraph = (function() {
 		// tooltip
 		tip = d3.tip().attr('class', 'd3-tip').direction('se').offset([ 5, 5 ])
 				.html(function(d) {
-					return format_description(d);
+					return getTooltipText(d);
 				});
 
 		// Invoke tip in context of visualization
@@ -117,7 +124,6 @@ var decisionGraph = (function() {
 		// g element for all paths
 		pathGroup = visGroup.append("g").attr("id", "paths");
 		// helper object to finde nodes
-		node_lookup = [];
 		// new force layout
 		force = d3.layout.force().size([ mC.panelWidth, mC.panelHeight ]);
 		// set force parameters
@@ -150,10 +156,7 @@ var decisionGraph = (function() {
 			return d.radius;
 		}).style("fill", function(d) {
 			return setCircleFill(d);
-		})
-		// .attr("stroke", function(d){return
-		// setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
-		.attr("cx", function(d) {
+		}).attr("cx", function(d) {
 			return d.cx;
 		}).attr("cy", function(d) {
 			return d.cy;
@@ -164,9 +167,7 @@ var decisionGraph = (function() {
 				"text-anchor", "middle").text(function(d) {
 			return d.abbrev;
 		}).attr("class", "legend");
-		// nodeEnter.append("rect").attr("width",30).attr("height",
-		// "30").attr("dy", "30px").style("fill", "green");
-		// append dec label below circle
+
 		nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
 				function(d) {
 					return "" + (d.radius + 15) + "px";
@@ -180,6 +181,9 @@ var decisionGraph = (function() {
 
 	}
 
+	/**
+	 * Adds link to force links
+	 */
 	function addLink(link) {
 		links.push({
 			"source" : node_lookup[link.source],
@@ -189,6 +193,9 @@ var decisionGraph = (function() {
 		});
 	}
 
+	/**
+	 * Traverses json root node to get all decision elements
+	 */
 	function flatten(root) {
 		var nodes = [];
 		function recurse(node) {
@@ -202,6 +209,9 @@ var decisionGraph = (function() {
 		return nodes;
 	}
 
+	/**
+	 * Gets all links for the selected node and updates layout.
+	 */
 	function setLinks() {
 		links.forEach(function(d) {
 			linkedByIndex[d.source.id + "," + d.target.id] = 0;
@@ -222,7 +232,9 @@ var decisionGraph = (function() {
 		update();
 	}
 
-	// create node based on json data
+	/**
+	 * Creates node based on json data and initializes it next to its cluster.
+	 */
 	function addNode(node) {
 		switch (node.type) {
 		case "dec":
@@ -253,6 +265,11 @@ var decisionGraph = (function() {
 		}
 	}
 
+	/**
+	 * Updates force layout.
+	 * 
+	 * @memberOf decisionGraph
+	 */
 	function update() {
 		force.stop();
 		// possible because node never change
@@ -314,6 +331,11 @@ var decisionGraph = (function() {
 		force.start();
 	}
 
+	/**
+	 * Tick method of the force layout.
+	 * 
+	 * @memberOf decisionGraph
+	 */
 	function tick(e) {
 		// Push nodes toward their designated focus.
 		var k = 0.4 * e.alpha;
@@ -336,7 +358,11 @@ var decisionGraph = (function() {
 
 	}
 
-	// link gets exact distance between nodes as length
+	/**
+	 * link gets exact distance between nodes as length
+	 * 
+	 * @memberOf decisionGraph
+	 */
 	function calculateDistance(link) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, distance = Math
 				.sqrt(dx * dx + dy * dy);
@@ -346,7 +372,9 @@ var decisionGraph = (function() {
 		// return distance <= 0 ? 20 : distance;
 		return distance;
 	}
-
+	/**
+	 * Calculate link between nodes with target offset
+	 */
 	function linkArc(d) {
 		var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
 				.sqrt(dx * dx + dy * dy);
@@ -379,7 +407,9 @@ var decisionGraph = (function() {
 		// offsetX) + ","
 		// + (d.target.y - offsetY);
 	}
-
+	/**
+	 * Generic transform method
+	 */
 	function transform(d) {
 		return "translate(" + d.x + "," + d.y + ")";
 	}
@@ -411,7 +441,9 @@ var decisionGraph = (function() {
 	// });
 	// };
 	// }
-
+	/**
+	 * Collision detection between nodes
+	 */
 	function collide(alpha) {
 		var quadtree = d3.geom.quadtree(nodes);
 		return function(d) {
@@ -435,60 +467,37 @@ var decisionGraph = (function() {
 					});
 		};
 	}
-
-	// // todo can be made much easier now without distinct clusters
-	// function cluster(alpha) {
-	// return function(d) {
-	// var cluster = clusters[d.cluster], k = 1;
-	// // For cluster nodes, apply custom gravity.
-	// if (cluster === d) {
-	// cluster = {
-	// x : d.x,
-	// y : d.y,
-	// // x : width / 2,
-	// // y : height / 2,
-	// radius : -d.radius
-	// };
-	// k = .1 * Math.sqrt(d.radius);
-	// }
-	// var x = d.x - cluster.x, y = d.y - cluster.y, l = Math.sqrt(x * x
-	// + y * y), r = d.radius + cluster.radius;
-	// if (l != r) {
-	// l = (l - r) / l * alpha * k;
-	// d.x -= x *= l;
-	// d.y -= y *= l;
-	// cluster.x += x;
-	// cluster.y += y;
-	// }
-	// };
-	// }
-
+	/**
+	 * Sets circle color
+	 */
 	function setCircleFill(d) {
 		return cdsfPlus.getColor(d.group);
 	}
-
+	/**
+	 * Sets stroke fill
+	 */
 	function setStrokeFill(d) {
 		return cdsfPlus.getColor("dp" + d.cluster);
 	}
 
-	// tooltip text
-	function format_description(d) {
-		return '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
-				+ ')</p><p><strong>Description: </strong>' + d.description
-				+ '</p> <p><strong>Classification: </strong>'
-				+ d.classification + '</p';
-	}
-
-	// resize decGraph
+	/**
+	 * resize decGraph
+	 * 
+	 */
 	function resizeLayout() {
 		initialize();
 	}
 
-	// check if pair are neighbours
+	/**
+	 * check if pair are neighbours
+	 * 
+	 */
 	function neighboring(a, b) {
 		return linkedByIndex[a.id + "," + b.id];
 	}
-
+	/**
+	 * Fades out all non connected Nodes and links
+	 */
 	function connectedNodes() {
 		if (d3.event.defaultPrevented)
 			return;
@@ -518,13 +527,31 @@ var decisionGraph = (function() {
 		}
 	}
 
-	// clear opacity to normal level by css
+	/**
+	 * generate tooltip text with distinction between out and others
+	 * 
+	 * @memberOf outcomeGraph.d3Layout
+	 */
+	function getTooltipText(d) {
+		var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+				+ ')</p><p><strong>Description: </strong>' + d.description
+				+ '</p>';
+		var classification = '<p><strong>Classification: </strong>'
+				+ d.classification + '</p';
+		return d.type == "out" ? mainText : mainText + classification;
+	}
+
+	/**
+	 * clear opacity to normal level by css
+	 */
 	function clearHighlights() {
 		toggle = 0;
 		node.transition().duration(300).style("opacity", null);
 		path.transition().duration(300).style("opacity", null);
 	}
-
+	/**
+	 * Remove one relation type
+	 */
 	var removeRelationType = function(type) {
 		for (var int = 0; int < relations.length; int++) {
 			if (relations[int] == type) {
@@ -534,13 +561,17 @@ var decisionGraph = (function() {
 		}
 		setLinks();
 	};
-
+	/**
+	 * remvoe all relation types
+	 */
 	var removeAllRelations = function(type) {
 		relations.splice(0, relations.length);
 		relations.push([ "" ]);
 		setLinks();
 	};
-
+	/**
+	 * set all realtion types
+	 */
 	var setAllRelations = function(type) {
 		relations.splice(0, relations.length);
 		type.forEach(function(d) {
@@ -548,7 +579,9 @@ var decisionGraph = (function() {
 		});
 		setLinks();
 	};
-
+	/**
+	 * add one relation type
+	 */
 	var addRelationType = function(type) {
 		relations.push(type);
 		setLinks();
