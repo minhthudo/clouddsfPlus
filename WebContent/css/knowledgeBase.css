@@ -227,6 +227,18 @@
 	stroke: #d9d9d9;
 }
 
+.decided {
+	fill: #fff !important;
+	stroke-width: 2px;
+	stroke: #d9d9d9
+}
+
+.determined {
+	fill: #eee !important;
+	stroke-width: 2px;
+	stroke: #222;
+}
+
 .selectable {
 	cursor: pointer;
 }

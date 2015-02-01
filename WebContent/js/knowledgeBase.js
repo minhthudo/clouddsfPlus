@@ -94,9 +94,9 @@ var kbStartup = (function() {
 						});
 
 		$("[name='outExcluding']").bootstrapSwitch('labelText', "Excluding")
-				.bootstrapSwitch('state', true).bootstrapSwitch('size',
-						'small').on('switchChange.bootstrapSwitch',
-						function(event, state) {
+				.bootstrapSwitch('state', true)
+				.bootstrapSwitch('size', 'small').on(
+						'switchChange.bootstrapSwitch', function(event, state) {
 							setOutcomeRelations(state, "ex");
 						});
 
@@ -115,9 +115,9 @@ var kbStartup = (function() {
 						});
 
 		$("[name='outIncluding']").bootstrapSwitch('labelText', "Including")
-				.bootstrapSwitch('state', true).bootstrapSwitch('size',
-						'small').on('switchChange.bootstrapSwitch',
-						function(event, state) {
+				.bootstrapSwitch('state', true)
+				.bootstrapSwitch('size', 'small').on(
+						'switchChange.bootstrapSwitch', function(event, state) {
 							setOutcomeRelations(state, "in");
 						});
 

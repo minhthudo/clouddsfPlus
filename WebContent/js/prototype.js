@@ -25,6 +25,13 @@ var prototypeStartup = (function() {
 							setRelations(state, "aff");
 						});
 
+		$("[name='toggleLastOutcome']").bootstrapSwitch('labelText',
+				"Only Last Selection").bootstrapSwitch('state', true)
+				.bootstrapSwitch('size', 'small').on(
+						'switchChange.bootstrapSwitch', function(event, state) {
+							dynamicGraph.setLastNode(state);
+						});
+
 		$('#resetAll').on('click', function(event) {
 			dynamicGraph.resetSelection();
 		});
@@ -41,7 +48,6 @@ var prototypeStartup = (function() {
 			reader.onload = function(e) {
 				var text = reader.result;
 				var json = JSON.parse(text);
-				console.log(json);
 				dynamicGraph.setData(json);
 			};
 			reader.readAsText(file);

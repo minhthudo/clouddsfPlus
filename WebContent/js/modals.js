@@ -6,7 +6,7 @@ var modals = (function() {
 	var strong = "<strong>";
 	var endStrong = "</strong>";
 	var br = "<br>";
-
+	
 	var progressbar = bootbox
 			.dialog({
 
@@ -131,6 +131,8 @@ var modals = (function() {
 					}
 				});
 	}
+	
+	
 
 	return {
 		changeOutcomeWihtinDecision : changeOutcomeWihtinDecision,
