@@ -906,19 +906,16 @@ var dynamicGraph = (function() {
 				return "highlighted";
 			}
 			return "selectable";
-			break;
 		case "dp":
 			if (d.decided === true) {
-				return "decided"
+				return "decided";
 			}
 			return d.determined === true ? "determined" : null;
-			break;
 		case "dec":
 			if (d.decided === true) {
-				return "decided"
+				return "decided";
 			}
 			return d.determined === true ? "determined" : null;
-			break;
 		default:
 			return null;
 		}
@@ -1321,7 +1318,7 @@ var dynamicGraph = (function() {
 			} else if (excluded == this.children.length) {
 				this.excluded = true;
 			}
-		}
+		};
 	}
 	/**
 	 * Represents decision point node
@@ -1369,6 +1366,6 @@ var dynamicGraph = (function() {
 		addRelationType : addRelationType,
 		removeRelationType : removeRelationType,
 		setData : setData,
-		forceExcludedSelectableOutcome : forceExcludedSelectableOutcome,
-	};
+    		forceExcludedSelectableOutcome: forceExcludedSelectableOutcome,
+  };
 })();
