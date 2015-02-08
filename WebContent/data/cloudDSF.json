@@ -438,37 +438,37 @@
         "classification" : "Cloud Migration specific / Application Migration in General",
         "children" : [ {
           "id" : 40401,
-          "label" : "All Inhouse",
+          "label" : "Inhouse",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40402,
-          "label" : "Only Managmenet",
+          "label" : "Managmenet",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40403,
-          "label" : "All Outsourced",
+          "label" : "Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40404,
-          "label" : "All Inhouse + Only Management",
+          "label" : "Inhouse + Management",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40405,
-          "label" : "All Inhouse + All Outsourced",
+          "label" : "Inhouse + Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40406,
-          "label" : "Only Management + All Outsourced",
+          "label" : "Management + Outsourced",
           "type" : "outcome",
           "parent" : 404
         }, {
           "id" : 40407,
-          "label" : "All Inhouse + Only Management + All Outsourced",
+          "label" : "Inhouse + Management + Outsourced",
           "type" : "outcome",
           "parent" : 404
         } ]

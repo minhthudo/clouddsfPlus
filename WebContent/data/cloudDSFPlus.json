@@ -26,7 +26,7 @@
         "classification" : "Application Migration in General",
         "cluster" : 1,
         "group" : "dec1",
-        "description" : "Enables a selection based of application parts based on their logical distribution.",
+        "description" : "Enables a selection of application parts based on their logical distribution.",
         "abbrev" : "SAL",
         "children" : [ {
           "id" : 10101,
@@ -35,8 +35,8 @@
           "parent" : 101,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The complete presentation layer shall be migrated e.g. a web server or a rich client. ",
-          "abbrev" : "Pres. Layer"
+          "description" : "The complete presentation layer shall be migrated e.g. a web-frontend or a rich client. ",
+          "abbrev" : "Pres Layer"
         }, {
           "id" : 10102,
           "label" : "Business Layer",
@@ -45,7 +45,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete business layer shall be migrated e.g. an application server or an ESB.",
-          "abbrev" : "Bus. Layer"
+          "abbrev" : "Bus Layer"
         }, {
           "id" : 10103,
           "label" : "Resource Layer",
@@ -53,8 +53,8 @@
           "parent" : 101,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The comple resource layer shall be migrated e.g. a database.",
-          "abbrev" : "Res. Layer"
+          "description" : "The comple resource layer shall be migrated e.g. a database server.",
+          "abbrev" : "Res Layer"
         }, {
           "id" : 10104,
           "label" : "Presentation + Business Layer",
@@ -63,7 +63,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation and business layer shall be migrated.",
-          "abbrev" : "Pres.+Bus. Layer"
+          "abbrev" : "Pres+Bus Layer"
         }, {
           "id" : 10105,
           "label" : "Presentation + Resource Layer",
@@ -72,7 +72,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation and resource layer shall be migrated.",
-          "abbrev" : "Pres.+Res. Layer"
+          "abbrev" : "Pres+Res Layer"
         }, {
           "id" : 10106,
           "label" : "Business + Resource Layer",
@@ -81,7 +81,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete business and resource layer shall be migrated.",
-          "abbrev" : "Bus.+Res. Layer"
+          "abbrev" : "Bus+Res Layer"
         }, {
           "id" : 10107,
           "label" : "Presentation + Business + Resource Layer",
@@ -90,7 +90,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "The complete presentation, business and resource layer shall be migrated hence the complete application.",
-          "abbrev" : "Pres.+Bus.+Res. Layer"
+          "abbrev" : "Pres+Bus+Res Layer"
         } ]
       }, {
         "id" : 102,
@@ -118,7 +118,7 @@
           "parent" : 102,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The application tier and all the components which are running on shall be migrated.",
+          "description" : "The application tier and all the components that are running on it shall be migrated.",
           "abbrev" : "App Tier"
         }, {
           "id" : 10203,
@@ -127,7 +127,7 @@
           "parent" : 102,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The data tier and all the components which are running on shall be migrated.",
+          "description" : "The data tier and all the components that are running on it shall be migrated.",
           "abbrev" : "Data Tier"
         }, {
           "id" : 10204,
@@ -163,7 +163,7 @@
           "parent" : 102,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "The client, application and data tier shall be migrated, hence the complete application.",
+          "description" : "The client, application and data tier shall be migrated, thus the complete application.",
           "abbrev" : "Client+App+Data Tier"
         } ]
       }, {
@@ -184,7 +184,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application component shall be migrated e.g. an application server.",
-          "abbrev" : "App. Comp."
+          "abbrev" : "App Comp."
         }, {
           "id" : 10302,
           "label" : "Application Components",
@@ -193,7 +193,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "Multiple application components shall be migrated e.g. a rich client and an ESB.",
-          "abbrev" : "App. Comps."
+          "abbrev" : "App Comps."
         }, {
           "id" : 10303,
           "label" : "Middleware Component",
@@ -201,8 +201,8 @@
           "parent" : 103,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "A single middleware component shall be migrated e.g. a database.",
-          "abbrev" : "MW. Comp."
+          "description" : "A single middleware component shall be migrated e.g. a database management system.",
+          "abbrev" : "MW Comp."
         }, {
           "id" : 10304,
           "label" : "Middleware Components",
@@ -210,8 +210,8 @@
           "parent" : 103,
           "cluster" : 1,
           "group" : "out1",
-          "description" : "Multiple middleware components shall be migrated e.g. multiple databases, a caching server and a database cluster.",
-          "abbrev" : "MW. Comps."
+          "description" : "Multiple middleware components shall be migrated e.g. a caching server and a database cluster.",
+          "abbrev" : "MW Comps."
         }, {
           "id" : 10305,
           "label" : "Application + Middleware Component",
@@ -220,7 +220,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application and a single middleware component shall be migrated.",
-          "abbrev" : "App. Comp+MW. Comp."
+          "abbrev" : "App+MW Comp."
         }, {
           "id" : 10306,
           "label" : "Application Component + Middleware Components",
@@ -229,7 +229,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single application and multiple middleware components shall be migrated.",
-          "abbrev" : "App. Comp.+MW Comps."
+          "abbrev" : "App Comp.+MW Comps."
         }, {
           "id" : 10307,
           "label" : "Middleware Component + Application Components",
@@ -238,7 +238,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "A single middleware component and multiple application components shall be migrated.",
-          "abbrev" : "MW. Comp+App. Comps"
+          "abbrev" : "MW Comp.+App Comps."
         }, {
           "id" : 10308,
           "label" : "Application + Middleware Components",
@@ -247,7 +247,7 @@
           "cluster" : 1,
           "group" : "out1",
           "description" : "Multiple application and middleware components shall be migrated.",
-          "abbrev" : "App.+MW. Comps"
+          "abbrev" : "App+MW Comps."
         } ]
       }, {
         "id" : 104,
@@ -324,7 +324,7 @@
           "parent" : 201,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The migrated components do not have to scale.",
+          "description" : "The migrated components/application do not have to scale.",
           "abbrev" : "No Scaling"
         }, {
           "id" : 20102,
@@ -334,7 +334,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on VM level e.g. by instantiating new machines or requiring more resources for existing ones.",
-          "abbrev" : "VM. Scaling"
+          "abbrev" : "VM Scaling"
         }, {
           "id" : 20103,
           "label" : "Middleware Level Scaling",
@@ -343,7 +343,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the middleware level e.g. by adding or removing application servers.",
-          "abbrev" : "MW. Scaling"
+          "abbrev" : "MW Scaling"
         }, {
           "id" : 20104,
           "label" : "Application Level Scaling",
@@ -352,7 +352,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the application level e.g. by adding or removing instances inside an application server.",
-          "abbrev" : "App. Scaling"
+          "abbrev" : "App Scaling"
         }, {
           "id" : 20105,
           "label" : "VM + Middleware Level Scaling",
@@ -361,7 +361,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the VM and on the middleware level.",
-          "abbrev" : "VM+MW. Scaling"
+          "abbrev" : "VM+MW Scaling"
         }, {
           "id" : 20106,
           "label" : "VM + Application Level Scaling",
@@ -370,7 +370,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the VM and the application level.",
-          "abbrev" : "VM+App. Scaling"
+          "abbrev" : "VM+App Scaling"
         }, {
           "id" : 20107,
           "label" : "Middleware + Application Level Scaling",
@@ -379,7 +379,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the middleware and the application level.",
-          "abbrev" : "MW.+App. Scaling"
+          "abbrev" : "MW+App Scaling"
         }, {
           "id" : 20108,
           "label" : "VM + Middleware + Application Level Scaling",
@@ -388,7 +388,7 @@
           "cluster" : 2,
           "group" : "out2",
           "description" : "The application shall scale on the VM, the middleware and the application level.",
-          "abbrev" : "VM+MW.+App.Scaling"
+          "abbrev" : "VM+MW+App Scaling"
         } ]
       }, {
         "id" : 202,
@@ -416,7 +416,7 @@
           "parent" : 202,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The component shall scale out and in i.e. adding or removing instances.",
+          "description" : "The component shall scale in and out i.e. adding or removing instances.",
           "abbrev" : "Horizontal Scaling"
         }, {
           "id" : 20203,
@@ -454,7 +454,7 @@
           "parent" : 203,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The scaling shall be performed semi-automatically i.e. by defining tresholds which trigger defined scaling actions.",
+          "description" : "The scaling shall be performed semi-automatically i.e. by defining tresholds that trigger defined scaling actions.",
           "abbrev" : "Semi-Auto. Scaling"
         }, {
           "id" : 20303,
@@ -463,7 +463,7 @@
           "parent" : 203,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The scaling shall be performed semi-automatically i.e. by defining tresholds which trigger defined scaling actions and entirely performed by a third party.",
+          "description" : "The scaling shall be performed semi-automatically by a third party i.e. by defining tresholds that trigger defined scaling actions executed by the third party.",
           "abbrev" : "Semi-Auto. 3Party Scaling"
         }, {
           "id" : 20304,
@@ -481,7 +481,7 @@
           "parent" : 203,
           "cluster" : 2,
           "group" : "out2",
-          "description" : "The scaling shall be fully automatic without prior manual set up and entirely performed by a third party.",
+          "description" : "The scaling shall be fully automatic and entirely performed by a third party.",
           "abbrev" : "Auto. 3Party Scaling"
         } ]
       }, {
@@ -635,7 +635,7 @@
           "parent" : 401,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The application shall be deployed in a public and private cloud environment.",
+          "description" : "The application shall be deployed in a public and private and or community cloud environment.",
           "abbrev" : "Hybrid Cloud"
         } ]
       }, {
@@ -762,16 +762,16 @@
         "abbrev" : "DRR",
         "children" : [ {
           "id" : 40401,
-          "label" : "All Inhouse",
+          "label" : "Inhouse",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The hardware is owned by the company which also operates and manages the migrated cloud application and environment.",
+          "description" : "The hardware is owned by the company that also operates and manages the migrated cloud application and environment.",
           "abbrev" : "Inhouse"
         }, {
           "id" : 40402,
-          "label" : "Only Managmenet",
+          "label" : "Managmenet",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
@@ -780,7 +780,7 @@
           "abbrev" : "Management"
         }, {
           "id" : 40403,
-          "label" : "All Outsourced",
+          "label" : "Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
@@ -789,40 +789,40 @@
           "abbrev" : "Outsourced"
         }, {
           "id" : 40404,
-          "label" : "All Inhouse + Only Management",
+          "label" : "Inhouse + Management",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of All Inhouse + Only Management",
-          "abbrev" : "Inhouse+Mngmt."
+          "description" : "Combination of Inhouse + Management",
+          "abbrev" : "Inh.+Mngmt."
         }, {
           "id" : 40405,
-          "label" : "All Inhouse + All Outsourced",
+          "label" : "Inhouse + Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of All Inhouse + All Outsourced",
-          "abbrev" : "Inhouse+Outso."
+          "description" : "Combination of Inhouse + Outsourced",
+          "abbrev" : "Inh.+Outso."
         }, {
           "id" : 40406,
-          "label" : "Only Management + All Outsourced",
+          "label" : "Management + Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of Only Management + All Outsourced",
-          "abbrev" : "Mngmt.+Outso."
+          "description" : "Combination of Management + Outsourced",
+          "abbrev" : "Mngmt.+Out."
         }, {
           "id" : 40407,
-          "label" : "All Inhouse + Only Management + All Outsourced",
+          "label" : "Inhouse + Management + Outsourced",
           "type" : "out",
           "parent" : 404,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Combination of All Inhouse+ Only Management + All Outsourced",
-          "abbrev" : "Inho.+Mngmt+Outso."
+          "description" : "Combination of Inhouse+ Management + Outsourced",
+          "abbrev" : "Inh.+Mngmt+Out."
         } ]
       }, {
         "id" : 405,
@@ -841,7 +841,7 @@
           "parent" : 405,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "Evaluated cloud vendor which has to be determined through a vendor benchmark and selection.",
+          "description" : "Evaluated cloud vendor that has to be determined through a vendor benchmark and selection.",
           "abbrev" : "Cloud Vendor"
         } ]
       }, {
@@ -862,7 +862,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "A free pricing model shall be used.",
-          "abbrev" : "Free-PM"
+          "abbrev" : "Free"
         }, {
           "id" : 40602,
           "label" : "Pay-Per-Use",
@@ -871,7 +871,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The cloud resources shall be charged on a pay-per-use basis e.g. cent per gigabyte of occupied storage over a specific time.",
-          "abbrev" : "Use-PM"
+          "abbrev" : "Pay-Per-Use"
         }, {
           "id" : 40603,
           "label" : "Pay-Per-Unit",
@@ -880,7 +880,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The cloud resources shall be charged on a pay-per-unit basis",
-          "abbrev" : "Unit-PM"
+          "abbrev" : "Pay-Per-Unit"
         }, {
           "id" : 40604,
           "label" : "Charge-Per-Use (Subscription)",
@@ -888,7 +888,7 @@
           "parent" : 406,
           "cluster" : 4,
           "group" : "out4",
-          "description" : "The cloud resources shall be charded on a subscription basis e.g. upfront payment for the use to specific terms and conditions.",
+          "description" : "The cloud resources shall be charged on a subscription basis e.g. upfront payment for the use to specific terms and conditions.",
           "abbrev" : "Subscription"
         } ]
       }, {
@@ -918,7 +918,7 @@
           "cluster" : 4,
           "group" : "out4",
           "description" : "The data location can be under a different jurisdiction than the company is, hence data is allowed to fall under country or region specific laws and regulations.",
-          "abbrev" : "Diff. Jurisdiction"
+          "abbrev" : "Different Jurisdiction"
         } ]
       } ]
     } ]
