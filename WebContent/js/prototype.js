@@ -4,6 +4,8 @@
 var prototypeStartup = (function() {
 
   var setToolbarButtons = function() {
+    
+    
 
     $("[name='toggleBinding']").bootstrapSwitch('labelText', "Binding")
             .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
@@ -23,12 +25,21 @@ var prototypeStartup = (function() {
             });
 
     $("[name='toggleLastOutcome']").bootstrapSwitch('labelText',
-            "Only Last Selection").bootstrapSwitch('state', true)
+            "Relations of Last Selection").bootstrapSwitch('state', true)
             .bootstrapSwitch('size', 'small').on(
                     'switchChange.bootstrapSwitch', function(event, state) {
                       dynamicGraph.setLastNode(state);
                     });
 
+    
+    $("[name='toggleRequiring']").bootstrapSwitch('labelText',
+    "Overlay Requiring Relations").bootstrapSwitch('state', false)
+    .bootstrapSwitch('size', 'small').on(
+            'switchChange.bootstrapSwitch', function(event, state) {
+              dynamicGraph.setRequiring(state);
+            });
+
+    
     $('#resetAll').on('click', function(event) {
       dynamicGraph.resetSelection();
     });
