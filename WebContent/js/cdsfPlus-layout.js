@@ -4,7 +4,7 @@ var cdsfPlus = (function() {
           ["root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
               "out3", "dp4", "dec4", "out4"]).range([
   // cat20c dark (green, orange, purple, blue)
-  "#636363",
+  "#bdbdbd",
   // dp1
   "#9ecae1", "#6baed6", "#3182bd",
   // dp2
