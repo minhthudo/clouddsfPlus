@@ -1,2 +1,2 @@
-# clouddsfPlus
-The Cloud Decision Support Framework Plus - CloudDSF+
+# Cloud Decision Support Framework Plus (CloudDSF+)
+The Cloud Decision Support Framework Plus (CloudDSF+) is a refined and extended version of the [CloudDSF Prototype](https://github.com/adarsow/clouddsf). The framework supports decision makers to derive a migration strategy for legacy applications to the cloud. The CloudDSF+ Prototype is part of the master's thesis "Refinement and Extension of the Cloud Decision Support Framework for Application Migration to the Cloud" at the University of Stuttgart (Institute of Architecture of Application Systems). 
