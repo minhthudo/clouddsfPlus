@@ -15,7 +15,10 @@
  */
 
 /**
- * @type decisionGraph
+ * Decision Relations Layout depicting the relations between decisions.
+ * 
+ * @author Metz
+ * @module decisionGraph
  */
 var decisionGraph = (function() {
 
@@ -32,9 +35,6 @@ var decisionGraph = (function() {
     decisionWidth: 30,
     nodePadding: 200,
     strokeWidth: 20,
-    // clusterPadding : 120,
-    // maxRadius : 30, //collide function with clusters
-    // amountClusters : 4,
     lsDefault: 0.5,
     gravity: 0,
     friction: 0.001,
@@ -43,50 +43,61 @@ var decisionGraph = (function() {
     minWidth: 1100,
   };
 
-  var mC, root, svg, tip;
-  var force, node, nodes, links = [], pathGroup, text, circle, path, visGroup;
-  var node_lookup = [], initialNodes, foci;
+  var mC, tip;
+  var root, svg;
+  var force, node, nodes = [], links = [], pathGroup, text, circle, path, visGroup;
+  var node_lookup = [], initialNodes, foci, relations = [];
 
-  var relations = [];
+  // Text for legend
   var legendRelations = ["Requiring", "Influencing", "Affecting", "Binding"];
-  // Toggle stores whether the highlighting is on
+  // Toggle stores whether the highlighting is on and which decision it is
   var toggle = 0;
   // Create an array logging what is connected to what
   var linkedByIndex = {};
 
+  // get d3 data and set root to json
+  d3.json("./data/cloudDSFPlus.json", function(error, json) {
+    root = json;
+    // initialize();
+  });
+
   /**
    * Sets up svg element and d3 force layout with cluster (focis) and all
-   * necessary elements
+   * necessary elements.
+   * 
+   * @memberOf decisionGraph
    */
-  function initialize() {
+  function initialize(resize) {
     // calculate panel
     mC = cdsfPlus.marginConvention(padding, config.minHeight, config.minWidth);
     // adjust node padding to size
     config.nodePadding = mC.panelHeight / 6;
     // set focis for clusters
     foci = [{
-      x: (mC.panelWidth / 100 * 25),// + mC.marginLeft + padding.left,
-      y: (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
+      x: (mC.panelWidth / 100 * 25),
+      y: (mC.panelHeight / 100 * 30),
     }, {
-      x: (mC.panelWidth / 100 * 75),// + mC.marginLeft + padding.left,
-      y: (mC.panelHeight / 100 * 30),// + mC.marginTop + padding.top
+      x: (mC.panelWidth / 100 * 75),
+      y: (mC.panelHeight / 100 * 30),
     }, {
-      x: (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
-      y: (mC.panelHeight / 100 * 10),// + mC.marginTop + padding.top
+      x: (mC.panelWidth / 2),
+      y: (mC.panelHeight / 100 * 10),
     }, {
-      x: (mC.panelWidth / 2),// + mC.marginLeft + padding.left,
-      y: (mC.panelHeight / 100 * 70),// + mC.marginTop + padding.top
+      x: (mC.panelWidth / 2),
+      y: (mC.panelHeight / 100 * 70),
     }];
 
     // remove old svg
     d3.select("#svgContainer").remove();
     // create new svg
-    svg = d3.select("#visContent").append("svg").attr("width", mC.oWidth).attr(
-            "height", mC.oHeight).attr("id", "svgContainer").on("click",
-            clearHighlights).append("g").attr("transform",
+    svg = d3.select("#visContent").on("click", function() {
+      clearHighlights();
+    }).append("svg").attr("width", mC.oWidth).attr("height", mC.oHeight).attr(
+            "id", "svgContainer").append("g").attr("transform",
             "translate(" + mC.marginLeft + "," + mC.marginTop + ")").attr(
-            "class", "decisionContainer");
+            "class", "decisionContainer").on("click", clearHighlights);
 
+    // set defs for markers
     svg.append("defs").selectAll("marker").data(legendRelations).enter()
             .append("marker").attr("id", function(d) {
               return d.toLowerCase();
@@ -126,38 +137,54 @@ var decisionGraph = (function() {
     // Invoke tip in context of visualization
     svg.call(tip);
 
+    // margin convention
     visGroup = svg.append("g").attr('id', 'visualization').attr("transform",
             "translate(" + padding.left + "," + padding.top + ")");
-    // g element for all paths
+
+    // Group paths
     pathGroup = visGroup.append("g").attr("id", "paths");
-    // helper object to finde nodes
     // new force layout
     force = d3.layout.force().size([mC.panelWidth, mC.panelHeight]);
     // set force parameters
     force.charge(function(d) {
       return d.charge;
     }).gravity(config.gravity).friction(config.friction).on("tick", tick);
+    // if layout is only resized no reset of nodes
+    if (resize !== true) {
+      // preprocess json file
+      initialNodes = flatten(root.cdsfPlus);
+      nodes.splice(0, nodes.length);
+      node_lookup.splice(0, node_lookup.length);
+      // add all nodes to force layout
+      initialNodes.forEach(function(d) {
+        addNode(d, resize);
+      });
+    }
+    // set force nodes
+    force.nodes(nodes);
+    setLinks();
+  }
 
-    nodes = force.nodes();
-    // separated from force to avoid calculations
-
-    initialNodes = flatten(root.cdsfPlus);
-
-    initialNodes.forEach(function(d) {
-      addNode(d);
-    });
-    /*
-     * #if change in nodes or textes desired move to update method #
-     */
+  /**
+   * Update force layout.
+   * 
+   * @memberOf decisionGraph
+   */
+  function update() {
+    // possible because node never change
     node = visGroup.selectAll("g.node").data(nodes, function(d) {
       return d.id;
     });
-    // nodeEnter to append everything to same group
+
+    // nodeEnter to append everything to the same group
+    var nodeEnter = node.enter().append("g").attr("class", "node").call(
+            force.drag()).on('click', function() {
+      d3.event.stopPropagation();
+      if (d3.event.defaultPrevented) return; // avoid click if dragged
+      connectedNodes(d3.select(this).node().__data__);
+    })
     // tooltip on mouseover and out and highlight on click
-    var nodeEnter = node.enter().append("g").attr("class", "node").on('click',
-            connectedNodes).call(force.drag)
-            .on("mouseover", tip.showTransition)
-            .on("mouseout", tip.hideDelayed);
+    .on("mouseover", tip.showTransition).on("mouseout", tip.hideDelayed);
 
     // append circle for decisions
     nodeEnter.append("circle").attr("r", function(d) {
@@ -176,151 +203,15 @@ var decisionGraph = (function() {
       return d.abbrev;
     }).attr("class", "legend");
 
+    // append label (name) below circle
     nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
             function(d) {
               return "" + (d.radius + 15) + "px";
             }).attr("text-anchor", "middle").text(function(d) {
       return d.label;
     }).attr("class", "legend");
-
+    // remove old nodes (will never happen)
     node.exit().remove();
-
-    setLinks();
-
-  }
-
-  /**
-   * Adds link to force links
-   */
-  function addLink(link) {
-    links.push({
-      "source": node_lookup[link.source],
-      "target": node_lookup[link.target],
-      "type": link.type,
-      "relationGroup": link.relationGroup
-    });
-  }
-
-  /**
-   * Traverses json root node to get all decision elements
-   */
-  function flatten(root) {
-    var nodes = [];
-    function recurse(node) {
-      if (node.children) node.children.forEach(recurse);
-      if (node.type == "dec") {
-        nodes.push(node);
-      }
-    }
-    recurse(root);
-    return nodes;
-  }
-
-  /**
-   * Gets all links for the selected node and updates layout.
-   */
-  function setLinks() {
-    links.forEach(function(d) {
-      linkedByIndex[d.source.id + "," + d.target.id] = 0;
-    });
-    links.splice(0, links.length);
-    var specificLinks = root.links.filter(function(d) {
-      for (var i = 0; i < relations.length; i++) {
-        if (d.type == relations[i]) return d;
-      }
-    });
-    specificLinks.forEach(function(d) {
-      addLink(d);
-    });
-    links.forEach(function(d) {
-      linkedByIndex[d.source.id + "," + d.target.id] = 1;
-    });
-    update();
-  }
-
-  /**
-   * Creates node based on json data and initializes it next to its cluster.
-   */
-  function addNode(node) {
-    switch (node.type) {
-    case "dec":
-      var d = {
-        cluster: node.cluster,
-        radius: config.decisionWidth,
-        id: node.id,
-        label: node.label,
-        type: node.type,
-        charge: config.chDec,
-        group: node.group,
-        classification: node.classification,
-        description: node.description,
-        abbrev: node.abbrev,
-        // initialize position around cluster to avoid jitter
-        x: foci[node.cluster - 1].x + Math.random(),
-        y: foci[node.cluster - 1].y + Math.random(),
-        cx: foci[node.cluster - 1].y + Math.random(),
-        cy: foci[node.cluster - 1].y + Math.random(),
-      };
-      // add node to lookup
-      node_lookup[d.id] = d;
-      // add node to force layout
-      nodes.push(d);
-      // set internal connection for highlighting
-      linkedByIndex[d.id + "," + d.id] = 1;
-      break;
-    }
-  }
-
-  /**
-   * Updates force layout.
-   * 
-   * @memberOf decisionGraph
-   */
-  function update() {
-    force.stop();
-    // possible because node never change
-    node = visGroup.selectAll("g.node").data(nodes, function(d) {
-      return d.id;
-    });
-    // // nodeEnter to append everything to same group
-    // // tooltip on mouseover and out and highlight on click
-    // var nodeEnter = node.enter().append("g").attr("class", "node").on(
-    // 'click', connectedNodes).call(force.drag).on("mouseover",
-    // tip.showTransition).on("mouseout", tip.hideDelayed);
-    //
-    // // append circle for decisions
-    // nodeEnter.append("circle").attr("r", function(d) {
-    // return d.radius;
-    // }).style("fill", function(d) {
-    // return setCircleFill(d)
-    // })
-    // // .attr("stroke", function(d){return
-    // // setStrokeFill(d)}).attr("stroke-width", config.strokeWidth)
-    // .attr("cx", function(d) {
-    // return d.cx;
-    // }).attr("cy", function(d) {
-    // return d.cy;
-    // });
-    //
-    // // append abbrev in middle of circle
-    // nodeEnter.append("text").attr("x", 0).attr("y", "0.5em").attr(
-    // "text-anchor", "middle").text(function(d) {
-    // return d.abbrev;
-    // }).attr("class", "legend");
-    //
-    // // append dec label below circle
-    // nodeEnter.append("text").attr("x", 0).attr("y", "1em").attr("dy",
-    // function(d) {
-    // return "" + (d.radius + 15) + "px";
-    // }).attr("text-anchor", "middle").text(function(d) {
-    // return d.label;
-    // });
-    //
-    // node.exit().remove();
-
-    circle = node.selectAll("circle");
-
-    text = node.selectAll("text");
 
     path = pathGroup.selectAll("path").data(links, function(d) {
       return d.source.id + "-" + d.target.id + "-" + d.type;
@@ -334,6 +225,9 @@ var decisionGraph = (function() {
     // remove old paths
     path.exit().remove();
 
+    circle = node.selectAll("circle");
+    text = node.selectAll("text");
+    // start layout
     force.start();
   }
 
@@ -341,6 +235,8 @@ var decisionGraph = (function() {
    * Tick method of the force layout.
    * 
    * @memberOf decisionGraph
+   * @param e
+   *          tick event
    */
   function tick(e) {
     // Push nodes toward their designated focus.
@@ -361,25 +257,26 @@ var decisionGraph = (function() {
     text.attr("transform", transform);
     // adjust paths to circle
     path.attr("d", linkArc);
-
   }
 
   /**
-   * link gets exact distance between nodes as length
+   * Calculate exact distance between nodes as length.
    * 
    * @memberOf decisionGraph
+   * @param link
+   *          link between two decisions
    */
   function calculateDistance(link) {
     var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, distance = Math
             .sqrt(dx * dx + dy * dy);
-    // if (link.source.cluster == link.target.cluster)
-    // return config.nodePadding + 20;
-    // distance = distance <= 0 ? 1 : distance;
-    // return distance <= 0 ? 20 : distance;
     return distance;
   }
   /**
-   * Calculate link between nodes with target offset
+   * Calculate link between nodes with target offset.
+   * 
+   * @memberOf decisionGraph
+   * @param d
+   *          link between two decisions
    */
   function linkArc(d) {
     var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
@@ -412,42 +309,23 @@ var decisionGraph = (function() {
     // offsetX) + ","
     // + (d.target.y - offsetY);
   }
+
   /**
-   * Generic transform method
+   * Generic transformation method to shift elements.
+   * 
+   * @memberOf decisionGraph
+   * @param d
+   *          object to transform
    */
   function transform(d) {
     return "translate(" + d.x + "," + d.y + ")";
   }
 
-  // function collideCluster(alpha) {
-  // var quadtree = d3.geom.quadtree(nodes);
-  // return function(d) {
-  // var r = d.radius + config.maxRadius
-  // + Math.max(config.nodePadding, config.clusterPadding), nx1 = d.x
-  // - r, nx2 = d.x + r, ny1 = d.y - r, ny2 = d.y + r;
-  // quadtree
-  // .visit(function(quad, x1, y1, x2, y2) {
-  // if (quad.point && (quad.point !== d)) {
-  // var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math
-  // .sqrt(x * x + y * y), r = d.radius
-  // + quad.point.radius
-  // + (d.cluster === quad.point.cluster ? config.nodePadding
-  // : config.clusterPadding);
-  //
-  // if (l < r) {
-  // l = (l - r) / l * alpha;
-  // d.x -= x *= l;
-  // d.y -= y *= l;
-  // quad.point.x += x;
-  // quad.point.y += y;
-  // }
-  // }
-  // return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-  // });
-  // };
-  // }
   /**
-   * Collision detection between nodes
+   * Collision detection between nodes to avoid overlapping.
+   * 
+   * @param alpha
+   *          alpha value of force layout tick event
    */
   function collide(alpha) {
     var quadtree = d3.geom.quadtree(nodes);
@@ -471,38 +349,152 @@ var decisionGraph = (function() {
       });
     };
   }
+
   /**
-   * Sets circle color
+   * Adds link to force layout
+   * 
+   * @memberOf decisionGraph
+   * @param link
+   *          link defined in json file
+   */
+  function addLink(link) {
+    // connect link with decisions
+    links.push({
+      "source": node_lookup[link.source],
+      "target": node_lookup[link.target],
+      "type": link.type,
+      "relationGroup": link.relationGroup
+    });
+  }
+
+  /**
+   * Traverse json cloudDSF object to get all decision elements.
+   * 
+   * @memberOf decisionGraph
+   * @param root
+   *          json object of the cloudDSF
+   */
+  function flatten(root) {
+    var nodes = [];
+    function recurse(node) {
+      if (node.children) node.children.forEach(recurse);
+      if (node.type == "dec") {
+        nodes.push(node);
+      }
+    }
+    recurse(root);
+    return nodes;
+  }
+
+  /**
+   * Get all links for the selected node and update layout.
+   * 
+   * @memberOf decisionGraph
+   */
+  function setLinks() {
+    // reset connected links
+    links.forEach(function(d) {
+      linkedByIndex[d.source.id + "," + d.target.id] = 0;
+    });
+    links.splice(0, links.length);
+    // only get links that are selected
+    var specificLinks = root.links.filter(function(d) {
+      for (var i = 0; i < relations.length; i++) {
+        if (d.type == relations[i]) return d;
+      }
+    });
+    // add links to force layout
+    specificLinks.forEach(function(d) {
+      addLink(d);
+    });
+    // set linked decisions
+    links.forEach(function(d) {
+      linkedByIndex[d.source.id + "," + d.target.id] = 1;
+    });
+    // update layout
+    update();
+    if (toggle !== 0) {
+      var highlightedDecision = node_lookup[toggle];
+      toggle = 0;
+      connectedNodes(highlightedDecision);
+    }
+  }
+
+  /**
+   * Create node based on json data and initialize them next to their cluster.
+   * 
+   * @memberOf decisionGraph
+   * @param node
+   *          decision object from json file
+   */
+  function addNode(node) {
+    switch (node.type) {
+    case "dec":
+      var d = new decisionNode(node);
+      // if (resize !== true) {
+      d.setInitialPosition();
+      // }
+      // add node to lookup and to force layout
+      node_lookup[d.id] = d;
+      nodes.push(d);
+      // set internal connection for highlighting
+      linkedByIndex[d.id + "," + d.id] = 1;
+      break;
+    }
+  }
+
+  /**
+   * Set circle color
+   * 
+   * @param d
+   *          decision node to be colored
    */
   function setCircleFill(d) {
     return cdsfPlus.getColor(d.group);
   }
+
   /**
-   * Sets stroke fill
+   * Set stroke fill of decision nodes
+   * 
+   * @param d
+   *          decision node to be colored
    */
   function setStrokeFill(d) {
     return cdsfPlus.getColor("dp" + d.cluster);
   }
 
   /**
-   * resize decGraph
+   * Resizing of layout.
+   * 
+   * @memberOf decisionGraph
    */
   function resizeLayout() {
-    initialize();
+    initialize(true);
   }
 
   /**
-   * check if pair are neighbours
+   * Check if pair of decisions are connnected
+   * 
+   * @param a
+   *          decision A
+   * @param b
+   *          decision B
    */
   function neighboring(a, b) {
     return linkedByIndex[a.id + "," + b.id];
   }
+
   /**
-   * Fades out all non connected Nodes and links
+   * Fade-out of all non connected nodes and links.
+   * 
+   * @memberOf decisionGraph
+   * @param d
+   *          clicked node
    */
-  function connectedNodes() {
-    if (d3.event.defaultPrevented) return;
-    d = d3.select(this).node().__data__;
+  function connectedNodes(d) {
+    if (d3.event !== null) {
+      d3.event.stopPropagation();
+    }
     if (toggle != d.id || toggle === 0) {
       // Reduce the opacity of all but the neighbouring nodes
       // todo can be changed to including also ingoing links and nodes
@@ -521,17 +513,17 @@ var decisionGraph = (function() {
       // })
       // Reduce the op
       toggle = d.id;
-      d3.event.stopPropagation();
     } else {
       clearHighlights();
-      d3.event.stopPropagation();
     }
   }
 
   /**
-   * generate tooltip text with distinction between out and others
+   * Generate tooltip text with distinction between out and others.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf decisionGraph
+   * @param d
+   *          node with mouse over
    */
   function getTooltipText(d) {
     var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
@@ -542,15 +534,22 @@ var decisionGraph = (function() {
   }
 
   /**
-   * clear opacity to normal level by css
+   * Clear opacity to normal level (fade-in).
+   * 
+   * @memberOf decisionGraph
    */
   function clearHighlights() {
     toggle = 0;
     node.transition().duration(300).style("opacity", null);
     path.transition().duration(300).style("opacity", null);
   }
+
   /**
-   * Remove one relation type
+   * Remove one relation type and update layout.
+   * 
+   * @memberOf decisionGraph
+   * @param type
+   *          relationship type to be removed
    */
   var removeRelationType = function(type) {
     for (var int = 0; int < relations.length; int++) {
@@ -561,45 +560,83 @@ var decisionGraph = (function() {
     }
     setLinks();
   };
+
   /**
-   * remvoe all relation types
+   * Remove all relationhip types and update layout.
+   * 
+   * @memberOf decisionGraph
    */
-  var removeAllRelations = function(type) {
+  var removeAllRelations = function() {
     relations.splice(0, relations.length);
     relations.push([""]);
     setLinks();
   };
+
   /**
-   * set all realtion types
+   * Substitute array of relationship types with new array and update layout.
+   * E.g. to toggle all relations at once.
+   * 
+   * @memberOf decisionGraph
+   * @param types
+   *          array of relationship types
    */
-  var setAllRelations = function(type) {
+  var setAllRelations = function(types) {
     relations.splice(0, relations.length);
-    type.forEach(function(d) {
+    types.forEach(function(d) {
       relations.push(d);
     });
     setLinks();
   };
+
   /**
-   * add one relation type
+   * Add one relationship type and update layout.
+   * 
+   * @memberOf decisionGraph
+   * @param type
+   *          relationship type to be added
    */
   var addRelationType = function(type) {
     relations.push(type);
     setLinks();
   };
 
-  d3.json("./data/cloudDSFPlus.json", function(error, json) {
-    root = json;
-    // initialize();
-  });
+  /**
+   * Decision node
+   * 
+   * @type Decision
+   * @constructor
+   * @param node
+   *          object from json file
+   */
+  function decisionNode(node) {
+    this.cluster = node.cluster;
+    this.radius = config.decisionWidth;
+    this.id = node.id;
+    this.label = node.label;
+    this.type = node.type;
+    this.charge = config.chDec;
+    this.group = node.group;
+    this.classification = node.classification;
+    this.description = node.description;
+    this.abbrev = node.abbrev;
+
+    // initialize position around cluster to avoid jitter
+    this.setInitialPosition = function() {
+      this.x = foci[node.cluster - 1].x + Math.random();
+      this.y = foci[node.cluster - 1].y + Math.random();
+      this.cx = foci[node.cluster - 1].y + Math.random();
+      this.cy = foci[node.cluster - 1].y + Math.random();
+    };
+  }
 
   // Reveal module pattern, offer functions to the outside
   return {
-    update: update,
     initialize: initialize,
     removeRelationType: removeRelationType,
     addRelationType: addRelationType,
     setAllRelations: setAllRelations,
     removeAllRelations: removeAllRelations,
     resizeLayout: resizeLayout,
+    clearHighlights: clearHighlights,
   };
 })();
