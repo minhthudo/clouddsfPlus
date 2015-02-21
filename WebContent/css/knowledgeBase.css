@@ -126,9 +126,6 @@
 	fill: #bdbdbd;
 }
 
-/* .requiringArrow {
-	
-} */
 .link.affecting {
 	stroke-dasharray: 4, 4;
 	stroke: #bdbdbd;
@@ -235,7 +232,7 @@
 	
 }
 
-.requiringArrow {
+.outRelArrow.requiringArrow {
 	stroke: #FFE81B;
 	fill: #FFE81B;
 }
