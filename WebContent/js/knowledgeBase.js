@@ -26,13 +26,13 @@ var kbStartup = (function() {
 
   var setTreeGraphToolbar = (function() {
     $('#showDps').on('click', function(event) {
-      treeGraph.showDps();
+      hierarchicalLayout.showDps();
     });
     $('#showDecs').on('click', function(event) {
-      treeGraph.showDecisions();
+      hierarchicalLayout.showDecisions();
     });
     $('#showOutcomes').on('click', function(event) {
-      treeGraph.showOutcomes();
+      hierarchicalLayout.showOutcomes();
     });
   });
 
@@ -163,10 +163,10 @@ var kbStartup = (function() {
     toolbarOut.addClass("hidden");
     toolbarTree.removeClass("hidden");
     $(window).off('resize.decResize');
-    treeGraph.initialize(false);
+    hierarchicalLayout.initialize(false);
     $(window).on('resize.treeResize', function() {
       clearTimeout(resizeId);
-      resizeId = setTimeout(treeGraph.resizeLayout, 500);
+      resizeId = setTimeout(hierarchicalLayout.resizeLayout, 500);
     });
   }
 
@@ -212,7 +212,7 @@ $(window).load(function() {
 
   $(window).on('resize.treeResize', function() {
     clearTimeout(resizeId);
-    resizeId = setTimeout(treeGraph.resizeLayout, 500);
+    resizeId = setTimeout(hierarchicalLayout.resizeLayout, 500);
   });
 
 });

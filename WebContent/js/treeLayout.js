@@ -14,8 +14,14 @@
  * the License.
  */
 
-// TreeLayout Module
-var treeGraph = (function() {
+/**
+ * Hierarchical Layout depicing a static view on the knowledge base in a tree
+ * like manner.
+ * 
+ * @author Metz
+ * @module hierarchicalLayout
+ */
+var hierarchicalLayout = (function() {
 
   // Padding for svg container
   var padding = {
@@ -35,11 +41,24 @@ var treeGraph = (function() {
   var tree, nodes, root, svg, diagonal, visGroup;
   var mC, tip;
 
+  // get data and create tree
+  d3.json("./data/cloudDSFPlus.json", function(json) {
+    root = json.cdsfPlus;
+    initialize(true);
+  });
+
+  /**
+   * Setup of svg and d3 tree layout.
+   * 
+   * @param reset
+   *          Boolean value to distinguish between resize and first startup.
+   * @memberOf hierarchicalLayout
+   */
   function initialize(reset) {
-    // compute panel size and margins after margin convention
+    // compute panel size and margins with margin convention
     mC = cdsfPlus.marginConvention(padding, config.minHeight);
 
-    // delete old svg content
+    // delete old svg content to switch between layouts
     d3.select("#svgContainer").remove();
 
     svg = d3.select("#visContent").append("svg").attr("width", mC.oWidth).attr(
@@ -70,16 +89,21 @@ var treeGraph = (function() {
       // collapse all children
       root.children.forEach(toggleAll);
     }
-    // update tree depending on node
-
+    // margin convention
     visGroup = svg.append("g").attr('id', 'visualization').attr("transform",
             "translate(" + padding.left + "," + padding.top + ")");
-
-    update(root, svg);
+    // update tree depending on node
+    update(root);
   }
 
-  // redraw tree based on selectiongs
-  function update(source, svg) {
+  /**
+   * Updates and draw tree. *
+   * 
+   * @param source
+   *          node that have been clicked.
+   * @memberOf hierarchicalLayout
+   */
+  function update(source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
     // Compute the new tree layout.
@@ -119,8 +143,7 @@ var treeGraph = (function() {
               return "translate(" + source.y0 + "," + source.x0 + ")";
             });
 
-    // append text element with placement in dependance to circle radius and
-    // wrap in case it exceeds treshold.
+    // append text element with placement in dependance to circle radius (type)
     var textWrapper = nodeEnter.append("text").attr(
             "x",
             function(d) {
@@ -138,15 +161,17 @@ var treeGraph = (function() {
       return d.label;
     });
 
+    // Wrap text for decision points and decisions
     textWrapper.filter(function(d) {
       if (d.type != "out") return d;
     }).call(wrap, (mC.panelWidth / 16) * 3);
 
+    // wrap text for outcomes
     textWrapper.filter(function(d) {
       if (d.type == "out") return d;
     }).call(wrap, (mC.panelWidth / 16) * 5);
 
-    // append different css classes through method
+    // append circles
     nodeEnter.append("circle").attr("r", function(d) {
       if (d.type == "out") return config.outRadius;
       return config.decRadius;
@@ -166,7 +191,6 @@ var treeGraph = (function() {
             function(d) {
               return "translate(" + d.y + "," + d.x + ")";
             });
-
     nodeUpdate.select("circle").attr("r", function(d) {
       if (d.type == "out") return config.outRadius;
       return config.decRadius;
@@ -186,7 +210,7 @@ var treeGraph = (function() {
     nodeExit.select("circle").attr("r", 1e-6);
     nodeExit.select("text").style("fill-opacity", 1e-6);
 
-    // Update the links…
+    // Update the links
     var link = visGroup.selectAll("path.treeLink").data(tree.links(nodes),
             function(d) {
               return d.target.id;
@@ -225,10 +249,15 @@ var treeGraph = (function() {
       d.x0 = d.x;
       d.y0 = d.y;
     });
-    // setTimeout(tip.hide(), 150);
   }
 
-  // Set classes for entities
+  /**
+   * Set classes for nodes. *
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          current node.
+   */
   function setClass(d) {
     if (d._children) {
       return d.group + " treeCollapsed";
@@ -238,18 +267,38 @@ var treeGraph = (function() {
     }
   }
 
-  // set circle storke
+  /**
+   * Set circle stroke. *
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          current node
+   */
   function setCircleStroke(d) {
     return cdsfPlus.getColor(d.group);
   }
 
-  // set color of fill
+  /**
+   * Set fill color of nodes. *
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          current node
+   */
   function setCircleFill(d) {
     return cdsfPlus.getColor(d.group);
   }
 
-  // wrap text items in multiple tspans to avoid foreignobject which is not
-  // rendered by ie
+  /**
+   * Wrap text in multiple tspans to avoid foreignobject which is not rendered
+   * by ie.
+   * 
+   * @memberOf hierarchicalLayout
+   * @param text
+   *          Text to wrap in tspans
+   * @param width
+   *          Available width between nodes depnding on type.
+   */
   function wrap(text, width) {
     text.each(function() {
       var text = d3.select(this);
@@ -289,9 +338,11 @@ var treeGraph = (function() {
   }
 
   /**
-   * generate tooltip text with distinction between out and others
+   * Generate tooltip text with distinction between out and others
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          current node
    */
   function getTooltipText(d) {
     var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
@@ -301,7 +352,13 @@ var treeGraph = (function() {
     return d.type == "out" ? mainText : mainText + classification;
   }
 
-  // collapse all datapoints
+  /**
+   * Collapse all nodes.
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          selected node
+   */
   function toggleAll(d) {
     if (d.children) {
       d.children.forEach(toggleAll);
@@ -309,7 +366,13 @@ var treeGraph = (function() {
     }
   }
 
-  // Toggle children.
+  /**
+   * Toggle children of node.
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          selected node
+   */
   function toggle(d) {
     if (d.children) {
       d._children = d.children;
@@ -320,7 +383,13 @@ var treeGraph = (function() {
     }
   }
 
-  // Show all children
+  /**
+   * Show all children of node.
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          selected node
+   */
   function togglePos(d) {
     if (d.children) {
     } else {
@@ -329,7 +398,13 @@ var treeGraph = (function() {
     }
   }
 
-  // Don't show children
+  /**
+   * Do not show any children.
+   * 
+   * @memberOf hierarchicalLayout
+   * @param d
+   *          selected node
+   */
   function toggleNeg(d) {
     if (d.children) {
       d._children = d.children;
@@ -337,13 +412,21 @@ var treeGraph = (function() {
     }
   }
 
-  // show all decision points
+  /**
+   * Show all decision points.
+   * 
+   * @memberOf hierarchicalLayout
+   */
   var showDps = (function() {
     root.children.forEach(toggleNeg);
     update(root, svg);
   });
 
-  // show all decisions
+  /**
+   * Show all decisions. *
+   * 
+   * @memberOf hierarchicalLayout
+   */
   var showDecisions = (function() {
     root.children.forEach(function(d) {
       if (d.children) {
@@ -358,7 +441,11 @@ var treeGraph = (function() {
     update(root, svg);
   });
 
-  // show all outcomes
+  /**
+   * Show all outcomes.
+   * 
+   * @memberOf hierarchicalLayout
+   */
   var showOutcomes = (function() {
     root.children.forEach(function(d) {
       if (d.children) {
@@ -373,18 +460,16 @@ var treeGraph = (function() {
     update(root, svg);
   });
 
-  // resize tree without collapsing nodes
+  /**
+   * Resize tree without collapsing nodes.
+   * 
+   * @memberOf hierarchicalLayout
+   */
   var resizeLayout = (function() {
     initialize(false);
   });
 
-  // get data and create tree
-  d3.json("./data/cloudDSFPlus.json", function(json) {
-    root = json.cdsfPlus;
-    initialize(true);
-  });
-
-  // revealing module
+  // revealing module pattern
   return {
     resizeLayout: resizeLayout,
     showDps: showDps,
