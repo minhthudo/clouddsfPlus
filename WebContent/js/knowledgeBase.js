@@ -177,7 +177,7 @@ var kbStartup = (function() {
     toolbarDec.removeClass("hidden");
     toolbarTree.addClass("hidden");
     $(window).off('resize.treeResize');
-    decisionGraph.initialize();
+    decisionGraph.initialize(false);
     $(window).on('resize.decResize', function() {
       clearTimeout(resizeId);
       resizeId = setTimeout(decisionGraph.resizeLayout, 500);
