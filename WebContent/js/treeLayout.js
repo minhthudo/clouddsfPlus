@@ -35,7 +35,8 @@ var hierarchicalLayout = (function() {
   var config = {
     decRadius: 10,
     outRadius: 10,
-    minHeight: 1350
+    minHeight: 1350,
+    minWidth: 950,
   };
 
   var tree, nodes, root, svg, diagonal, visGroup;
@@ -56,7 +57,7 @@ var hierarchicalLayout = (function() {
    */
   function initialize(reset) {
     // compute panel size and margins with margin convention
-    mC = cdsfPlus.marginConvention(padding, config.minHeight);
+    mC = cdsfPlus.marginConvention(padding, config.minHeight, config.minWidth);
 
     // delete old svg content to switch between layouts
     d3.select("#svgContainer").remove();

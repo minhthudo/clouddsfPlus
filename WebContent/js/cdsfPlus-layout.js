@@ -42,14 +42,14 @@ var cdsfPlus = (function() {
   };
 
   var marginConvention = (function marginConvention(padding, height, width) {
-
+    $("body").css("min-width", "");
     var oWidth = parseInt($('#visContent').width());
-    var oHeight = height || 900;
-    oWidth = oWidth < 900 ? 900 : oWidth;
-    if (typeof width !== "undefined") {
-      if (oWidth < width) {
-        oWidth = width;
-      }
+    var oHeight = height;
+    if (oWidth < width) {
+      oWidth = width;
+      $("body").css("min-width", oWidth + 30);
+    } else {
+      $("body").css("min-width", "");
     }
 
     var iWidth = oWidth - margin.left - margin.right;
