@@ -271,6 +271,7 @@ var decisionGraph = (function() {
             .sqrt(dx * dx + dy * dy);
     return distance;
   }
+
   /**
    * Calculate link between nodes with target offset.
    * 
@@ -285,29 +286,52 @@ var decisionGraph = (function() {
     var offsetY = (dy * d.target.radius) / dr;
     var targetX = d.target.x - offsetX;
     var targetY = d.target.y - offsetY;
-    // possibility to adjust start and end to a point at the edge of the
-    // circle with a fixed degree depending on the direction
-    // It would be necessary to calculate a random angle between 10-80
-    // depending on the direction
-    // var addX = 0;
-    // var addY = 0;
-    // if(targetX > d.source.x) {addX = -15; } else {addX = 15;}
-    // if(targetY > d.source.y) {addY = -25.9;} else {addY = 25.9;}
-    if (d.type != "requiring") {
 
-    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
-            + " 0 0,1 " // + d.target.x
-            + targetX + "," + targetY; }
-    // var t = 1.8 * Math.PI
-    // targetX = d.target.radius * Math.cos(t) + d.target.x;
-    // targetY = d.target.radius * Math.sin(t) + d.target.y;
-    // + d.target.y;
+    var offsetAlpha = 20;
+    offsetAlpha = d.type == "requiring" ? 60 : offsetAlpha;
     // requiring relation get different radius
-    return "M" + (d.source.x) + "," + (d.source.y) + "A" + (dr * 0.6) + ","
-            + (dr * 0.7) + " 0 0,1 " + (targetX) + "," + (targetY);
-    // return "M" + d.source.x + "," + d.source.y + "L" + (d.target.x -
-    // offsetX) + ","
-    // + (d.target.y - offsetY);
+    // calculate quadrant (where is the link coming from)
+    var diffX = targetX - d.target.x;
+    var diffY = targetY - d.target.y;
+    var k, c;
+    if (diffX >= 0 && diffY >= 0) {
+      k = 0;
+      c = 1;
+    } else if (diffX >= 0 && diffY <= 0) {
+      k = 4;
+      c = -1;
+    } else if (diffX <= 0 && diffY >= 0) {
+      k = 2;
+      c = -1;
+    } else if (diffX <= 0 && diffY <= 0) {
+      k = 2;
+      c = 1;
+    }
+    // calcluate angle in radian
+    var alphaX = Math.acos(Math.abs((targetX - d.target.x))
+            / config.decisionWidth);
+    // convert to degree and add degree shift
+    var degreeAlphaX = ((c * (alphaX * 180 / Math.PI)) + k * 90) + offsetAlpha;
+    // convert to radian
+    alphaX = degreeAlphaX / 180 * Math.PI;
+    // calculate new target x value with calculated angle
+    targetX = (config.decisionWidth * Math.cos(alphaX)) + d.target.x;
+
+    // similar as above for y value
+    var alphaY = Math.asin(Math.abs((targetY - d.target.y))
+            / config.decisionWidth);
+    var degreeAlphaY = ((c * (alphaY * 180 / Math.PI)) + k * 90) + offsetAlpha;
+    alphaY = degreeAlphaY / 180 * Math.PI;
+    targetY = (config.decisionWidth * Math.sin(alphaY)) + d.target.y;
+
+    if (d.type != "requiring") {
+      return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
+              + " 0 0,1 " + targetX + "," + targetY;
+    } else {
+      // return arc with stronger ellipsis
+      return "M" + (d.source.x) + "," + (d.source.y) + "A" + (dr * 0.6) + ","
+              + (dr * 0.7) + " 0 0,1 " + targetX + "," + targetY;
+    }
   }
 
   /**
@@ -431,9 +455,7 @@ var decisionGraph = (function() {
     switch (node.type) {
     case "dec":
       var d = new decisionNode(node);
-      // if (resize !== true) {
       d.setInitialPosition();
-      // }
       // add node to lookup and to force layout
       node_lookup[d.id] = d;
       nodes.push(d);
@@ -506,12 +528,6 @@ var decisionGraph = (function() {
         return d.id == o.source.id ? null : 0.05;
         // | d.id == o.target.id
       });
-      // nodes.forEach(function(n) {
-      // node.style("opacity", function(n) {
-      // return d.id == n.id ? 1 : 0.1;
-      // })
-      // })
-      // Reduce the op
       toggle = d.id;
     } else {
       clearHighlights();
@@ -637,6 +653,5 @@ var decisionGraph = (function() {
     setAllRelations: setAllRelations,
     removeAllRelations: removeAllRelations,
     resizeLayout: resizeLayout,
-    clearHighlights: clearHighlights,
   };
 })();
