@@ -66,7 +66,6 @@ var outcomeGraph = (function() {
   // active relationship types at the beginning
   var relationTypes = ["in", "ex"];
   var start = true;
-  var fixed = false;
   var mC, root;
   var initialNodes, initialLinks;
   var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle, labels;
@@ -80,10 +79,6 @@ var outcomeGraph = (function() {
     root = json.cdsfPlus;
     outcomeLinks = json.outcomeLinks;
   });
-
-  function dragend(d, i) {
-    force.alpha(0.04);
-  }
 
   /**
    * @memberOf outcomeGraph
@@ -158,7 +153,7 @@ var outcomeGraph = (function() {
     nodeGroup = visGroup.append("g").attr("id", "nodes");
     labelGroup = visGroup.append("g").attr("id", "labels");
 
-    // new force layout and configuration
+    // new force layout
     force = d3.layout.force().size([mC.panelWidth, mC.panelHeight]).charge(
             function(d) {
               return setCharge(d);
@@ -174,7 +169,6 @@ var outcomeGraph = (function() {
       initializeNode();
     }
     setupForceLayout();
-    // update();
   }
 
   /**
@@ -431,7 +425,13 @@ var outcomeGraph = (function() {
     text.attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
     });
+  }
 
+  /**
+   * 
+   */
+  function dragend(d, i) {
+    force.alpha(0.04);
   }
 
   /**
@@ -444,43 +444,12 @@ var outcomeGraph = (function() {
     nodes.splice(0, nodes.length);
     node_lookup.splice(0, node_lookup.length);
     initialNodes.forEach(function(d) {
-      if (fixed === true) {
-        d.fixed = true;
-      } else {
-        d.fixed = false;
-      }
       nodes.push(d);
       node_lookup[d.id] = d;
     });
-    links = d3.layout.tree().links(nodes);
-
-    // initialNodes.forEach(function(d) {
-    // if (d.type = "out") {
-    // var newNode = {
-    // label : d.label,
-    // type : "out",
-    // abbrev : d.abbrev,
-    // cluster : d.cluster,
-    // group : d.group,
-    // highlighted : d.highlighted,
-    // description : d.description,
-    // parent : d.parent,
-    // fixed : d.fixed,
-    // id : (d.id * -1),
-    // }
-    // nodes.push(newNode);
-    // var s = node_lookup[d.id];
-    //
-    // links.push({
-    // source : s,
-    // target : newNode,
-    // });
-    // }
-
-    // });
-
-    force.links(links);
     setOutcomePaths();
+    links = d3.layout.tree().links(nodes);
+    force.links(links);
     update();
   }
 
@@ -500,35 +469,45 @@ var outcomeGraph = (function() {
       var source = node_lookup[link.source];
       var target = node_lookup[link.target];
 
+      // check if source outcome is not collapsed
       if (typeof source !== 'undefined') {
+        // source exists check if higlighted
         if (source.highlighted) {
-          var parent, topParent, newLink = {};
+          // source is highlighted set target
+          // new link between source and outcome, decision or decision point
+          var newLink = {};
           newLink.source = source;
+          // check if target outcome is collapsed
           if (typeof target === "undefined") {
-            initialLinks.forEach(function(d) {
-              if (link.target == d.target.id) {
-                parent = node_lookup[d.source.id];
-              }
-            });
-
+            // target decision instead of collapsed outcome
+            // Avoid iteration with extraction of parent id
+            var parent = node_lookup[link.target.toString().substr(0, 3)];
+            // alternative search parent decision of outcome
+            // var parent;
+            // initialLinks.forEach(function(d) {
+            // if (link.target == d.target.id) {
+            // parent = node_lookup[d.source.id];
+            // }
+            // });
+            // if decision is collapsed as well
             if (typeof parent === "undefined") {
-              topParent = node_lookup[String(link.target).charAt(0)];
+              // target decision point instead of decision
+              var topParent = node_lookup[String(link.target).charAt(0)];
               newLink.target = topParent;
             } else {
+              // decision is not collapsed decision
               newLink.target = parent;
             }
           } else {
+            // outcome is not collapsed
             newLink.target = target;
           }
           newLink.relationGroup = link.relationGroup;
           newLink.type = link.type;
           outcomePaths.push(newLink);
-        }
-      }
-
+        } // outcome is not highlighted no link
+      } // outcome is collapsed no link
     });
-    links = d3.layout.tree().links(nodes);
-    force.links(links);
   }
 
   /**
@@ -594,7 +573,7 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * Calculates semi-random positions for nodes depnding on cluster and type.
+   * Calculates semi-random positions for nodes depending on cluster and type.
    * 
    * @memberOf outcomeGraph
    * @param d
@@ -608,19 +587,15 @@ var outcomeGraph = (function() {
     var dp, randomX = Math.cos(angle), randomY = Math.sin(angle);
     switch (d.cluster) {
     case 1:
-      // randomX = -Math.abs(Math.cos(angle));
       dp = [(w * 31), (h * 30)];
       break;
     case 2:
-      // randomX = Math.abs(Math.cos(angle));
       dp = [(w * 66), (h * 31)];
       break;
     case 3:
-      // randomX = Math.abs(Math.cos(angle));
       dp = [(w * 69), (h * 59)];
       break;
     case 4:
-      // randomX = -Math.abs(Math.cos(angle));
       dp = [(w * 40), (h * 69)];
       break;
     default:
@@ -628,15 +603,15 @@ var outcomeGraph = (function() {
     }
     switch (d.type) {
     // shift nodes further away depnding on type according to link distance
-    case "dp":
-      return dp;
     case "dec":
-      if (d.abbrev == "SCV") return [dp[0], dp[1] - config.ldDp];
-      if (d.abbrev == "DRL") return [dp[0], dp[1] + config.ldDp];
+      // if (d.abbrev == "SCV") return [dp[0], dp[1] - config.ldDp];
+      // if (d.abbrev == "DRL") return [dp[0], dp[1] + config.ldDp];
       return [dp[0] + randomX * (config.ldDp), dp[1] + randomY * (config.ldDp)];
     case "out":
       return [dp[0] + randomX * (config.ldDp + config.ldDec) - w,
           dp[1] + randomY * (config.ldDp + config.ldDec)];
+    default:
+      return dp;
     }
   }
 
@@ -826,27 +801,33 @@ var outcomeGraph = (function() {
    * 
    * @memberOf outcomeGraph
    */
-  var fixLayout = (function() {
-    fixed = true;
-    setupForceLayout();
-  });
+  var fixLayout = function() {
+    nodes.forEach(function(d) {
+      d.fixed = true;
+    });
+  };
 
   /**
    * Release all nodes in layouts
    * 
    * @memberOf outcomeGraph
    */
-  var looseLayout = (function() {
-    fixed = false;
-    setupForceLayout();
-  });
+  var looseLayout = function() {
+    nodes.forEach(function(d) {
+      if (d.type != "root") {
+        d.fixed = false;
+      }
+    });
+    // start layout for a short time to indicate successful loosing.
+    force.alpha(0.01);
+  };
 
   /**
    * Highlight all relations (toggle all nodes) and update layout.
    * 
    * @memberOf outcomeGraph
    */
-  var showAllRelations = (function() {
+  var showAllRelations = function() {
     nodes.forEach(function(d) {
       if (d.type == "out") {
         d.highlighted = true;
@@ -854,20 +835,20 @@ var outcomeGraph = (function() {
     });
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Hide all relations (untoggle all nodes) and update layout.
    * 
    * @memberOf outcomeGraph
    */
-  var hideAllRelations = (function() {
+  var hideAllRelations = function() {
     nodes.forEach(function(d) {
       d.highlighted = false;
     });
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Remove relationship type from array and update layout.
@@ -876,7 +857,7 @@ var outcomeGraph = (function() {
    * @param type
    *          relationship type to be removed
    */
-  var removeRelationType = (function(type) {
+  var removeRelationType = function(type) {
     for (var int = 0; int < relationTypes.length; int++) {
       if (relationTypes[int] == type) {
         relationTypes.splice(int, 1);
@@ -885,17 +866,17 @@ var outcomeGraph = (function() {
     }
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Remove all relationship types from array and update layout.
    */
-  var removeAllRelationTypes = (function() {
+  var removeAllRelationTypes = function() {
     relationTypes.splice(0, relationTypes.length);
     relationTypes.push([""]);
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Add relationship type to array and update layout.
@@ -903,11 +884,11 @@ var outcomeGraph = (function() {
    * @param type
    *          relationship type to be added
    */
-  var addRelationType = (function(type) {
+  var addRelationType = function(type) {
     relationTypes.push(type);
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Substitute relationship types with new array and update layout.
@@ -915,62 +896,62 @@ var outcomeGraph = (function() {
    * @param types
    *          relationship types array
    */
-  var addAllRelationTypes = (function(types) {
+  var addAllRelationTypes = function(types) {
     relationTypes.splice(0, relationTypes.length);
     types.forEach(function(d) {
       relationTypes.push(d);
     });
     setOutcomePaths();
     update();
-  });
+  };
 
   /**
    * Helper Methods to change and get force parameters directly.
    */
-  var setOutCharge = (function(d) {
+  var setOutCharge = function(d) {
     config.chOut = d;
     update();
-  });
+  };
 
-  var setDecCharge = (function(d) {
+  var setDecCharge = function(d) {
     config.chDec = d;
     update();
-  });
+  };
 
-  var setDpCharge = (function(d) {
+  var setDpCharge = function(d) {
     config.chDp = d;
     update();
-  });
+  };
 
-  var setRootCharge = (function(d) {
+  var setRootCharge = function(d) {
     config.chRoot = d;
     update();
-  });
+  };
 
-  var setGravity = (function(d) {
+  var setGravity = function(d) {
     config.gravity = d;
     update();
-  });
+  };
 
-  var getOutCharge = (function(d) {
+  var getOutCharge = function(d) {
     return config.chOut;
-  });
+  };
 
-  var getDecCharge = (function(d) {
+  var getDecCharge = function(d) {
     return config.chDec;
-  });
+  };
 
-  var getDpCharge = (function(d) {
+  var getDpCharge = function(d) {
     return config.chDp;
-  });
+  };
 
-  var getRootCharge = (function(d) {
+  var getRootCharge = function(d) {
     return config.chRoot;
-  });
+  };
 
-  var getGravity = (function(d) {
+  var getGravity = function(d) {
     return config.gravity;
-  });
+  };
 
   // Reveal module pattern, offer functions to the outside
   return {
