@@ -22,6 +22,8 @@
  * This file has been changed under the Apache 2.0 license in order to implement
  * the Cloud Decision Support Framework Plus.
  * 
+ * Changes have been marked with comments starting with @Metz
+ * 
  * Copyright 2015 Balduin Metz
  */
 
@@ -29,9 +31,12 @@
 /* ======================================================================== */
 
 /* Page Layout Variables ==================== */
-// var showVisLeftDIV = true;
-// var visLeftDIVStatus = true;
-// var allowResizeVisContent = true;
+/* @Metz commented
+var showVisLeftDIV = true;
+var visLeftDIVStatus = true;
+var allowResizeVisContent = true;
+*/
+
 var showVislabelInfo = true;
 
 var showTooltips;
@@ -95,20 +100,15 @@ var layoutTreemapDefaultSettings = {
   "showTooltips": false
 };
 
-// var clusterLayoutData;
-// var treeLayoutData;
-// var treeMapLayoutData;
-// var forceLayoutData;
-// var partitionLayoutData;
-var visualizationData;
 // @Metz only one synchronous retrieval
+var visualizationData;
 var jsonRetrieval = function() {
   $.ajax({
     url: "./data/cloudDSF.json",
     dataType: 'json',
     async: false,
     success: function(json) {
-      // New Root
+      // New Root data for all visualizations
       visualizationData = json;
     }
   });
@@ -117,7 +117,7 @@ var jsonRetrieval = function() {
 /* Initialization of Page */
 /* ======================================================================== */
 function initializationOfPage() {
-
+  // @Metz commented
   /* visLeftDiv */
   // if(!showVisLeftDIV) {
   // $("#visLeftContent").css("display", "none");
@@ -129,29 +129,36 @@ function initializationOfPage() {
   // SVGHeight = $("#" + visContentID).height();
   /* init visType Layout */
   doVisType();
-
 }
 
 /* Layout Functions */
 /* ======================================================================== */
+/* @Metz commented
+ function toggleVisLeftDiv(duration) {
+  if (!duration) {
+    duration = 500;
+  }
 
-// function toggleVisLeftDiv(duration) {
-// if(!duration) {duration=500;}
-//    
-// if(visLeftDIVStatus) {
-// $("#visLeftContent").slideToggle(duration, function(){
-// $("#visLeftDIV").css("min-width", "0px");
-// $("#visLeftDIV").animate({ width: "4em" }, duration);
-// });
-// visLeftDIVStatus = false;
-// } else {
-// $("#visLeftDIV").animate({ width: "20%" }, duration, function(){
-// $("#visLeftDIV").css("min-width", "220px");
-// $("#visLeftContent").slideToggle(duration);
-// });
-// visLeftDIVStatus = true;
-// }
-// }
+  if (visLeftDIVStatus) {
+    $("#visLeftContent").slideToggle(duration, function() {
+      $("#visLeftDIV").css("min-width", "0px");
+      $("#visLeftDIV").animate({
+        width: "4em"
+      }, duration);
+    });
+    visLeftDIVStatus = false;
+  } else {
+    $("#visLeftDIV").animate({
+      width: "20%"
+    }, duration, function() {
+      $("#visLeftDIV").css("min-width", "220px");
+      $("#visLeftContent").slideToggle(duration);
+    });
+    visLeftDIVStatus = true;
+  }
+}
+*/
+
 function updateVisTypeSelection() {
   // Update the visTypeSelection
   $("#visTypeSelectedBTN").text(visTypeName[visType]);
@@ -159,61 +166,65 @@ function updateVisTypeSelection() {
   $("#" + visType).parent().addClass("active");
 }
 
-// function disableVisInputBox(inputElement){
-// inputElement.prop("disabled", true);
-// inputElement.parent().parent().addClass("visInputBoxDisabled");
-// }
+/* @Metz commented
+function disableVisInputBox(inputElement) {
+  inputElement.prop("disabled", true);
+  inputElement.parent().parent().addClass("visInputBoxDisabled");
+}
 
-// function enableVisInputBox(inputElement){
-// inputElement.prop("disabled", false);
-// inputElement.parent().parent().removeClass("visInputBoxDisabled");
-// }
+function enableVisInputBox(inputElement) {
+  inputElement.prop("disabled", false);
+  inputElement.parent().parent().removeClass("visInputBoxDisabled");
+}
 
-// function resizeVisContent(){
-// if(allowResizeVisContent){
-// // Get visContent
-// var visContent = $('#visContent');
-// var newWidth = visContent.parent().width() -
-// 2*Math.max(parseInt(visContent.css("margin-top"),10),parseInt(visContent.css("margin-bottom"),10));
-//        
-// // Handel what to set depending on Layout
-// if("partitionLayout" == visType) {
-// visContent.css('width', newWidth);
-// visContent.css('height', newWidth);
-// SVGWidth = newWidth;
-// SVGHeight = newWidth;
-// } else if("treeLayout" == visType) {
-// visContent.css('width', newWidth);
-// visContent.css('height', newWidth);
-// SVGWidth = newWidth;
-// SVGHeight = newWidth;
-// } else if("clusterLayout" == visType) {
-// visContent.css('width', newWidth);
-// visContent.css('height', newWidth);
-// SVGWidth = newWidth;
-// SVGHeight = newWidth;
-// } else if("forceLayout" == visType) {
-// visContent.css('width', newWidth);
-// visContent.css('height', newWidth);
-// SVGWidth = newWidth;
-// SVGHeight = newWidth;
-// } else if("chordLayout" == visType) {
-// alert("chordLayout");
-// } else if("bundleLayout" == visType) {
-// alert("bundleLayout");
-// } else if("treemapLayout" == visType) {
-// visContent.css('width', newWidth);
-// visContent.css('height', newWidth);
-// SVGWidth = newWidth;
-// SVGHeight = newWidth;
-// } else if("networkLayout" == visType) {
-// alert("networkLayout");
-// }
-//              
-// } else {
-// alert("Resizing prohibited!");
-// }
-// }
+function resizeVisContent() {
+  if (allowResizeVisContent) {
+    // Get visContent
+    var visContent = $('#visContent');
+    var newWidth = visContent.parent().width()
+            - 2
+            * Math.max(parseInt(visContent.css("margin-top"), 10), parseInt(
+                    visContent.css("margin-bottom"), 10));
+
+    // Handel what to set depending on Layout
+    if ("partitionLayout" == visType) {
+      visContent.css('width', newWidth);
+      visContent.css('height', newWidth);
+      SVGWidth = newWidth;
+      SVGHeight = newWidth;
+    } else if ("treeLayout" == visType) {
+      visContent.css('width', newWidth);
+      visContent.css('height', newWidth);
+      SVGWidth = newWidth;
+      SVGHeight = newWidth;
+    } else if ("clusterLayout" == visType) {
+      visContent.css('width', newWidth);
+      visContent.css('height', newWidth);
+      SVGWidth = newWidth;
+      SVGHeight = newWidth;
+    } else if ("forceLayout" == visType) {
+      visContent.css('width', newWidth);
+      visContent.css('height', newWidth);
+      SVGWidth = newWidth;
+      SVGHeight = newWidth;
+    } else if ("chordLayout" == visType) {
+      alert("chordLayout");
+    } else if ("bundleLayout" == visType) {
+      alert("bundleLayout");
+    } else if ("treemapLayout" == visType) {
+      visContent.css('width', newWidth);
+      visContent.css('height', newWidth);
+      SVGWidth = newWidth;
+      SVGHeight = newWidth;
+    } else if ("networkLayout" == visType) {
+      alert("networkLayout");
+    }
+
+  } else {
+    alert("Resizing prohibited!");
+  }
+}
+*/
 
 function toggleSettingsBox(endState, duration) {
   if ("collapsed" == endState) {
@@ -227,21 +238,29 @@ function toggleSettingsBox(endState, duration) {
   }
 }
 
-// function vCenterTextForce() {
-// $(".forceTextCenter").not('.forceTextDP').each(function(i){
-// var tSpaceH = $(this).parent().parent()[0].getBBox().height -
-// $(this).parent().height();
-// $(this).css( { "margin-top" : tSpaceH/2+"px" , "margin-bottom" :
-// tSpaceH/2+"px" } );
-// });
-// }
+/*@Metz commented
+ function vCenterTextForce() {
+  $(".forceTextCenter").not('.forceTextDP').each(
+          function(i) {
+            var tSpaceH = $(this).parent().parent()[0].getBBox().height
+                    - $(this).parent().height();
+            $(this).css({
+              "margin-top": tSpaceH / 2 + "px",
+              "margin-bottom": tSpaceH / 2 + "px"
+            });
+          });
+}
+*/
 
 /* onClick Events */
 /* ======================================================================== */
 
-// $("#visPanelToggle").click(function() {
-// toggleVisLeftDiv();
-// });
+/*@Metz commented
+ $("#visPanelToggle").click(function() {
+  toggleVisLeftDiv();
+});
+*/
+
 $('#visPanelSettingsIconToggle').click(function() {
   toggleSettingsBox();
   // @Metz avoid jump to top of page
@@ -254,24 +273,28 @@ $('#visPanelSettingsLabelToggle').click(function() {
   return false;
 });
 
-// $("#visTypeBTNGroup button").click(function() {
-// });
+/*@Metz commented
+$("#visTypeBTNGroup button").click(function() {
+});
 
-// $("#visTypeBTNGroup a").click(function() {
-// doVisType($(this).attr("id"));
-// });
+$("#visTypeBTNGroup a").click(function() {
+  doVisType($(this).attr("id"));
+});
+*/
+
 $("#visTypeUL a").click(function() {
   doVisType($(this).attr("id"));
 });
 
-// $('#resizeVisContent').click(function(){
-// resizeVisContent();
-// });
+/*@Metz commented
+$('#resizeVisContent').click(function() {
+  resizeVisContent();
+});
+*/
 
 /* Actions */
 /* ======================================================================== */
 function doVisType(inputVisTypeID) {
-
   // Handle inital state
   if ($("#" + visContentID).children().length == 0) {
     drawLayout();
@@ -283,7 +306,6 @@ function doVisType(inputVisTypeID) {
     drawLayout();
     updateVisTypeSelection();
   }
-
 }
 
 function drawLayout() {
@@ -327,7 +349,6 @@ function drawLayout() {
   // Auto hide Settings Panel
   toggleSettingsBox("collapsed", 750);
   // setTimeout(toggleSettingsBox(),750);
-
 }
 
 function clearLayout() {
@@ -365,23 +386,29 @@ function drawPartitionLayout() {
 
   /* === Set Default Information === */
   setPartitionDefaultInformation();
-
+  
   /* === Call Data - JSON === */
-  // $.ajax({
-  // url : "./data/elaboratedDSF.json",
-  // dataType : 'json',
-  // async : false,
-  // success : function(json) {
-  // New Root
-  // partitionNodesTree = {id: -2, type: "root", parent: null,
-  // children: []};
-  var partitionLayoutData = JSON.parse(JSON.stringify(visualizationData));
+  /* @Metz commented json file is now loaded at the beginning
+  $.ajax({
+    url: "./js/json/elaboratedDSF.json",
+    dataType: 'json',
+    async: false,
+    success: function(json) {
+      // New Root
+      // partitionNodesTree = {id: -2, type: "root", parent: null, children:
+      // []};
 
+      json.decisionTree.type = "decRoot";
+      // partitionNodesTree.children.push(json.decisionTree);
+      partitionNodesTree = json.decisionTree;
+    }
+  });
+  */  
+
+  // @Metz new fetch of json data and setup for layout
+  var partitionLayoutData = JSON.parse(JSON.stringify(visualizationData));
   partitionLayoutData.decisionTree.type = "decRoot";
-  // partitionNodesTree.children.push(json.decisionTree);
   partitionNodesTree = partitionLayoutData.decisionTree;
-  // }
-  // });
 
   /* === Partition Vars === */
   var partSVGWidth = SVGWidth;
@@ -459,7 +486,6 @@ function drawPartitionLayout() {
   var partitionDPLabels = partDPLabels();
 
   function partDPLabels() {
-
     return partitionPath.filter(function(d) {
       return "decisionPoint" == d.type;
     }).append("svg:g").append("svg:text").attr("dx", 25).attr("dy", 50).attr(
@@ -469,11 +495,9 @@ function drawPartitionLayout() {
             }).attr("class", "pathTextDP").text(function(d) {
       return d.id == 3 ? "Multi-Tenancy" : d.label;
     });
-
   }
 
   // Decision Text
-
   var partitionLabels = partLabels();
 
   function partLabels() {
@@ -505,7 +529,6 @@ function drawPartitionLayout() {
       clickArc(d);
       mouseNodeClickPartition(d);
     });
-
   }
 
   var text = partitionPath.append("text").attr("class", "pathTextDec").attr(
@@ -526,9 +549,7 @@ function drawPartitionLayout() {
   function clickArc(d) {
 
     if ("outcome" != d.type) {
-
       text.transition().attr("opacity", 0);
-
       if (partitionLabels != null) partitionLabels.remove();
       partitionLabels = null;
       if (partitionDPLabels != null) partitionDPLabels.remove();
@@ -581,12 +602,10 @@ function drawPartitionLayout() {
 
                       });
     }
-
   }
 
   // Interpolate the scales!
   function arcTween(d) {
-
     var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]), yd = d3
             .interpolate(y.domain(), [d.y, 1]), yr = d3.interpolate(y.range(),
             [d.y ? 20 : 0, partRadius]);
@@ -602,6 +621,7 @@ function drawPartitionLayout() {
   }
 }
 
+// @ Metz commented
 // function updatePartitionLayout() {}
 function clearPartitionLayout() {
   // Clear variables used by the partition layout
@@ -702,8 +722,8 @@ function setPartitionSettings() {
       $('.pathTextDP, .pathTextDecTurn, .pathTextDec').css("display", "none");
     }
   });
-
 }
+
 function mouseNodeClickPartition(n) {
 
   // Exiting node Catch
@@ -871,14 +891,12 @@ function mouseNodeClickPartition(n) {
                                                                             .text(
                                                                                     n.parent.label)))));
     $('#visRightContent').append(nodeInfos);
-
   }
 
   // Register Toggle
   $('.visInfoHeaderToggleLink').click(function() {
     visInfoHeaderToggle($(this));
   });
-
 }
 
 /* Tree Layout */
@@ -909,16 +927,20 @@ function drawTreeLayout() {
           treeSVGWidth).attr("height", treeSVGHeight);
 
   /* === Call Data - JSON === */
-  // $.ajax({
-  // url : "./data/elaboratedDSF.json",
-  // dataType : 'json',
-  // async : false,
-  // success : function(json) {
+  /* @Metz commented
+  $.ajax({
+      url: "./js/json/elaboratedDSF.json",
+      dataType: 'json',
+      async: false,
+      success: function(json) {
+         treeNodesTree = json.decisionTree;
+      }
+  });
+  */
+  
+    // @Metz new setup of json data
   var treeLayoutData = JSON.parse(JSON.stringify(visualizationData));
-
   treeNodesTree = treeLayoutData.decisionTree;
-  // }
-  // });
 
   /* === Adjust positioning === */
   treeNodesTree.x0 = treeSVGWidth / 2;
@@ -1111,8 +1133,8 @@ function drawTreeLayout() {
       d.y0 = d.y;
     });
   }
-
 }
+
 // function updateTreeLayout() {}
 function clearTreeLayout() {
   // Clear variables used by the partition layout
@@ -1123,6 +1145,7 @@ function clearTreeLayout() {
   clearVisRightContent();
   hideInfoLabel();
 }
+
 function setTreeDefaultInformation() {
 
   var defaultInformation = $('<div>')
@@ -1137,10 +1160,9 @@ function setTreeDefaultInformation() {
                           .text(
                                   "This panel then shows detailed information about the selected element."));
   $('#visRightContent').append(defaultInformation);
-
 }
-function setTreeSettings() {
 
+function setTreeSettings() {
   var information = $('<div>')
           .attr("class", "visInfoBOX")
           .append(
@@ -1209,7 +1231,6 @@ function setTreeSettings() {
       $('.treeTextDIV, .treeOutTextDIV').css("display", "none");
     }
   });
-
 }
 
 function mouseNodeClickTree(n) {
@@ -1378,14 +1399,12 @@ function mouseNodeClickTree(n) {
                                                                             .text(
                                                                                     n.parent.label)))));
     $('#visRightContent').append(nodeInfos);
-
   }
 
   // Register Toggle
   $('.visInfoHeaderToggleLink').click(function() {
     visInfoHeaderToggle($(this));
   });
-
 }
 
 /* Cluster Layout */
@@ -1396,12 +1415,25 @@ function drawClusterLayout() {
   setClusterDefaultInformation();
 
   /* === Call Data - JSON === */
-  // $.ajax({
-  // url : "./data/elaboratedDSF.json",
-  // dataType : 'json',
-  // async : false,
-  // success : function(json) {
-  // New Root
+  /* @Metz commented
+  $.ajax({
+      url: "./js/json/elaboratedDSF.json",
+      dataType: 'json',
+      async: false,
+      success: function(json) {
+         // New Root
+         clusterNodesTree = {id: -2, type: "root", parent: null, children: []};
+          
+         json.taskTree.type = "taskRoot";
+         clusterNodesTree.children.push(json.taskTree);
+         clusterNodesTree.children = clusterNodesTree.children.concat(json.decisionTreeWithoutOutcomes.children);
+         
+         clusterLinks = json.linksArray;
+      }
+  });
+  */
+  
+  // @Metz new setup of json
   clusterNodesTree = {
     id: -2,
     type: "root",
@@ -1416,8 +1448,6 @@ function drawClusterLayout() {
   clusterNodesTree.children = clusterNodesTree.children
           .concat(clusterLayoutData.decisionTree.children);
   clusterLinks = clusterLayoutData.linksArray;
-  // }
-  // });
 
   /* === Cluster Vars === */
   var clusterSVGWidth = SVGWidth;
@@ -1550,7 +1580,6 @@ function drawClusterLayout() {
 
   /* === Cluster Functions === */
   function clusterMouseover(d) {
-
     layoutSVG.selectAll(
             "path.clusterLink.source-" + d.id + ", path.clusterLink.target-"
                     + d.id).classed("clusterInfluenceLink", function(d) {
@@ -1561,7 +1590,6 @@ function drawClusterLayout() {
   }
 
   function clusterMouseout(d) {
-
     layoutSVG.selectAll(
             "path.clusterLink.source-" + d.id + ", path.clusterLink.target-"
                     + d.id).classed("clusterInfluenceLink", false).classed(
@@ -1569,7 +1597,6 @@ function drawClusterLayout() {
   }
 
   function setClusterLegend() {
-
     var legendItems = $('<div>').attr("id", "layoutLegend");
 
     legendItems.append($('<span>').attr("class", "legendItem small").append(
@@ -1583,11 +1610,13 @@ function drawClusterLayout() {
             $('<img>').attr("src",
                     "./img/legends/cluster-lineInfluenceHighlight.png"))
             .append($('<span>').text("Highlighted Influence Link")));
+    // @Metz change of div element
     // $('#visContentDIV').append(legendItems);
     $('#visContent').append(legendItems);
   }
 }
 
+// @Metz commented
 // function updateClusterLayout() {}
 function clearClusterLayout() {
   // Clear variables used by the partition layout
@@ -1602,7 +1631,6 @@ function clearClusterLayout() {
 }
 
 function setClusterDefaultInformation() {
-
   var defaultInformation = $('<div>')
           .attr("class", "visInfoBOX")
           .append(
@@ -1617,11 +1645,9 @@ function setClusterDefaultInformation() {
                           .text(
                                   "This panel then shows detailed information about the selected element."));
   $('#visRightContent').append(defaultInformation);
-
 }
 
 function setClusterSettings() {
-
   var clearHighlight = $('<div>').attr("class", "visInfoBOX").append(
           $('<div>').attr("class", "visInfoHeaderBOX").append(
                   $('<h4>').text("Clear Highlights")).append(
@@ -1652,7 +1678,6 @@ function setClusterSettings() {
   $('.visInfoHeaderToggleLink').click(function() {
     visInfoHeaderToggle($(this));
   });
-
 }
 
 function clearClusterHighligths() {
@@ -1732,7 +1757,6 @@ function mouseNodeClickCluster(n) {
   }
 
   // Set Tasks Relations
-
   var relatedTasks = layoutSVG.selectAll(
           "path.clusterLink.source-" + n.id + ", path.clusterLink.target-"
                   + n.id).filter(function(d) {
@@ -1740,7 +1764,6 @@ function mouseNodeClickCluster(n) {
   });
 
   var relatedTasksUL = $('<ul>').attr("class", "visInfoRelatedNodesUL");
-
   relatedTasks
           .each(function(d) {
 
@@ -1924,7 +1947,6 @@ function mouseNodeClickCluster(n) {
                               influencingDecisionsUL));
       $('#visRightContent').append(influencingDecisionsInfos);
     }
-
   }
 
   // Register Toggle
@@ -1974,30 +1996,32 @@ function drawForceLayout() {
 
   /* === Set default information === */
   setForceDefaultInformation();
-
+  
   /* === Call Data - JSON === */
-  // $.ajax({
-  // url : "./data/elaboratedDSF.json",
-  // dataType : 'json',
-  // async : false,
-  // success : function(json) {
-  // New Root
+  /* @Metz commented
+   $.ajax({
+   url : "./data/elaboratedDSF.json",
+   dataType : 'json',
+   async : false,
+   success : function(json) {
+   New Root */
   forceNodesTree = {
     id: -2,
     type: "root",
     parent: null,
     children: []
   };
-
+  
+  // @Metz new setup of json data
   var forceLayoutData = JSON.parse(JSON.stringify(visualizationData));
   forceLayoutData.decisionTree.type = "decRoot";
   forceNodesTree.children = forceNodesTree.children
           .concat(forceLayoutData.decisionTree.children);
   forceNodesTree.children = forceNodesTree.children
           .concat(forceLayoutData.taskTree.children);
+  
   var helperC = d3.layout.cluster();
   forceNodesArray = helperC.nodes(forceNodesTree);
-
   forceNodesArray = forceNodesArray
           .filter(function(d) {
             return ("decisionPoint" == d.type || "decision" == d.type || "task" == d.type);
@@ -2006,8 +2030,10 @@ function drawForceLayout() {
   forceRelatedLinks = forceLayoutData.linksArray;
   forceRelatedLinks = nodedLinksArray(forceRelatedLinks, forceNodesArray);
   forceLinksArray = forceLinksArray.concat(forceRelatedLinks);
-  // }
-  // });
+  /* @Metz commented
+  }
+  });
+  */
 
   /* === Force Vars === */
   var forceSVGWidth = SVGWidth;
@@ -2270,11 +2296,9 @@ function drawForceLayout() {
         return d.target.y;
       }
     });
-
   }
 
   function transformNodes(d) {
-
     // Position DecisionPoint Rect
     var dpPadding = 10;
     if ("decisionPoint" == d.type) {
@@ -2287,7 +2311,6 @@ function drawForceLayout() {
         if (d.id == 1) d.y = dpPadding;
         if (d.id == 3) d.y = forceSVGHeight - dpPadding - dpRectHeight;
       }
-
     }
 
     // decision BOX
@@ -2295,7 +2318,6 @@ function drawForceLayout() {
     var decisionPaddingHorizontal = decisionPadding + decRecWidth / 2;
     var decisionPaddingVertical = decisionPadding + decRecHeight / 2;
     if ("decision" == d.type) {
-
       if ((d.parent.id % 2) != 0) {
         var minRange = forceSVGWidth / 2 - dpRectWidth / 2;
         var maxRange = forceSVGWidth / 2 + dpRectWidth / 2;
@@ -2349,13 +2371,11 @@ function drawForceLayout() {
         }
 
         // Dynamic Positioning
-
       }
 
       // Fix offset
       d.x = d.x - decRecWidth / 2;
       d.y = d.y - decRecHeight / 2;
-
     }
 
     // tasks
@@ -2382,12 +2402,10 @@ function drawForceLayout() {
               * parseInt(d.id.toString().substr(1, 2)));
 
     }
-
     return "translate(" + d.x + "," + d.y + ")";
   }
 
   function setForceLegend() {
-
     var legendItems = $('<div>').attr("id", "layoutLegend");
 
     legendItems.append($('<span>').attr("class", "legendItem small").append(
@@ -2409,12 +2427,13 @@ function drawForceLayout() {
             $('<img>').attr("src",
                     "./img/legends/force-affectationLinkHighlight.png"))
             .append($('<span>').text("Highlighted Affectation Link")));
+ // @Metz change of div element
     // $('#visContentDIV').append(legendItems);
     $('#visContent').append(legendItems);
-
   }
-
 }
+
+// @Metz commented
 // function updateForceLayout() {}
 function clearForceLayout() {
   $("svg").remove();
@@ -2425,8 +2444,8 @@ function clearForceLayout() {
   hideInfoLabel();
   removeLegend();
 }
-function setForceDefaultInformation() {
 
+function setForceDefaultInformation() {
   var defaultInformation = $('<div>')
           .attr("class", "visInfoBOX")
           .append(
@@ -2441,8 +2460,8 @@ function setForceDefaultInformation() {
                           .text(
                                   "This panel then shows detailed information about the selected element."));
   $('#visRightContent').append(defaultInformation);
-
 }
+
 function setForceSettings() {
 
   var displayedNodes = $('<div>')
@@ -2667,17 +2686,14 @@ function setForceSettings() {
                                   $('<span>').attr("class",
                                           "glyphicon glyphicon-minus"))))
                   .append($('<div>').attr("class", "clearfix")))
-
   .append(
           $('<div>').attr("class", "visInfoContentBOX")
-
           .append(
                   $('<div>').attr("class", "visInputBox").append(
                           $('<button>').attr("type", "button").attr("class",
                                   "btn btn-default btn-sm btn-block").attr(
                                   "id", "clearForceHighlights").text(
                                   "Clear Highlights"))));
-
   var information = $('<div>')
           .attr("class", "visInfoBOX")
           .append(
@@ -2753,8 +2769,8 @@ function setForceSettings() {
       $('.forceTextDP, .forceTextDec, .forceTextTask').css("display", "none");
     }
   });
-
 }
+
 function mouseNodeClickForce(n) {
 
   // Set Info Label
@@ -2923,7 +2939,6 @@ function mouseNodeClickForce(n) {
             $('<div>').attr("class", "visInfoContentBOX").append(
                     relatedTasksLIs));
     $('#visRightContent').append(relatedNodesInfos);
-
   }
 
   // Register Toggle
@@ -2984,7 +2999,6 @@ function mouseNodeClickForce(n) {
       }
     }
   });
-
 }
 
 function clearForceHighligths() {
@@ -3066,12 +3080,14 @@ function drawTreemapLayout() {
 
   grandparent.append("text").attr("x", 6).attr("y", 6 - margin.top).attr("dy",
           ".9em");
-
+  // @Metz commented 
   // d3
   // .json(
   // "./data/elaboratedDSF.json",
   // function(root) {
+  // @Metz new setup of json data
   var treeMapLayoutData = JSON.parse(JSON.stringify(visualizationData));
+  
   initialize(treeMapLayoutData.decisionTree);
   accumulate(treeMapLayoutData.decisionTree);
   layout(treeMapLayoutData.decisionTree);
@@ -3113,9 +3129,8 @@ function drawTreemapLayout() {
       transition(d);
       mouseNodeClickTreemap(d);
     }).select("text").text(name(d));
-
+ 
     var g1 = svg.insert("g", ".grandparent").datum(d).attr("class", "depth");
-
     var g = g1.selectAll("g").data(d._children).enter().append("g");
 
     g.filter(function(d) {
@@ -3221,6 +3236,7 @@ function drawTreemapLayout() {
   // });
 }
 
+// @Metz commented
 // function updateTreemapLayout() {}
 function clearTreemapLayout() {
   $("svg").remove();
@@ -3512,42 +3528,49 @@ function nodedLinksArray(inputLinksArray, inputNodesArray) {
 }
 
 /* Function getArrayFromNodesTree */
-// function getArrayFromNodesTree(inputTree, deleteChildren) {
-// var nodesArray = [];
-//    
-// processNode(inputTree);
-//    
-// function processNode(node) {
-// if(node.children) {
-// $.each(node.children, function(i,v){ processNode(v); });
-// }
-// nodesArray.push(node);
-// }
-//    
-// if(deleteChildren) {
-// $.each(nodesArray, function(i,v){
-// if(v.children) delete v.children;
-// });
-// }
-//    
-// return nodesArray;
-// }
+/* @Metz commented
+ function getArrayFromNodesTree(inputTree, deleteChildren) {
+  var nodesArray = [];
+
+  processNode(inputTree);
+
+  function processNode(node) {
+    if (node.children) {
+      $.each(node.children, function(i, v) {
+        processNode(v);
+      });
+    }
+    nodesArray.push(node);
+  }
+
+  if (deleteChildren) {
+    $.each(nodesArray, function(i, v) {
+      if (v.children) delete v.children;
+    });
+  }
+  return nodesArray;
+}
+*/
+ 
 /* Function filterTree */
-// function filterTree(inputTree, filterType) {
-// check(inputTree);
-// function check(inTree) {
-// if(inTree.children) {
-// inTree.children = $.grep(inTree.children, function(e,i){
-// return e.type != filterType;
-// });
-// if(inTree.children) {
-// $.each(inTree.children, function(i,v){
-// check(v);
-// });
-// }
-// }
-// }
-// }
+ /* @Metz commented
+ function filterTree(inputTree, filterType) {
+  check(inputTree);
+  function check(inTree) {
+    if (inTree.children) {
+      inTree.children = $.grep(inTree.children, function(e, i) {
+        return e.type != filterType;
+      });
+      if (inTree.children) {
+        $.each(inTree.children, function(i, v) {
+          check(v);
+        });
+      }
+    }
+  }
+}
+*/
+ 
 /* Function setInfoLabel */
 function setInfoLabel(d) {
   var visInfoLabelBOX = $('#visInfoLabelBOX');
@@ -3598,8 +3621,9 @@ function removeLegend() {
 
 /* Function setVisLabel */
 function setVisLabel(visLabelText, visLabelInfoText) {
+  // @Metz change of headline style and omitting of destroy
+  // $('#visLabel h2').text(visLabelText);
   $('#visLabel h4').text(visLabelText);
-
   // $('#vislabelInfo').popover('destroy');
 
   $('#vislabelInfo').popover({
@@ -3607,6 +3631,8 @@ function setVisLabel(visLabelText, visLabelInfoText) {
     title: "Visualization Information",
     content: visLabelInfoText,
   });
+  
+  // @Metz commented tooltip has been refactored (bootstrap)
   // if (showVislabelInfo) {
   // $('#vislabelInfo').popover('show');
   // setTimeout(function() {
@@ -3634,7 +3660,6 @@ function visInfoHeaderToggle(input) {
 /* Function getAllSettings */
 function getAllSettings() {
   var settings = {};
-
   $('#visPanelSettingsContent input[type=checkbox]').each(function() {
     settings[$(this).attr("id")] = $(this).prop("checked");
   });
@@ -3649,6 +3674,5 @@ function getAllSettings() {
   } else {
     showTooltips = false;
   }
-
   return settings;
 }
