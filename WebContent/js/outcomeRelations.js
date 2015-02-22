@@ -14,6 +14,12 @@
  * the License.
  */
 
+/**
+ * Outcome Relations Layout depicting the relations between outcomes.
+ * 
+ * @author Metz
+ * @module outcomeGraph
+ */
 var outcomeGraph = (function() {
 
   // Padding for svg container
@@ -24,7 +30,9 @@ var outcomeGraph = (function() {
     left: 30
   };
 
+  // config parameters
   var config = {
+    // size of nodes
     outWidth: 13,
     decWidth: 23,
     dpWidth: 28,
@@ -32,10 +40,12 @@ var outcomeGraph = (function() {
     addedDecWidth: 10,
     rootWidth: 30,
 
+    // link distance
     ldRoot: 320,
     ldDp: 170,
     ldDec: 90,
 
+    // force parameters
     gravity: 0.05,
     friction: 0.92,
     lsDefault: 0.85,
@@ -43,23 +53,33 @@ var outcomeGraph = (function() {
     chDp: -20,
     chDec: -150,
     chOut: -400,
+
+    // layout size
     minHeight: 1400,
     minWidth: 1400,
 
     legendRelations: ["Including", "Excluding", "Allowing", "Affecting",
-
-    "Binding"],
-
+        "Binding"],
     relations: ["in", "ex", "a", "aff", "eb"],
   };
 
+  // active relationship types at the beginning
   var relationTypes = ["in", "ex"];
-  var start = true, fixed = false;
-  var mC, root, initialNodes, initialLinks;
-  var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle;
+  var start = true;
+  var fixed = false;
+  var mC, root;
+  var initialNodes, initialLinks;
+  var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle, labels;
   var force, nodes, links;
   var outcomeLinks, outcomePaths = [], node_lookup = [];
-  var drag, labels;
+  var drag;
+
+  // set initial data on instantiation (in case of initialization is used
+  // shift to initialize() methode and set content in callback
+  d3.json("./data/cloudDSFPlus.json", function(error, json) {
+    root = json.cdsfPlus;
+    outcomeLinks = json.outcomeLinks;
+  });
 
   function dragend(d, i) {
     force.alpha(0.04);
@@ -80,37 +100,21 @@ var outcomeGraph = (function() {
     // .call(zoom)
     .append("g").attr("transform",
             "translate(" + mC.marginLeft + "," + mC.marginTop + ")").attr(
-            "class", "outcomeContainer").attr("id", "zoomGroup");
+            "class", "outcomeContainer");
 
     // defs for path endings
-    // todo different markers
     svg.append("defs").selectAll("marker").data(config.relations).enter()
             .append("marker").attr("id", function(d) {
               return d;
-
-            }).attr("refX", "7.5").attr("refY", "4")
-
-            .attr("markerWidth", 10).attr("markerHeight", 10).attr(
-                    "markerUnits", "strokeWidth").attr("orient", "auto")
-            .append("svg:path").attr("d", "M 0,2 L7,4 L0,6")
-            // ;
-            //		
-            // .attr("viewBox", "0 0 10 10")
-            // .attr("refX", function(d) {
-            // return 10;
-            // }).attr("refY", function(d) {
-            // return 5;
-            // }).attr("markerWidth", 6).attr("markerHeight", 6).attr(
-            // "markerUnits", "strokeWidth").attr("orient", "auto")
-            // .append("svg:path").attr("d", "M 0,0 l 10,5 l -10,5")
-            .attr(
+            }).attr("refX", "7.5").attr("refY", "4").attr("markerWidth", 10)
+            .attr("markerHeight", 10).attr("markerUnits", "strokeWidth").attr(
+                    "orient", "auto").append("svg:path").attr("d",
+                    "M 0,2 L7,4 L0,6").attr(
                     "class",
                     function(d) {
-
                       if (d.conflict === true) { return "outRelArrow " + d
                               + "Arrow" + " conflict"; }
                       return "outRelArrow " + d + "Arrow";
-
                     });
 
     // create legend above chart
@@ -125,6 +129,7 @@ var outcomeGraph = (function() {
             }).attr("marker-end", function(d) {
               return "url(#" + d + ")";
             });
+
     // set text in the middle below the links
     legend.selectAll("text").data(config.legendRelations).enter()
             .append("text").attr("x", function(d, i) {
@@ -142,9 +147,11 @@ var outcomeGraph = (function() {
 
     // Invoke tip in context of visualization
     svg.call(tip);
+
     // main svg group to enable padding
     visGroup = svg.append("g").attr('id', 'visualization').attr("transform",
             "translate(" + padding.left + "," + padding.top + ")");
+
     // append group for links (lines) and paths
     linkGroup = visGroup.append("g").attr("id", "links");
     pathGroup = visGroup.append("g").attr("id", "paths");
@@ -157,12 +164,10 @@ var outcomeGraph = (function() {
               return setCharge(d);
             }).linkDistance(function(d) {
       return setLinkDistance(d);
-    }).linkStrength(config.lsDefault).gravity(config.gravity)
-
-    .friction(config.friction).on("tick", tick);
+    }).linkStrength(config.lsDefault).gravity(config.gravity).friction(
+            config.friction).on("tick", tick);
 
     nodes = force.nodes();
-
     initialNodes = flatten(root);
     initialLinks = d3.layout.tree().links(initialNodes);
     if (start === true) {
@@ -173,13 +178,11 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * Updates force layout and redraws objects in case they have changed
+   * Updates force layout and redraws objects in case they have changed.
    * 
    * @memberOf outcomeGraph
    */
   function update() {
-    force.stop();
-
     // get all layout links
     link = linkGroup.selectAll("g.line").data(force.links(), function(d) {
       return d.source.id + "-" + d.target.id + "-" + "layoutLink";
@@ -200,6 +203,10 @@ var outcomeGraph = (function() {
       return d.target.y;
     });
 
+    // remove old links.
+    link.exit().remove();
+
+    // add outcome texts attached to links
     label = labelGroup.selectAll("text.small").data(
             force.links().filter(function(d) {
               if (d.target.type == "out") return d;
@@ -215,27 +222,29 @@ var outcomeGraph = (function() {
       return d.target.y;
     }).attr("class", "small");
 
+    // remove old labels
     label.exit().remove();
-    // Exit any old links.
-    link.exit().remove();
+
     // paths for links between outcomes
     path = pathGroup.selectAll("path").data(outcomePaths, function(d) {
       return d.source.id + "-" + d.target.id + "-" + d.type;
     });
+
     // enter new links
     path.enter().insert("path").attr("class", function(d) {
       return d.relationGroup + " " + d.type;
     }).attr("marker-end", function(d) {
       return "url(#" + d.type + ")";
     });
-    // exit old paths
+
+    // remove old paths
     path.exit().remove();
 
     // select groups for nodes
     node = nodeGroup.selectAll("g.node").data(force.nodes(), function(d) {
       return d.id;
-
     });
+
     // set specific drag behaviour
     drag = force.drag()
     // .on("dragstart", dragstart)
@@ -268,6 +277,7 @@ var outcomeGraph = (function() {
       return setCircleClass(d);
     });
 
+    // add abbreviations for decision points and decisions
     nodeEnter.filter(function(d) {
       if (d.type != "out") return d;
     }).append("text").attr("x", 0).attr("y", "0.5em").attr("text-anchor",
@@ -278,7 +288,7 @@ var outcomeGraph = (function() {
       return "legend small";
     });
 
-    // remove nodes
+    // remove old nodes
     node.exit().remove();
 
     // set circle for tick
@@ -288,12 +298,14 @@ var outcomeGraph = (function() {
     }).attr("class", function(d) {
       return setCircleClass(d);
     });
-    // select text nodes
+
+    // select text within nodes
     text = nodeGroup.selectAll("text");
-
+    // select layout links
     link = linkGroup.selectAll("line");
-
+    // select all labels (texts attached to links)
     labels = labelGroup.selectAll("text");
+
     // text2.transition().attr("text-anchor",function(d){
     // if(d.target.x >= d.source.x) return "start";
     // return "end";});
@@ -303,14 +315,8 @@ var outcomeGraph = (function() {
       if (d.type == "dp") {
         d.fixed = true;
       }
-
-      // if ((d.abbrev == "SCV") || (d.abbrev == "DRL"))
-      //
-      // d.fixed = true;
-      // if (d.type != "out") {
-      // // d.fixed = true;
-      // }
     });
+
     if (start === true) {
       force.start();
       for (var i = 0; i < 250; ++i)
@@ -326,19 +332,16 @@ var outcomeGraph = (function() {
         // }
       });
       start = false;
-
     } else // in case layout has been calcuated just resume it shortly
     {
       // if fixed layout
       // force.tick();
-
       // start force and than directly resume with lower alpha to avoid
       // unnecessary long movement
       // start is needed because otherwise the distances and strenghts are
       // not calcuated
       force.start();
       force.alpha(0.01);
-
       // short iteration and new layout but is not inutitive and jumps
       // while (force.alpha() > 0.03) {
       // force.tick();
@@ -352,7 +355,7 @@ var outcomeGraph = (function() {
   /**
    * Tick function of force layout
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
    */
   function tick(e) {
 
@@ -366,13 +369,6 @@ var outcomeGraph = (function() {
       return d.y;
     });
 
-    // circle.each(collide(0.1, 40)).attr({
-    // transform : function(d, i) {
-    // return "translate(" + d.x + "," + d.y + ")";
-    // }
-    // });
-
-    //		
     // circle.attr("cx", function(d) {
     // // in case bounding box is needed
     // // return d.x = Math.max(10, Math.min(mC.iWidth - 10, d.x));
@@ -438,30 +434,6 @@ var outcomeGraph = (function() {
 
   }
 
-  function collide(alpha, radius) {
-    // separation between circles
-
-    var quadtree = d3.geom.quadtree(nodes);
-    return function(d) {
-      var rb = radius + 5, nx1 = d.x - rb, nx2 = d.x + rb, ny1 = d.y - rb, ny2 = d.y
-              + rb;
-      quadtree.visit(function(quad, x1, y1, x2, y2) {
-        if (quad.point && (quad.point !== d)) {
-          var x = d.x - quad.point.x, y = d.y - quad.point.y, l = Math.sqrt(x
-                  * x + y * y);
-          if (l < rb) {
-            l = (l - rb) / l * alpha;
-            d.x -= x *= l;
-            d.y -= y *= l;
-            quad.point.x += x;
-            quad.point.y += y;
-          }
-        }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-      });
-    };
-  }
-
   /**
    * clears objets and recalculate nodes and links and lookup array calls
    * function to create outcome paths and starts update of the force
@@ -509,12 +481,11 @@ var outcomeGraph = (function() {
 
     force.links(links);
     setOutcomePaths();
-
     update();
   }
 
   /**
-   * Sets all paths between outcomes if they exist
+   * Sets all paths between outcomes if they exist.
    * 
    * @memberOf outcomeGraph
    */
@@ -563,7 +534,9 @@ var outcomeGraph = (function() {
   /**
    * Calculate path source and target coordinates with offset to show arrow
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          current link
    */
   function linkArc(d) {
     var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math
@@ -589,74 +562,6 @@ var outcomeGraph = (function() {
 
     return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
             + " 0 0,1 " + targetX + "," + targetY;
-  }
-
-  /**
-   * Toggle paths from selected node to others
-   * 
-   * @memberOf outcomeGraph
-   */
-  function highlightNode(d) {
-    if (d3.event.defaultPrevented) return;
-    if (d.highlighted) {
-      removePaths(d.id);
-      d.highlighted = false;
-    } else {
-      d.highlighted = true;
-      setOutcomePaths();
-    }
-    update();
-  }
-
-  /**
-   * Deletes paths outgoing from selected node
-   * 
-   * @memberOf outcomeGraph
-   */
-  function removePaths(id) {
-    for (var i = outcomePaths.length - 1; i >= 0; i--) {
-      if (outcomePaths[i].source.id == id) {
-        outcomePaths.splice(i, 1);
-      }
-    }
-  }
-
-  /**
-   * Toggle children on double click.
-   * 
-   * @memberOf outcomeGraph
-   */
-  function toggleNode(d) {
-    if (d.children) {
-      d._children = d.children;
-      d.children = null;
-    } else {
-      d.children = d._children;
-      d._children = null;
-    }
-    initialNodes = flatten(root);
-    setupForceLayout();
-  }
-
-  /**
-   * Returns a list of all nodes under the root; size is calculated
-   * 
-   * @memberOf outcomeGraph
-   */
-
-  function flatten(root) {
-    var flattenedNodes = [];
-    function recurse(node) {
-      // set size attribute to 1
-      node.size = 1;
-      if (node.children) node.size = node.children.reduce(function(p, v) {
-        return p + recurse(v);
-      }, 0);
-      flattenedNodes.push(node);
-      return node.size;
-    }
-    root.size = recurse(root);
-    return flattenedNodes;
   }
 
   /**
@@ -689,15 +594,17 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * Calculates semi-random positions for nodes depnding on cluster and type
+   * Calculates semi-random positions for nodes depnding on cluster and type.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          node
    */
   function setInitialLocation(d) {
     var h = mC.panelHeight / 100, w = mC.panelWidth / 100;
     // random angle for circle
     var angle = Math.random() * Math.PI * 2;
-    // x and y coordinat of point on circle with random angle
+    // x and y coordinate of point on circle with random angle
     var dp, randomX = Math.cos(angle), randomY = Math.sin(angle);
     switch (d.cluster) {
     case 1:
@@ -734,28 +641,97 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * generate tooltip text with distinction between out and others
+   * Highlight or Remove outgoing paths from selected node.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          clicked node
    */
-  function getTooltipText(d) {
-    var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
-            + ')</p><p><strong>Description: </strong>' + d.description + '</p>';
-    var classification = '<p><strong>Classification: </strong>'
-            + d.classification + '</p';
-    return d.type == "out" ? mainText : mainText + classification;
+  function highlightNode(d) {
+    // avoid click if node was dragged
+    if (d3.event.defaultPrevented) return;
+    if (d.highlighted) {
+      removePaths(d.id);
+      d.highlighted = false;
+    } else {
+      d.highlighted = true;
+      setOutcomePaths();
+    }
+    update();
   }
 
   /**
-   * Returns charge parameter depending on type and if toggled or not
+   * Deletes paths outgoing from selected node.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param id
+   *          Id of node
+   */
+  function removePaths(id) {
+    for (var i = outcomePaths.length - 1; i >= 0; i--) {
+      if (outcomePaths[i].source.id == id) {
+        outcomePaths.splice(i, 1);
+      }
+    }
+  }
+
+  /**
+   * Toggle children on double click.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          clicked node
+   */
+  function toggleNode(d) {
+    // Write or Restore children with temp variable
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    // retraverse root and rebuild layout (have reference to root values)
+    initialNodes = flatten(root);
+    setupForceLayout();
+  }
+
+  /**
+   * Returns a list of all nodes under the root; size is calculated
+   * 
+   * @memberOf outcomeGraph
+   * @param root
+   *          object to traverse (json object)
+   */
+
+  function flatten(root) {
+    var flattenedNodes = [];
+    function recurse(node) {
+      // set size attribute to 1
+      node.size = 1;
+      if (node.children) node.size = node.children.reduce(function(p, v) {
+        return p + recurse(v);
+      }, 0);
+      flattenedNodes.push(node);
+      return node.size;
+    }
+    root.size = recurse(root);
+    return flattenedNodes;
+  }
+
+  /**
+   * Returns charge parameter depending on type and if toggled or not.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          node
    */
   function setCharge(d) {
     switch (d.type) {
     case "root":
       return config.chRoot;
     case "dp":
+      // special value for decision point with only one decision
       if (d.cluster == 3) { return d._children ? config.chDp
               + (d.size * config.chDec) : config.chDp; }
       return d._children ? config.chDp
@@ -768,36 +744,30 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * Returns link distance depending on connected nodes and if toggled or not
-   * change of distance
+   * Returns link distance depending on node type and if applicable whether
+   * their children are visible or not.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          node with link
    */
   function setLinkDistance(d) {
     switch (d.source.type) {
     case "root":
       return config.ldRoot;
     case "dp":
-      // if (d.target.children) {
-      //
-      // if (d.source.cluster == 4 && d.target.children.length < 3
-      // && d.target.children.length > 1) {
-      // // return d.target.children ? config.ldDp : config.ldDp +
-      // // config.ldDec
-      // // / 2;
-      // return config.ldDp * 1.6;
-      // }
-      // }
-      return d.target.children ? config.ldDp : config.ldDp + config.ldDec / 2;
+      return d.target.children ? config.ldDp : config.ldDp + config.ldDec / 3;
     case "dec":
       return config.ldDec;
     }
   }
 
   /**
-   * Returns circle radius depending on node type and if toggled or not
+   * Calculates circle radius depending on node type and if toggled or not.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          node
    */
   function setCircleRadius(d) {
     switch (d.type) {
@@ -814,31 +784,149 @@ var outcomeGraph = (function() {
   }
 
   /**
-   * Returns class for circl
+   * Returns class for nodes.
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          node
    */
   function setCircleClass(d) {
-    if (d.type == "out") {
-      if (d.highlighted === true) { return "highlighted"; }
-    }
-    return "";
+    return (d.type == "out" && d.highlighted === true) ? "highlighted" : "";
   }
 
   /**
    * Returns color for circle from global color scheme
    * 
-   * @memberOf outcomeGraph.d3Layout
+   * @memberOf outcomeGraph
+   * @param d
+   *          node
    */
   function setCircleFill(d) {
     return cdsfPlus.getColor(d.group);
   }
 
-  function setCircleStroke(d) {
-    if (d.type == "out" && d.highlighted === true) { return "3px"; }
-    return "0px";
+  /**
+   * Generate tooltip text with distinction between outcomes (no classification)
+   * and other nodes.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          hovered node
+   */
+  function getTooltipText(d) {
+    var mainText = '<p><strong>Name: </strong>' + d.label + ' (' + d.abbrev
+            + ')</p><p><strong>Description: </strong>' + d.description + '</p>';
+    var classification = '<p><strong>Classification: </strong>'
+            + d.classification + '</p';
+    return d.type == "out" ? mainText : mainText + classification;
   }
 
+  /**
+   * Fix all nodes in layout in their position.
+   * 
+   * @memberOf outcomeGraph
+   */
+  var fixLayout = (function() {
+    fixed = true;
+    setupForceLayout();
+  });
+
+  /**
+   * Release all nodes in layouts
+   * 
+   * @memberOf outcomeGraph
+   */
+  var looseLayout = (function() {
+    fixed = false;
+    setupForceLayout();
+  });
+
+  /**
+   * Highlight all relations (toggle all nodes) and update layout.
+   * 
+   * @memberOf outcomeGraph
+   */
+  var showAllRelations = (function() {
+    nodes.forEach(function(d) {
+      if (d.type == "out") {
+        d.highlighted = true;
+      }
+    });
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Hide all relations (untoggle all nodes) and update layout.
+   * 
+   * @memberOf outcomeGraph
+   */
+  var hideAllRelations = (function() {
+    nodes.forEach(function(d) {
+      d.highlighted = false;
+    });
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Remove relationship type from array and update layout.
+   * 
+   * @memberOf outcomeGraph
+   * @param type
+   *          relationship type to be removed
+   */
+  var removeRelationType = (function(type) {
+    for (var int = 0; int < relationTypes.length; int++) {
+      if (relationTypes[int] == type) {
+        relationTypes.splice(int, 1);
+        break;
+      }
+    }
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Remove all relationship types from array and update layout.
+   */
+  var removeAllRelationTypes = (function() {
+    relationTypes.splice(0, relationTypes.length);
+    relationTypes.push([""]);
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Add relationship type to array and update layout.
+   * 
+   * @param type
+   *          relationship type to be added
+   */
+  var addRelationType = (function(type) {
+    relationTypes.push(type);
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Substitute relationship types with new array and update layout.
+   * 
+   * @param types
+   *          relationship types array
+   */
+  var addAllRelationTypes = (function(types) {
+    relationTypes.splice(0, relationTypes.length);
+    types.forEach(function(d) {
+      relationTypes.push(d);
+    });
+    setOutcomePaths();
+    update();
+  });
+
+  /**
+   * Helper Methods to change and get force parameters directly.
+   */
   var setOutCharge = (function(d) {
     config.chOut = d;
     update();
@@ -884,90 +972,10 @@ var outcomeGraph = (function() {
     return config.gravity;
   });
 
-  /**
-   * @memberOf outcomeGraph
-   */
-  var fixLayout = (function() {
-    fixed = true;
-    setupForceLayout();
-  });
-  /**
-   * @memberOf outcomeGraph
-   */
-  var looseLayout = (function() {
-    fixed = false;
-    setupForceLayout();
-  });
-
-  /**
-   * @memberOf outcomeGraph
-   */
-  var showAllRelations = (function() {
-    nodes.forEach(function(d) {
-      if (d.type == "out") {
-        d.highlighted = true;
-      }
-    });
-    setOutcomePaths();
-    update();
-  });
-
-  /**
-   * @memberOf outcomeGraph
-   */
-  var hideAllRelations = (function() {
-    nodes.forEach(function(d) {
-      d.highlighted = false;
-    });
-    setOutcomePaths();
-    update();
-  });
-  /**
-   * @memberOf outcomeGraph
-   */
-  var removeRelationType = (function(type) {
-    for (var int = 0; int < relationTypes.length; int++) {
-      if (relationTypes[int] == type) {
-        relationTypes.splice(int, 1);
-        break;
-      }
-    }
-    setOutcomePaths();
-    update();
-  });
-
-  var removeAllRelations = (function() {
-    relationTypes.splice(0, relationTypes.length);
-    relationTypes.push([""]);
-    setOutcomePaths();
-    update();
-  });
-
-  var setAllRelations = (function(type) {
-    relationTypes.splice(0, relationTypes.length);
-    type.forEach(function(d) {
-      relationTypes.push(d);
-    });
-    setOutcomePaths();
-    update();
-  });
-
-  var addRelationType = (function(type) {
-    relationTypes.push(type);
-    setOutcomePaths();
-    update();
-  });
-
-  // set initial data on instantiation (in case of initialization is used
-  // shift to initialize() methode and set content in callback
-  d3.json("./data/cloudDSFPlus.json", function(error, json) {
-    root = json.cdsfPlus;
-    outcomeLinks = json.outcomeLinks;
-  });
-
   // Reveal module pattern, offer functions to the outside
   return {
     initialize: initialize,
+    // helper methods to change force parameters on the fly
     // setOutCharge : setOutCharge,
     // setDecCharge : setDecCharge,
     // setDpCharge : setDpCharge,
@@ -984,7 +992,7 @@ var outcomeGraph = (function() {
     hideAllRelations: hideAllRelations,
     removeRelationType: removeRelationType,
     addRelationType: addRelationType,
-    removeAllRelations: removeAllRelations,
-    setAllRelations: setAllRelations,
+    removeAllRelations: removeAllRelationTypes,
+    setAllRelations: addAllRelationTypes,
   };
 })();
