@@ -59,6 +59,13 @@ var dynamicGraph = (function() {
     minHeight: 1400,
     minWidth: 1450,
 
+    // show requiring relations
+    requiring: false,
+    // indicates first call of layout
+    start: true,
+    // show only last node's relations
+    lastNode: true,
+
     legendRelations: ["Including", "Excluding", "Requiring", "Allowing",
         "Affecting", "Binding"],
     relations: ["in", "ex", "requiring", "a", "aff", "eb"],
@@ -66,12 +73,6 @@ var dynamicGraph = (function() {
 
   // margin Convention variable and config
   var mC;
-  // indicates first call of layout
-  var start = true;
-  // id of last selected node
-  var lastNode = true;
-  // show requiring relations
-  var requiring = false;
   // currently selected node
   var currentNode, tempCurrentNode;
   // initially used relations
@@ -465,14 +466,14 @@ var dynamicGraph = (function() {
     labels = labelGroup.selectAll("text");
 
     // calculate layout for a few round than set all nodes fixed and stop layout
-    if (start === true) {
+    if (config.start === true) {
       force.start();
       for (var i = 0; i < 250; ++i) {
         force.tick();
       }
       force.stop();
       fixLayout();
-      start = false;
+      config.start = false;
       modals.hideProgress();
     } else {
       // in case layout has been calcuated just tick it once
@@ -763,13 +764,16 @@ var dynamicGraph = (function() {
     outcomePaths.splice(0, outcomePaths.length);
     requiringLines.splice(0, requiringLines.length);
 
-    outcomeLinks.filter(function(d) {
-      for (var i = 0; i < relationTypes.length; i++) {
-        if (d.type == relationTypes[i]) if (start || lastNode === false) {
-          return d;
-        } else if (lastNode === true && d.source == currentNode) return d;
-      }
-    }).forEach(
+    outcomeLinks.filter(
+            function(d) {
+              for (var i = 0; i < relationTypes.length; i++) {
+                if (d.type == relationTypes[i])
+                  if (config.start || config.lastNode === false) {
+                    return d;
+                  } else if (config.lastNode === true
+                          && d.source == currentNode) return d;
+              }
+            }).forEach(
             function(link) {
               var source = node_lookup[link.source];
               var target = node_lookup[link.target];
@@ -781,7 +785,7 @@ var dynamicGraph = (function() {
               }
             });
 
-    if (requiring === true) {
+    if (config.requiring === true) {
       requiringLinks.forEach(function(link) {
         if (link.active === true) {
           var source = node_lookup[link.source];
@@ -1117,11 +1121,15 @@ var dynamicGraph = (function() {
       if (d.decided === true) { return "decided"; }
       return d.determined === true ? "determined" : null;
     case "dec":
-      if (d.decided === true) { return d.required === true ? "decided required"
-              : "decided"; }
-      if (d.determined === true) { return d.required === true
-              ? "determined required" : "determined"; }
-      return d.required === true ? "required" : null;
+      var className;
+      if (d.decided === true) {
+        className = "decided";
+      } else if (d.determined === true) {
+        className = "determined";
+      }
+      if (config.requiring === true) { return d.required === true
+              ? (className + " required") : className; }
+      return null;
     case "out":
       if (d.conflicting === true) { return "conflicting"; }
       if (d.selectable === false || d.excluded === true) { return "deactivated"; }
@@ -1468,7 +1476,7 @@ var dynamicGraph = (function() {
       if (this.decided === false) {
         for (var int = 0; int < this.incomingLinks.length; int++) {
           var inReqLink = this.incomingLinks[int];
-          var source = tempDecNodes_lookup[inReqLink.target];
+          var source = tempDecNodes_lookup[inReqLink.source];
           if (source.decided === true) {
             // if (inReqLink.active === true) {
             this.required = true;
@@ -1597,7 +1605,7 @@ var dynamicGraph = (function() {
    * @param {Boolean}
    */
   var setLastNode = function(d) {
-    lastNode = d;
+    config.lastNode = d;
     setOutcomePaths();
     update();
   };
@@ -1615,7 +1623,7 @@ var dynamicGraph = (function() {
     // d.deactivateOutgoingLinks();
     // });
     // }
-    requiring = d;
+    config.requiring = d;
     confirmChanges(true);
   };
 
