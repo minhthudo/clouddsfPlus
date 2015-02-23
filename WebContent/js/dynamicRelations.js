@@ -57,7 +57,7 @@ var dynamicGraph = (function() {
 
     // layout size
     minHeight: 1400,
-    minWidth: 1500,
+    minWidth: 1450,
 
     legendRelations: ["Including", "Excluding", "Requiring", "Allowing",
         "Affecting", "Binding"],
@@ -687,8 +687,16 @@ var dynamicGraph = (function() {
       });
 
       tempDecNodes.forEach(function(tempDecNode) {
-        var oNode = node_lookup[tempDecNode.id];
+        // var oNode = node_lookup[tempDecNode.id];
         tempDecNode.checkOutcomes();
+        // tempDecNode.checkRequiring();
+        // oNode.decided = tempDecNode.decided;
+        // oNode.determined = tempDecNode.determined;
+        // oNode.required = tempDecNode.required;
+      });
+
+      tempDecNodes.forEach(function(tempDecNode) {
+        var oNode = node_lookup[tempDecNode.id];
         tempDecNode.checkRequiring();
         oNode.decided = tempDecNode.decided;
         oNode.determined = tempDecNode.determined;
@@ -772,13 +780,17 @@ var dynamicGraph = (function() {
                 outcomePaths.push(newGraphLink);
               }
             });
+
     if (requiring === true) {
       requiringLinks.forEach(function(link) {
-        var source = node_lookup[link.source];
-        var target = node_lookup[link.target];
-        var newGraphLink = new graphLink(source, target, link.type,
-                link.relationGroup, false, false);
-        requiringLines.push(newGraphLink);
+        if (link.active === true) {
+          var source = node_lookup[link.source];
+          var target = node_lookup[link.target];
+
+          var newGraphLink = new graphLink(source, target, link.type,
+                  link.relationGroup, false, false);
+          requiringLines.push(newGraphLink);
+        }
       });
     }
   }
@@ -901,7 +913,7 @@ var dynamicGraph = (function() {
   }
 
   /**
-   * Updates nodes if they have conflicts through in or excluding relations
+   * Updates nodes if they have conflicts through in or excluding relations.
    * 
    * @memberOf dynamicGraph
    */
@@ -914,7 +926,7 @@ var dynamicGraph = (function() {
         conflict = true;
       }
     }
-    if (conflict) {
+    if (conflict === true) {
       // todo conflict alert
       // actually conflicts are allowed to show problems
       confirmChanges(true);
@@ -944,7 +956,7 @@ var dynamicGraph = (function() {
         d.px = location[0];
         d.py = location[1];
       }
-      // for each node type create new tempNode
+      // for each node type create new tempNode and add them to their lookup
       if (d.type == "dp") {
         d.fixed = true;
         var newTempDpNode = new tempDpNode(d.id, d.type, d.label);
@@ -1101,11 +1113,6 @@ var dynamicGraph = (function() {
    */
   function setCircleClass(d) {
     switch (d.type) {
-    case "out":
-      if (d.conflicting === true) { return "conflicting"; }
-      if (d.selectable === false || d.excluded === true) { return "deactivated"; }
-      if (d.highlighted === true) { return "highlighted"; }
-      return "selectable";
     case "dp":
       if (d.decided === true) { return "decided"; }
       return d.determined === true ? "determined" : null;
@@ -1115,6 +1122,11 @@ var dynamicGraph = (function() {
       if (d.determined === true) { return d.required === true
               ? "determined required" : "determined"; }
       return d.required === true ? "required" : null;
+    case "out":
+      if (d.conflicting === true) { return "conflicting"; }
+      if (d.selectable === false || d.excluded === true) { return "deactivated"; }
+      if (d.highlighted === true) { return "highlighted"; }
+      return "selectable";
     default:
       return null;
     }
@@ -1170,9 +1182,9 @@ var dynamicGraph = (function() {
    * Represents including or excluding link between two outcomes.
    * 
    * @param source
-   *          reference to source node
+   *          id to source node
    * @param target
-   *          reference to target node
+   *          id to target node
    * @param type
    *          type of link (in or ex)
    * @param relationGroup
@@ -1192,7 +1204,7 @@ var dynamicGraph = (function() {
   }
 
   /**
-   * Represents outcome
+   * Represents outcome.
    * 
    * @constructor
    * @param outGroup
@@ -1207,39 +1219,53 @@ var dynamicGraph = (function() {
    *          id of decision
    */
   function tempNode(outGroup, id, type, label, parent) {
+    // indicates if outcome is selected
     this.selectable = true;
+    // indicates if outcome is excluded by a relation
     this.excluded = false;
+    // indicates if outcome is selected
     this.highlighted = false;
+    // indicates if outcome is in a conflict
     this.conflicting = false;
     this.outGroup = outGroup;
     this.id = id;
     this.label = label;
     this.type = type;
     this.parent = parent;
+    // number of excluding and including relations
     this.excluding = 0;
     this.including = 0;
+    // links pointing to outcome
     this.incomingLinks = [];
+    // link outgoing from outcome
     this.outgoingLinks = [];
 
-    // activate outgoing links
+    /**
+     * Activate outgoing links e.g. in case outcome was selected.
+     */
     this.activateOutgoingLinks = function() {
       this.outgoingLinks.forEach(function(d) {
         d.active = true;
       });
     };
 
-    // deactivate outgoing links
+    /**
+     * Deactivate outgoing links e.g. in case outcome was deselected
+     */
     this.deactivateOutgoingLinks = function() {
       this.outgoingLinks.forEach(function(d) {
         d.active = false;
       });
     };
 
-    // check the incoming links and determine the state of the outcome
+    /**
+     * Check the incoming links and determine the state of the outcome
+     */
     this.checkIncomingLinks = function() {
       var ex = 0, inc = 0;
+      // iterate over incoming links
       this.incomingLinks.forEach(function(incomingLink) {
-        // count all occurences of ex and in incoming links
+        // count all occurences of ex and in
         if (incomingLink.active === true) {
           switch (incomingLink.type) {
           case "ex":
@@ -1247,6 +1273,8 @@ var dynamicGraph = (function() {
             break;
           case "in":
             inc++;
+            break;
+          default:
             break;
           }
         }
@@ -1260,7 +1288,7 @@ var dynamicGraph = (function() {
         return true;
       }
       // node is highlighted but excluded by some outcome
-      if (this.excluding > 0 && this.highlighted === true) {
+      else if (this.excluding > 0 && this.highlighted === true) {
         this.conflicting = true;
         this.setConflictingLinks(true);
         return true;
@@ -1277,14 +1305,16 @@ var dynamicGraph = (function() {
         return false;
       }
       // if not excluded set to false
-      if (this.excluding === 0) {
+      else if (this.excluding === 0) {
         this.excluded = false;
         return false;
       }
       return false;
     };
 
-    // set incoming links to conflict
+    /**
+     * Set incoming links to conflict
+     */
     this.setConflictingLinks = function(conflict) {
       this.incomingLinks.forEach(function(d) {
         if ((d.type == "ex" || d.type == "in") && d.active === true) {
@@ -1293,7 +1323,9 @@ var dynamicGraph = (function() {
       });
     };
 
-    // get all outcomes that are restricting this outcome
+    /**
+     * Get all outcomes that are restricting this outcome.
+     */
     this.getRestrictingNodes = function() {
       var restrictingNodes = [];
       this.incomingLinks.forEach(function(d) {
@@ -1304,27 +1336,35 @@ var dynamicGraph = (function() {
       });
       return restrictingNodes;
     };
-    // actiavtes node (highlighted and activate its outgoing links)
+
+    /**
+     * activate node (highlighted and activate its outgoing links)
+     */
     this.activateNode = function() {
       this.highlighted = true;
       this.selectable = true;
       this.activateOutgoingLinks();
     };
 
-    // deactivates node (not highlighted and all outgoing links are not
-    // active)
+    /**
+     * deactivates node (not highlighted and all outgoing links are not active)
+     */
     this.deactivateNode = function() {
       this.highlighted = false;
       this.deactivateOutgoingLinks();
     };
 
-    // resets outcome
+    /**
+     * Reset outcome if it is deselected.
+     */
     this.resetOutcome = function() {
       this.selectable = true;
       this.highlighted = false;
     };
 
-    // sets outcome to excluded (not selectable and not highlighted)
+    /**
+     * Set outcome to excluded (not selectable and not highlighted)
+     */
     this.excludeOutcome = function() {
       if (this.highlighted === true) {
         this.highlighted = false;
@@ -1413,19 +1453,30 @@ var dynamicGraph = (function() {
      */
     this.checkRequiring = function() {
       this.required = false;
+
       for (var num = 0; num < this.outgoingLinks.length; num++) {
         var outReqLink = this.outgoingLinks[num];
-        if (outReqLink.active === true) {
+        var target = tempDecNodes_lookup[outReqLink.target];
+        if (this.decided === true && target.decided === false) {
           this.required = true;
-          return;
+          outReqLink.active = true;
+        } else {
+          outReqLink.active = false;
         }
       }
-      for (var int = 0; int < this.incomingLinks.length; int++) {
-        var inReqLink = this.incomingLinks[int];
-        if (inReqLink.active === true) {
-          this.required = true;
-          return;
+
+      if (this.decided === false) {
+        for (var int = 0; int < this.incomingLinks.length; int++) {
+          var inReqLink = this.incomingLinks[int];
+          var source = tempDecNodes_lookup[inReqLink.target];
+          if (source.decided === true) {
+            // if (inReqLink.active === true) {
+            this.required = true;
+          }
+          // inReqLink.active = true;
+          // return;
         }
+        // }
       }
     };
 
@@ -1483,9 +1534,56 @@ var dynamicGraph = (function() {
   }
 
   /**
-   * Fix all nodes in layout in their position.
+   * Restore selection from loaded json file.
    * 
-   * @memberOf outcomeGraph
+   * @memberOf dynamicGraph
+   */
+  var setData = function(json) {
+    var newTempNodes = json.tempNodes;
+    var newTempLinks = json.tempLinks;
+    tempCurrentNode = json.tempCurrentNode;
+    //
+    newTempLinks.forEach(function(d) {
+      var tempLink = tempLinks_lookup[d.source + "," + d.target];
+      tempLink.active = d.active;
+      tempLink.conflict = d.conflict;
+    });
+
+    newTempNodes.forEach(function(d) {
+      var tempNode = tempNodes_lookup[d.id];
+      tempNode.selectable = d.selectable;
+      tempNode.excluded = d.excluded;
+      tempNode.highlighted = d.highlighted;
+      tempNode.conflicting = d.conflicting;
+      tempNode.checkIncomingLinks();
+    });
+    confirmChanges(true);
+  };
+
+  /**
+   * Get current selection data and serialize it into json file to save
+   * selection
+   * 
+   * @memberOf dynamicGraph
+   */
+  var getData = function(d) {
+    var data = {};
+    data.tempNodes = tempNodes;
+    data.tempLinks = tempLinks;
+    // dps and decs not necessary because no selection are performed thus
+    // they can be recalculated at the import
+    data.tempCurrentNode = tempCurrentNode;
+    var json = JSON.stringify(data, null, 3);
+    var blob = new Blob([json], {
+      type: "application/json"
+    });
+    // create url for blob object and return url for download attribute
+    var url = URL.createObjectURL(blob);
+    return url;
+  };
+
+  /**
+   * Fix all nodes in layout in their position.
    */
   var fixLayout = function() {
     nodes.forEach(function(d) {
@@ -1508,18 +1606,61 @@ var dynamicGraph = (function() {
    * Activate or Deactivate requiring relations overlay.
    */
   var setRequiring = function(d) {
-    if (d === true) {
-      tempDecNodes.forEach(function(d) {
-        d.activateOutgoingLinks();
-      });
-    } else {
-      tempDecNodes.forEach(function(d) {
-        d.deactivateOutgoingLinks();
-      });
-    }
+    // if (d === true) {
+    // tempDecNodes.forEach(function(d) {
+    // d.activateOutgoingLinks();
+    // });
+    // } else {
+    // tempDecNodes.forEach(function(d) {
+    // d.deactivateOutgoingLinks();
+    // });
+    // }
     requiring = d;
     confirmChanges(true);
   };
+
+  /**
+   * Reset complete selection.
+   * 
+   * @memberOf dynamicGraph
+   */
+  var resetSelection = function() {
+    tempNodes.forEach(function(d) {
+      d.resetEverything();
+    });
+    confirmChanges(true);
+  };
+
+  /**
+   * Remove one relationship type from relations array and update layout.
+   * 
+   * @memberOf dynamicGraph
+   * @param type
+   *          relationship type to be removed
+   */
+  var removeRelationType = function(type) {
+    for (var int = 0; int < relationTypes.length; int++) {
+      if (relationTypes[int] == type) {
+        relationTypes.splice(int, 1);
+        break;
+      }
+    }
+    setOutcomePaths();
+    update();
+  };
+
+  /**
+   * Add relationship type to relations array and update layout.
+   * 
+   * @memberOf dynamicGraph
+   * @param type
+   *          relationship type to be added
+   */
+  var addRelationType = (function(type) {
+    relationTypes.push(type);
+    setOutcomePaths();
+    update();
+  });
 
   /**
    * Helper methods to directly manipulate force layout.
@@ -1573,100 +1714,9 @@ var dynamicGraph = (function() {
     return node_lookup;
   };
 
-  /**
-   * Reset complete selection.
-   * 
-   * @memberOf dynamicGraph
-   */
-  var resetSelection = function() {
-    tempNodes.forEach(function(d) {
-      d.resetEverything();
-    });
-    confirmChanges(true);
-  };
-
-  /**
-   * Restore selection from loaded json file.
-   * 
-   * @memberOf dynamicGraph
-   */
-  var setData = function(json) {
-    var newTempNodes = json.tempNodes;
-    var newTempLinks = json.tempLinks;
-    tempCurrentNode = json.tempCurrentNode;
-    //
-    newTempLinks.forEach(function(d) {
-      var tempLink = tempLinks_lookup[d.source + "," + d.target];
-      tempLink.active = d.active;
-      tempLink.conflict = d.conflict;
-    });
-
-    newTempNodes.forEach(function(d) {
-      var tempNode = tempNodes_lookup[d.id];
-      tempNode.selectable = d.selectable;
-      tempNode.excluded = d.excluded;
-      tempNode.highlighted = d.highlighted;
-      tempNode.conflicting = d.conflicting;
-      tempNode.checkIncomingLinks();
-    });
-    confirmChanges(true);
-  };
-
-  /**
-   * Get current selection data and serialize it into json file to save
-   * selection
-   * 
-   * @memberOf dynamicGraph
-   */
-  var getData = function(d) {
-    var data = {};
-    data.tempNodes = tempNodes;
-    data.tempLinks = tempLinks;
-    // dps and decs not necessary because no selection are performed thus
-    // they can be recalculated at the import
-    data.tempCurrentNode = tempCurrentNode;
-    var json = JSON.stringify(data, null, 3);
-    var blob = new Blob([json], {
-      type: "application/json"
-    });
-    // create url for blob object and return url for download attribute
-    var url = URL.createObjectURL(blob);
-    return url;
-  };
-
-  /**
-   * Remove one relationship type from relations array and update layout.
-   * 
-   * @memberOf dynamicGraph
-   * @param type
-   *          relationship type to be removed
-   */
-  var removeRelationType = function(type) {
-    for (var int = 0; int < relationTypes.length; int++) {
-      if (relationTypes[int] == type) {
-        relationTypes.splice(int, 1);
-        break;
-      }
-    }
-    setOutcomePaths();
-    update();
-  };
-
-  /**
-   * Add relationship type to relations array and update layout.
-   * 
-   * @memberOf dynamicGraph
-   * @param type
-   *          relationship type to be added
-   */
-  var addRelationType = (function(type) {
-    relationTypes.push(type);
-    setOutcomePaths();
-    update();
-  });
-
   // Reveal module pattern, offer functions to the outside
   return {
+    // Helper methods
     // setOutCharge : setOutCharge,
     // setDecCharge : setDecCharge,
     // setDpCharge : setDpCharge,
