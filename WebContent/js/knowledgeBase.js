@@ -14,6 +14,10 @@
  * the License.
  */
 
+/**
+ * @author Metz
+ * @module kbStartup
+ */
 var kbStartup = (function() {
   var btnList_DecRel = $('#btnList_DecRel');
   var btnList_OutRel = $('#btnList_OutRel');
@@ -22,57 +26,78 @@ var kbStartup = (function() {
   var btnList_treeLayout = $('#btnList_treeLayout');
   var toolbarOut = $("#toolbarOutcomes");
 
+  /**
+   * Add event listener to Hierarchical Layout
+   */
   var setTreeGraphToolbar = (function() {
     $('#showDps').on('click', function(event) {
       hierarchicalLayout.showDps();
     });
+
     $('#showDecs').on('click', function(event) {
       hierarchicalLayout.showDecisions();
     });
+
     $('#showOutcomes').on('click', function(event) {
       hierarchicalLayout.showOutcomes();
     });
   })();
 
+  /**
+   * Add event listener to Decision Relations Layout
+   */
   var setDecisionGraphToolbar = (function() {
-    $("[name='toggleBinding']").bootstrapSwitch('labelText', "Binding")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setDecisionRelations(state, "binding");
-            });
+    $("[name='toggleBinding']").bootstrapSwitch({
+      'labelText': "Binding",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setDecisionRelations(state, "binding");
+    });
 
-    $("[name='toggleInfluencing']").bootstrapSwitch('labelText', "Influencing")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setDecisionRelations(state, "influencing");
-            });
-    $("[name='toggleAffecting']").bootstrapSwitch('labelText', "Affecting")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setDecisionRelations(state, "affecting");
-            });
-    $("[name='toggleRequiring']").bootstrapSwitch('labelText', "Requiring")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setDecisionRelations(state, "requiring");
-            });
-    $("[name='toggleAll']").bootstrapSwitch('labelText', "All")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on(
-                    'switchChange.bootstrapSwitch',
-                    function(event, state) {
-                      $('.toggle-state-switch').each(function(index) {
-                        $(this).bootstrapSwitch('state', state, true);
-                      });
-                      if (state === true) {
-                        var relations = ["requiring", "influencing",
-                            "affecting", "binding"];
-                        decisionGraph.setAllRelations(relations);
-                      } else
-                        decisionGraph.removeAllRelations();
-                    });
+    $("[name='toggleInfluencing']").bootstrapSwitch({
+      'labelText': "Influencing",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setDecisionRelations(state, "influencing");
+    });
+
+    $("[name='toggleAffecting']").bootstrapSwitch({
+      'labelText': "Affecting",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setDecisionRelations(state, "affecting");
+    });
+
+    $("[name='toggleRequiring']").bootstrapSwitch({
+      'labelText': "Requiring",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setDecisionRelations(state, "requiring");
+    });
+
+    $("[name='toggleAll']").bootstrapSwitch({
+      'labelText': "All",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      $('.toggle-state-switch').each(function(index) {
+        $(this).bootstrapSwitch('state', state, true);
+      });
+      if (state === true) {
+        var relations = ["requiring", "influencing", "affecting", "binding"];
+        decisionGraph.setAllRelations(relations);
+      } else
+        decisionGraph.removeAllRelations();
+    });
   })();
 
+  /**
+   * Add event listener to Outcome Relations Layout
+   */
   var setOutcomeGraphToolbar = (function() {
     // $('#showAll').on('click', function(event) {
     // outcomeGraph.showAllRelations();
@@ -88,85 +113,115 @@ var kbStartup = (function() {
     // outcomeGraph.looseLayout();
     // });
 
-    $("[name='showHideAllRelations']").bootstrapSwitch('labelText',
-            "Highlight all Outcomes").bootstrapSwitch('labelWidth', "134")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              console.log(event);
-              if (state === true) {
-                outcomeGraph.showAllRelations();
-              } else {
-                outcomeGraph.hideAllRelations();
-              }
-            });
+    $("[name='showHideAllRelations']").bootstrapSwitch({
+      'labelText': "Highlight all Outcomes",
+      'labelWidth': "134",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      console.log(event);
+      if (state === true) {
+        outcomeGraph.showAllRelations();
+      } else {
+        outcomeGraph.hideAllRelations();
+      }
+    });
 
-    $("[name='fixLooseLayout']").bootstrapSwitch('labelText', "Fixed Layout")
-            .bootstrapSwitch('labelWidth', "80").bootstrapSwitch('state', true)
-            .bootstrapSwitch('size', 'small').on(
-                    'switchChange.bootstrapSwitch', function(event, state) {
-                      if (state === true) {
-                        outcomeGraph.fixLayout();
-                      } else {
-                        outcomeGraph.looseLayout();
-                      }
-                    });
+    $("[name='fixLooseLayout']").bootstrapSwitch({
+      'labelText': "Fixed Layout",
+      'labelWidth': "80",
+      'state': true,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      if (state === true) {
+        outcomeGraph.fixLayout();
+      } else {
+        outcomeGraph.looseLayout();
+      }
+    });
 
-    $("[name='outBinding']").bootstrapSwitch('labelText', "Binding")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
+    $("[name='outBinding']").bootstrapSwitch({
+      'labelText': "Binding",
+      'state': false
+    }).bootstrapSwitch('size', 'small').on('switchChange.bootstrapSwitch',
+            function(event, state) {
               setOutcomeRelations(state, "eb");
             });
 
-    $("[name='outExcluding']").bootstrapSwitch('labelText', "Excluding")
-            .bootstrapSwitch('state', true).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setOutcomeRelations(state, "ex");
-            });
+    $("[name='outExcluding']").bootstrapSwitch({
+      'labelText': "Excluding",
+      'state': true,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setOutcomeRelations(state, "ex");
+    });
 
-    $("[name='outAffecting']").bootstrapSwitch('labelText', "Affecting")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setOutcomeRelations(state, "aff");
-            });
+    $("[name='outAffecting']").bootstrapSwitch({
+      'labelText': "Affecting",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setOutcomeRelations(state, "aff");
+    });
 
-    $("[name='outAllowing']").bootstrapSwitch('labelText', "Allowing")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setOutcomeRelations(state, "a");
-            });
+    $("[name='outAllowing']").bootstrapSwitch({
+      'labelText': "Allowing",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setOutcomeRelations(state, "a");
+    });
 
-    $("[name='outIncluding']").bootstrapSwitch('labelText', "Including")
-            .bootstrapSwitch('state', true).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setOutcomeRelations(state, "in");
-            });
+    $("[name='outIncluding']").bootstrapSwitch({
+      'labelText': "Including",
+      'state': true,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setOutcomeRelations(state, "in");
+    });
 
-    $("[name='outcomeToggleAll']").bootstrapSwitch('labelText', "All")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              $('.out-state-switch').each(function(index) {
-                $(this).bootstrapSwitch('state', state, true);
-              });
-              if (state === true) {
-                var relations = ["ex", "in", "aff", "a", "eb"];
-                outcomeGraph.setAllRelations(relations);
-              } else
-                outcomeGraph.removeAllRelations();
-            });
+    $("[name='outcomeToggleAll']").bootstrapSwitch({
+      'labelText': "All",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      $('.out-state-switch').each(function(index) {
+        $(this).bootstrapSwitch('state', state, true);
+      });
+      if (state === true) {
+        var relations = ["ex", "in", "aff", "a", "eb"];
+        outcomeGraph.setAllRelations(relations);
+      } else
+        outcomeGraph.removeAllRelations();
+    });
   })();
 
+  /**
+   * Add event listener to subnavigation
+   */
   var setSubnavButtons = (function() {
     btnList_DecRel.on('click', activateDecisionGraphLayout);
     btnList_OutRel.on('click', activateOutcomeGraphLayout);
     btnList_treeLayout.on('click', activateTreeLayout);
   })();
 
+  /**
+   * Set resize listener for Hierarchical Layout
+   */
   var setResizeListener = (function() {
     $(window).on('resize.treeResize', function() {
       setTimeout(hierarchicalLayout.resizeLayout, 500);
     });
   })();
 
+  /**
+   * Add or remove relation from decisionGraph
+   * 
+   * @param state
+   *          true or false for add or remove
+   * @param type
+   *          relationship type
+   */
   function setDecisionRelations(state, type) {
     if (state === true) {
       decisionGraph.addRelationType(type);
@@ -175,6 +230,14 @@ var kbStartup = (function() {
     }
   }
 
+  /**
+   * Add or remove relation from outcomeGraph
+   * 
+   * @param state
+   *          true or false for add or remove
+   * @param type
+   *          relationship type
+   */
   function setOutcomeRelations(state, type) {
     if (state === true) {
       outcomeGraph.addRelationType(type);
@@ -183,6 +246,9 @@ var kbStartup = (function() {
     }
   }
 
+  /**
+   * Switch to Hierarchical Layout (subnav)
+   */
   function activateTreeLayout(event) {
     $(".subnav li").removeClass("active");
     btnList_treeLayout.parent().addClass("active");
@@ -197,6 +263,9 @@ var kbStartup = (function() {
     });
   }
 
+  /**
+   * Switch to Decision Relations Layout (subnav)
+   */
   function activateDecisionGraphLayout(event) {
     $(".subnav li").removeClass("active");
     btnList_DecRel.parent().addClass("active");
@@ -211,6 +280,9 @@ var kbStartup = (function() {
     });
   }
 
+  /**
+   * Switch to Outcome Relations Layout (subnav)
+   */
   function activateOutcomeGraphLayout(event) {
     $(".subnav li").removeClass("active");
     btnList_OutRel.parent().addClass("active");

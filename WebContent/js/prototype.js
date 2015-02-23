@@ -15,49 +15,61 @@
  */
 
 /**
- * 
+ * @author Metz
+ * @module kbNavigator
  */
-var prototypeStartup = (function() {
+var kbNavigator = (function() {
 
+  /**
+   * Add event listeners to toolbar
+   */
   var setToolbarButtons = function() {
+    // switch buttons
+    $("[name='toggleBinding']").bootstrapSwitch({
+      'labelText': "Binding",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setRelations(state, "eb");
+    });
 
-    $("[name='toggleBinding']").bootstrapSwitch('labelText', "Binding")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setRelations(state, "eb");
-            });
+    $("[name='toggleAllowing']").bootstrapSwitch({
+      'labelText': "Allowing",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setRelations(state, "a");
+    });
 
-    $("[name='toggleAllowing']").bootstrapSwitch('labelText', "Allowing")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setRelations(state, "a");
-            });
-    $("[name='toggleAffecting']").bootstrapSwitch('labelText', "Affecting")
-            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
-            .on('switchChange.bootstrapSwitch', function(event, state) {
-              setRelations(state, "aff");
-            });
+    $("[name='toggleAffecting']").bootstrapSwitch({
+      'labelText': "Affecting",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      setRelations(state, "aff");
+    });
 
-    $("[name='toggleLastOutcome']").bootstrapSwitch('labelText',
-            "Relations of Last Selection").bootstrapSwitch('state', true)
-            .bootstrapSwitch('size', 'small').on(
-                    'switchChange.bootstrapSwitch', function(event, state) {
-                      dynamicGraph.setLastNode(state);
-                    });
+    $("[name='toggleLastOutcome']").bootstrapSwitch({
+      'labelText': "Relations of Last Selection",
+      'state': true,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      dynamicGraph.setLastNode(state);
+    });
 
-    $("[name='toggleRequiring']").bootstrapSwitch('labelText',
-            "Overlay Requiring Relations").bootstrapSwitch('state', false)
-            .bootstrapSwitch('size', 'small').on(
-                    'switchChange.bootstrapSwitch', function(event, state) {
-                      dynamicGraph.setRequiring(state);
-                    });
+    $("[name='toggleRequiring']").bootstrapSwitch({
+      'labelText': "Overlay Requiring Relations",
+      'state': false,
+      'size': 'small'
+    }).on('switchChange.bootstrapSwitch', function(event, state) {
+      dynamicGraph.setRequiring(state);
+    });
 
     $('#resetAll').on('click', function(event) {
       dynamicGraph.resetSelection();
     });
 
     $("#store").on('click', function() {
-      // hope the server sets Content-Disposition: attachment!
       this.download = "cloudDsfPlus.json";
       this.href = dynamicGraph.getData();
     });
@@ -72,8 +84,16 @@ var prototypeStartup = (function() {
       };
       reader.readAsText(file);
     });
-  };
+  }();
 
+  /**
+   * Add or remove relation from outcomeGraph
+   * 
+   * @param state
+   *          true or false for add or remove
+   * @param type
+   *          relationship type
+   */
   function setRelations(state, type) {
     if (state === true) {
       dynamicGraph.addRelationType(type);
@@ -86,7 +106,3 @@ var prototypeStartup = (function() {
     setToolbarButtons: setToolbarButtons,
   };
 })();
-
-$(window).load(function() {
-  prototypeStartup.setToolbarButtons();
-});
