@@ -166,7 +166,7 @@
 	stroke-width: 2px;
 }
 
-.outRel.requiring {
+.decRel.requiring {
 	stroke: #FFE81B;
 	stroke-width: 5px;
 	fill: none;
