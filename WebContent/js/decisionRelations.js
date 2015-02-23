@@ -56,11 +56,13 @@ var decisionGraph = (function() {
   var linkedByIndex = {};
 
   // get d3 data and set root to json
-  d3.json("./data/cloudDSFPlus.json", function(error, json) {
-    root = json;
-    // initialize();
-  });
-
+  (function() {
+    d3.json("./data/cloudDSFPlus.json", function(error, json) {
+      root = json;
+      // initialize();
+    });
+  })();
+  
   /**
    * Sets up svg element and d3 force layout with cluster (focis) and all
    * necessary elements.

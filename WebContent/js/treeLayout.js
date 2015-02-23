@@ -42,12 +42,14 @@ var hierarchicalLayout = (function() {
   var tree, nodes, root, svg, diagonal, visGroup;
   var mC, tip;
 
-  // get data and create tree
-  d3.json("./data/cloudDSFPlus.json", function(json) {
-    root = json.cdsfPlus;
-    initialize(true);
-  });
-
+  // get data and create tree with immediate function
+  (function() {
+    d3.json("./data/cloudDSFPlus.json", function(json) {
+      root = json.cdsfPlus;
+      initialize(true);
+    });
+  })();
+  
   /**
    * Setup of svg and d3 tree layout.
    * 
