@@ -15,8 +15,6 @@
  */
 
 var kbStartup = (function() {
-  this.resizeId = 0;
-
   var btnList_DecRel = $('#btnList_DecRel');
   var btnList_OutRel = $('#btnList_OutRel');
   var toolbarDec = $('#toolbarDecisions');
@@ -34,9 +32,9 @@ var kbStartup = (function() {
     $('#showOutcomes').on('click', function(event) {
       hierarchicalLayout.showOutcomes();
     });
-  });
+  })();
 
-  var setDecisionGraphToolbar = function() {
+  var setDecisionGraphToolbar = (function() {
     $("[name='toggleBinding']").bootstrapSwitch('labelText', "Binding")
             .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
             .on('switchChange.bootstrapSwitch', function(event, state) {
@@ -73,30 +71,45 @@ var kbStartup = (function() {
                       } else
                         decisionGraph.removeAllRelations();
                     });
-  };
+  })();
 
-  function setDecisionRelations(state, type) {
-    if (state === true) {
-      decisionGraph.addRelationType(type);
-    } else {
-      decisionGraph.removeRelationType(type);
-    }
-  }
+  var setOutcomeGraphToolbar = (function() {
+    // $('#showAll').on('click', function(event) {
+    // outcomeGraph.showAllRelations();
+    // });
+    // $('#hideAll').on('click', function(event) {
+    // outcomeGraph.hideAllRelations();
+    // });
+    // $('#fixLayout').on('click', function(event) {
+    // outcomeGraph.fixLayout();
+    // });
+    //
+    // $('#looseLayout').on('click', function(event) {
+    // outcomeGraph.looseLayout();
+    // });
 
-  var setOutcomeGraphToolbar = function() {
-    $('#showAll').on('click', function(event) {
-      outcomeGraph.showAllRelations();
-    });
-    $('#hideAll').on('click', function(event) {
-      outcomeGraph.hideAllRelations();
-    });
-    $('#fixLayout').on('click', function(event) {
-      outcomeGraph.fixLayout();
-    });
+    $("[name='showHideAllRelations']").bootstrapSwitch('labelText',
+            "Highlight all Outcomes").bootstrapSwitch('labelWidth', "134")
+            .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
+            .on('switchChange.bootstrapSwitch', function(event, state) {
+              console.log(event);
+              if (state === true) {
+                outcomeGraph.showAllRelations();
+              } else {
+                outcomeGraph.hideAllRelations();
+              }
+            });
 
-    $('#looseLayout').on('click', function(event) {
-      outcomeGraph.looseLayout();
-    });
+    $("[name='fixLooseLayout']").bootstrapSwitch('labelText', "Fixed Layout")
+            .bootstrapSwitch('labelWidth', "80").bootstrapSwitch('state', true)
+            .bootstrapSwitch('size', 'small').on(
+                    'switchChange.bootstrapSwitch', function(event, state) {
+                      if (state === true) {
+                        outcomeGraph.fixLayout();
+                      } else {
+                        outcomeGraph.looseLayout();
+                      }
+                    });
 
     $("[name='outBinding']").bootstrapSwitch('labelText', "Binding")
             .bootstrapSwitch('state', false).bootstrapSwitch('size', 'small')
@@ -140,7 +153,27 @@ var kbStartup = (function() {
               } else
                 outcomeGraph.removeAllRelations();
             });
-  };
+  })();
+
+  var setSubnavButtons = (function() {
+    btnList_DecRel.on('click', activateDecisionGraphLayout);
+    btnList_OutRel.on('click', activateOutcomeGraphLayout);
+    btnList_treeLayout.on('click', activateTreeLayout);
+  })();
+
+  var setResizeListener = (function() {
+    $(window).on('resize.treeResize', function() {
+      setTimeout(hierarchicalLayout.resizeLayout, 500);
+    });
+  })();
+
+  function setDecisionRelations(state, type) {
+    if (state === true) {
+      decisionGraph.addRelationType(type);
+    } else {
+      decisionGraph.removeRelationType(type);
+    }
+  }
 
   function setOutcomeRelations(state, type) {
     if (state === true) {
@@ -149,12 +182,6 @@ var kbStartup = (function() {
       outcomeGraph.removeRelationType(type);
     }
   }
-
-  var setSubnavButtons = function() {
-    btnList_DecRel.on('click', activateDecisionGraphLayout);
-    btnList_OutRel.on('click', activateOutcomeGraphLayout);
-    btnList_treeLayout.on('click', activateTreeLayout);
-  };
 
   function activateTreeLayout(event) {
     $(".subnav li").removeClass("active");
@@ -202,17 +229,3 @@ var kbStartup = (function() {
     setTreeGraphToolbar: setTreeGraphToolbar,
   };
 })();
-
-$(window).load(function() {
-
-  kbStartup.setSubnavButtons();
-  kbStartup.setDecisionGraphToolbar();
-  kbStartup.setTreeGraphToolbar();
-  kbStartup.setOutcomeGraphToolbar();
-
-  $(window).on('resize.treeResize', function() {
-    clearTimeout(resizeId);
-    resizeId = setTimeout(hierarchicalLayout.resizeLayout, 500);
-  });
-
-});

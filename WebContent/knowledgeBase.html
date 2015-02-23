@@ -151,9 +151,8 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-lg-10 btn-group btn-group-sm vspace col-lg-offset-2"
-					role="group">
+			<!-- 			<div class="row">
+				<div class="col-lg-8 btn-group vspace col-lg-offset-2" role="group">
 					<button id="showAll" class="btn btn-primary" role="button">Show
 						All Relations</button>
 					<button id="hideAll" class="btn btn-primary" role="button">Hide
@@ -163,10 +162,17 @@
 					<button id="looseLayout" class="btn btn-primary" role="button">Loose
 						Layout</button>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
-				<div class="col-lg-10 btn-group vspace col-lg-offset-2" role="group">
+				<div class="col-lg-8 col-lg-offset-2 vspace">
+					<div class="btn-group" role="group">
+						<input type="checkbox" name="showHideAllRelations" checked></input>
+						<input type="checkbox" name="fixLooseLayout" checked></input>
+					</div>
+				</div>
+
+				<div class="col-lg-8 btn-group col-lg-offset-2" role="group">
 					<input type="checkbox" name="outcomeToggleAll" checked></input> <input
 						type="checkbox" class="out-state-switch" name="outBinding" checked></input>
 					<input type="checkbox" class="out-state-switch" name="outAffecting"
