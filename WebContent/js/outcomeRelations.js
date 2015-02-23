@@ -61,11 +61,11 @@ var outcomeGraph = (function() {
     legendRelations: ["Including", "Excluding", "Allowing", "Affecting",
         "Binding"],
     relations: ["in", "ex", "a", "aff", "eb"],
+    start: true,
   };
 
   // active relationship types at the beginning
   var relationTypes = ["in", "ex"];
-  var start = true;
   var mC, root;
   var initialNodes, initialLinks;
   var svg, visGroup, pathGroup, linkGroup, nodeGroup, labelGroup, node, link, circle, labels;
@@ -168,7 +168,7 @@ var outcomeGraph = (function() {
     nodes = force.nodes();
     initialNodes = flatten(root);
     initialLinks = d3.layout.tree().links(initialNodes);
-    if (start === true) {
+    if (config.start === true) {
       initializeNode();
     }
     setupForceLayout();
@@ -294,14 +294,14 @@ var outcomeGraph = (function() {
     labels = labelGroup.selectAll("text");
     // if layout is drawn for the first time set fixed layout after initial
     // calculation
-    if (start === true) {
+    if (config.start === true) {
       force.start();
       for (var i = 0; i < 150; ++i)
         force.tick();
       force.stop();
       // fix layouts
       fixLayout();
-      start = false;
+      config.start = false;
     } else {
       // in case layout has been calcuated just resume it shortly
       // start force and than directly resume with lower alpha to avoid
