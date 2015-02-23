@@ -74,11 +74,12 @@ var outcomeGraph = (function() {
 
   // set initial data on instantiation (in case of initialization is used
   // shift to initialize() method and set content in callback
-  d3.json("./data/cloudDSFPlus.json", function(error, json) {
-    root = json.cdsfPlus;
-    outcomeLinks = json.outcomeLinks;
-  });
-
+  (function() {
+    d3.json("./data/cloudDSFPlus.json", function(error, json) {
+      root = json.cdsfPlus;
+      outcomeLinks = json.outcomeLinks;
+    });
+  })();
   /**
    * Setup of json data, force layout and svg elements. Starts first drawing of
    * visualization.
@@ -180,14 +181,11 @@ var outcomeGraph = (function() {
    */
   function update() {
     // get all layout links
-    link = linkGroup.selectAll("g.line").data(force.links(), function(d) {
+    link = linkGroup.selectAll("line").data(force.links(), function(d) {
       return d.source.id + "-" + d.target.id + "-" + "layoutLink";
     });
 
-    // update and insert new lines
-    var linkEnter = link.enter().append("g").attr("class", "line");
-
-    linkEnter.append("line").attr("class", function(d) {
+    var linkEnter = link.enter().append("line").attr("class", function(d) {
       return "layoutLink";
     }).attr("x1", function(d) {
       return d.source.x;
@@ -348,42 +346,17 @@ var outcomeGraph = (function() {
 
     // move label depnding on incoming link direction to adjust label either
     // on the left top right or bottom of outcome circle
-    labels
-            .attr("x", function(d) {
-              return d.target.x;
-            })
-            .attr("y", function(d) {
-              return d.target.y;
-            })
-            .transition()
-            .duration(150)
-            .attr("text-anchor", function(d) {
-              // set anchor either left, right or middle
-              if (d.target.x >= (d.source.x + 20)) return "start";
-              if (d.target.x <= (d.source.x - 20)) return "end";
-              return "middle";
-            })
-            .attr(
-                    "dy",
-                    function(d) {
-                      // set y shift to either 5 for left and right
-                      if ((d.target.x >= (d.source.x + 20))
-                              || (d.target.x <= (d.source.x - 20))) { return (0.5 * 0.85 / 2)
-                              + "em"; }
-                      // 30 if below
-                      if (d.target.y > d.source.y) { return "2.5em"; }
-                      // if above
-                      return "-1.5em";
-                      // calculate x shift
-                    }).attr(
-                    "dx",
-                    function(d) {
-                      if (d.target.x >= (d.source.x + 20))
-                        return config.outWidth + 7 + "px";
-                      if (d.target.x <= (d.source.x - 20))
-                        return (config.outWidth + 7) * -1 + "px";
-                      return 0;
-                    });
+    labels.attr("x", function(d) {
+      return d.target.x;
+    }).attr("y", function(d) {
+      return d.target.y;
+    }).transition().duration(150).attr("text-anchor", function(d) {
+      return setLabelAnchor(d);
+    }).attr("dy", function(d) {
+      return setLabelYshift(d);
+    }).attr("dx", function(d) {
+      return setLabelXshift(d);
+    });
 
     text.attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
@@ -550,6 +523,50 @@ var outcomeGraph = (function() {
 
     return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr
             + " 0 0,1 " + targetX + "," + targetY;
+  }
+
+  /**
+   * Calculates text anchor depending on placement of decision and outcome.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          link between decision and outcome
+   */
+  function setLabelAnchor(d) {
+    if (d.target.x >= (d.source.x + 20)) return "start";
+    if (d.target.x <= (d.source.x - 20)) return "end";
+    return "middle";
+  }
+
+  /**
+   * Calculates shift of y depending on placement of decision and outcome.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          link between decision and outcome
+   */
+  function setLabelYshift(d) {
+    // set y shift to either 5 for left and right
+    if ((d.target.x >= (d.source.x + 20)) || (d.target.x <= (d.source.x - 20))) { return (0.5 * 0.85 / 2)
+            + "em"; }
+    // 30 if below
+    if (d.target.y > d.source.y) { return "2.5em"; }
+    // if above
+    return "-1.5em";
+  }
+
+  /**
+   * Calculates shift of x depending on placement of decision and outcome.
+   * 
+   * @memberOf outcomeGraph
+   * @param d
+   *          link between decision and outcome
+   */
+  function setLabelXshift(d) {
+    if (d.target.x >= (d.source.x + 20)) return config.outWidth + 7 + "px";
+    if (d.target.x <= (d.source.x - 20))
+      return (config.outWidth + 7) * -1 + "px";
+    return 0;
   }
 
   /**
