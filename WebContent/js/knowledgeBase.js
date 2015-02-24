@@ -247,8 +247,7 @@ var kbVisualizerStartup = (function() {
     $(window).off('resize.decResize');
     hierarchicalLayout.initialize(false);
     $(window).on('resize.treeResize', function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(hierarchicalLayout.resizeLayout, 500);
+      setTimeout(hierarchicalLayout.resizeLayout, 500);
     });
   }
 
@@ -264,8 +263,7 @@ var kbVisualizerStartup = (function() {
     $(window).off('resize.treeResize');
     decisionGraph.initialize(false);
     $(window).on('resize.decResize', function() {
-      clearTimeout(resizeId);
-      resizeId = setTimeout(decisionGraph.resizeLayout, 500);
+      setTimeout(decisionGraph.resizeLayout, 500);
     });
   }
 
