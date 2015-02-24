@@ -60,7 +60,7 @@ var kbNavigator = (function() {
     minWidth: 1450,
 
     // show requiring relations
-    requiring: false,
+    requiring: true,
     // indicates first call of layout
     start: true,
     // show only last node's relations
@@ -1493,13 +1493,13 @@ var kbNavigator = (function() {
     /**
      * Reset boolean values to default.
      */
-    this.resetDecNode = function(){
+    this.resetDecNode = function() {
       // reset values
       this.decided = false;
       this.determined = false;
       this.excluded = false;
     };
-    
+
     /**
      * Check associated outcomes to determine if decision is decided or not or
      * determined (one outcome left)
@@ -1542,21 +1542,21 @@ var kbNavigator = (function() {
     this.checkRequiring = function() {
       // reset required
       this.required = false;
+      // this.deactivateOutgoingLinks();
 
       // iterate over outgoing links
       for (var num = 0; num < this.outgoingLinks.length; num++) {
         var outReqLink = this.outgoingLinks[num];
         var target = tempDecNodes_lookup[outReqLink.target];
         // check if link source was selected and if the target decision is not
-        // yet
-        // decided and also not excluded
+        // yet decided and also not excluded
         if (this.decided === true && target.decided === false
                 && target.excluded === false) {
           // set required and activate link
           this.required = true;
           outReqLink.active = true;
         } else {
-          // link is not active
+          // deactivate link
           outReqLink.active = false;
         }
       }
@@ -1577,7 +1577,7 @@ var kbNavigator = (function() {
     };
 
     /**
-     * Actiave all outgoing links
+     * Actiave all outgoing links. Currently not used.
      */
     this.activateOutgoingLinks = function() {
       this.outgoingLinks.forEach(function(d) {
@@ -1586,7 +1586,7 @@ var kbNavigator = (function() {
     };
 
     /**
-     * Deactivate outgoing links
+     * Deactivate outgoing links. Currently not used.
      */
     this.deactivateOutgoingLinks = function() {
       this.outgoingLinks.forEach(function(d) {
@@ -1634,7 +1634,7 @@ var kbNavigator = (function() {
    * 
    * @memberOf kbNavigator
    */
-  var setData = function(json) {
+  function setData(json) {
     var newTempNodes = json.tempNodes;
     var newTempLinks = json.tempLinks;
     var newHistory = json.history;
@@ -1659,9 +1659,8 @@ var kbNavigator = (function() {
     newHistory.forEach(function(d) {
       history.push(d);
     });
-
     confirmChanges(true);
-  };
+  }
 
   /**
    * Get current selection data and serialize it into json file to save
@@ -1669,12 +1668,10 @@ var kbNavigator = (function() {
    * 
    * @memberOf kbNavigator
    */
-  var getData = function(d) {
+  function getData(d) {
     var data = {};
     data.tempNodes = tempNodes;
     data.tempLinks = tempLinks;
-    // data.tempDecNodes = tempDecNodes;
-    // data.tempDpNodes = tempDpNodes;
     data.history = history;
     // dps and decs not necessary because no selection are performed thus
     // they can be recalculated at the import
@@ -1686,49 +1683,49 @@ var kbNavigator = (function() {
     // create url for blob object and return url for download attribute
     var url = URL.createObjectURL(blob);
     return url;
-  };
+  }
 
   /**
    * Fix all nodes in layout in their position.
    */
-  var fixLayout = function() {
+  function fixLayout() {
     nodes.forEach(function(d) {
       d.fixed = true;
     });
-  };
+  }
 
   /**
    * Toggle between all paths for selected outcomes or only for last one.
    * 
    * @param {Boolean}
    */
-  var setLastNode = function(d) {
+  function setLastNode(d) {
     config.lastNode = d;
     setOutcomePaths();
     update();
-  };
+  }
 
   /**
    * Activate or Deactivate requiring relations overlay.
    */
-  var setRequiring = function(d) {
+  function setRequiring(d) {
     config.requiring = d;
     // config.showModal = d;
     confirmChanges(true);
-  };
+  }
 
   /**
    * Reset complete selection.
    * 
    * @memberOf kbNavigator
    */
-  var resetSelection = function() {
+  function resetSelection() {
     tempNodes.forEach(function(d) {
       d.resetEverything();
     });
     history.splice(0, history.length);
     confirmChanges(true);
-  };
+  }
 
   /**
    * Remove one relationship type from relations array and update layout.
@@ -1737,7 +1734,7 @@ var kbNavigator = (function() {
    * @param type
    *          relationship type to be removed
    */
-  var removeRelationType = function(type) {
+  function removeRelationType(type) {
     for (var int = 0; int < relationTypes.length; int++) {
       if (relationTypes[int] == type) {
         relationTypes.splice(int, 1);
@@ -1746,7 +1743,7 @@ var kbNavigator = (function() {
     }
     setOutcomePaths();
     update();
-  };
+  }
 
   /**
    * Add relationship type to relations array and update layout.
@@ -1755,11 +1752,11 @@ var kbNavigator = (function() {
    * @param type
    *          relationship type to be added
    */
-  var addRelationType = (function(type) {
+  function addRelationType(type) {
     relationTypes.push(type);
     setOutcomePaths();
     update();
-  });
+  }
 
   /**
    * Helper methods to directly manipulate force layout.

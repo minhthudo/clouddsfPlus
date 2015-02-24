@@ -61,7 +61,7 @@ var kbNavigatorStartup = (function() {
 
     $("[name='toggleRequiring']").bootstrapSwitch({
       'labelText': "Overlay Requiring Relations",
-      'state': false,
+      'state': true,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
       kbNavigator.setRequiring(state);
