@@ -82,7 +82,7 @@ var kbNavigatorModals = (function() {
       title: "Change outcome of decision " + parent.label + "?",
       buttons: {
         success: {
-          label: "Yes!",
+          label: "Yes, select outcome!",
           className: "btn-danger",
           // In case of approval change outcome to new selection
           callback: function() {
@@ -90,7 +90,7 @@ var kbNavigatorModals = (function() {
           }
         },
         danger: {
-          label: "No",
+          label: "No, do nothing!",
           className: "btn-default",
           // In case of abort do nothing
           callback: function() {
@@ -132,26 +132,23 @@ var kbNavigatorModals = (function() {
 
     if (selectable === false) {
       // Decision is already decided thus decision will also be changed.
-      text += '<hr><div class="bg-danger"><p>Since only one outcome per decision can be selected, the outcome '
+      text += '<hr><div class="bg-info" style="padding:10px 10px;"><p>Since only one outcome per decision can be selected, the outcome '
               + strong
               + outcome.label
               + endStrong
-              + ' of the '
+              + ' will replace the current selected outcome of the '
               + strong
-              + parent.label
-              + endStrong
-              + ' decision will be replaced by '
-              + strong + tempNode.label + endStrong + '</p></div>';
+              + parent.label + endStrong + ' decision.</p></div>';
     }
 
     // Show dialog to user
     bootbox.dialog({
       message: text,
       backdrop: true,
-      title: "Force Outcome Selection of " + parent.label + " decision?",
+      title: "Force outcome selection of the " + parent.label + " decision?",
       buttons: {
         success: {
-          label: "Yes!",
+          label: "Yes, select outcome!",
           className: "btn-danger",
           callback: function() {
             // Outcome shall be selected and all excluding outcomes resetted
@@ -159,7 +156,7 @@ var kbNavigatorModals = (function() {
           }
         },
         danger: {
-          label: "No!",
+          label: "No, do nothing!",
           className: "btn-default",
           callback: function() {
             // User cancels action do nothing
@@ -170,10 +167,56 @@ var kbNavigatorModals = (function() {
     });
   }
 
+  function showRequiringSatisfied() {
+    bootbox.alert("All requiring relations are currently satisfied.");
+  }
+
+  function showConflict(tempNode) {
+    var lookup = kbNavigator.getLookup();
+    var outcome = lookup[tempNode.id];
+    var restrictingNodes = tempNode.getRestrictingNodes();
+    var includingNodes = tempNode.getIncludingNodes();
+
+    var textEx = "<h4><u>Excluding</u></h4>";
+    var textIn = "<h4><u>Including</u></h4>";
+
+    // Prepare text for all restricting nodes
+    $.each(restrictingNodes, function(index, value) {
+      textEx += strong + (index + 1) + ". " + value.label + endStrong + br;
+    });
+
+    // Prepare text for all restricting nodes
+    $.each(includingNodes, function(index, value) {
+      textIn += strong + (index + 1) + ". " + value.label + endStrong + br;
+    });
+
+    var startText = "The outcome "
+            + strong
+            + tempNode.label
+            + endStrong
+            + " cannot be selected because it is in a conflict due to the following including and excluding relations.";
+    bootbox.dialog({
+      backdrop: true,
+      message: startText + br + textEx + textIn,
+      title: "Conflict for outcome " + tempNode.label + "!",
+      buttons: {
+        main: {
+          label: "Ok",
+          className: "btn-default",
+          callback: function() {
+            return;
+          }
+        }
+      },
+    });
+  }
+
   return {
     changeOutcomeWihtinDecision: changeOutcomeWihtinDecision,
     forceExcludedOutcome: forceExcludedOutcome,
     showProgress: showProgress,
-    hideProgress: hideProgress
+    hideProgress: hideProgress,
+    showRequiringSatisfied: showRequiringSatisfied,
+    showConflict: showConflict,
   };
 })();

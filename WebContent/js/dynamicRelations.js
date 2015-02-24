@@ -65,6 +65,7 @@ var kbNavigator = (function() {
     start: true,
     // show only last node's relations
     lastNode: true,
+    showModal: false,
 
     legendRelations: ["Including", "Excluding", "Requiring", "Allowing",
         "Affecting", "Binding"],
@@ -798,6 +799,10 @@ var kbNavigator = (function() {
           requiringLines.push(newGraphLink);
         }
       });
+      if (requiringLines.length === 0 && config.showModal === true) {
+        config.showModal = false;
+        kbNavigatorModals.showRequiringSatisfied();
+      }
     }
   }
 
@@ -813,8 +818,7 @@ var kbNavigator = (function() {
     var tempNode = tempNodes_lookup[d.id];
     // if node is already in a conflict
     if (tempNode.conflicting) {
-      bootbox
-              .alert("The node cannot be selected because it is in a conflict. Deselect the excluding outcomes first.");
+      kbNavigatorModals.showConflict(tempNode);
       return;
     }
     // if node is selected already
@@ -1171,8 +1175,11 @@ var kbNavigator = (function() {
       } else if (d.determined === true) {
         className = "determined";
       }
-      if (config.requiring === true) { return d.required === true
-              ? (className + " required") : className; }
+      if (config.requiring === true) {
+        return d.required === true ? (className + " required") : className;
+      } else {
+        return className;
+      }
       return null;
     case "out":
       if (d.conflicting === true) { return "conflicting"; }
@@ -1390,6 +1397,20 @@ var kbNavigator = (function() {
     };
 
     /**
+     * Gets all outcome that are including this outcome.
+     */
+    this.getIncludingNodes = function() {
+      var includingNodes = [];
+      this.incomingLinks.forEach(function(d) {
+        if (d.type == "in" && d.active === true) {
+          var n = tempNodes_lookup[d.source];
+          includingNodes.push(n);
+        }
+      });
+      return includingNodes;
+    };
+
+    /**
      * activate node (highlighted and activate its outgoing links)
      */
     this.activateNode = function() {
@@ -1589,6 +1610,7 @@ var kbNavigator = (function() {
   var setData = function(json) {
     var newTempNodes = json.tempNodes;
     var newTempLinks = json.tempLinks;
+    var newHistory = json.history;
     tempCurrentNode = json.tempCurrentNode;
     //
     newTempLinks.forEach(function(d) {
@@ -1605,6 +1627,12 @@ var kbNavigator = (function() {
       tempNode.conflicting = d.conflicting;
       tempNode.checkIncomingLinks();
     });
+
+    history.splice(0, history.length);
+    newHistory.forEach(function(d) {
+      history.push(d);
+    });
+
     confirmChanges(true);
   };
 
@@ -1618,8 +1646,9 @@ var kbNavigator = (function() {
     var data = {};
     data.tempNodes = tempNodes;
     data.tempLinks = tempLinks;
-    data.tempDecNodes = tempDecNodes;
-    data.tempDpNodes = tempDpNodes;
+    // data.tempDecNodes = tempDecNodes;
+    // data.tempDpNodes = tempDpNodes;
+    data.history = history;
     // dps and decs not necessary because no selection are performed thus
     // they can be recalculated at the import
     data.tempCurrentNode = tempCurrentNode;
@@ -1656,16 +1685,8 @@ var kbNavigator = (function() {
    * Activate or Deactivate requiring relations overlay.
    */
   var setRequiring = function(d) {
-    // if (d === true) {
-    // tempDecNodes.forEach(function(d) {
-    // d.activateOutgoingLinks();
-    // });
-    // } else {
-    // tempDecNodes.forEach(function(d) {
-    // d.deactivateOutgoingLinks();
-    // });
-    // }
     config.requiring = d;
+    config.showModal = d;
     confirmChanges(true);
   };
 
