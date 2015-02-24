@@ -19,9 +19,9 @@
  * decisions.
  * 
  * @author Metz
- * @module dynamicGraph
+ * @module kbNavigator
  */
-var dynamicGraph = (function() {
+var kbNavigator = (function() {
 
   // Padding for svg container
   var padding = {
@@ -88,12 +88,14 @@ var dynamicGraph = (function() {
   // helper variables for O(n) lookup
   var node_lookup = [], link_lookup = [], tempNodes_lookup = [], tempLinks_lookup = [], tempDpNodes_lookup = [], tempDecNodes_lookup = [];
 
+  var history = [];
+
   /**
    * Set initial data on instantiation with immediate function.
    */
   (function() {
     // show modal to user until layout is calculated
-    modals.showProgress();
+    kbNavigatorModals.showProgress();
     d3.json("./data/cloudDSFPlus.json", function(error, json) {
       root = json.cdsfPlus;
       outcomeLinks = json.outcomeLinks;
@@ -122,7 +124,7 @@ var dynamicGraph = (function() {
   /**
    * Setup of svg and force layout.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function initialize() {
     // compute panel size and margins after margin convention
@@ -330,7 +332,7 @@ var dynamicGraph = (function() {
   /**
    * Updates the force layout.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function update() {
     // get all layout links
@@ -474,7 +476,7 @@ var dynamicGraph = (function() {
       force.stop();
       fixLayout();
       config.start = false;
-      modals.hideProgress();
+      kbNavigatorModals.hideProgress();
     } else {
       // in case layout has been calcuated just tick it once
       force.start();
@@ -486,7 +488,7 @@ var dynamicGraph = (function() {
   /**
    * Tick function of the force layout.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param e
    *          tick event
    */
@@ -552,7 +554,7 @@ var dynamicGraph = (function() {
    * Calculate path source and target coordinates with offset to show arrow at
    * circle radius and with degree shift.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          link between two outcomes
    */
@@ -609,7 +611,7 @@ var dynamicGraph = (function() {
   /**
    * Calculates shift for requiring lines.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          requiring link
    */
@@ -626,7 +628,7 @@ var dynamicGraph = (function() {
   /**
    * Calculates text anchor depending on placement of decision and outcome.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          link between decision and outcome
    */
@@ -639,7 +641,7 @@ var dynamicGraph = (function() {
   /**
    * Calculates shift of y depending on placement of decision and outcome.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          link between decision and outcome
    */
@@ -656,7 +658,7 @@ var dynamicGraph = (function() {
   /**
    * Calculates shift of x depending on placement of decision and outcome.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          link between decision and outcome
    */
@@ -670,7 +672,7 @@ var dynamicGraph = (function() {
   /**
    * writes changes to d3 or resets changes to prior state
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function confirmChanges(confirm) {
     if (confirm === true) {
@@ -758,7 +760,7 @@ var dynamicGraph = (function() {
   /**
    * Sets all paths between outcomes if they exist.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function setOutcomePaths() {
     outcomePaths.splice(0, outcomePaths.length);
@@ -802,7 +804,7 @@ var dynamicGraph = (function() {
   /**
    * Click function for outcomes.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function highlightNode(d) {
     if (d3.event.defaultPrevented) return;
@@ -831,17 +833,17 @@ var dynamicGraph = (function() {
           // decision is already selected ask if this outcome should
           // be chosen instead
           // may either select outcome or remain in before state
-          modals.changeOutcomeWihtinDecision(tempNode);
+          kbNavigatorModals.changeOutcomeWihtinDecision(tempNode);
         }
       } else if (tempNode.excluded === true && tempNode.selectable === true) {
         // node is ecluded but decision has not been specified
         // ask with modal if outcome should be selected and outcome that
         // exclude it should be deselected
-        modals.forceExcludedOutcome(tempNode, true);
+        kbNavigatorModals.forceExcludedOutcome(tempNode, true);
       } else if (tempNode.excluded === true && tempNode.selectable === false) {
         // node is excluded and decision is selected thus different
         // modal is used (boolean value)
-        modals.forceExcludedOutcome(tempNode, false);
+        kbNavigatorModals.forceExcludedOutcome(tempNode, false);
       }
     }
   }
@@ -849,9 +851,10 @@ var dynamicGraph = (function() {
   /**
    * Highlighting node
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function selectDecisionOutcome(tempNode) {
+    addHistory(tempNode);
     restrictDecisionOutcomes(tempNode);
     checkConflicts();
   }
@@ -859,7 +862,7 @@ var dynamicGraph = (function() {
   /**
    * Dehighlighting node
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function deselectDecisionOutcome(tempNode) {
     resetDecisionOutcomes(tempNode);
@@ -869,7 +872,7 @@ var dynamicGraph = (function() {
   /**
    * activates node and restricts decision outcomes
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function restrictDecisionOutcomes(tempNode) {
     tempNode.activateNode();
@@ -877,17 +880,24 @@ var dynamicGraph = (function() {
       if (tempNode.outGroup == d.outGroup && d.id != tempNode.id) return d;
     }).forEach(function(d) {
       d.excludeOutcome();
+      removeHistory(d);
     });
+    // set tempCurrentNode to last history entry or null
+    tempCurrentNode = history[history.length - 1];
+    if (typeof tempCurrentNode == 'undefined') {
+      tempCurrentNode = null;
+    }
   }
 
   /**
    * deactivates node and frees decision
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function resetDecisionOutcomes(tempNode) {
     // highlight = false for node
     tempNode.deactivateNode();
+    removeHistory(tempNode);
     // set all nodes of decision back to normal (exclusion remain but they
     // are selectable again)
     tempNodes.filter(function(d) {
@@ -895,6 +905,10 @@ var dynamicGraph = (function() {
     }).forEach(function(d) {
       d.resetOutcome();
     });
+    tempCurrentNode = history[history.length - 1];
+    if (typeof tempCurrentNode == 'undefined') {
+      tempCurrentNode = null;
+    }
   }
 
   /**
@@ -902,11 +916,12 @@ var dynamicGraph = (function() {
    * exclusions restricts decison of selected outcome and resets decisions of
    * deselected outcomes can also activate excluded node and force selection
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function forceExcludedSelectableOutcome(tempNode) {
     // activates node and resets all selected outcomes that do interfer with
     // that
+    addHistory(tempNode);
     restrictDecisionOutcomes(tempNode);
     var restrictingNodes = tempNode.getRestrictingNodes();
     restrictingNodes.forEach(function(tempNode) {
@@ -917,9 +932,38 @@ var dynamicGraph = (function() {
   }
 
   /**
+   * Add Id to history. *
+   * 
+   * @memberOf kbNavigator
+   * @param node
+   *          selected node
+   */
+  function addHistory(node) {
+    history.push(node.id);
+  }
+
+  /**
+   * Remove last history entry for node. *
+   * 
+   * @memberOf kbNavigator
+   * @param node
+   *          node that is excluded or not selectable anymore has to be removed
+   *          from the history.
+   */
+  function removeHistory(node) {
+    for (var int = history.length - 1; int >= 0; int--) {
+      var previousNode = history[int];
+      if (previousNode == node.id) {
+        history.splice(int, 1);
+        break;
+      }
+    }
+  }
+
+  /**
    * Updates nodes if they have conflicts through in or excluding relations.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function checkConflicts() {
     // checks if a conflict exists
@@ -942,7 +986,7 @@ var dynamicGraph = (function() {
   /**
    * Sets initial positions for nodes to avoid jitter and speed up stable layout
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function initializeNode() {
     // set root fixed in the middle
@@ -985,7 +1029,7 @@ var dynamicGraph = (function() {
   /**
    * Calculates semi-random positions for nodes depnding on cluster and type
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function setInitialLocation(d) {
     var h = mC.panelHeight / 100, w = mC.panelWidth / 100;
@@ -1026,7 +1070,7 @@ var dynamicGraph = (function() {
   /**
    * Generate tooltip text with distinction between out and others
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          hovered node
    */
@@ -1041,7 +1085,7 @@ var dynamicGraph = (function() {
   /**
    * Returns charge parameter depending on type and if toggled or not not
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          node
    */
@@ -1062,7 +1106,7 @@ var dynamicGraph = (function() {
    * Returns link distance depending on connected nodes and if toggled or not
    * change of distance
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          link
    */
@@ -1080,7 +1124,7 @@ var dynamicGraph = (function() {
   /**
    * Returns circle radius depending on node type and if toggled or not
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          node
    */
@@ -1100,7 +1144,7 @@ var dynamicGraph = (function() {
   /**
    * Returns color for circle from global color scheme.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          node
    */
@@ -1111,7 +1155,7 @@ var dynamicGraph = (function() {
   /**
    * Returns class for circle depending on attributes.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param d
    *          node
    */
@@ -1143,7 +1187,7 @@ var dynamicGraph = (function() {
   /**
    * Traverse json file and return each node.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   function flatten(root) {
     var flattenedNodes = [];
@@ -1478,13 +1522,9 @@ var dynamicGraph = (function() {
           var inReqLink = this.incomingLinks[int];
           var source = tempDecNodes_lookup[inReqLink.source];
           if (source.decided === true) {
-            // if (inReqLink.active === true) {
             this.required = true;
           }
-          // inReqLink.active = true;
-          // return;
         }
-        // }
       }
     };
 
@@ -1544,7 +1584,7 @@ var dynamicGraph = (function() {
   /**
    * Restore selection from loaded json file.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   var setData = function(json) {
     var newTempNodes = json.tempNodes;
@@ -1572,12 +1612,14 @@ var dynamicGraph = (function() {
    * Get current selection data and serialize it into json file to save
    * selection
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   var getData = function(d) {
     var data = {};
     data.tempNodes = tempNodes;
     data.tempLinks = tempLinks;
+    data.tempDecNodes = tempDecNodes;
+    data.tempDpNodes = tempDpNodes;
     // dps and decs not necessary because no selection are performed thus
     // they can be recalculated at the import
     data.tempCurrentNode = tempCurrentNode;
@@ -1630,19 +1672,20 @@ var dynamicGraph = (function() {
   /**
    * Reset complete selection.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    */
   var resetSelection = function() {
     tempNodes.forEach(function(d) {
       d.resetEverything();
     });
+    history.splice(0, history.length);
     confirmChanges(true);
   };
 
   /**
    * Remove one relationship type from relations array and update layout.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param type
    *          relationship type to be removed
    */
@@ -1660,7 +1703,7 @@ var dynamicGraph = (function() {
   /**
    * Add relationship type to relations array and update layout.
    * 
-   * @memberOf dynamicGraph
+   * @memberOf kbNavigator
    * @param type
    *          relationship type to be added
    */

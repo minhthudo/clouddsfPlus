@@ -15,10 +15,12 @@
  */
 
 /**
+ * Set event listeners for the kb navigator and intitialize switch controls.
+ * 
  * @author Metz
- * @module kbNavigator
+ * @module kbNavigatorStartup
  */
-var kbNavigator = (function() {
+var kbNavigatorStartup = (function() {
 
   /**
    * Add event listeners to toolbar
@@ -54,7 +56,7 @@ var kbNavigator = (function() {
       'state': true,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
-      dynamicGraph.setLastNode(state);
+      kbNavigator.setLastNode(state);
     });
 
     $("[name='toggleRequiring']").bootstrapSwitch({
@@ -62,16 +64,16 @@ var kbNavigator = (function() {
       'state': false,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
-      dynamicGraph.setRequiring(state);
+      kbNavigator.setRequiring(state);
     });
 
     $('#resetAll').on('click', function(event) {
-      dynamicGraph.resetSelection();
+      kbNavigator.resetSelection();
     });
 
     $("#store").on('click', function() {
       this.download = "cloudDsfPlus.json";
-      this.href = dynamicGraph.getData();
+      this.href = kbNavigator.getData();
     });
 
     $('#loadSelection').on('change', function() {
@@ -80,15 +82,18 @@ var kbNavigator = (function() {
       reader.onload = function(e) {
         var text = reader.result;
         var json = JSON.parse(text);
-        dynamicGraph.setData(json);
+        kbNavigator.setData(json);
       };
       reader.readAsText(file);
+      // reset file input to fire onchange event in case same file is selected
+      this.value = null;
     });
   }();
 
   /**
    * Add or remove relation from outcomeGraph
    * 
+   * @memberOf kbNavigatorStartup
    * @param state
    *          true or false for add or remove
    * @param type
@@ -96,9 +101,9 @@ var kbNavigator = (function() {
    */
   function setRelations(state, type) {
     if (state === true) {
-      dynamicGraph.addRelationType(type);
+      kbNavigator.addRelationType(type);
     } else {
-      dynamicGraph.removeRelationType(type);
+      kbNavigator.removeRelationType(type);
     }
   }
 
