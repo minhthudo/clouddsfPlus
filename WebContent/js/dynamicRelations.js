@@ -201,50 +201,76 @@ var kbNavigator = (function() {
                     function(d) {
                       return d + " Relation";
                     });
+
     // nodes for legend
     legend.selectAll("circle").data(
-            ["dp1", "dec1", "dec1Req", "out1", "oex", "ocon"]).enter().append(
-            "circle").attr("cx", function(d, i) {
-      return (mC.iWidth / 15) * ((i * 1.5) + 5.5);
-    }).attr("cy", "3em").style("fill", function(d) {
-      if (d == "oex" || d == "ocon") return cdsfPlus.getColor("out1");
-      if (d == "dec1Req") return cdsfPlus.getColor("dec1");
-      return cdsfPlus.getColor(d);
-    }).attr("r", function(d) {
-      switch (d) {
-      case "dp1":
-        return config.dpWidth;
-      case "dec1":
-        return config.decWidth;
-      case "dec1Req":
-        return config.decWidth;
-      case "out1":
-        return config.outWidth - 1;
-      default:
-        return config.outWidth;
-      }
-    }).attr("class", function(d) {
-      switch (d) {
-      case "dec1":
-        return "determined";
-      case "dec1Req":
-        return "required";
-      case "out1":
-        return "highlighted";
-      case "oex":
-        return "deactivated";
-      case "ocon":
-        return "conflicting";
-      }
-    });
-    // text for nodes
-    legend.selectAll("text .legend").data(
-            ["Decision Point", "Predetermined Decision", "Required Decision",
-                "Selected Outcome", "Excluded Outcome", "Conflicted Outcome"])
-            .enter().append("text").attr("x", function(d, i) {
+            ["dp1", "dec1Ex", "dec1", "dec1Req", "out1", "oex", "ocon"])
+            .enter().append("circle").attr("cx", function(d, i) {
               return (mC.iWidth / 15) * ((i * 1.5) + 5.5);
-            }).attr("y", "5.5em").attr("dy", "2em").attr("text-anchor",
+            }).attr("cy", "1.5em").style(
+                    "fill",
+                    function(d) {
+                      if (d == "oex" || d == "ocon") { return cdsfPlus
+                              .getColor("out1"); }
+                      if (d == "dec1Req" || d == "dec1Ex") { return cdsfPlus
+                              .getColor("dec1"); }
+                      return cdsfPlus.getColor(d);
+                    }).attr("r", function(d) {
+              switch (d) {
+              case "dp1":
+                return config.dpWidth;
+              case "dec1":
+                return config.decWidth;
+              case "dec1Req":
+                return config.decWidth;
+              case "dec1Ex":
+                return config.decWidth;
+              case "out1":
+                return config.outWidth - 1;
+              default:
+                return config.outWidth;
+              }
+            }).attr("class", function(d) {
+              switch (d) {
+              case "dec1":
+                return "determined";
+              case "dec1Req":
+                return "required";
+              case "dec1Ex":
+                return "decided";
+              case "out1":
+                return "highlighted";
+              case "oex":
+                return "deactivated";
+              case "ocon":
+                return "conflicting";
+              }
+            });
+
+    legend.selectAll("text .legend").data(["DAD", "SAC", "SAC", "SAC"]).enter()
+            .append("text").attr("x", function(d, i) {
+              return (mC.iWidth / 15) * ((i * 1.5) + 5.5);
+            }).attr("y", "1.5em").attr("dy", "0.5em").attr("text-anchor",
                     "middle").text(function(d) {
+              return d;
+            }).attr("class", "legend");
+
+    legend.selectAll("text .legend").data(
+            ["Decision", "Decided / Excluded", "Predetermined", "Required",
+                "Selected", "Excluded", "Conflicted"]).enter().append("text")
+            .attr("x", function(d, i) {
+              return (mC.iWidth / 15) * ((i * 1.5) + 5.5);
+            }).attr("y", "5.5em").attr("dy", "0.5em").attr("text-anchor",
+                    "middle").text(function(d) {
+              return d;
+            });
+
+    legend.selectAll("text .legend").data(
+            ["Point", "Decision", "Decision", "Decision", "Outcome", "Outcome",
+                "Outcome"]).enter().append("text").attr("x", function(d, i) {
+      return (mC.iWidth / 15) * ((i * 1.5) + 5.5);
+    }).attr("y", "5.5em").attr("dy", "2em").attr("text-anchor", "middle").text(
+            function(d) {
               return d;
             });
 
