@@ -65,7 +65,7 @@ var kbNavigator = (function() {
     start: true,
     // show only last node's relations
     lastNode: true,
-    showModal: false,
+    // showModal: false,
 
     legendRelations: ["Including", "Excluding", "Requiring", "Allowing",
         "Affecting", "Binding"],
@@ -705,6 +705,7 @@ var kbNavigator = (function() {
         oNode.decided = tempDecNode.decided;
         oNode.determined = tempDecNode.determined;
         oNode.required = tempDecNode.required;
+        oNode.excluded = tempDecNode.excluded;
       });
 
       tempDpNodes.forEach(function(tempDpNode) {
@@ -736,6 +737,7 @@ var kbNavigator = (function() {
         tempDecNode.determined = oNode.determined;
         tempDecNode.decided = oNode.decided;
         tempDecNode.required = oNode.required;
+        tempDecNode.excluded = oNode.excluded;
       });
 
       tempDpNodes.forEach(function(tempDpNode) {
@@ -799,10 +801,11 @@ var kbNavigator = (function() {
           requiringLines.push(newGraphLink);
         }
       });
-      if (requiringLines.length === 0 && config.showModal === true) {
-        config.showModal = false;
-        kbNavigatorModals.showRequiringSatisfied();
-      }
+      // if (requiringLines.length === 0 && history.length !== 0 &&
+      // config.showModal === true) {
+      // config.showModal = false;
+      // kbNavigatorModals.showRequiringSatisfied();
+      // }
     }
   }
 
@@ -1170,7 +1173,7 @@ var kbNavigator = (function() {
       return d.determined === true ? "determined" : null;
     case "dec":
       var className;
-      if (d.decided === true) {
+      if (d.decided === true || d.excluded === true) {
         className = "decided";
       } else if (d.determined === true) {
         className = "determined";
@@ -1475,6 +1478,7 @@ var kbNavigator = (function() {
     this.decided = false;
     this.determined = false;
     this.required = false;
+    this.excluded = false;
     this.id = id;
     this.label = label;
     this.type = type;
@@ -1487,13 +1491,23 @@ var kbNavigator = (function() {
     this.incomingLinks = [];
 
     /**
+     * Reset boolean values to default.
+     */
+    this.resetDecNode = function(){
+      // reset values
+      this.decided = false;
+      this.determined = false;
+      this.excluded = false;
+    };
+    
+    /**
      * Check associated outcomes to determine if decision is decided or not or
      * determined (one outcome left)
      */
     this.checkOutcomes = function() {
-      // reset values
-      this.decided = false;
-      var excluded = 0;
+      this.resetDecNode();
+
+      var numExcluded = 0;
       // iterate children
       for (var int = 0; int < this.children.length; int++) {
         var outcome = this.children[int];
@@ -1504,17 +1518,18 @@ var kbNavigator = (function() {
           break;
         } else if (outcome.excluded === true) {
           // outcome is excluded
-          excluded++;
+          numExcluded++;
         }
       }
       // check if any outcome was highlighted
       if (this.decided === false) {
         // no outcome was highlighted check if only one decision is not excluded
-        this.determined = excluded == this.children.length - 1 ? true : false;
-      } else if (excluded == this.children.length) {
-        // all outcomes are excluded thus decision is excluded
-        // maybe setting conflict instead
-        this.excluded = true;
+        if (numExcluded == this.children.length - 1) {
+          this.determined = true;
+        } else if (numExcluded == this.children.length) {
+          // all outcomes are excluded thus decision is excluded
+          this.excluded = true;
+        }
       }
       // if decision is neither determined nor excluded than decided = false
       // remains
@@ -1525,24 +1540,36 @@ var kbNavigator = (function() {
      * decision as required.
      */
     this.checkRequiring = function() {
+      // reset required
       this.required = false;
 
+      // iterate over outgoing links
       for (var num = 0; num < this.outgoingLinks.length; num++) {
         var outReqLink = this.outgoingLinks[num];
         var target = tempDecNodes_lookup[outReqLink.target];
-        if (this.decided === true && target.decided === false) {
+        // check if link source was selected and if the target decision is not
+        // yet
+        // decided and also not excluded
+        if (this.decided === true && target.decided === false
+                && target.excluded === false) {
+          // set required and activate link
           this.required = true;
           outReqLink.active = true;
         } else {
+          // link is not active
           outReqLink.active = false;
         }
       }
 
+      // if decision is not decided check if required by incoming link
       if (this.decided === false) {
+        // iterate over incoming links
         for (var int = 0; int < this.incomingLinks.length; int++) {
           var inReqLink = this.incomingLinks[int];
           var source = tempDecNodes_lookup[inReqLink.source];
-          if (source.decided === true) {
+          // check if source has been selected and if the target decision is not
+          // excluded
+          if (source.decided === true && this.excluded === false) {
             this.required = true;
           }
         }
@@ -1686,7 +1713,7 @@ var kbNavigator = (function() {
    */
   var setRequiring = function(d) {
     config.requiring = d;
-    config.showModal = d;
+    // config.showModal = d;
     confirmChanges(true);
   };
 
