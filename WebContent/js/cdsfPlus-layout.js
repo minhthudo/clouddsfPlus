@@ -14,8 +14,15 @@
  * the License.
  */
 
+/**
+ * Provides helper function for the visualizations of the CloudDSF+
+ * 
+ * @module cdsfPlus
+ */
 var cdsfPlus = (function() {
 
+  // color scheme for all nodes in the visualization with colors from
+  // https://github.com/mbostock/d3/wiki/Ordinal-Scales
   var colorPalette3d = d3.scale.ordinal().domain(
           ["root", "dp1", "dec1", "out1", "dp2", "dec2", "out2", "dp3", "dec3",
               "out3", "dp4", "dec4", "out4"]).range([
@@ -30,10 +37,7 @@ var cdsfPlus = (function() {
   // dp4
   "#a1d99b", "#74c476", "#31a354", ]);
 
-  var getColor = (function(d) {
-    return colorPalette3d(d);
-  });
-
+  // Global margin for all svg
   var margin = {
     top: 10,
     right: 10,
@@ -41,7 +45,28 @@ var cdsfPlus = (function() {
     left: 10
   };
 
-  var marginConvention = (function marginConvention(padding, height, width) {
+  /**
+   * Return color depnding on node
+   * 
+   * @memberOf cdsfPlus
+   * @param d
+   *          node to be colored
+   */
+  function getColor(d) {
+    return colorPalette3d(d);
+  }
+
+  /**
+   * Calculates size attributes for visualizations
+   * 
+   * @param padding
+   *          padding values for the visualization
+   * @param height
+   *          height of the svg container
+   * @param width
+   *          width of the svg container
+   */
+  function marginConvention(padding, height, width) {
     $("body").css("min-width", "");
     var oWidth = parseInt($('#visContent').width());
     var oHeight = height;
@@ -69,7 +94,7 @@ var cdsfPlus = (function() {
       "marginBottom": margin.bottom,
       "marginLeft": margin.left
     };
-  });
+  }
 
   return {
     getColor: getColor,
