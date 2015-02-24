@@ -15,10 +15,13 @@
  */
 
 /**
+ * Set event listenser for kb visualizer toolbars their functionalities and
+ * enable subnavigation.
+ * 
  * @author Metz
- * @module kbStartup
+ * @module kbVisualizerStartup
  */
-var kbStartup = (function() {
+var kbVisualizerStartup = (function() {
   var btnList_DecRel = $('#btnList_DecRel');
   var btnList_OutRel = $('#btnList_OutRel');
   var toolbarDec = $('#toolbarDecisions');
@@ -99,19 +102,6 @@ var kbStartup = (function() {
    * Add event listener to Outcome Relations Layout
    */
   var setOutcomeGraphToolbar = (function() {
-    // $('#showAll').on('click', function(event) {
-    // outcomeGraph.showAllRelations();
-    // });
-    // $('#hideAll').on('click', function(event) {
-    // outcomeGraph.hideAllRelations();
-    // });
-    // $('#fixLayout').on('click', function(event) {
-    // outcomeGraph.fixLayout();
-    // });
-    //
-    // $('#looseLayout').on('click', function(event) {
-    // outcomeGraph.looseLayout();
-    // });
 
     $("[name='showHideAllRelations']").bootstrapSwitch({
       'labelText': "Highlight all Outcomes",
@@ -119,7 +109,6 @@ var kbStartup = (function() {
       'state': false,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
-      console.log(event);
       if (state === true) {
         outcomeGraph.showAllRelations();
       } else {
