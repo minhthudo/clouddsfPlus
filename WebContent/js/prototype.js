@@ -53,6 +53,7 @@ var kbNavigatorStartup = (function() {
 
     $("[name='toggleLastOutcome']").bootstrapSwitch({
       'labelText': "Relations of Last Selection",
+      'labelWidth': "150px",
       'state': true,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
@@ -61,6 +62,7 @@ var kbNavigatorStartup = (function() {
 
     $("[name='toggleRequiring']").bootstrapSwitch({
       'labelText': "Overlay Requiring Relations",
+      'labelWidth': "155px",
       'state': true,
       'size': 'small'
     }).on('switchChange.bootstrapSwitch', function(event, state) {
