@@ -467,11 +467,11 @@ var outcomeGraph = (function() {
       radius = d.target._children ? config.decWidth + config.addedDecWidth
               : config.decWidth;
       if (d.type == "in") {
-        offsetAlpha = 40;
+        offsetAlpha = 50;
       } else if (d.type == "a") {
-        offsetAlpha = 60;
+        offsetAlpha = 70;
       } else if (d.type == "aff") {
-        offsetAlpha = 80;
+        offsetAlpha = 90;
       }
       break;
     case "out":
