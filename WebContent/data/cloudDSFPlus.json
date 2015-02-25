@@ -6,7 +6,7 @@
     "parent" : 0,
     "cluster" : 0,
     "group" : "root",
-    "description" : "CDSF+ knowledge base containing decision point, decisions and their outcomes.",
+    "description" : "CDSF+ knowledge base containing decision points, decisions and their outcomes.",
     "abbrev" : "CDSF+",
     "children" : [ {
       "id" : 1,
