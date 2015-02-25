@@ -67,21 +67,26 @@
 	<!-- Main content -->
 	<div class="container">
 		<!-- Description -->
-		<div class="row vspace">
-			<div class="col-lg-12" style="padding: 20px 20px;">
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1" style="padding-top: 15px;">
 				<h4>KB Navigator</h4>
-				<p>This visualization allows a selection of the outcomes of
-					CloudDSF+ and shows the relations between them. Occuring conflicts
-					through the user's choices will be highlighted and warnings might
-					be raised. The visualization of additional relationship types that
-					do not directly influence possible selections can be toggled with
-					the respective controls.</p>
+				<p>The KB Navigator allows the specification of decisions by
+					selecting one of their respective outcomes. Impacts of a selected
+					outcome are depicted through the corresponding including and
+					excluding relationships as well as requiring relations between
+					decisions. Occuring conflicts through the user's choices will be
+					highlighted and warnings might be raised. The depiction of
+					requiring relations between decisions and whether the relations of
+					all selected outcomes or only of the last chosen outcome should be
+					shown can be toggled with the respective controls. The same applies
+					to the visualization of additional relationship types that do not
+					directly influence the selection.</p>
 			</div>
 		</div>
 
 		<!-- Toolbar -->
 		<div class="row vspace">
-			<div class="col-lg-12 vspace">
+			<div class="col-lg-10 col-lg-offset-1 vspace">
 				<div class="btn-group  btn-group-sm" role="group">
 					<button id="resetAll" class="btn btn-primary " role="button">
 						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
@@ -95,12 +100,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="row vspace">
-			<div class="col-lg-6 btn-group" role="group">
+		<div class="row">
+			<div class="col-lg-5 col-lg-offset-1 btn-group" role="group">
 				<input type="checkbox" name="toggleLastOutcome" checked></input> <input
 					type="checkbox" name="toggleRequiring" checked></input>
 			</div>
-			<div class="col-lg-6 btn-group" role="group">
+			<div class="col-lg-5 btn-group" role="group">
 				<input type="checkbox" name="toggleBinding" checked></input> <input
 					type="checkbox" name="toggleAffecting" checked></input> <input
 					type="checkbox" name="toggleAllowing" checked></input>

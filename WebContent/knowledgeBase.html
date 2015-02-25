@@ -84,18 +84,19 @@
 	<div class="container vspace">
 
 		<!-- Toolbar Hierarchical Layout -->
-		<div class="row" id="toolbarTree">
+		<div id="toolbarTree">
+			<!-- Description -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2">
+				<div class="col-lg-10 col-lg-offset-1 vspace">
 					<h4>Hierarchical Layout</h4>
 					<p>The hierarchical layot shows the structure of CloudDSF+ with
 						Decision Points, Decisions and Outcomes. For easier navigation all
 						elements can be toggled at once with the respective controls.</p>
 				</div>
 			</div>
-
+			<!-- Toolbar functions -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2">
+				<div class="col-lg-10 col-lg-offset-1">
 					<div class="btn-group-sm">
 						<button id="showDps" class="btn btn-primary" role="button">Show
 							All Decision Points</button>
@@ -106,14 +107,14 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- End Toolbar -->
 		</div>
 
 		<!-- Toolbar Decision Relations Layout -->
-		<div class="row hidden" id="toolbarDecisions">
-
+		<div class="hidden" id="toolbarDecisions">
+			<!-- Description -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace">
+				<div class="col-lg-10 col-lg-offset-1 vspace">
 					<h4>Decision Relations Layout</h4>
 					<p>The visualization shows all decisions of CloudDSF+ clustered
 						by their respective decision points. All identified relationship
@@ -122,9 +123,9 @@
 						everything else.</p>
 				</div>
 			</div>
-
+			<!-- Toolbar functions -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace">
+				<div class="col-lg-10 col-lg-offset-1">
 					<div class="btn-group" role="group">
 						<input type="checkbox" name="toggleAll" checked></input> <input
 							type="checkbox" class="toggle-state-switch" name="toggleBinding"
@@ -136,30 +137,36 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 
 		<!-- Toolbar Outcome Relations Layout -->
-		<div class="row hidden" id="toolbarOutcomes">
-
+		<div class="hidden" id="toolbarOutcomes">
+			<!-- Description -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace">
+				<div class="col-lg-10 col-lg-offset-1 vspace">
 					<h4>Outcome Relations Layout</h4>
-					<p>This visualization shows all outcomes of CloudDSF+. Clicking
-						on an outcome will highlight the outgoing relations depending on
-						the selection of relationship types</p>
+					<p>This visualization shows all outcomes of CloudDSF+ grouped
+						by their decision as well as decision point. Clicking on an
+						outcome will highlight its outgoing relations depending on the
+						selection of relationship types that can be toggled with the
+						respective controls. All outcomes can be selected or deselected at
+						once, for instance, to show all including relations between
+						outcomes. Double clicking a decision or decision point will
+						collapse it to enable a more coarse grained view. In addition, the
+						complete layout can be fixed or loosened to enable a fast
+						rearranging of the visualization.</p>
 				</div>
 			</div>
-
+			<!-- Toolbar functions -->
 			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 vspace">
+				<div class="col-lg-10 col-lg-offset-1 vspace">
 					<div class="btn-group" role="group">
 						<input type="checkbox" name="showHideAllRelations" checked></input>
 						<input type="checkbox" name="fixLooseLayout" checked></input>
 					</div>
 				</div>
 
-				<div class="col-lg-8 btn-group col-lg-offset-2" role="group">
+				<div class="col-lg-10 btn-group col-lg-offset-1" role="group">
 					<input type="checkbox" name="outcomeToggleAll" checked></input> <input
 						type="checkbox" class="out-state-switch" name="outBinding" checked></input>
 					<input type="checkbox" class="out-state-switch" name="outAffecting"
@@ -170,9 +177,11 @@
 						checked></input>
 				</div>
 			</div>
-
 		</div>
+
 	</div>
+
+	<hr>
 
 	<!-- D3 content -->
 	<div class="container-fluid">
