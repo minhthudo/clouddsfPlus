@@ -26,7 +26,8 @@
 
 /* General Element Styles */
 /* ======================================================================== */
-/* * {
+/* @Metz commented
+{
 	font-family:  Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	margin: 0;
@@ -37,8 +38,8 @@
 }
 
 html {}
-*/
-/* body {
+
+body {
 		background-image: url("../img/layout/crossing-bg-white-transparent.png");
 	background-repeat: repeat;
 	background-position: left top;
@@ -49,15 +50,17 @@ html {}
 	letter-spacing: 0.05em;
 	min-width: 1200px;
 	
-} */
-/*
+} 
+
 .container {
 	width: 1100px !important;
 }
+*/
 
 /* Layout Styles */
 /* ======================================================================== */
-/* #pageWrapper {
+/* @Metz commented
+#pageWrapper {
 	width: 100%;
 }
 #headerWrapper {
@@ -82,15 +85,17 @@ html {}
 	border-top: solid 1px #DDDDDD;
 	padding: 20px 0;
 }
-*/
-/* .sizeMarginBox {
+
+.sizeMarginBox {
 	width: 100%;
 	margin: 0 auto;
 }
  */
+
 /* Style Classes */
 /* ======================================================================== */
-/* .bgPattern {
+/* @Metz commented
+ .bgPattern {
 	background-image: url("../img/layout/crossing-bg-white-transparent.png");
 	background-repeat: repeat;
 	background-position: left top;
@@ -99,14 +104,16 @@ html {}
 
 .centered {
 	text-align: center;
-} */
+} 
+*/
 
 /* Detailed Styles */
 /* ======================================================================== */
 
 /* Header */
 /* ========================================== */
-/* #headerNav {
+/* @Metz commented
+#headerNav {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -155,37 +162,46 @@ html {}
 }
 .lightHightlight {
 	color: #8A8A8A;
-} */
+} 
+*/
 
 /* Header - visType - visLabel  */
 /* ========================================== */
-/* #visHeaderDIV {
+/* @Metz commented
+ #visHeaderDIV {
 	background-color: #FFFFFF;
 	border-bottom: solid 1px #DDDDDD;
 }
 
 #visTypeDIV {
- 	width: 40%;
+	width: 40%;
 	float: left;
 	text-align: right;
 }
 
-#visType {}
+#visType {
+	
+}
 
+#visTypeSelectedBTN {
+	
+}
 
-
-#visTypeSelectedBTN {}
-
- #visTypeBTNGroup {
+#visTypeBTNGroup {
 	margin: 0.4em 2em;
 }
 
-#visTypeUL li{}
+#visTypeUL li {
+	
+}
 
 #visLabelDIV {
- 	width: 60%;
+	width: 60%;
 	float: left;
-} */
+}
+*/
+
+/*@Metz changed*/
 #visLabel h4 {
 	/* font-size: 1.4em; */
 	/*not a perfect solution*/
@@ -201,10 +217,12 @@ html {}
 
 /* General Panel */
 /* ========================================== */
-/* .container-fluid {
+/* @Metz In the following section all comments are either representing commented statements or in case of changes the original values*/
+/*
+.container-fluid {
 	padding-right: 0px;
-}
- */
+} 
+*/
 .visPanelContent {
 	padding: 10px 8% 10px 8%;
 }
@@ -212,6 +230,7 @@ html {}
 .visPanelHeader {
 	/* 	background-color: #A7A7A7; */
 	background-color: #222;
+	/*font-size: 1.1em;*/
 	font-size: 1.2em;
 	margin: 0 0 5px 0;
 }
@@ -221,22 +240,24 @@ html {}
 	/* 	 color: #F7F7F7;  */
 	color: #bdbdbd;
 }
-
-/* .visPanelHeaderIconLeft {
+/*
+.visPanelHeaderIconLeft {
 		float: left;
 	border-right: 1px solid #DDDDDD;
 	border-right: 2px solid #3182BD;
-} */
+}
+ */
 .visPanelHeaderIconLeft span {
 	padding: 6px;
 	/* 	font-size: 1.2em; */
 }
-
-/* .visPanelHeaderLabel {
+/*
+.visPanelHeaderLabel {
 	float: left;
-} */
+} 
+*/
 .visPanelHeaderLabel span {
-	/* 	font-size: 1.2em; */
+	/* 	font-size: 1.1em; */
 	padding: 4px 10px;
 	display: inline-block;
 	border-left: 2px solid #3182BD;
@@ -244,7 +265,6 @@ html {}
 
 .visInfoBOX {
 	margin: 20px 0 0 0;
-	/* text-align: center; */
 }
 
 .visInfoBOX:first-child {
@@ -273,10 +293,11 @@ html {}
 	color: #333333;
 	text-decoration: none;
 }
-
-/* .visInfoHeaderToggle a span {
+/*
+.visInfoHeaderToggle a span {
 	font-size: 0.9em;
-} */
+}
+*/
 .visInfoContentBOX {
 	padding: 0 0.5em;
 }
@@ -294,7 +315,8 @@ html {}
 
 /* Left Panel */
 /* ========================================== */
-/* #visLeftDIV {
+/* @Metz commented
+#visLeftDIV {
 	width: 20%;
 	min-width: 220px;
 	position: absolute;
@@ -307,13 +329,14 @@ html {}
 
 #visLeftContent {
 	
-} */
-/* .visPanelControl {
+}
+
+.visPanelControl {
 	background-color: #A7A7A7;
 	border-bottom: solid 1px #DDDDDD;
-} */
+}
 
-/* .visPanelControlIconRight {
+.visPanelControlIconRight {
 	border-left: solid 1px #DDDDDD;
 	float: right;
 }
@@ -323,39 +346,38 @@ html {}
 	font-size: 1.45em;
 	color: #F7F7F7;
 }
- */
-/* #visLeftContent {} */
+
+#visLeftContent {
+	
+}
+*/
 
 /* visContent */
 /* ========================================== */
 #visContentDIV {
 	/* width: 80%;
-	float: left;
-		background-color: #FFFFFF; */
+	/*float: left;*/
+	/*	background-color: #FFFFFF; */
 	border-right: solid 1px #BDBDBD;
 	padding-right: 0px;
 	padding-top: 10px;
 }
-
+/* 	@Metz commented; fixed width for the svg removed.
 #visContent {
-	/* 	height: 900px;
+	height: 900px;
 	width: 900px;
-	margin: 20px auto; 
+	margin: 20px auto;
 	border: solid 1px #DDDDDD;
 	background: none;
-	background-color: #FFFFFF; */
-	/* Width for the svg was fixed. Now javascript has fixed width*/
-	/*todo change border layout*/
-	/* border-right: solid 1px #DDDDDD; */
-	/* border-right: solid 2px #BDBDBD; */
-	/* text-align: center !important; */
-	
+	background-color: #FFFFFF;
+	border-right: solid 1px #DDDDDD;
 }
 
-/* #layoutLegend {
+ #layoutLegend {
 	text-align: center;
 	margin: 1em 0;
-} */
+}
+*/
 #layoutLegend .legendItem {
 	display: inline-block;
 	width: 100px;
@@ -363,39 +385,47 @@ html {}
 	vertical-align: top;
 }
 
-/* #layoutLegend .legendItem img {
-	
-} */
+/* @Metz commented
+ #layoutLegend .legendItem img {
+} 
+*/
 #layoutLegend .legendItem span {
 	display: inline-block;
 	width: 100%;
+	/* @Metz padding instead of margin at #layout legend  */
 	/* 	font-size: 0.8em; */
 	padding-bottom: 10px;
-	/* padding instead of margin at #layout legend  */
 }
 
-/* .jumbotron {
+/* @Metz commented
+.jumbotron {
 	margin: 15px 0;
-} */
-/* .defaultInformation {
+}
+
+.defaultInformation {
 	text-align: center;
-} */
+} 
+*/
 
 /* Right Panel */
 /* ========================================== */
+/* @Metz In the following section all comments are either representing commented statements or in case of changes the original values*/
 #visRightDIV {
-	/* 	width: 20%;
-	float: right;  */
-	/*Unnecessary through bootstrap columns.  */
-	/* 	background-color: #FFFFFF;
-	border-bottom: solid 1px #DDDDDD;  */
+	/* @Metz unnecessary through bootstrap columns.  */
+	/* 	width: 20%;*/
+	/*float: right;  */
+	/* 	background-color: #FFFFFF;*/
+	/*border-bottom: solid 1px #DDDDDD;  */
+	/* @Metz added padding*/
 	padding-left: 0px;
 	padding-right: 0px;
 }
 
-/* #visRightContent {
+/* 
+#visRightContent {
 	
-} */
+} 
+*/
 #visInfoLabelBOX {
 	display: none;
 	/* 	border: solid 1px #DDDDDD; */
@@ -408,30 +438,31 @@ html {}
 	border-top: solid 1px #BDBDBD;
 }
 
+/*
 #visInfoLabelTypeBOX span {
-	/* 	font-size: 0.9em;
-	letter-spacing: 0.1em; */
-	/* 	text-align: center; */
-	/* width: 100%; */
-	/* display: inline-block; */
-	/* padding: 0.05em 0.5em; */
+	font-size: 0.9em;
+	letter-spacing: 0.1em;
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+	padding: 0.05em 0.5em;
+}
+
+#visInfoLabelTextBOX {
 	
 }
 
-/* #visInfoLabelTextBOX {
-	
-} */
-/* #visInfoLabelTextBOX h3 {
+#visInfoLabelTextBOX h3 {
 	margin: 0;
 	padding: 0.5em;
  	text-align: center; 
 	font-size: 1.4em;
-} */
+}
+*/
 .visInfoRelatedNodesUL {
 	/* 	margin: 0; */
 	padding: 0;
 	list-style-type: none;
-	/* 	text-align: left; */
 }
 
 .visInfoRelatedNodesUL li {
@@ -454,7 +485,7 @@ html {}
 	display: block;
 	/* 	font-size: 0.85em; */
 	/* 	color: #6B6B6B; */
-	color: #636363; /* d3 */
+	color: #636363;
 }
 
 /* General Layout Defs */
@@ -575,6 +606,7 @@ html {}
 	width: 100%;
 }
 
+/* @Metz merged dsamc-svg.css file into this css file */
 svg {
 	/* margin: auto; */
 	overflow: visible !important;
@@ -584,9 +616,11 @@ svg.overflowHidden {
 	overflow: hidden !important;
 }
 
-/* svg p {
+/* @Metz commented
+svg p {
 	margin: 0;	
-} */
+}
+*/
 
 /* ***** Layout Styles ***** */
 
