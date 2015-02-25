@@ -25,7 +25,7 @@
 
 </head>
 <body>
-<!-- Navigation -->
+	<!-- Navigation -->
 	<header class="navbar navbar-inverse navbar-static-top "
 		role="navigation">
 		<div class="container">
@@ -45,8 +45,8 @@
 				<ul class="nav navbar-nav nav-justified">
 					<li class="active"><a href="./index.html"><span><strong>
 									CloudDSF+</strong></span></a></li>
-					<li><a href="./kbNavigator.html"><span>KB
-								Navigator</span> </a></li>
+					<li><a href="./kbNavigator.html"><span>KB Navigator</span>
+					</a></li>
 					<li><a href="./knowledgeBase.html"><span>KB
 								Visualizer</span> </a></li>
 					<li><a href="./cloudDSFVisualizations.html"><span>CloudDSF
@@ -60,52 +60,83 @@
 	<!-- Main content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="jumbotron">
-					<h1>CloudDSF+</h1>
-					<p>The Cloud Decision Support Framework Plus (CloudDSF+) helps
-						decision makers, who consider the migration of an existing
-						application to the Cloud.</p>
-				</div>
-				<div class="col-md-12 text-center">
-					<img src="./img/layout/titleImage.png" alt="CloudDSF Title Image" />
-				</div>
+			<div class="col-md-12 page-header">
+				<h1>
+					Cloud Decision Support Framework Plus (CloudDSF+)<small><br>Decision
+						Support for Application Migration to the Cloud </small>
+				</h1>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-5">
-				<h3>Main Approach</h3>
+			<div class="col-md-12 vspace">
+				<p class="lead">CloudDSF+ provides decision makers with the
+					means to guide them through necessary decisions that have to be
+					specified prior to an actual application migration to the cloud in
+					order to derive sound migration strategies.</p>
 				<p>
-					The CloudDSF is based on <a
-						href="http://www.iaas.uni-stuttgart.de/RUS-data/INPROC-2013-18%20-%20Decision%20Support%20for%20Application%20Migration%20to%20the%20Cloud%20Challenges%20and%20Vision.pdf">an
-						approach of Andrikopoulos et al.</a> considering a vision of a
-					decision support system for Cloud migration. By this, decision
-					makers are supported through focusing on <i>decisions</i> and
-					supporting <i>tasks</i> that are important to be addressed when
-					intending an application migration to the Cloud.
+					CloudDSF+ represents a refinement and extension of the previously
+					developed <a href="www.clouddsf.com">Cloud Decision Support
+						Framework (CloudDSF)</a>. The underlying concept of CloudDSF as well
+					as CloudDSF+ has been envisioned and developed by Andrikopoulos et
+					al. CloudDSF+ comprises ten tasks and four main decision points
+					which subsume 16 decisions which in turn subsume multiple outcomes.
+					The decisions as well as outcomes are strongly interconnected among
+					each other and form a dense network of relationships. <a
+						href="./about.html">Further details...</a>
 				</p>
-				<p>The CloudDSF comprises 17 decisions grouped in four main
-					decision points and a total of 10 supporting tasks. The elements
-					constitute a network where decisions are influencing each other and
-					decisions and tasks can affect each other.</p>
 			</div>
-			<div class="col-md-2"></div>
-			<div class="col-md-5">
-				<h3>About</h3>
-				<p>
-					This website is part of the Master's Thesis <i>Decision Support
-						for Application Migration to the Cloud</i> at <a
-						href="http://www.iaas.uni-stuttgart.de" target="_blank">IAAS
-						(University Stuttgart)</a> by Alexander Darsow.
-				</p>
-				<p>The main objective of the Master’s Thesis was the elaboration
-					and refinement of a conceptual view of a decision support system
-					for Cloud migration.</p>
-				<p>As part of this work a prototypical implementation of the
-					visualization was required that is published under the name
-					CloudDSF by this website.</p>
+		</div>
+
+		<!-- Thumbnails as entry points -->
+		<div class="row">
+			<div class="col-xs-8 col-sm-6 col-md-4">
+				<div class="thumbnail">
+					<a href="./kbNavigator.html"><img src="./img/kbNavigator.jpg"
+						alt="KB Navigator"></a>
+					<div class="caption">
+						<h3>KB Navigator</h3>
+						<p>The KB Navigator enables an interactive traversal through
+							the CloudDSF+ knowledge base by immediately visualizing the
+							impacts of chosen outcomes towards other decisions. Required
+							relations are highlighted to indicate necessesary decisions
+							ensuring sound migration strategies.</p>
+					</div>
+				</div>
 			</div>
+
+			<div class="col-xs-8 col-sm-6 col-md-4">
+				<div class="thumbnail">
+					<a href="./knowledgeBase"><img src="./img/kbVisualizer.jpg"
+						alt="KB Visualizer"></a>
+					<div class="caption">
+						<h3>KB Visualizer</h3>
+						<p>The KB Visualizer provides three layouts to traverse the
+							CloudDSF+ knowledge base. They either depict the structure of the
+							knowledge base (Hierarchical Layout), the relations between
+							decisions (Decision Relations Layout) or the relations between
+							outcomes (Outcome Relations Layout).</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-8 col-sm-6 col-md-4">
+				<div class="thumbnail">
+					<a href="./cloudDSFVisualizations.html"><img
+						src="./img/cdsfRelations.jpg" alt="CloudDSF Visualizations"></a>
+					<div class="caption">
+						<h3>CloudDSF Visualizations</h3>
+						<p>
+							The CloudDSF Visualizations are incorporated layouts from the
+							previously developed <a href="www.clouddsf.com">CloudDSF
+								Prototype</a> whose underlying data have been updated with the new
+							CloudDSF+ knowledge base. The layouts itself, however, have not
+							been changed or refactored.
+						</p>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 	</div>
