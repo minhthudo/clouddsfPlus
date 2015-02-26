@@ -62,7 +62,7 @@ var decisionGraph = (function() {
       // initialize();
     });
   })();
-  
+
   /**
    * Sets up svg element and d3 force layout with cluster (focis) and all
    * necessary elements.

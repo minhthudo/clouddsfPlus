@@ -49,7 +49,7 @@ var hierarchicalLayout = (function() {
       initialize(true);
     });
   })();
-  
+
   /**
    * Setup of svg and d3 tree layout.
    * 
