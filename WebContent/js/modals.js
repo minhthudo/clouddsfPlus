@@ -132,7 +132,7 @@ var kbNavigatorModals = (function() {
 
     if (selectable === false) {
       // Decision is already decided thus decision will also be changed.
-      text += '<hr><div class="bg-info" style="padding:10px 10px;"><p>Since only one outcome per decision can be selected, the outcome '
+      text += '<hr><div><p>Since only one outcome per decision can be selected, the outcome '
               + strong
               + outcome.label
               + endStrong
