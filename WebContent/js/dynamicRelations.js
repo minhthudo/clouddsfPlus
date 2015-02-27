@@ -1647,7 +1647,9 @@ var kbNavigator = (function() {
       this.decided = true;
       for (var int = 0; int < this.children.length; int++) {
         var decision = this.children[int];
-        if (decision.decided === false) {
+        // check negative case if any decision is neither decided nor excluded
+        // the decision point is not yet decided
+        if (decision.decided === false && decision.excluded === false) {
           this.decided = false;
           break;
         }
