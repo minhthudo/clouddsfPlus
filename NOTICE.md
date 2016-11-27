@@ -1,4 +1,4 @@
-##### Cloud Decision Support Framework Plus (CloudDSF+)
+##### Cloud Decision Support Framework Plus version 2.0 (CloudDSF+ v2.0)
 
 This software contains code developed by Do Thi Minh Thu as part of her Diploma’s thesis "Introduction of Cloud Provider-specific Knowledge and Further Evaluation of the Cloud Decision Support Framework" (03/2016-12/2016) at the Institute of Architecture of Application Systems, University of Stuttgart, Germany.
 
