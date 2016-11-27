@@ -1,11 +1,11 @@
 /*
  * Copyright 2015 Balduin Metz
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -83,44 +83,51 @@
 /*Decision Relations Layout*/
 .link {
 	fill: none;
-	stroke: #636363;
+	stroke: black;
 	stroke-width: 2px;
 	stroke-linecap: round;
 }
 
-.arrow {
-	stroke: #636363;
-	fill: #636363;
-	stroke-linejoin: round;
-	stroke-dasharray: 0;
+.link.requiring {
+    stroke: purple;
 }
 
-.influencingArrow {
-	fill: none;
-}
-
-.bindingArrow {
-	stroke: #bdbdbd;
-	fill: #bdbdbd;
-}
-
-.affectingArrow {
-	stroke: #bdbdbd;
-	fill: #bdbdbd;
+.link.influencing {
+    stroke: blue;
 }
 
 .link.affecting {
-	stroke-dasharray: 4, 4;
-	stroke: #bdbdbd;
+    stroke: orange;
 }
 
 .link.binding {
-	stroke-dasharray: 25, 10;
-	stroke: #bdbdbd;
+    stroke: olive;
 }
 
-.link.requiring {
-	stroke-dasharray: 20, 8, 6, 8;
+.arrow {
+	stroke: black;
+	fill: black;
+	stroke-linejoin: round;
+}
+
+.requiringArrow {
+    stroke: purple;
+	fill: purple;
+}
+
+.influencingArrow {
+    stroke: blue;
+	fill: blue;
+}
+
+.affectingArrow {
+    stroke: orange;
+	fill: orange;
+}
+
+.bindingArrow {
+    stroke: olive;
+	fill: olive;
 }
 
 .decCircle {
@@ -141,83 +148,82 @@
 	stroke-width: 1px;
 }
 
+.decRel.requiring {
+	stroke: yellow;
+	stroke-width: 4px;
+	fill: none;
+}
+
 .outRel {
 	fill: none;
-	stroke: #d9d9d9;
-	stroke-width: 3px;
+	stroke: black;
+	stroke-width: 2px;
 	stroke-linejoin: round;
-}
-
-.outRel.aff {
-	/* 	stroke: #d9d9d9; */
-	stroke-dasharray: 10, 3;
-	stroke-width: 2px;
-}
-
-.outRel.a {
-	stroke-dasharray: 2, 4;
-	/* 	stroke: #bdbdbd; */
-	stroke-width: 2px;
-}
-
-.outRel.eb {
-	stroke-dasharray: 25, 10;
-	/* 	stroke: #bdbdbd; */
-	stroke-width: 2px;
-}
-
-.decRel.requiring {
-	stroke: #FFE81B;
-	stroke-width: 5px;
-	fill: none;
-}
-
-.outRel.ex {
-	
 }
 
 .outRel.in {
-	stroke: #636363;
-	stroke-dasharray: 20, 5, 2, 5;
+    stroke: cyan;
+}
+
+.outRel.ex {
+    stroke: blue;
+}
+
+.outRel.a {
+    stroke: purple;
+}
+
+.outRel.ca {
+ 	stroke: magenta;
+}
+
+.outRel.ap {
+ 	stroke: orange;
+}
+
+.outRel.aa {
+ 	stroke: olive;
 }
 
 .outRelArrow {
-	stroke: #d9d9d9;
-	fill: #d9d9d9;
+	stroke: black;
+    fill: black;
 	stroke-linejoin: round;
-	stroke-dasharray: 0;
-}
-
-.inArrow {
-	stroke: #636363;
-	fill: #636363;
-}
-
-.exArrow {
-	fill: none;
-}
-
-.ebArrow {
-	/* 	stroke: #bdbdbd;
-	fill: #bdbdbd; */
-	
-}
-
-.affArrow {
-	/* 	stroke: #bdbdbd;
-	fill: #bdbdbd; */
-	
-}
-
-.aArrow {
-	/* 	stroke: #bdbdbd;
-	fill: #bdbdbd; */
-	
 }
 
 .outRelArrow.requiringArrow {
-	stroke: #FFE81B;
-	fill: #FFE81B;
+    fill: yellow;
+	stroke: yellow;
+}
+
+.inArrow {
+	stroke: cyan;
+	fill: cyan;
+}
+
+.exArrow {
+    stroke: blue;
+	fill: blue;
+}
+
+.aArrow {
+    stroke: purple;
+	fill: purple;
+}
+
+.caArrow {
+    stroke: magenta;
+	fill: magenta;
+}
+
+.apArrow {
+    stroke: orange;
+	fill: orange;
+}
+
+.aaArrow {
+    stroke: olive;
+	fill: olive;
 }
 
 .highlighted {
