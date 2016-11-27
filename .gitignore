@@ -1,2 +1,24 @@
+# Eclipse
+/bin/
 /.settings/
+/.classpath
 /.project
+/uml.ucls
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Java
+/out/
+/work/
+
+# Maven
+log/
+target/
+
+# clouddsfPlusParser
+*.log
+*.json
+
