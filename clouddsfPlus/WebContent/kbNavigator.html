@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CloudDSF+ KB Navigator</title>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- Global Style Sheets  -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/bootstrap-switch.min.css" rel="stylesheet" />
+<link href="./css/cdsfPlus.css" rel="stylesheet" />
+
+<!-- Custom Style Sheets -->
+<link href="./css/knowledgeBase.css" rel="stylesheet" />
+
+<!-- JavaScript Libraries -->
+<script src="./js/lib/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="./js/lib/bootstrap.min.js" type="text/javascript"></script>
+<script src="./js/lib/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="./js/lib/bootbox.min.js" type="text/javascript"></script>
+<script src="./js/lib/d3.v3.min.js" type="text/javascript"></script>
+<script src="./js/lib/d3tip.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+	<!-- Navigation -->
+	<header class="navbar navbar-inverse navbar-static-top "
+		role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand visible-xs" href="./index.html">CloudDSF+</a>
+			</div>
+
+			<!-- Collect the nav links for toggling -->
+			<nav id="navbar" class="collapse navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav nav-justified">
+					<li><a href="./index.html"><span><strong>
+									CloudDSF+</strong></span></a></li>
+					<li class="active"><a href="./kbNavigator.html"><span>KB
+								Navigator</span> </a></li>
+					<li><a href="./kbVisualizer.html"><span>KB
+								Visualizer</span> </a></li>
+					<li><a href="./cloudDSFVisualizations.html"><span>CloudDSF
+								Visualizations</span> </a></li>
+					<li><a href="./about.html"><span>About</span> </a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Main content -->
+	<div class="container">
+		<!-- Description -->
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1" style="padding-top: 15px;">
+				<h4>KB Navigator</h4>
+				<p>The KB Navigator allows the specification of decisions by
+					selecting one of their respective outcomes. Impacts of a selected
+					outcome are depicted through the corresponding including and
+					excluding relationships as well as requiring relations between
+					decisions. Occuring conflicts through the user's choices will be
+					highlighted and warnings might be raised. The depiction of
+					requiring relations between decisions and whether the relations of
+					all selected outcomes or only of the last chosen outcome should be
+					shown can be toggled with the respective controls. The same applies
+					to the visualization of additional relationship types that do not
+					directly influence the selections.</p>
+			</div>
+		</div>
+
+		<!-- Toolbar -->
+		<div class="row vspace">
+			<div class="col-lg-10 col-lg-offset-1 vspace">
+				<div class="btn-group  btn-group-sm" role="group">
+					<button id="resetAll" class="btn btn-primary " role="button">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+						Reset Selection
+					</button>
+					<a id="store" class="btn btn-primary" role="button"><span
+						class="glyphicon glyphicon-save" aria-hidden="true"></span> Store
+						Selection</a> <a class="btn btn-primary btn-file"><span
+						class="glyphicon glyphicon-open" aria-hidden="true"></span> Load
+						Selection <input id="loadSelection" type="file"></input> </a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-5 col-lg-offset-1 btn-group" role="group">
+				<input type="checkbox" name="toggleLastOutcome" checked></input> <input
+					type="checkbox" name="toggleRequiring" checked></input>
+			</div>
+			<div class="col-lg-5 btn-group" role="group">
+				<input type="checkbox" name="toggleBinding" checked></input> <input
+					type="checkbox" name="toggleAffecting" checked></input> <input
+					type="checkbox" name="toggleAllowing" checked></input>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<!-- D3 content -->
+	<div class="container-fluid">
+		<div class="col-lg-12">
+			<div class="row text-center">
+				<div id="visContent"></div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="footer">
+		<div class="container">
+			<p>University of Sutttgart - Institute of Architecture of
+				Application Systems</p>
+		</div>
+	</footer>
+
+	<!-- Include for Visualizations -->
+	<script src="js/cdsfPlus-layout.js" type="text/javascript"></script>
+	<script src="js/modals.js" type="text/javascript"></script>
+	<script src="js/prototype.js" type="text/javascript"></script>
+	<script src="js/dynamicRelations.js" type="text/javascript"></script>
+
+</body>
+</html>
